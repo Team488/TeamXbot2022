@@ -155,7 +155,7 @@ task checkstyle(type: Checkstyle) {
 
 test {
     reports {
-        junitXml.enabled = true
+        junitXml.required = true
     }               
 }
 
@@ -175,7 +175,7 @@ tasks.withType(Test) {
 
 jacocoTestReport {
     reports {
-        xml.enabled true
+        xml.required = true
     }
 }
 
