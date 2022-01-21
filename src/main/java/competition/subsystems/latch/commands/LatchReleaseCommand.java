@@ -1,16 +1,16 @@
 package competition.subsystems.latch.commands;
 
 import com.google.inject.Inject;
-
 import competition.subsystems.latch.LatchSubsystem;
 import xbot.common.command.BaseCommand;
 
-public class LatchArmCommand extends BaseCommand {
-    final LatchSubsystem latch;
+public class LatchReleaseCommand extends BaseCommand {
+
+    final LatchSubsystem release;
 
     @Inject
-    public LatchArmCommand(LatchSubsystem latch){
-        this.latch = latch;
+    public LatchReleaseCommand(LatchSubsystem release){
+        this.release = release;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class LatchArmCommand extends BaseCommand {
     @Override
     public void execute() {
         // Happens 50x a second
-        latch.arm();
+        release.release();
     }
 
 }
