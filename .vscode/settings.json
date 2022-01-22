@@ -26,5 +26,8 @@
     "coverage-gutters.coverageBaseDir": "build/reports/jacoco/test",
     "coverage-gutters.coverageFileNames": [
         "jacocoTestReport.xml"
-    ]
+    ],
+    "java.checkstyle.configuration": "${workspaceFolder}\\SeriouslyCommonLib\\xbotcheckstyle.xml",
+    "java.checkstyle.properties": {
+      "basedir":"SeriouslyCommonLib"}
 }
