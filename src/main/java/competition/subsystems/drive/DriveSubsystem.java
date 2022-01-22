@@ -70,13 +70,11 @@ public class DriveSubsystem extends BaseDriveSubsystem {
 
     @Override
     public void move(XYPair translate, double rotate) {
-        // TODO Auto-generated method stub
     }
 
     @Override
     public double getLeftTotalDistance() {
         if (contract.isDriveReady()) {
-            // TODO Implement
         }
         return 0;
     }
@@ -84,7 +82,6 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     @Override
     public double getRightTotalDistance() {
         if (contract.isDriveReady()) {
-            // TODO Implement
         }
         return 0;
     }

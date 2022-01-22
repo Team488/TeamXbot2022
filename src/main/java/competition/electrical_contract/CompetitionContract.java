@@ -14,49 +14,41 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public DeviceInfo getFrontLeftDriveNeo() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public DeviceInfo getFrontRightDriveNeo() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public DeviceInfo getRearLeftDriveNeo() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public DeviceInfo getRearRightDriveNeo() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public DeviceInfo getFrontLeftSteeringNeo() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public DeviceInfo getFrontRightSteeringNeo() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public DeviceInfo getRearLeftSteeringNeo() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public DeviceInfo getRearRightSteeringNeo() {
-        // TODO Auto-generated method stub
         return null;
     }
 }
