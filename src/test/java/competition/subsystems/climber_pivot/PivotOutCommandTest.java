@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import competition.BaseCompetitionTest;
-import competition.subsystems.climber_pivot.ClimberPivotSubsystem;
 import competition.subsystems.climber_pivot.commands.PivotOutCommand;
 
 
@@ -14,14 +13,13 @@ public class PivotOutCommandTest extends BaseCompetitionTest{
     @Test
     public void testingPivotOut(){
         ClimberPivotSubsystem climberPivotSubsystem = this.injector.getInstance(ClimberPivotSubsystem.class);
-        PivotOutCommand PivotOutCommand = this.injector.getInstance(PivotOutCommand.class);
+        PivotOutCommand pivotOutCommand = this.injector.getInstance(PivotOutCommand.class);
 
         climberPivotSubsystem.pivot.setOn(false);
         assertTrue("Pivoted in", !climberPivotSubsystem.pivot.getAdjusted());
-        PivotOutCommand.initialize();
-        PivotOutCommand.execute();
+        pivotOutCommand.initialize();
+        pivotOutCommand.execute();
         assertTrue("Pivoted out", climberPivotSubsystem.pivot.getAdjusted());
-
     }
 
     @Test

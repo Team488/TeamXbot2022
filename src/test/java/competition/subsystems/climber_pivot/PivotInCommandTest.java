@@ -30,7 +30,7 @@ public class PivotInCommandTest extends BaseCompetitionTest{
         assertTrue("Pivoted in", !climberPivotSubsystem.pivot.getAdjusted());
         pivotInCommand.initialize();
         pivotInCommand.execute();
-        assertTrue("Stays pivoted out", !climberPivotSubsystem.pivot.getAdjusted());
+        assertTrue("Stays pivoted in", !climberPivotSubsystem.pivot.getAdjusted());
 
     }
     
