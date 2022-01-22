@@ -1,21 +1,54 @@
 package competition.electrical_contract;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-
 import competition.subsystems.pose.PoseSubsystem;
-import xbot.common.injection.electrical_contract.CANTalonInfo;
+import xbot.common.injection.electrical_contract.DeviceInfo;
 
 public class CompetitionContract extends ElectricalContract {
 
     protected final double simulationScalingValue = 256.0 * PoseSubsystem.INCHES_IN_A_METER;
 
     @Override
-    public CANTalonInfo getLeftLeader() {
-        return new CANTalonInfo(1, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulationScalingValue);
+    public boolean isDriveReady() {
+        return false;
     }
 
     @Override
-    public CANTalonInfo getRightLeader() {
-        return new CANTalonInfo(2, true, FeedbackDevice.CTRE_MagEncoder_Absolute, true, simulationScalingValue);
+    public DeviceInfo getFrontLeftDriveNeo() {
+        return null;
+    }
+
+    @Override
+    public DeviceInfo getFrontRightDriveNeo() {
+        return null;
+    }
+
+    @Override
+    public DeviceInfo getRearLeftDriveNeo() {
+        return null;
+    }
+
+    @Override
+    public DeviceInfo getRearRightDriveNeo() {
+        return null;
+    }
+
+    @Override
+    public DeviceInfo getFrontLeftSteeringNeo() {
+        return null;
+    }
+
+    @Override
+    public DeviceInfo getFrontRightSteeringNeo() {
+        return null;
+    }
+
+    @Override
+    public DeviceInfo getRearLeftSteeringNeo() {
+        return null;
+    }
+
+    @Override
+    public DeviceInfo getRearRightSteeringNeo() {
+        return null;
     }
 }
