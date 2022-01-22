@@ -75,6 +75,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     @Override
     public double getLeftTotalDistance() {
         if (contract.isDriveReady()) {
+            // nothing to do yet
         }
         return 0;
     }
@@ -82,6 +83,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     @Override
     public double getRightTotalDistance() {
         if (contract.isDriveReady()) {
+            // nothing to do yet
         }
         return 0;
     }
