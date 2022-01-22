@@ -1,4 +1,4 @@
-package competition.subsystems.climberPivot;
+package competition.subsystems.climber_pivot;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -16,9 +16,10 @@ public class ClimberPivotSubsystem extends BaseSubsystem{
     public ClimberPivotSubsystem(CommonLibFactory factory) {
         pivot = factory.createSolenoid(2);
     }
-    public void pivoteIn() {
+    public void pivotIn() {
         pivot.setOn(false);
     }
     public void pivotOut() {
         pivot.setOn(true);
     }
+}
