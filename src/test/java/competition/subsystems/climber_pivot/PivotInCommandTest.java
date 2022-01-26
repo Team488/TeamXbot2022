@@ -6,13 +6,13 @@ import org.junit.Test;
 
 import competition.BaseCompetitionTest;
 import competition.subsystems.climber_pivot.commands.PivotInCommand;
-import competition.subsystems.latch.LatchSubsystem;
-import competition.BaseCompetitionTest;
+
 public class PivotInCommandTest extends BaseCompetitionTest{
     @Test
     public void testingPivotIn(){
         ClimberPivotSubsystem climberPivotSubsystem = this.injector.getInstance(ClimberPivotSubsystem.class);
         PivotInCommand pivotInCommand = this.injector.getInstance(PivotInCommand.class);
+
         climberPivotSubsystem.pivot.setOn(true);
         assertTrue("Pivoted out", climberPivotSubsystem.pivot.getAdjusted());
         pivotInCommand.initialize();
