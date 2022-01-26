@@ -13,7 +13,7 @@ public class ClimberPivotSubsystemTest extends BaseCompetitionTest {
         ClimberPivotSubsystem climberPivotSubsystem = this.injector.getInstance(ClimberPivotSubsystem.class);
         
         climberPivotSubsystem.pivot.setOn(true);
-        assertTrue("Latch starts pivoted out", !climberPivotSubsystem.pivot.getAdjusted());
+        assertTrue("Latch starts pivoted out", climberPivotSubsystem.pivot.getAdjusted());
         climberPivotSubsystem.pivotIn();
         assertTrue("Latch starts pivoted out", !climberPivotSubsystem.pivot.getAdjusted());
     }
