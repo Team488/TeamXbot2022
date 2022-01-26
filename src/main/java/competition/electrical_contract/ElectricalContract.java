@@ -14,4 +14,8 @@ public abstract class ElectricalContract {
     public abstract DeviceInfo getFrontRightSteeringNeo();
     public abstract DeviceInfo getRearLeftSteeringNeo();
     public abstract DeviceInfo getRearRightSteeringNeo();
+
+    public boolean isLauncherReady(){
+        return true;
+    }
 }
