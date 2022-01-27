@@ -6,11 +6,18 @@ import com.google.inject.Singleton;
 import org.apache.log4j.Logger;
 
 import competition.electrical_contract.ElectricalContract;
-import xbot.common.controls.actuators.XCANSparkMax;
+import competition.injection.swerve.FrontLeftDrive;
+import competition.injection.swerve.FrontRightDrive;
+import competition.injection.swerve.RearLeftDrive;
+import competition.injection.swerve.RearRightDrive;
+import competition.subsystems.drive.swerve.SwerveModuleSubsystem;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.math.PIDFactory;
 import xbot.common.math.PIDManager;
 import xbot.common.math.XYPair;
+import xbot.common.properties.PropertyFactory;
 import xbot.common.properties.XPropertyManager;
 import xbot.common.subsystems.drive.BaseDriveSubsystem;
 
@@ -18,39 +25,37 @@ import xbot.common.subsystems.drive.BaseDriveSubsystem;
 public class DriveSubsystem extends BaseDriveSubsystem {
     private static Logger log = Logger.getLogger(DriveSubsystem.class);
     
-    ElectricalContract contract;
-
-    public XCANSparkMax frontLeftDrive;
-    public XCANSparkMax frontRightDrive;
-    public XCANSparkMax rearLeftDrive;
-    public XCANSparkMax rearRightDrive;
-
-    public XCANSparkMax frontLeftSteering;
-    public XCANSparkMax frontRightSteering;
-    public XCANSparkMax rearLeftSteering;
-    public XCANSparkMax rearRightSteering;
+    private final SwerveModuleSubsystem frontLeftSwerveModuleSubsystem;
+    private final SwerveModuleSubsystem frontRightSwerveModuleSubsystem;
+    private final SwerveModuleSubsystem rearLeftSwerveModuleSubsystem;
+    private final SwerveModuleSubsystem rearRightSwerveModuleSubsystem;
 
     private final PIDManager positionPid;
     private final PIDManager rotationPid;
 
+    private final SwerveDriveKinematics swerveDriveKinematics;
+
     @Inject
-    public DriveSubsystem(CommonLibFactory factory, XPropertyManager propManager, ElectricalContract contract, PIDFactory pf) {
+    public DriveSubsystem(CommonLibFactory factory, XPropertyManager propManager, ElectricalContract contract, PropertyFactory pf, PIDFactory pidf,
+            @FrontLeftDrive SwerveModuleSubsystem frontLeftSwerve, @FrontRightDrive SwerveModuleSubsystem frontRightSwerve,
+            @RearLeftDrive SwerveModuleSubsystem rearLeftSwerve, @RearRightDrive SwerveModuleSubsystem rearRightSwerve) {
         log.info("Creating DriveSubsystem");
+        pf.setPrefix(this);
 
-        if (contract.isDriveReady()) {
-            this.frontLeftDrive = factory.createCANSparkMax(contract.getFrontLeftDriveNeo().channel, this.getPrefix(), "FrontLeftDrive");
-            this.frontRightDrive = factory.createCANSparkMax(contract.getFrontLeftDriveNeo().channel, this.getPrefix(), "FrontRightDrive");
-            this.rearLeftDrive = factory.createCANSparkMax(contract.getFrontLeftDriveNeo().channel, this.getPrefix(), "RearLeftDrive");
-            this.rearRightDrive = factory.createCANSparkMax(contract.getFrontLeftDriveNeo().channel, this.getPrefix(), "RearRightDrive");
-            
-            this.frontLeftSteering = factory.createCANSparkMax(contract.getFrontLeftDriveNeo().channel, this.getPrefix(), "FrontLeftSteering");
-            this.frontRightSteering = factory.createCANSparkMax(contract.getFrontLeftDriveNeo().channel, this.getPrefix(), "FrontRightSteering");
-            this.rearLeftSteering = factory.createCANSparkMax(contract.getFrontLeftDriveNeo().channel, this.getPrefix(), "RearLeftSteering");
-            this.rearRightSteering = factory.createCANSparkMax(contract.getFrontLeftDriveNeo().channel, this.getPrefix(), "RearRightSteering");
-        }
+        this.frontLeftSwerveModuleSubsystem = frontLeftSwerve;
+        this.frontRightSwerveModuleSubsystem = frontRightSwerve;
+        this.rearLeftSwerveModuleSubsystem = rearLeftSwerve;
+        this.rearRightSwerveModuleSubsystem = rearRightSwerve;
 
-        positionPid = pf.createPIDManager(getPrefix() + "PositionPID");
-        rotationPid = pf.createPIDManager(getPrefix() + "RotationPID");
+        this.swerveDriveKinematics = new SwerveDriveKinematics(
+            this.frontLeftSwerveModuleSubsystem.getModuleTranslation(),
+            this.frontRightSwerveModuleSubsystem.getModuleTranslation(),
+            this.rearLeftSwerveModuleSubsystem.getModuleTranslation(),
+            this.rearRightSwerveModuleSubsystem.getModuleTranslation()
+        );
+
+        positionPid = pidf.createPIDManager(getPrefix() + "PositionPID");
+        rotationPid = pidf.createPIDManager(getPrefix() + "RotationPID");
     }
 
     @Override
@@ -70,26 +75,37 @@ public class DriveSubsystem extends BaseDriveSubsystem {
 
     @Override
     public void move(XYPair translate, double rotate) {
+        swerveDriveKinematics.toSwerveModuleStates(new ChassisSpeeds(translate.x, translate.y, rotate));
     }
 
     @Override
     public double getLeftTotalDistance() {
-        if (contract.isDriveReady()) {
-            // nothing to do yet
-        }
         return 0;
     }
 
     @Override
     public double getRightTotalDistance() {
-        if (contract.isDriveReady()) {
-            // nothing to do yet
-        }
         return 0;
     }
 
     @Override
     public double getTransverseDistance() {
         return 0;
+    }
+
+    public SwerveModuleSubsystem getFrontLeftSwerveModuleSubsystem() {
+        return this.frontLeftSwerveModuleSubsystem;
+    }
+
+    public SwerveModuleSubsystem getFrontRightSwerveModuleSubsystem() {
+        return this.frontRightSwerveModuleSubsystem;
+    }
+
+    public SwerveModuleSubsystem getRearLeftSwerveModuleSubsystem() {
+        return this.rearLeftSwerveModuleSubsystem;
+    }
+
+    public SwerveModuleSubsystem getRearRightSwerveModuleSubsystem() {
+        return this.rearRightSwerveModuleSubsystem;
     }
 }
