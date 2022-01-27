@@ -19,7 +19,7 @@ public class SwerveModuleSubsystem extends BaseSubsystem {
     private final String label;
 
     private final SwerveDriveSubsystem driveSubsystem;
-    private final SwerveRotationSubsystem rotationSubsystem;
+    private final SwerveSteeringSubsystem steeringSubsystem;
 
     private final DoubleProperty xOffsetInches;
     private final DoubleProperty yOffsetInches;
@@ -27,14 +27,14 @@ public class SwerveModuleSubsystem extends BaseSubsystem {
     private final Translation2d moduleTranslation;
 
     @Inject
-    public SwerveModuleSubsystem(SwerveInstance swerveInstance, SwerveDriveSubsystem driveSubsystem, SwerveRotationSubsystem rotationSubsystem,
+    public SwerveModuleSubsystem(SwerveInstance swerveInstance, SwerveDriveSubsystem driveSubsystem, SwerveSteeringSubsystem steeringSubsystem,
             ElectricalContract contract, PropertyFactory pf) {
         this.label = swerveInstance.getLabel();
         log.info("Creating SwerveModuleSubsystem " + this.label);
         pf.setPrefix(this);
 
         this.driveSubsystem = driveSubsystem;
-        this.rotationSubsystem = rotationSubsystem;
+        this.steeringSubsystem = steeringSubsystem;
 
         this.xOffsetInches = pf.createPersistentProperty("XOffsetInches", 0.0);
         this.yOffsetInches = pf.createPersistentProperty("YOffsetInches", 0.0);
@@ -57,7 +57,7 @@ public class SwerveModuleSubsystem extends BaseSubsystem {
         return this.driveSubsystem;
     }
 
-    public SwerveRotationSubsystem getRotationSubsystem() {
-        return this.rotationSubsystem;
+    public SwerveSteeringSubsystem getSteeringSubsystem() {
+        return this.steeringSubsystem;
     }
 }

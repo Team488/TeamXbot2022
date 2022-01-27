@@ -6,7 +6,7 @@ import com.google.inject.PrivateModule;
 
 import competition.subsystems.drive.swerve.SwerveDriveSubsystem;
 import competition.subsystems.drive.swerve.SwerveModuleSubsystem;
-import competition.subsystems.drive.swerve.SwerveRotationSubsystem;
+import competition.subsystems.drive.swerve.SwerveSteeringSubsystem;
 
 public class SwerveModule extends PrivateModule {
     
@@ -23,6 +23,6 @@ public class SwerveModule extends PrivateModule {
         // bind individual components
         bind(SwerveInstance.class).toInstance(new SwerveInstance(annotation.getSimpleName()));
         bind(SwerveDriveSubsystem.class);
-        bind(SwerveRotationSubsystem.class);
+        bind(SwerveSteeringSubsystem.class);
     }
 }

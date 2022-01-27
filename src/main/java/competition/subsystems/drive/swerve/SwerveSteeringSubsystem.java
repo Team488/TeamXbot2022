@@ -13,15 +13,15 @@ import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.properties.PropertyFactory;
 
 @Singleton
-public class SwerveRotationSubsystem extends BaseSetpointSubsystem {
-    private static Logger log = Logger.getLogger(SwerveRotationSubsystem.class);
+public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
+    private static Logger log = Logger.getLogger(SwerveSteeringSubsystem.class);
 
     private final String label;
 
     private XCANSparkMax motorController;
 
     @Inject
-    public SwerveRotationSubsystem(SwerveInstance swerveInstance, CommonLibFactory factory, PropertyFactory pf, ElectricalContract electricalContract) {
+    public SwerveSteeringSubsystem(SwerveInstance swerveInstance, CommonLibFactory factory, PropertyFactory pf, ElectricalContract electricalContract) {
         this.label = swerveInstance.getLabel();
         log.info("Creating SwerveRotationSubsystem " + this.label);
         pf.setPrefix(this);

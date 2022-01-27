@@ -23,12 +23,12 @@ public class DriveSubsystemTest extends BaseCompetitionTest {
         assertEquals("SwerveModuleSubsystem/RearRightDrive/", driveSubsystem.getRearRightSwerveModuleSubsystem().getPrefix());
 
         assertNotSame(
-            driveSubsystem.getFrontLeftSwerveModuleSubsystem().getRotationSubsystem(),
-            driveSubsystem.getFrontRightSwerveModuleSubsystem().getRotationSubsystem());
-        assertEquals("SwerveRotationSubsystem/FrontLeftDrive/", driveSubsystem.getFrontLeftSwerveModuleSubsystem().getRotationSubsystem().getPrefix());
-        assertEquals("SwerveRotationSubsystem/FrontRightDrive/", driveSubsystem.getFrontRightSwerveModuleSubsystem().getRotationSubsystem().getPrefix());
-        assertEquals("SwerveRotationSubsystem/RearLeftDrive/", driveSubsystem.getRearLeftSwerveModuleSubsystem().getRotationSubsystem().getPrefix());
-        assertEquals("SwerveRotationSubsystem/RearRightDrive/", driveSubsystem.getRearRightSwerveModuleSubsystem().getRotationSubsystem().getPrefix());
+            driveSubsystem.getFrontLeftSwerveModuleSubsystem().getSteeringSubsystem(),
+            driveSubsystem.getFrontRightSwerveModuleSubsystem().getSteeringSubsystem());
+        assertEquals("SwerveSteeringSubsystem/FrontLeftDrive/", driveSubsystem.getFrontLeftSwerveModuleSubsystem().getSteeringSubsystem().getPrefix());
+        assertEquals("SwerveSteeringSubsystem/FrontRightDrive/", driveSubsystem.getFrontRightSwerveModuleSubsystem().getSteeringSubsystem().getPrefix());
+        assertEquals("SwerveSteeringSubsystem/RearLeftDrive/", driveSubsystem.getRearLeftSwerveModuleSubsystem().getSteeringSubsystem().getPrefix());
+        assertEquals("SwerveSteeringSubsystem/RearRightDrive/", driveSubsystem.getRearRightSwerveModuleSubsystem().getSteeringSubsystem().getPrefix());
 
         assertNotSame(
             driveSubsystem.getFrontLeftSwerveModuleSubsystem().getDriveSubsystem(),
@@ -46,8 +46,8 @@ public class DriveSubsystemTest extends BaseCompetitionTest {
             driveSubsystem.getFrontLeftSwerveModuleSubsystem(),
             anotheDriveSubsystem.getFrontLeftSwerveModuleSubsystem());
         assertSame(
-            driveSubsystem.getFrontLeftSwerveModuleSubsystem().getRotationSubsystem(),
-            anotheDriveSubsystem.getFrontLeftSwerveModuleSubsystem().getRotationSubsystem());
+            driveSubsystem.getFrontLeftSwerveModuleSubsystem().getSteeringSubsystem(),
+            anotheDriveSubsystem.getFrontLeftSwerveModuleSubsystem().getSteeringSubsystem());
             assertSame(
                 driveSubsystem.getFrontLeftSwerveModuleSubsystem().getDriveSubsystem(),
                 anotheDriveSubsystem.getFrontLeftSwerveModuleSubsystem().getDriveSubsystem());
