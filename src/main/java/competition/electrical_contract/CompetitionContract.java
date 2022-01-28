@@ -52,4 +52,24 @@ public class CompetitionContract extends ElectricalContract {
                 return null;
         }
     }
+
+    @Override
+    public DeviceInfo getSteeringEncoder(SwerveInstance swerveInstance) {
+        switch (swerveInstance.getLabel()) {
+            case "FrontLeftDrive":
+                return null;
+
+            case "FrontRightDrive":
+                return null;
+
+            case "RearLeftDrive":
+                return null;
+
+            case "RearRightDrive":
+                return null;
+
+            default:
+                return null;
+        }
+    }
 }

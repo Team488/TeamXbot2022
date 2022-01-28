@@ -9,7 +9,7 @@ import competition.electrical_contract.ElectricalContract;
 import competition.injection.swerve.SwerveInstance;
 import xbot.common.command.BaseSetpointSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
-import xbot.common.controls.sensors.XEncoder;
+import xbot.common.controls.sensors.XAbsoluteEncoder;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.math.PIDFactory;
 import xbot.common.math.PIDManager;
@@ -22,7 +22,9 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     private final String label;
     private final PIDManager pid;
 
+    private double target;
     private XCANSparkMax motorController;
+    private XAbsoluteEncoder encoder;
 
     @Inject
     public SwerveSteeringSubsystem(SwerveInstance swerveInstance, CommonLibFactory factory,
@@ -35,6 +37,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
 
         if (electricalContract.isDriveReady()) {
             this.motorController = factory.createCANSparkMax(electricalContract.getSteeringNeo(swerveInstance).channel, this.getPrefix(), "SteeringNeo");
+            this.encoder = factory.createAbsoluteEncoder(electricalContract.getSteeringEncoder(swerveInstance).channel);
         }
     }
 
@@ -48,7 +51,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
      */
     @Override
     public double getCurrentValue() {
-        return this.motorController.getPosition();
+        return this.encoder.getPosition();
     }
 
     /**
@@ -56,7 +59,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
      */
     @Override
     public double getTargetValue() {
-        return 0;
+        return this.target;
     }
 
     /**
@@ -64,7 +67,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
      */
     @Override
     public void setTargetValue(double value) {
-
+        this.target = value;
     }
 
     @Override
