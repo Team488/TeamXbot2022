@@ -1,8 +1,10 @@
 package competition.electrical_contract;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+
 import competition.injection.swerve.SwerveInstance;
 import competition.subsystems.pose.PoseSubsystem;
-import xbot.common.injection.electrical_contract.DeviceInfo;
+import xbot.common.injection.electrical_contract.CANTalonInfo;
 
 public class CompetitionContract extends ElectricalContract {
 
@@ -14,40 +16,32 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     @Override
-    public DeviceInfo getDriveNeo(SwerveInstance swerveInstance) {
+    public CANTalonInfo getDriveNeo(SwerveInstance swerveInstance) {
         switch (swerveInstance.getLabel()) {
             case "FrontLeftDrive":
-                return null;
-
+                return new CANTalonInfo(1, false, FeedbackDevice.CTRE_MagEncoder_Relative, false, simulationScalingValue);
             case "FrontRightDrive":
-                return null;
-
+                return new CANTalonInfo(2, false, FeedbackDevice.CTRE_MagEncoder_Relative, false, simulationScalingValue);
             case "RearLeftDrive":
-                return null;
-
+                return new CANTalonInfo(3, false, FeedbackDevice.CTRE_MagEncoder_Relative, false, simulationScalingValue);
             case "RearRightDrive":
-                return null;
-
+                return new CANTalonInfo(4, false, FeedbackDevice.CTRE_MagEncoder_Relative, false, simulationScalingValue);
             default:
                 return null;
         }
     }
 
     @Override
-    public DeviceInfo getSteeringNeo(SwerveInstance swerveInstance) {
+    public CANTalonInfo getSteeringNeo(SwerveInstance swerveInstance) {
         switch (swerveInstance.getLabel()) {
             case "FrontLeftDrive":
-                return null;
-
+                return new CANTalonInfo(5, false, FeedbackDevice.CTRE_MagEncoder_Relative, false, simulationScalingValue);
             case "FrontRightDrive":
-                return null;
-
+                return new CANTalonInfo(6, false, FeedbackDevice.CTRE_MagEncoder_Relative, false, simulationScalingValue);
             case "RearLeftDrive":
-                return null;
-
+                return new CANTalonInfo(7, false, FeedbackDevice.CTRE_MagEncoder_Relative, false, simulationScalingValue);
             case "RearRightDrive":
-                return null;
-
+                return new CANTalonInfo(8, false, FeedbackDevice.CTRE_MagEncoder_Relative, false, simulationScalingValue);
             default:
                 return null;
         }

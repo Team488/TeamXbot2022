@@ -27,7 +27,7 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
         pf.setPrefix(this);
 
         if (electricalContract.isDriveReady()) {
-            this.motorController = factory.createCANSparkMax(electricalContract.getDriveNeo(swerveInstance).channel, this.getPrefix(), "DriveNeo");
+            this.motorController = factory.createCANSparkMax(electricalContract.getDriveNeo(swerveInstance), this.getPrefix(), "DriveNeo");
         }
     }
 

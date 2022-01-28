@@ -108,4 +108,15 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     public SwerveModuleSubsystem getRearRightSwerveModuleSubsystem() {
         return this.rearRightSwerveModuleSubsystem;
     }
+
+    public void stupidSwerveDrive(double power, double turning) {
+        frontLeftSwerveModuleSubsystem.setPower(power);
+        frontRightSwerveModuleSubsystem.setPower(power);
+        rearLeftSwerveModuleSubsystem.setPower(power);
+        rearRightSwerveModuleSubsystem.setPower(power);
+        frontLeftSwerveModuleSubsystem.setTurning(turning);
+        frontRightSwerveModuleSubsystem.setTurning(turning);
+        rearLeftSwerveModuleSubsystem.setTurning(turning);
+        rearRightSwerveModuleSubsystem.setTurning(turning);
+    }
 }
