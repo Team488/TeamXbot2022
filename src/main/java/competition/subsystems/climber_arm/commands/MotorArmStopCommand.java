@@ -11,7 +11,7 @@ public class MotorArmStopCommand extends BaseCommand{
     @Inject
     public MotorArmStopCommand(ClimberArmSubsystem armStop){
         armStop = this.armStop;
-        
+        addRequirements(armStop);
     }
     @Override
     public void initialize() {
@@ -22,7 +22,7 @@ public class MotorArmStopCommand extends BaseCommand{
     @Override
     public void execute() {
         // 
-        armStop.motorExtend(0);
+        armStop.motorStop(0);
     }
 
 }

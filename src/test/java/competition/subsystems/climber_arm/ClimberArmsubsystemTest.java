@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JsonSerializable.Base;
 import org.junit.Test;
 
 import competition.BaseCompetitionTest;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class ClimberArmsubsystemTest extends BaseCompetitionTest {
     
@@ -15,7 +16,9 @@ public class ClimberArmsubsystemTest extends BaseCompetitionTest {
     public void testMotorArmExtend(){
         ClimberArmSubsystem climberArmSubsystem = this.injector.getInstance(ClimberArmSubsystem.class);
 
-        climberArmSubsystem.motorExtend(1);
+        climberArmSubsystem.motorStop(0);
+        assertEquals("Arm should start stopped", 0, climberArmSubsystem.armMotor.get(), 0.0001);
+        climberArmSubsystem.setPower(1);
         assertEquals("Arm should be extending", 1, climberArmSubsystem.armMotor.get(), 0.0001);
 
     }
@@ -23,15 +26,15 @@ public class ClimberArmsubsystemTest extends BaseCompetitionTest {
     @Test
     public void testArmRetract(){
         ClimberArmSubsystem climberArmSubsystem = this.injector.getInstance(ClimberArmSubsystem.class);
-
-        climberArmSubsystem.motorRetract(-1);
-        assertEquals("Arm should be retrachting", -1, climberArmSubsystem.armMotor.get(), 0.0001);
+        assertEquals("Arm should start stopped", 0, climberArmSubsystem.armMotor.get(), 0.0001);
+        climberArmSubsystem.setPower(-1);
+        assertEquals("Arm should be retracting", -1, climberArmSubsystem.armMotor.get(), 0.0001);
     }
 
     @Test
     public void testArmStop(){
         ClimberArmSubsystem climberArmSubsystem = this.injector.getInstance(ClimberArmSubsystem.class);
-
+        assertEquals("Arm should start stopped", 0, climberArmSubsystem.armMotor.get(), 0.0001);
         climberArmSubsystem.motorStop(0);
         assertEquals("Arm should stay still", 0, climberArmSubsystem.armMotor.get(), 0.0001);
     }
@@ -39,12 +42,12 @@ public class ClimberArmsubsystemTest extends BaseCompetitionTest {
     @Test
     public void testExtrastStopRetractStop(){
         ClimberArmSubsystem climberArmSubsystem = this.injector.getInstance(ClimberArmSubsystem.class);
-
-        climberArmSubsystem.motorExtend(1);
+        assertEquals("Arm should start stopped", 0, climberArmSubsystem.armMotor.get(), 0.0001);
+        climberArmSubsystem.setPower(1);
         assertEquals("Arm should be extending", 1, climberArmSubsystem.armMotor.get(), 0.0001);
         climberArmSubsystem.motorStop(0);
         assertEquals("Arm should be stopping", 0, climberArmSubsystem.armMotor.get(), 0.0001);
-        climberArmSubsystem.motorRetract(-1);
+        climberArmSubsystem.setPower(-1);
         assertEquals("Arm should be retracting", -1, climberArmSubsystem.armMotor.get(), 0.0001);
         climberArmSubsystem.motorStop(0);
         assertEquals("Arm should be stopping", 0, climberArmSubsystem.armMotor.get(), 0.0001);

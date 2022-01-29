@@ -13,6 +13,7 @@ public class MotorArmRetractCommand extends BaseCommand{
 
     @Inject
     public MotorArmRetractCommand(ClimberArmSubsystem armRetract, PropertyFactory pf){
+        addRequirements(armRetract);
         armRetract = this.armRetracts;
         motorRetractSpeed = pf.createPersistentProperty("retractSpeed", -0.1);
     }
@@ -25,7 +26,7 @@ public class MotorArmRetractCommand extends BaseCommand{
     @Override
     public void execute() {
         // 
-        armRetracts.motorExtend(motorRetractSpeed.get());
+        armRetracts.setPower(motorRetractSpeed.get());
     }
 
 }

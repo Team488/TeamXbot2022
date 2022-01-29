@@ -11,6 +11,7 @@ public class PivotOutCommand extends BaseCommand{
     @Inject
     public PivotOutCommand(ClimberPivotSubsystem pivot){
         this.pivot = pivot;
+        addRequirements(pivot);
     }
 
     @Override
