@@ -15,17 +15,16 @@ public class MotorArmExtendCommand extends BaseCommand{
     public MotorArmExtendCommand(ClimberArmSubsystem armExtends, PropertyFactory pf){
         armExtends = this.armExtends;
         motorExtendSpeed = pf.createPersistentProperty("extendSpeed", 0.1);
+        addRequirements(armExtends);
     }
     @Override
     public void initialize() {
-        // 
         log.info("Initializing");
     }
 
     @Override
     public void execute() {
-        // 
-        armExtends.motorExtend(motorExtendSpeed.get());
+        armExtends.setPower(motorExtendSpeed.get());
     }
     
 }

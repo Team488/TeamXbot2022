@@ -17,7 +17,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem{
         armMotor = factory.createCANSparkMax(3, this.getPrefix(), "ArmMotor");
     }
 
-    private void safety(double power, boolean isSafe){
+    private void setMotorPower(double power, boolean isSafe){
         boolean overExtend = false;
         boolean overRetracts = false;
 
@@ -33,16 +33,8 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem{
         armMotor.set(power);
     }
 
-    public void motorExtend(double power) {
-        safety(power, true);
-    }
-
-    public void motorRetract(double power){
-        safety(power, true);
-    }
-
     public void motorStop(double power){
-        safety(0, true);
+        setMotorPower(0, true);
     }
 
     // Won't use right now
@@ -68,7 +60,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem{
     @Override
     public void setPower(double power) {
         // 
-        safety(power, true);
+        setMotorPower(power, true);
         
     }
 
