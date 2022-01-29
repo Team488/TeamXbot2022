@@ -61,7 +61,11 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
      */
     @Override
     public double getCurrentValue() {
-        return this.encoder.getPosition();
+        if (this.contract.isDriveReady()) {
+            return this.encoder.getPosition();
+        } else {
+            return 0;
+        }
     }
 
     /**
