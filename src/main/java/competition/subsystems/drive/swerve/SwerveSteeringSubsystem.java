@@ -93,12 +93,6 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     public boolean isCalibrated() {
         return false;
     }
-    
-    @Override
-    public void periodic() {
-        super.periodic();
-        this.setPower(calculatePower());
-    }
 
     public XCANSparkMax getSparkMax() {
         return this.motorController;
@@ -108,7 +102,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         return this.encoder;
     }
 
-    private double calculatePower() {
+    public double calculatePower() {
         // We need to calculate our own error function. Why?
         // PID works great, but it assumes there is a linear relationship between your current state and
         // your target state. Since rotation is circular, that's not the case: if you are at 170 degrees,
@@ -124,5 +118,9 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         double rotationalPower = this.pid.calculate(0, errorInDegrees);
         
         return rotationalPower * this.powerScale.get();
+    }
+
+    public void resetPid() {
+        this.pid.reset();
     }
 }
