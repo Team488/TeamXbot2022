@@ -14,8 +14,8 @@ import xbot.common.properties.PropertyFactory;
 public class ClimberArmSubsystem extends BaseSetpointSubsystem{
     public XCANSparkMax armMotor;
     public double armMotorPosition;
-    final public DoubleProperty safeArmExtendedNumber;
-    final public DoubleProperty safeArmRetractedNumber;
+    public final DoubleProperty safeArmExtendedNumber;
+    public final DoubleProperty safeArmRetractedNumber;
     
     public boolean isArmOverExtended(){
         armMotorPosition = armMotor.getPosition();
