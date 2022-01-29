@@ -21,11 +21,12 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
 
     private final String label;
     private final PIDManager pid;
+    private final ElectricalContract contract;
 
     private final DoubleProperty velocityScaleFactor;
+    private final DoubleProperty targetVelocity;
 
     private XCANSparkMax motorController;
-    private double targetVelocity;
 
     @Inject
     public SwerveDriveSubsystem(SwerveInstance swerveInstance, CommonLibFactory factory,
@@ -34,9 +35,11 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
         log.info("Creating SwerveDriveSubsystem " + this.label);
         pf.setPrefix(this);
 
+        this.contract = electricalContract;
         this.pid = pidf.createPIDManager(this.getPrefix() + "PID");
 
         this.velocityScaleFactor = pf.createPersistentProperty("VelocityScaleFactor", 0.1);
+        this.targetVelocity = pf.createEphemeralProperty("TargetVelocity", 0.0);
 
         if (electricalContract.isDriveReady()) {
             this.motorController = factory.createCANSparkMax(electricalContract.getDriveNeo(swerveInstance).channel, this.getPrefix(), "DriveNeo");
@@ -53,7 +56,11 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
      */
     @Override
     public double getCurrentValue() {
-        return this.motorController.get() / this.velocityScaleFactor.get();
+        if (this.contract.isDriveReady()) {
+            return this.motorController.get() / this.velocityScaleFactor.get();
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -61,7 +68,7 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
      */
     @Override
     public double getTargetValue() {
-        return this.targetVelocity;
+        return this.targetVelocity.get();
     }
 
     /**
@@ -69,13 +76,15 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
      */
     @Override
     public void setTargetValue(double value) {
-        this.targetVelocity = value;
-        this.motorController.set(value * this.velocityScaleFactor.get());
+        this.targetVelocity.set(value);
     }
 
     @Override
     public void setPower(double power) {
-        
+        if (this.contract.isDriveReady()) {
+            double newPower = this.pid.calculate(getTargetValue(), getCurrentValue());
+            this.motorController.set(newPower * this.velocityScaleFactor.get());
+        }
     }
 
     @Override
