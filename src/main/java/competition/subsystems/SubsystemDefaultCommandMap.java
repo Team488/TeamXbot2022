@@ -8,8 +8,10 @@ import competition.injection.swerve.FrontRightDrive;
 import competition.injection.swerve.RearLeftDrive;
 import competition.injection.swerve.RearRightDrive;
 import competition.subsystems.drive.DriveSubsystem;
+import competition.subsystems.drive.commands.SwerveDriveMaintainerCommand;
 import competition.subsystems.drive.commands.SwerveSteeringMaintainerCommand;
 import competition.subsystems.drive.commands.TankDriveWithJoysticksCommand;
+import competition.subsystems.drive.swerve.SwerveDriveSubsystem;
 import competition.subsystems.drive.swerve.SwerveSteeringSubsystem;
 
 @Singleton
@@ -46,6 +48,34 @@ public class SubsystemDefaultCommandMap {
     public void setupRearRightSwerveSteeringSubsystem(
             @RearRightDrive SwerveSteeringSubsystem subsystem,
             @RearRightDrive SwerveSteeringMaintainerCommand command) {
+        subsystem.setDefaultCommand(command);
+    }
+    
+    @Inject
+    public void setupFrontLeftSwerveDriveSubsystem(
+            @FrontLeftDrive SwerveDriveSubsystem subsystem,
+            @FrontLeftDrive SwerveDriveMaintainerCommand command) {
+        subsystem.setDefaultCommand(command);
+    }
+
+    @Inject
+    public void setupFrontRightSwerveDriveSubsystem(
+            @FrontRightDrive SwerveDriveSubsystem subsystem,
+            @FrontRightDrive SwerveDriveMaintainerCommand command) {
+        subsystem.setDefaultCommand(command);
+    }
+
+    @Inject
+    public void setupRearLeftSwerveDriveSubsystem(
+            @RearLeftDrive SwerveDriveSubsystem subsystem,
+            @RearLeftDrive SwerveDriveMaintainerCommand command) {
+        subsystem.setDefaultCommand(command);
+    }
+
+    @Inject
+    public void setupRearRightSwerveDriveSubsystem(
+            @RearRightDrive SwerveDriveSubsystem subsystem,
+            @RearRightDrive SwerveDriveMaintainerCommand command) {
         subsystem.setDefaultCommand(command);
     }
 }

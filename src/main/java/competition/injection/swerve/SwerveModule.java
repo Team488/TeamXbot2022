@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 
 import com.google.inject.PrivateModule;
 
+import competition.subsystems.drive.commands.SwerveDriveMaintainerCommand;
 import competition.subsystems.drive.commands.SwerveSteeringMaintainerCommand;
 import competition.subsystems.drive.swerve.SwerveDriveSubsystem;
 import competition.subsystems.drive.swerve.SwerveModuleSubsystem;
@@ -25,6 +26,9 @@ public class SwerveModule extends PrivateModule {
 
         bind(SwerveDriveSubsystem.class).annotatedWith(annotation).to(SwerveDriveSubsystem.class);
         expose(SwerveDriveSubsystem.class).annotatedWith(annotation);
+        
+        bind(SwerveDriveMaintainerCommand.class).annotatedWith(annotation).to(SwerveDriveMaintainerCommand.class);
+        expose(SwerveDriveMaintainerCommand.class).annotatedWith(annotation);
 
         bind(SwerveSteeringSubsystem.class).annotatedWith(annotation).to(SwerveSteeringSubsystem.class);
         expose(SwerveSteeringSubsystem.class).annotatedWith(annotation);

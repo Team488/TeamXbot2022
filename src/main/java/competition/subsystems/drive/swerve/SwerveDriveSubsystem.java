@@ -36,7 +36,7 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
         pf.setPrefix(this);
 
         this.contract = electricalContract;
-        this.pid = pidf.createPIDManager(this.getPrefix() + "PID");
+        this.pid = pidf.createPIDManager(this.getPrefix() + "PID", 1.0, 0.0, 0.0, -1.0, 1.0);
 
         this.velocityScaleFactor = pf.createPersistentProperty("VelocityScaleFactor", 0.1);
         this.targetVelocity = pf.createEphemeralProperty("TargetVelocity", 0.0);
@@ -82,8 +82,7 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
     @Override
     public void setPower(double power) {
         if (this.contract.isDriveReady()) {
-            double newPower = this.pid.calculate(getTargetValue(), getCurrentValue());
-            this.motorController.set(newPower * this.velocityScaleFactor.get());
+            this.motorController.set(power * this.velocityScaleFactor.get());
         }
     }
 
@@ -95,5 +94,13 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
 
     public XCANSparkMax getSparkMax() {
         return this.motorController;
+    }
+
+    public void resetPid() {
+        this.pid.reset();
+    }
+    
+    public double calculatePower() {
+        return this.pid.calculate(this.getTargetValue(), this.getCurrentValue());
     }
 }
