@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 
 import competition.electrical_contract.ElectricalContract;
 import competition.injection.swerve.SwerveInstance;
-import edu.wpi.first.math.geometry.Rotation2d;
 import xbot.common.command.BaseSetpointSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
 import xbot.common.controls.sensors.XAbsoluteEncoder;
@@ -27,9 +26,8 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     private final ElectricalContract contract;
 
     private final DoubleProperty powerScale;
-    private final DoubleProperty currentPower;
+    private final DoubleProperty targetRotation;
 
-    private double target;
     private XCANSparkMax motorController;
     private XAbsoluteEncoder encoder;
 
@@ -41,9 +39,9 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         pf.setPrefix(this);
 
         this.contract = electricalContract;
-        this.pid = pidf.createPIDManager(this.getPrefix() + "PID");
+        this.pid = pidf.createPIDManager(this.getPrefix() + "PID", 0.1, 0.0, 0.0, -1.0, 1.0);
         this.powerScale = pf.createPersistentProperty("PowerScaleFactor", 0.1);
-        this.currentPower = pf.createEphemeralProperty("CurrentPower", 0.0);
+        this.targetRotation = pf.createEphemeralProperty("TargetRotation", 0.0);
 
         if (electricalContract.isDriveReady()) {
             this.motorController = factory.createCANSparkMax(electricalContract.getSteeringNeo(swerveInstance).channel, this.getPrefix(), "SteeringNeo");
@@ -73,7 +71,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
      */
     @Override
     public double getTargetValue() {
-        return this.target;
+        return this.targetRotation.get();
     }
 
     /**
@@ -81,26 +79,14 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
      */
     @Override
     public void setTargetValue(double value) {
-        this.target = value;
+        this.targetRotation.set(value);
     }
 
     @Override
     public void setPower(double power) {
-        // this is probably wrong, but not clear if it's wrong or hilariously wrong
-        Rotation2d currentRotation = Rotation2d.fromDegrees(getCurrentValue());
-        Rotation2d targetRotation = Rotation2d.fromDegrees(getTargetValue());
-
-        Rotation2d requiredMotion = new WrappedRotation2d(targetRotation.minus(currentRotation).getRadians());
-
-        double goalPower = requiredMotion.getDegrees() * this.powerScale.get();
-
-        double pidPower = this.pid.calculate(goalPower, this.currentPower.get());
-
         if (this.contract.isDriveReady()) {
-            this.motorController.set(pidPower);
+            this.motorController.set(power);
         }
-        
-        this.currentPower.set(goalPower);
     }
 
     @Override
@@ -108,7 +94,35 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         return false;
     }
     
+    @Override
+    public void periodic() {
+        super.periodic();
+        this.setPower(calculatePower());
+    }
+
     public XCANSparkMax getSparkMax() {
         return this.motorController;
+    }
+
+    public XAbsoluteEncoder getEncoder() {
+        return this.encoder;
+    }
+
+    private double calculatePower() {
+        // We need to calculate our own error function. Why?
+        // PID works great, but it assumes there is a linear relationship between your current state and
+        // your target state. Since rotation is circular, that's not the case: if you are at 170 degrees,
+        // and you want to go to -170 degrees, you could travel -340 degrees... or just +20. 
+        
+        // So, we perform our own error calculation here that takes that into account (thanks to the WrappedRotation2d
+        // class, which is aware of such circular effects), and then feed that into a PID where
+        // Goal is 0 and Current is our error.
+        
+        double errorInDegrees = WrappedRotation2d.fromDegrees(getTargetValue() - getCurrentValue()).getDegrees();
+                
+        // Now we feed it into a PID system, where the goal is to have 0 error.
+        double rotationalPower = this.pid.calculate(0, errorInDegrees);
+        
+        return rotationalPower * this.powerScale.get();
     }
 }

@@ -17,16 +17,16 @@ public class CompetitionContract extends ElectricalContract {
     public DeviceInfo getDriveNeo(SwerveInstance swerveInstance) {
         switch (swerveInstance.getLabel()) {
             case "FrontLeftDrive":
-                return null;
+                return new DeviceInfo(26, false, simulationScalingValue);
 
             case "FrontRightDrive":
-                return null;
+                return new DeviceInfo(27, false, simulationScalingValue);
 
             case "RearLeftDrive":
-                return null;
+                return new DeviceInfo(28, false, simulationScalingValue);
 
             case "RearRightDrive":
-                return null;
+                return new DeviceInfo(29, false, simulationScalingValue);
 
             default:
                 return null;
@@ -35,18 +35,20 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public DeviceInfo getSteeringNeo(SwerveInstance swerveInstance) {
+        double simulationScalingValue = 1.0;
+
         switch (swerveInstance.getLabel()) {
             case "FrontLeftDrive":
-                return null;
+                return new DeviceInfo(30, false, simulationScalingValue);
 
             case "FrontRightDrive":
-                return null;
+                return new DeviceInfo(31, false, simulationScalingValue);
 
             case "RearLeftDrive":
-                return null;
+                return new DeviceInfo(32, false, simulationScalingValue);
 
             case "RearRightDrive":
-                return null;
+                return new DeviceInfo(33, false, simulationScalingValue);
 
             default:
                 return null;
@@ -57,16 +59,16 @@ public class CompetitionContract extends ElectricalContract {
     public DeviceInfo getSteeringEncoder(SwerveInstance swerveInstance) {
         switch (swerveInstance.getLabel()) {
             case "FrontLeftDrive":
-                return null;
+                return new DeviceInfo(34, false);
 
             case "FrontRightDrive":
-                return null;
+                return new DeviceInfo(35, false);
 
             case "RearLeftDrive":
-                return null;
+                return new DeviceInfo(36, false);
 
             case "RearRightDrive":
-                return null;
+                return new DeviceInfo(37, false);
 
             default:
                 return null;
