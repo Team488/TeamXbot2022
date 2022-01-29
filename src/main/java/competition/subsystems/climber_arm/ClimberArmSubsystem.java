@@ -24,12 +24,13 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem{
 
     public boolean isArmOverRetracted(){
         armMotor.getPosition();
-        return armMotorPosition > safeArmRetractedNumber.get();
+        return armMotorPosition < safeArmRetractedNumber.get();
     }
 
     @Inject
     public ClimberArmSubsystem(CommonLibFactory factory, PropertyFactory pf){
         armMotor = factory.createCANSparkMax(3, this.getPrefix(), "ArmMotor");
+        pf.setPrefix(this);
         safeArmExtendedNumber = pf.createPersistentProperty("safelyExtendable", 10);
         safeArmRetractedNumber = pf.createPersistentProperty("safelyRetractable", -10);
     }
@@ -49,6 +50,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem{
                 power = MathUtils.constrainDouble(power, 0, 1);
             }
         }
+        
         armMotor.set(power);
     }
 
@@ -60,32 +62,31 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem{
 
     @Override
     public double getCurrentValue() {
-        // 
+        
         return 0;
     }
 
     @Override
     public double getTargetValue() {
-        // 
+        
         return 0;
     }
 
     @Override
     public void setTargetValue(double value) {
-        // 
+        
         
     }
 
     @Override
     public void setPower(double power) {
-        // 
         setMotorPower(power, true);
         
     }
 
     @Override
     public boolean isCalibrated() {
-        // 
+        
         return false;
     }
 
