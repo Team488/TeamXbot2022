@@ -7,19 +7,36 @@ import xbot.common.command.BaseSetpointSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.math.MathUtils;
+import xbot.common.properties.DoubleProperty;
+import xbot.common.properties.PropertyFactory;
 
 @Singleton
 public class ClimberArmSubsystem extends BaseSetpointSubsystem{
     public XCANSparkMax armMotor;
+    public double armMotorPosition;
+    final public DoubleProperty safeArmExtendedNumber;
+    final public DoubleProperty safeArmRetractedNumber;
+    
+    public boolean isArmOverExtended(){
+        armMotorPosition = armMotor.getPosition();
+        return armMotorPosition > safeArmExtendedNumber.get();
+    }
+
+    public boolean isArmOverRetracted(){
+        armMotor.getPosition();
+        return armMotorPosition > safeArmRetractedNumber.get();
+    }
 
     @Inject
-    public ClimberArmSubsystem(CommonLibFactory factory){
+    public ClimberArmSubsystem(CommonLibFactory factory, PropertyFactory pf){
         armMotor = factory.createCANSparkMax(3, this.getPrefix(), "ArmMotor");
+        safeArmExtendedNumber = pf.createPersistentProperty("safelyExtendable", 10);
+        safeArmRetractedNumber = pf.createPersistentProperty("safelyRetractable", -10);
     }
 
     private void safety(double power, boolean isSafe){
-        boolean overExtend = false;
-        boolean overRetracts = false;
+        boolean overExtend = isArmOverExtended();
+        boolean overRetracts = isArmOverRetracted();
 
         if (isSafe) {
 
