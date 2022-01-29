@@ -11,6 +11,7 @@ import competition.injection.swerve.FrontRightDrive;
 import competition.injection.swerve.RearLeftDrive;
 import competition.injection.swerve.RearRightDrive;
 import competition.subsystems.drive.swerve.SwerveModuleSubsystem;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -73,15 +74,34 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         return null;
     }
 
+    /**
+     * Set the target movement speed and rotation, rotating around the center of the robot.
+     * @param translate The translation velocity.
+     * @param rotate The rotation velocity.
+     */
     @Override
     public void move(XYPair translate, double rotate) {
+        move(translate, rotate, new XYPair());
+    }
+
+    /**
+     * Set the target movement speed and rotation, with an arbitrary center of rotation.
+     * @param translate The translation velocity.
+     * @param rotate The rotation velocity.
+     * @param centerOfRotation The center of rotation.
+     */
+    public void move(XYPair translate, double rotate, XYPair centerOfRotation) {
         double targetX = translate.x * maxTargetSpeed.get() * BasePoseSubsystem.INCHES_IN_A_METER;
         double targetY = translate.y * maxTargetSpeed.get() * BasePoseSubsystem.INCHES_IN_A_METER;
         double targetRotation = Math.toRadians(rotate);
 
         ChassisSpeeds targetMotion = new ChassisSpeeds(targetX, targetY, targetRotation);
 
-        SwerveModuleState[] moduleStates = swerveDriveKinematics.toSwerveModuleStates(targetMotion);
+        Translation2d centerOfRotationTranslation = new Translation2d(
+            centerOfRotation.x * BasePoseSubsystem.INCHES_IN_A_METER,
+            centerOfRotation.y * BasePoseSubsystem.INCHES_IN_A_METER);
+        SwerveModuleState[] moduleStates = swerveDriveKinematics.toSwerveModuleStates(targetMotion, centerOfRotationTranslation);
+
         SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, maxTargetSpeed.get() * BasePoseSubsystem.INCHES_IN_A_METER);
 
         this.getFrontLeftSwerveModuleSubsystem().setTargetState(moduleStates[0]);
