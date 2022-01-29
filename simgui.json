@@ -1,0 +1,15 @@
+{
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/LiveWindow/AutonomousCommandSelector": "Subsystem",
+      "/LiveWindow/DriveSubsystem": "Subsystem",
+      "/LiveWindow/PoseSubsystem": "Subsystem",
+      "/LiveWindow/SwerveDriveSubsystem": "Subsystem",
+      "/LiveWindow/SwerveModuleSubsystem": "Subsystem",
+      "/LiveWindow/SwerveSteeringSubsystem": "Subsystem",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/SmartDashboard/Scheduler": "Scheduler"
+    }
+  }
+}

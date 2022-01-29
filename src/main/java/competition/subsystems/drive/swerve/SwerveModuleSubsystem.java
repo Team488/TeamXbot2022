@@ -60,4 +60,9 @@ public class SwerveModuleSubsystem extends BaseSubsystem {
     public SwerveSteeringSubsystem getSteeringSubsystem() {
         return this.steeringSubsystem;
     }
+
+    public void simpleDrive(double drivePower, double rotationalPower) {
+        this.driveSubsystem.setPower(drivePower);
+        this.steeringSubsystem.setPower(rotationalPower);
+    }
 }

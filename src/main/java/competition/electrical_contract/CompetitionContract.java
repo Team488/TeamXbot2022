@@ -12,7 +12,7 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public boolean isDriveReady() {
-        return false;
+        return true;
     }
 
     @Override
@@ -35,13 +35,13 @@ public class CompetitionContract extends ElectricalContract {
     public CANTalonInfo getSteeringNeo(SwerveInstance swerveInstance) {
         switch (swerveInstance.getLabel()) {
             case "FrontLeftDrive":
-                return new CANTalonInfo(5, false, FeedbackDevice.CTRE_MagEncoder_Relative, false, simulationScalingValue);
+                return new CANTalonInfo(11, false, FeedbackDevice.CTRE_MagEncoder_Relative, false, simulationScalingValue);
             case "FrontRightDrive":
-                return new CANTalonInfo(6, false, FeedbackDevice.CTRE_MagEncoder_Relative, false, simulationScalingValue);
+                return new CANTalonInfo(12, false, FeedbackDevice.CTRE_MagEncoder_Relative, false, simulationScalingValue);
             case "RearLeftDrive":
-                return new CANTalonInfo(7, false, FeedbackDevice.CTRE_MagEncoder_Relative, false, simulationScalingValue);
+                return new CANTalonInfo(13, false, FeedbackDevice.CTRE_MagEncoder_Relative, false, simulationScalingValue);
             case "RearRightDrive":
-                return new CANTalonInfo(8, false, FeedbackDevice.CTRE_MagEncoder_Relative, false, simulationScalingValue);
+                return new CANTalonInfo(14, false, FeedbackDevice.CTRE_MagEncoder_Relative, false, simulationScalingValue);
             default:
                 return null;
         }
