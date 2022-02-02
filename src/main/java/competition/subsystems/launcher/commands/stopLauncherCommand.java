@@ -6,13 +6,13 @@ import competition.operator_interface.OperatorInterface;
 import competition.subsystems.launcher.LauncherSubsystem;
 import xbot.common.command.BaseCommand;
 
-public class stopLauncherCommand extends BaseCommand{
+public class StopLauncherCommand extends BaseCommand{
     
     final LauncherSubsystem launch;
     final OperatorInterface oi;
 
     @Inject
-    public stopLauncherCommand(OperatorInterface oi, LauncherSubsystem launch){
+    public StopLauncherCommand(OperatorInterface oi, LauncherSubsystem launch){
         this.oi = oi;
         this.launch = launch;
         this.addRequirements(this.launch);

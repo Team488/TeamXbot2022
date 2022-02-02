@@ -7,12 +7,12 @@ import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.properties.PropertyFactory;
 import competition.subsystems.launcher.LauncherSubsystem;
 
-public class launcherMaintainerCommand extends BaseMaintainerCommand{
+public class LauncherMaintainerCommand extends BaseMaintainerCommand{
     
     final LauncherSubsystem launch;
     final OperatorInterface oi;
 
-    public launcherMaintainerCommand (LauncherSubsystem launch, OperatorInterface oi, 
+    public LauncherMaintainerCommand (LauncherSubsystem launch, OperatorInterface oi, 
     PropertyFactory pf, CommonLibFactory clf){
         super(launch, pf, clf, 50, 0.25); // ask John about the 50 and .25 bc values from 2020 code
 

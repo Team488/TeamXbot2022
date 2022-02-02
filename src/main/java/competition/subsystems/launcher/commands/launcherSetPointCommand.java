@@ -3,11 +3,10 @@ package competition.subsystems.launcher.commands;
 import xbot.common.command.BaseSetpointCommand;
 import xbot.common.command.SupportsSetpointLock;
 
-public class launcherSetPointCommand extends BaseSetpointCommand{
+public class LauncherSetPointCommand extends BaseSetpointCommand{
 
-    public launcherSetPointCommand(SupportsSetpointLock system) {
+    public LauncherSetPointCommand(SupportsSetpointLock system) {
         super(system);
-        //TODO Auto-generated constructor stub
     }
 
     @Override
@@ -17,7 +16,6 @@ public class launcherSetPointCommand extends BaseSetpointCommand{
 
     @Override
     public void execute() {
-        // TODO Auto-generated method stub
         
     }
     

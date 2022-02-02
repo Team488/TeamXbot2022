@@ -8,15 +8,15 @@ import xbot.common.command.BaseCommand;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 
-public class pewPewCommand extends BaseCommand{
+public class PewPewCommand extends BaseCommand{
 
     final LauncherSubsystem launch;
     final OperatorInterface oi;
     final DoubleProperty maxPowerProp;
 
     @Inject
-    public pewPewCommand(OperatorInterface oi, 
-    LauncherSubsystem launch, PropertyFactory pf){ // TODO: flesh out constructor
+    public PewPewCommand(OperatorInterface oi, 
+    LauncherSubsystem launch, PropertyFactory pf){
         this.oi = oi;
         pf.setPrefix(this);
 
@@ -34,8 +34,7 @@ public class pewPewCommand extends BaseCommand{
 
     @Override
     public void execute() {
-        // TODO Auto-generated method stub
-        
+    
     }
     
 }

@@ -93,7 +93,7 @@ public class LauncherSubsystem extends BaseSetpointSubsystem{
     public boolean isCalibrated(){
         // tests? should have a statement where
         // we use IsMaintainerAtGoal() to check.
-        return false; // TODO: TEMPORARY
+        return false;
     }
 
 }
