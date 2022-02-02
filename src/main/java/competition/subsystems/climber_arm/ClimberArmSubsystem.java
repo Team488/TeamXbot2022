@@ -29,7 +29,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem{
 
     @Inject
     public ClimberArmSubsystem(CommonLibFactory factory, PropertyFactory pf){
-        armMotor = factory.createCANSparkMax(3, this.getPrefix(), "ArmMotor");
+        armMotor = factory.createCANSparkMax(4, this.getPrefix(), "ArmMotor");
         pf.setPrefix(this);
         safeArmExtendedNumber = pf.createPersistentProperty("safelyExtendable", 10);
         safeArmRetractedNumber = pf.createPersistentProperty("safelyRetractable", -10);
