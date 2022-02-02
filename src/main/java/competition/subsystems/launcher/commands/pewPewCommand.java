@@ -16,7 +16,7 @@ public class pewPewCommand extends BaseCommand{
 
     @Inject
     public pewPewCommand(OperatorInterface oi, 
-    LauncherSubsystem launch, PropertyFactory pf){
+    LauncherSubsystem launch, PropertyFactory pf){ // TODO: flesh out constructor
         this.oi = oi;
         pf.setPrefix(this);
 
