@@ -52,4 +52,21 @@ public class CompetitionContract extends ElectricalContract {
                 return null;
         }
     }
+
+    @Override
+    public boolean isLauncherReady() {
+        return true;
+    }
+
+    //TODO: temporary channel numbers
+    @Override
+    public DeviceInfo shooterMotorLeader() {
+        return new DeviceInfo(10, true);
+    }
+
+    @Override
+    public DeviceInfo shooterMotorFollow() {
+        return new DeviceInfo(15, false);
+    }
+
 }

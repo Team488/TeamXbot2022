@@ -26,12 +26,14 @@ public class launcherMaintainerCommand extends BaseMaintainerCommand{
         log.info("Initializing");
     }
 
+    @Override
     protected void calibratedMachineControlAction(){
         
     }
 
-    protected double getHumanInput(){
-        return 0.0;
+    @Override
+    protected double getHumanInput() {
+        return 0;
     }
 
 }

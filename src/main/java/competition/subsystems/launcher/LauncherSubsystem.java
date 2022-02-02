@@ -8,34 +8,36 @@ import xbot.common.properties.PropertyFactory;
 
 import com.google.inject.Inject;
 
-import competition.electrical_contract.ElectricalContract;
+import competition.electrical_contract.CompetitionContract;
+
+    // BAREBONES  AND NONFUNCTIONAL SUBSYSTEM !!
 
 public class LauncherSubsystem extends BaseSetpointSubsystem{
 
     public DoubleProperty targetval;
     public DoubleProperty currentval;
 
-    //Questions need to answer:
-    // just a leader and follow or more/less motors?
     public XCANSparkMax leader;
     private XCANSparkMax follower;
-    ElectricalContract contract;
+    CompetitionContract contract;
 
     @Inject
     public LauncherSubsystem(CommonLibFactory factory, 
-    PropertyFactory pf, ElectricalContract contract){ // use competitioncontract? nah, prob not cause we testing rn
+    PropertyFactory pf, CompetitionContract contract){
         log.info("creating LauncherSubsystem");
         this.contract = contract;
 
-        // if(contract.isLauncherReady()){
-        //     // this.leader = factory.createCANSparkMax();
-        //     // this.follower = factory.createCANSparkMax();
+        if(contract.isLauncherReady()){
+            this.leader = factory.createCANSparkMax(contract.shooterMotorLeader().channel, this.getPrefix(),
+            "ShooterMaster");
+            this.follower = factory.createCANSparkMax(contract.shooterMotorFollow().channel, this.getPrefix(),
+            "ShooterFollower");
 
-        //     // this.leader.enableVoltageCompensation(12);
+            this.leader.enableVoltageCompensation(12);
 
-        //     leader.burnFlash();
-        //     follower.burnFlash();
-        // }
+            leader.burnFlash();
+            follower.burnFlash();
+        }
 
     }
     
@@ -47,17 +49,51 @@ public class LauncherSubsystem extends BaseSetpointSubsystem{
         return targetval.get();
     }
 
-    public void setPower(double power){
-        
+    public void setTargetValue(double value){
+        targetval.set(value);
     }
 
-    public void setTargetValue(double value){
+    public void setPower(double power){
+        if(contract.isLauncherReady()){
+            leader.set(power);
+        }
+    }
 
+    public double getPower(){
+        if(contract.isLauncherReady()){
+            return leader.get();
+        }
+        return 0;
+    }
+
+    public void stop(){
+        setPower(0);
+    }
+
+    public void periodic(){
+        if(contract.isLauncherReady()){
+            leader.periodic();
+            follower.periodic();
+        }
+    }
+
+    public void reset(){
+        setPower(0);
+        targetval.set(0);
+    }
+
+    // Incomplete
+    @Override
+    public boolean isMaintainerAtGoal(){ 
+        boolean basicAtGoal = super.isMaintainerAtGoal();
+        return basicAtGoal;
     }
     
+    @Override
     public boolean isCalibrated(){
         // tests? should have a statement where
         // we use IsMaintainerAtGoal() to check.
         return false; // TODO: TEMPORARY
     }
+
 }

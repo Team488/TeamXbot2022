@@ -20,6 +20,7 @@ public class pewPewCommand extends BaseCommand{
         this.oi = oi;
         pf.setPrefix(this);
 
+        //Temporary max power value
         this.maxPowerProp = pf.createEphemeralProperty("Max Power", 1.0);
 
         this.launch = launch;

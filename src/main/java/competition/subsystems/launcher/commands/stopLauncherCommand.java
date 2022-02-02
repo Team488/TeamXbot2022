@@ -1,8 +1,22 @@
 package competition.subsystems.launcher.commands;
 
+import com.google.inject.Inject;
+
+import competition.operator_interface.OperatorInterface;
+import competition.subsystems.launcher.LauncherSubsystem;
 import xbot.common.command.BaseCommand;
 
 public class stopLauncherCommand extends BaseCommand{
+    
+    final LauncherSubsystem launch;
+    final OperatorInterface oi;
+
+    @Inject
+    public stopLauncherCommand(OperatorInterface oi, LauncherSubsystem launch){
+        this.oi = oi;
+        this.launch = launch;
+        this.addRequirements(this.launch);
+    }
 
     @Override
     public void initialize() {
@@ -12,8 +26,7 @@ public class stopLauncherCommand extends BaseCommand{
 
     @Override
     public void execute() {
-        // TODO Auto-generated method stub
-        
+        launch.stop();
     }
     
 }

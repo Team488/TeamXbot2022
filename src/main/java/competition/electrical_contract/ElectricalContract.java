@@ -10,7 +10,10 @@ public abstract class ElectricalContract {
     
     public abstract DeviceInfo getSteeringNeo(SwerveInstance swerveInstance);
 
-    public boolean isLauncherReady(){
-    	return true;
-    }
+    public abstract boolean isLauncherReady();
+
+    public abstract DeviceInfo shooterMotorLeader();
+
+    public abstract DeviceInfo shooterMotorFollow();
+
 }
