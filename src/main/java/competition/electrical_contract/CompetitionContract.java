@@ -1,5 +1,6 @@
 package competition.electrical_contract;
 
+import competition.injection.swerve.SwerveInstance;
 import competition.subsystems.pose.PoseSubsystem;
 import xbot.common.injection.electrical_contract.DeviceInfo;
 
@@ -13,42 +14,42 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     @Override
-    public DeviceInfo getFrontLeftDriveNeo() {
-        return null;
+    public DeviceInfo getDriveNeo(SwerveInstance swerveInstance) {
+        switch (swerveInstance.getLabel()) {
+            case "FrontLeftDrive":
+                return null;
+
+            case "FrontRightDrive":
+                return null;
+
+            case "RearLeftDrive":
+                return null;
+
+            case "RearRightDrive":
+                return null;
+
+            default:
+                return null;
+        }
     }
 
     @Override
-    public DeviceInfo getFrontRightDriveNeo() {
-        return null;
-    }
+    public DeviceInfo getSteeringNeo(SwerveInstance swerveInstance) {
+        switch (swerveInstance.getLabel()) {
+            case "FrontLeftDrive":
+                return null;
 
-    @Override
-    public DeviceInfo getRearLeftDriveNeo() {
-        return null;
-    }
+            case "FrontRightDrive":
+                return null;
 
-    @Override
-    public DeviceInfo getRearRightDriveNeo() {
-        return null;
-    }
+            case "RearLeftDrive":
+                return null;
 
-    @Override
-    public DeviceInfo getFrontLeftSteeringNeo() {
-        return null;
-    }
+            case "RearRightDrive":
+                return null;
 
-    @Override
-    public DeviceInfo getFrontRightSteeringNeo() {
-        return null;
-    }
-
-    @Override
-    public DeviceInfo getRearLeftSteeringNeo() {
-        return null;
-    }
-
-    @Override
-    public DeviceInfo getRearRightSteeringNeo() {
-        return null;
+            default:
+                return null;
+        }
     }
 }
