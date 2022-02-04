@@ -1,5 +1,6 @@
 package competition.electrical_contract;
 
+import competition.injection.swerve.SwerveInstance;
 import competition.subsystems.pose.PoseSubsystem;
 import xbot.common.injection.electrical_contract.DeviceInfo;
 
@@ -13,42 +14,64 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     @Override
-    public DeviceInfo getFrontLeftDriveNeo() {
-        return null;
+    public DeviceInfo getDriveNeo(SwerveInstance swerveInstance) {
+        switch (swerveInstance.getLabel()) {
+            case "FrontLeftDrive":
+                return new DeviceInfo(26, false, simulationScalingValue);
+
+            case "FrontRightDrive":
+                return new DeviceInfo(27, false, simulationScalingValue);
+
+            case "RearLeftDrive":
+                return new DeviceInfo(28, false, simulationScalingValue);
+
+            case "RearRightDrive":
+                return new DeviceInfo(29, false, simulationScalingValue);
+
+            default:
+                return null;
+        }
     }
 
     @Override
-    public DeviceInfo getFrontRightDriveNeo() {
-        return null;
+    public DeviceInfo getSteeringNeo(SwerveInstance swerveInstance) {
+        double simulationScalingValue = 1.0;
+
+        switch (swerveInstance.getLabel()) {
+            case "FrontLeftDrive":
+                return new DeviceInfo(30, false, simulationScalingValue);
+
+            case "FrontRightDrive":
+                return new DeviceInfo(31, false, simulationScalingValue);
+
+            case "RearLeftDrive":
+                return new DeviceInfo(32, false, simulationScalingValue);
+
+            case "RearRightDrive":
+                return new DeviceInfo(33, false, simulationScalingValue);
+
+            default:
+                return null;
+        }
     }
 
     @Override
-    public DeviceInfo getRearLeftDriveNeo() {
-        return null;
-    }
+    public DeviceInfo getSteeringEncoder(SwerveInstance swerveInstance) {
+        switch (swerveInstance.getLabel()) {
+            case "FrontLeftDrive":
+                return new DeviceInfo(34, false);
 
-    @Override
-    public DeviceInfo getRearRightDriveNeo() {
-        return null;
-    }
+            case "FrontRightDrive":
+                return new DeviceInfo(35, false);
 
-    @Override
-    public DeviceInfo getFrontLeftSteeringNeo() {
-        return null;
-    }
+            case "RearLeftDrive":
+                return new DeviceInfo(36, false);
 
-    @Override
-    public DeviceInfo getFrontRightSteeringNeo() {
-        return null;
-    }
+            case "RearRightDrive":
+                return new DeviceInfo(37, false);
 
-    @Override
-    public DeviceInfo getRearLeftSteeringNeo() {
-        return null;
-    }
-
-    @Override
-    public DeviceInfo getRearRightSteeringNeo() {
-        return null;
+            default:
+                return null;
+        }
     }
 }

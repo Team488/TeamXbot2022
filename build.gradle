@@ -59,7 +59,6 @@ repositories {
         url "https://mvnrepository.com/artifact/com.google.inject/guice"
         url "https://first.wpi.edu/FRC/roborio/maven/release"
         url "https://devsite.ctr-electronics.com/maven/release/"
-        url "https://www.revrobotics.com/content/sw/max/sdk/maven/"
     }
     
     flatDir {
