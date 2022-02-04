@@ -44,9 +44,13 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         this.targetRotation = pf.createEphemeralProperty("TargetRotation", 0.0);
 
         if (electricalContract.isDriveReady()) {
-            this.motorController = factory.createCANSparkMax(electricalContract.getSteeringNeo(swerveInstance).channel, this.getPrefix(), "SteeringNeo");
+            this.motorController = factory.createCANSparkMax(electricalContract.getSteeringNeo(swerveInstance), this.getPrefix(), "SteeringNeo");
             this.encoder = factory.createAbsoluteEncoder(electricalContract.getSteeringEncoder(swerveInstance), this.getPrefix());
         }
+    }
+
+    public String getLabel() {
+        return this.label;
     }
 
     @Override
@@ -91,7 +95,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
 
     @Override
     public boolean isCalibrated() {
-        return false;
+        return true;
     }
 
     public XCANSparkMax getSparkMax() {
