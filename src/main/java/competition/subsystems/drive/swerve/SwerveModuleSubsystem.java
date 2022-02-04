@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import xbot.common.command.BaseSubsystem;
 import xbot.common.math.WrappedRotation2d;
+import xbot.common.math.XYPair;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.subsystems.pose.BasePoseSubsystem;
@@ -41,8 +42,9 @@ public class SwerveModuleSubsystem extends BaseSubsystem {
         this.driveSubsystem = driveSubsystem;
         this.steeringSubsystem = steeringSubsystem;
 
-        this.xOffsetInches = pf.createPersistentProperty("XOffsetInches", 0.0);
-        this.yOffsetInches = pf.createPersistentProperty("YOffsetInches", 0.0);
+        XYPair defaultModuleOffsets = getDefaultModuleOffsets(swerveInstance);
+        this.xOffsetInches = pf.createPersistentProperty("XOffsetInches", defaultModuleOffsets.x);
+        this.yOffsetInches = pf.createPersistentProperty("YOffsetInches", defaultModuleOffsets.y);
 
         this.moduleTranslation = new Translation2d(
             xOffsetInches.get() / BasePoseSubsystem.INCHES_IN_A_METER,
@@ -83,5 +85,20 @@ public class SwerveModuleSubsystem extends BaseSubsystem {
 
     public SwerveSteeringSubsystem getSteeringSubsystem() {
         return this.steeringSubsystem;
+    }
+
+    private XYPair getDefaultModuleOffsets(SwerveInstance swerveInstance) {
+        switch (swerveInstance.getLabel()) {
+            case "FrontLeft":
+                return new XYPair(-1, 1);
+            case "FrontRight":
+                return new XYPair(1, 1);
+            case "RearLeft":
+                return new XYPair(-1, -1);
+            case "RearRight":
+                return new XYPair(-1, 1);
+            default:
+                return new XYPair(0, 0);
+        }
     }
 }
