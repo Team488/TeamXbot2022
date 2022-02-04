@@ -60,8 +60,9 @@ repositories {
         url "https://first.wpi.edu/FRC/roborio/maven/release"
         url "https://devsite.ctr-electronics.com/maven/release/"
         url "https://www.revrobotics.com/content/sw/max/sdk/maven/"
-        url "https://maven.revrobotics.com/"
     }
+
+    maven { url "https://maven.revrobotics.com/"}
     
     flatDir {
        dirs 'SeriouslyCommonLib/build/libs'
