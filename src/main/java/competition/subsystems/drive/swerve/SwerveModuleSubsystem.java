@@ -6,8 +6,12 @@ import org.apache.log4j.Logger;
 
 import competition.electrical_contract.ElectricalContract;
 import competition.injection.swerve.SwerveInstance;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import xbot.common.command.BaseSubsystem;
+import xbot.common.math.WrappedRotation2d;
+import xbot.common.math.XYPair;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.subsystems.pose.BasePoseSubsystem;
@@ -26,6 +30,8 @@ public class SwerveModuleSubsystem extends BaseSubsystem {
 
     private final Translation2d moduleTranslation;
 
+    private SwerveModuleState targetState;
+
     @Inject
     public SwerveModuleSubsystem(SwerveInstance swerveInstance, SwerveDriveSubsystem driveSubsystem, SwerveSteeringSubsystem steeringSubsystem,
             ElectricalContract contract, PropertyFactory pf) {
@@ -36,12 +42,32 @@ public class SwerveModuleSubsystem extends BaseSubsystem {
         this.driveSubsystem = driveSubsystem;
         this.steeringSubsystem = steeringSubsystem;
 
-        this.xOffsetInches = pf.createPersistentProperty("XOffsetInches", 0.0);
-        this.yOffsetInches = pf.createPersistentProperty("YOffsetInches", 0.0);
+        XYPair defaultModuleOffsets = getDefaultModuleOffsets(swerveInstance);
+        this.xOffsetInches = pf.createPersistentProperty("XOffsetInches", defaultModuleOffsets.x);
+        this.yOffsetInches = pf.createPersistentProperty("YOffsetInches", defaultModuleOffsets.y);
 
         this.moduleTranslation = new Translation2d(
             xOffsetInches.get() / BasePoseSubsystem.INCHES_IN_A_METER,
             yOffsetInches.get() / BasePoseSubsystem.INCHES_IN_A_METER);
+
+        this.targetState = new SwerveModuleState();
+    }
+
+    public void setTargetState(SwerveModuleState swerveModuleState) {
+        this.targetState = SwerveModuleState.optimize(swerveModuleState, Rotation2d.fromDegrees(getSteeringSubsystem().getCurrentValue()));
+
+        this.getSteeringSubsystem().setTargetValue(new WrappedRotation2d(this.targetState.angle.getRadians()).getDegrees());
+        this.getDriveSubsystem().setTargetValue(this.targetState.speedMetersPerSecond / BasePoseSubsystem.INCHES_IN_A_METER);
+    }
+
+    public SwerveModuleState getCurrentState() {
+        return new SwerveModuleState(
+            this.getDriveSubsystem().getCurrentValue() * BasePoseSubsystem.INCHES_IN_A_METER,
+            Rotation2d.fromDegrees(this.getSteeringSubsystem().getCurrentValue()));
+    }
+
+    public SwerveModuleState getTargetState() {
+        return this.targetState;
     }
 
     @Override
@@ -59,5 +85,20 @@ public class SwerveModuleSubsystem extends BaseSubsystem {
 
     public SwerveSteeringSubsystem getSteeringSubsystem() {
         return this.steeringSubsystem;
+    }
+
+    private XYPair getDefaultModuleOffsets(SwerveInstance swerveInstance) {
+        switch (swerveInstance.getLabel()) {
+            case "FrontLeft":
+                return new XYPair(-1, 1);
+            case "FrontRight":
+                return new XYPair(1, 1);
+            case "RearLeft":
+                return new XYPair(-1, -1);
+            case "RearRight":
+                return new XYPair(-1, 1);
+            default:
+                return new XYPair(0, 0);
+        }
     }
 }

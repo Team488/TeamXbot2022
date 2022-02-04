@@ -9,4 +9,6 @@ public abstract class ElectricalContract {
     public abstract DeviceInfo getDriveNeo(SwerveInstance swerveInstance);
     
     public abstract DeviceInfo getSteeringNeo(SwerveInstance swerveInstance);
+
+    public abstract DeviceInfo getSteeringEncoder(SwerveInstance swerveInstance);
 }
