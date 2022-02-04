@@ -61,6 +61,7 @@ repositories {
         url "https://devsite.ctr-electronics.com/maven/release/"
         url "https://www.revrobotics.com/content/sw/max/sdk/maven/"
         url "http://maven.revrobotics.com/"
+        allowInsecureProtocol = true
     }
     
     flatDir {
