@@ -45,7 +45,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
 
         if (electricalContract.isDriveReady()) {
             this.motorController = factory.createCANSparkMax(electricalContract.getSteeringNeo(swerveInstance).channel, this.getPrefix(), "SteeringNeo");
-            this.encoder = factory.createAbsoluteEncoder(electricalContract.getSteeringEncoder(swerveInstance).channel);
+            this.encoder = factory.createAbsoluteEncoder(electricalContract.getSteeringEncoder(swerveInstance), this.getPrefix());
         }
     }
 
