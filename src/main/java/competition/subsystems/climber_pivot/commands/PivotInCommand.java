@@ -13,6 +13,7 @@ public class PivotInCommand extends BaseCommand{
     @Inject
     public PivotInCommand(ClimberPivotSubsystem pivot){
         this.pivot = pivot;
+        addRequirements(pivot);
     }
 
     @Override

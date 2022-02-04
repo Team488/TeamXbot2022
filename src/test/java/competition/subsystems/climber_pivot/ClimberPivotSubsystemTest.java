@@ -41,4 +41,9 @@ public class ClimberPivotSubsystemTest extends BaseCompetitionTest {
         assertTrue("Latch is pivoted out again", climberPivotSubsystem.pivot.getAdjusted());
 
     }
+    /*
+    private void checkIsPivoteOut(ClimberPivotSubsystem subsytem) {
+        assertTrue("Latch is pivoted out", subsytem.pivot.getAdjusted()); 
+    }*/
+    
 }
