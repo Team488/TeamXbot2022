@@ -63,6 +63,8 @@ repositories {
 
     maven { 
         url "https://maven.revrobotics.com/"
+        url "https://maven.revrobotics.com.netlify.app"
+        url "https://netlify.app.maven.revrobotics.com"
     }
     
     flatDir {
