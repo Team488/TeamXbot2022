@@ -59,9 +59,10 @@ repositories {
         url "https://mvnrepository.com/artifact/com.google.inject/guice"
         url "https://first.wpi.edu/FRC/roborio/maven/release"
         url "https://devsite.ctr-electronics.com/maven/release/"
-        url "https://frcmaven.wpi.edu/artifactory/release/"
-        //url https://frcmaven.wpi.edu/ui/native/rev-mvn-remote-cache/"
     }
+
+    //maven { url "https://frcmaven.wpi.edu/artifactory/release/"}
+    //maven { url "https://frcmaven.wpi.edu/rev-mvn-remote-cache/" }
     
     flatDir {
        dirs 'SeriouslyCommonLib/build/libs'
