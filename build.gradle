@@ -60,9 +60,6 @@ repositories {
         url "https://first.wpi.edu/FRC/roborio/maven/release"
         url "https://devsite.ctr-electronics.com/maven/release/"
     }
-
-    //maven { url "https://frcmaven.wpi.edu/artifactory/release/"}
-    //maven { url "https://frcmaven.wpi.edu/rev-mvn-remote-cache/" }
     
     flatDir {
        dirs 'SeriouslyCommonLib/build/libs'
