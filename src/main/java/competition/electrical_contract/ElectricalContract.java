@@ -21,4 +21,10 @@ public abstract class ElectricalContract {
     public abstract DeviceInfo getLeftClimberNeo();
 
     public abstract DeviceInfo getRightClimberNeo();
+
+    public abstract boolean isShooterReady();
+
+    public abstract DeviceInfo getPrimaryShooterNeo();
+
+    public abstract DeviceInfo getSecondaryShooterNeo();
 }

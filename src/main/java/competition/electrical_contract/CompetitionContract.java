@@ -101,4 +101,19 @@ public class CompetitionContract extends ElectricalContract {
     public DeviceInfo getRightClimberNeo() {
         return new DeviceInfo(22, false);
     }
+
+    @Override
+    public boolean isShooterReady() {
+        return false;
+    }
+
+    @Override
+    public DeviceInfo getPrimaryShooterNeo() {
+        return new DeviceInfo(32, false);
+    }
+
+    @Override
+    public DeviceInfo getSecondaryShooterNeo() {
+        return new DeviceInfo(34, false);
+    }
 }
