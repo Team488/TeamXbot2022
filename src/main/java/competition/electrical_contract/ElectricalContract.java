@@ -14,7 +14,7 @@ public abstract class ElectricalContract {
 
     public abstract boolean isLauncherReady();
 
-    public abstract DeviceInfo shooterMotorLeader();
+    public abstract DeviceInfo getShooterMotorLeader();
 
-    public abstract DeviceInfo shooterMotorFollow();
+    public abstract DeviceInfo getShooterMotorFollower();
 }

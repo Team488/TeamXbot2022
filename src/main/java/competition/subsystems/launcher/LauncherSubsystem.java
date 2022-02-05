@@ -1,14 +1,13 @@
 package competition.subsystems.launcher;
 
+import com.google.inject.Inject;
+
+import competition.electrical_contract.CompetitionContract;
 import xbot.common.command.BaseSetpointSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
-
-import com.google.inject.Inject;
-
-import competition.electrical_contract.CompetitionContract;
 
     // BAREBONES  AND NONFUNCTIONAL SUBSYSTEM !!
 
@@ -28,9 +27,9 @@ public class LauncherSubsystem extends BaseSetpointSubsystem{
         this.contract = contract;
 
         if(contract.isLauncherReady()){
-            this.leader = factory.createCANSparkMax(contract.shooterMotorLeader().channel, this.getPrefix(),
+            this.leader = factory.createCANSparkMax(contract.getShooterMotorLeader(), this.getPrefix(),
             "ShooterMaster");
-            this.follower = factory.createCANSparkMax(contract.shooterMotorFollow().channel, this.getPrefix(),
+            this.follower = factory.createCANSparkMax(contract.getShooterMotorFollower(), this.getPrefix(),
             "ShooterFollower");
 
             this.leader.enableVoltageCompensation(12);
@@ -39,6 +38,7 @@ public class LauncherSubsystem extends BaseSetpointSubsystem{
             follower.burnFlash();
         }
 
+        this.register();
     }
     
     public double getCurrentValue(){

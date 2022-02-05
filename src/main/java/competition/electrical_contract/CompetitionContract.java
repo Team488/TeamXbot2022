@@ -84,12 +84,12 @@ public class CompetitionContract extends ElectricalContract {
 
     //TODO: temporary channel numbers
     @Override
-    public DeviceInfo shooterMotorLeader() {
+    public DeviceInfo getShooterMotorLeader() {
         return new DeviceInfo(10, true);
     }
 
     @Override
-    public DeviceInfo shooterMotorFollow() {
+    public DeviceInfo getShooterMotorFollower() {
         return new DeviceInfo(15, false);
     }
 

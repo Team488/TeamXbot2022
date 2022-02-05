@@ -5,7 +5,6 @@ import competition.subsystems.launcher.LauncherSubsystem;
 import xbot.common.command.BaseMaintainerCommand;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.properties.PropertyFactory;
-import competition.subsystems.launcher.LauncherSubsystem;
 
 public class LauncherMaintainerCommand extends BaseMaintainerCommand{
     
