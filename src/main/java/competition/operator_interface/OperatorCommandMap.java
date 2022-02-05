@@ -3,6 +3,7 @@ package competition.operator_interface;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import competition.subsystems.drive.commands.SimpleCrabDriveFromGamepadCommand;
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 
 /**
@@ -19,5 +20,10 @@ public class OperatorCommandMap {
     {
         resetHeading.setHeadingToApply(90);
         operatorInterface.gamepad.getifAvailable(1).whenPressed(resetHeading);
+    }
+
+    @Inject
+    public void setupDriveCommands(OperatorInterface operatorInterface, SimpleCrabDriveFromGamepadCommand crabDrive) {
+        operatorInterface.gamepad.getifAvailable(4).whenPressed(crabDrive);
     }
 }

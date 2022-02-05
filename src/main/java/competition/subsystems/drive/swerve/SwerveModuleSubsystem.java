@@ -87,6 +87,18 @@ public class SwerveModuleSubsystem extends BaseSubsystem {
         return this.steeringSubsystem;
     }
 
+    /***
+     * Very basic drive method - bypasses all PID to directly control the motors.
+     * Ensure that your command has required control of all relevant subsystems before doing this,
+     * or you will be fighting the maintainers.
+     * @param drivePower -1 to 1 value for nodule wheel power
+     * @param steeringPower -1 to 1 value for module rotation power
+     */
+    public void setPowers(double drivePower, double steeringPower) {
+        getDriveSubsystem().setPower(drivePower);
+        getSteeringSubsystem().setPower(steeringPower);
+    }
+
     private XYPair getDefaultModuleOffsets(SwerveInstance swerveInstance) {
         switch (swerveInstance.getLabel()) {
             case "FrontLeftDrive":

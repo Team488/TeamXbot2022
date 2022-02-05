@@ -110,6 +110,18 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         this.getRearRightSwerveModuleSubsystem().setTargetState(moduleStates[3]);
     }
 
+    /***
+     * Give the same power to all steering modules, and the another power to all the drive wheels.
+     * @param drivePower -1 to 1 power to apply to the drive wheels.
+     * @param steeringPower -1 to 1 power to apply to the steering modules.
+     */
+    public void crabDrive(double drivePower, double steeringPower) {
+        this.getFrontLeftSwerveModuleSubsystem().setPowers(drivePower, steeringPower);
+        this.getFrontRightSwerveModuleSubsystem().setPowers(drivePower, steeringPower);
+        this.getRearLeftSwerveModuleSubsystem().setPowers(drivePower, steeringPower);
+        this.getRearRightSwerveModuleSubsystem().setPowers(drivePower, steeringPower);
+    }
+
     @Override
     public double getLeftTotalDistance() {
         return 0;
