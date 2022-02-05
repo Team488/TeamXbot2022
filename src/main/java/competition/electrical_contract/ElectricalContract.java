@@ -11,4 +11,14 @@ public abstract class ElectricalContract {
     public abstract DeviceInfo getSteeringNeo(SwerveInstance swerveInstance);
 
     public abstract DeviceInfo getSteeringEncoder(SwerveInstance swerveInstance);
+
+    public abstract boolean isIntakeReady();
+
+    public abstract DeviceInfo getIntakeNeo();
+
+    public abstract boolean isClimberReady();
+
+    public abstract DeviceInfo getLeftClimberNeo();
+
+    public abstract DeviceInfo getRightClimberNeo();
 }
