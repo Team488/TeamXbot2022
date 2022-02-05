@@ -11,6 +11,7 @@ public class LatchArmCommand extends BaseCommand {
     @Inject
     public LatchArmCommand(LatchSubsystem latch){
         this.latch = latch;
+        addRequirements(latch);
     }
 
     @Override

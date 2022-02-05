@@ -3,6 +3,7 @@ package competition.subsystems.latch.commands;
 import com.google.inject.Inject;
 import competition.subsystems.latch.LatchSubsystem;
 import xbot.common.command.BaseCommand;
+import xbot.common.logic.Latch;
 
 public class LatchReleaseCommand extends BaseCommand {
 
@@ -11,6 +12,7 @@ public class LatchReleaseCommand extends BaseCommand {
     @Inject
     public LatchReleaseCommand(LatchSubsystem release){
         this.release = release;
+        addRequirements(release);
     }
 
     @Override

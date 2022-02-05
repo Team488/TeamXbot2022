@@ -11,15 +11,18 @@ import competition.injection.swerve.FrontRightDrive;
 import competition.injection.swerve.RearLeftDrive;
 import competition.injection.swerve.RearRightDrive;
 import competition.subsystems.drive.swerve.SwerveModuleSubsystem;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
-import xbot.common.math.PIDFactory;
 import xbot.common.math.PIDManager;
 import xbot.common.math.XYPair;
+import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.properties.XPropertyManager;
 import xbot.common.subsystems.drive.BaseDriveSubsystem;
+import xbot.common.subsystems.pose.BasePoseSubsystem;
 
 @Singleton
 public class DriveSubsystem extends BaseDriveSubsystem {
@@ -30,13 +33,12 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     private final SwerveModuleSubsystem rearLeftSwerveModuleSubsystem;
     private final SwerveModuleSubsystem rearRightSwerveModuleSubsystem;
 
-    private final PIDManager positionPid;
-    private final PIDManager rotationPid;
+    private final DoubleProperty maxTargetSpeed;
 
     private final SwerveDriveKinematics swerveDriveKinematics;
 
     @Inject
-    public DriveSubsystem(CommonLibFactory factory, XPropertyManager propManager, ElectricalContract contract, PropertyFactory pf, PIDFactory pidf,
+    public DriveSubsystem(CommonLibFactory factory, XPropertyManager propManager, ElectricalContract contract, PropertyFactory pf,
             @FrontLeftDrive SwerveModuleSubsystem frontLeftSwerve, @FrontRightDrive SwerveModuleSubsystem frontRightSwerve,
             @RearLeftDrive SwerveModuleSubsystem rearLeftSwerve, @RearRightDrive SwerveModuleSubsystem rearRightSwerve) {
         log.info("Creating DriveSubsystem");
@@ -54,18 +56,17 @@ public class DriveSubsystem extends BaseDriveSubsystem {
             this.rearRightSwerveModuleSubsystem.getModuleTranslation()
         );
 
-        positionPid = pidf.createPIDManager(getPrefix() + "PositionPID");
-        rotationPid = pidf.createPIDManager(getPrefix() + "RotationPID");
+        this.maxTargetSpeed = pf.createPersistentProperty("MaxTargetSpeedInchesPerSecond", 1.0);
     }
 
     @Override
     public PIDManager getPositionalPid() {
-        return positionPid;
+        return null;
     }
 
     @Override
     public PIDManager getRotateToHeadingPid() {
-        return rotationPid;
+        return null;
     }
 
     @Override
@@ -73,9 +74,40 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         return null;
     }
 
+    /**
+     * Set the target movement speed and rotation, rotating around the center of the robot.
+     * @param translate The translation velocity.
+     * @param rotate The rotation velocity.
+     */
     @Override
     public void move(XYPair translate, double rotate) {
-        swerveDriveKinematics.toSwerveModuleStates(new ChassisSpeeds(translate.x, translate.y, rotate));
+        move(translate, rotate, new XYPair());
+    }
+
+    /**
+     * Set the target movement speed and rotation, with an arbitrary center of rotation.
+     * @param translate The translation velocity.
+     * @param rotate The rotation velocity.
+     * @param centerOfRotation The center of rotation.
+     */
+    public void move(XYPair translate, double rotate, XYPair centerOfRotation) {
+        double targetX = translate.x * maxTargetSpeed.get() * BasePoseSubsystem.INCHES_IN_A_METER;
+        double targetY = translate.y * maxTargetSpeed.get() * BasePoseSubsystem.INCHES_IN_A_METER;
+        double targetRotation = Math.toRadians(rotate);
+
+        ChassisSpeeds targetMotion = new ChassisSpeeds(targetX, targetY, targetRotation);
+
+        Translation2d centerOfRotationTranslation = new Translation2d(
+            centerOfRotation.x * BasePoseSubsystem.INCHES_IN_A_METER,
+            centerOfRotation.y * BasePoseSubsystem.INCHES_IN_A_METER);
+        SwerveModuleState[] moduleStates = swerveDriveKinematics.toSwerveModuleStates(targetMotion, centerOfRotationTranslation);
+
+        SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, maxTargetSpeed.get() * BasePoseSubsystem.INCHES_IN_A_METER);
+
+        this.getFrontLeftSwerveModuleSubsystem().setTargetState(moduleStates[0]);
+        this.getFrontRightSwerveModuleSubsystem().setTargetState(moduleStates[1]);
+        this.getRearLeftSwerveModuleSubsystem().setTargetState(moduleStates[2]);
+        this.getRearRightSwerveModuleSubsystem().setTargetState(moduleStates[3]);
     }
 
     @Override

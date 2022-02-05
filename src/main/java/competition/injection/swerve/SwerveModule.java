@@ -4,6 +4,8 @@ import java.lang.annotation.Annotation;
 
 import com.google.inject.PrivateModule;
 
+import competition.subsystems.drive.commands.SwerveDriveMaintainerCommand;
+import competition.subsystems.drive.commands.SwerveSteeringMaintainerCommand;
 import competition.subsystems.drive.swerve.SwerveDriveSubsystem;
 import competition.subsystems.drive.swerve.SwerveModuleSubsystem;
 import competition.subsystems.drive.swerve.SwerveSteeringSubsystem;
@@ -17,12 +19,21 @@ public class SwerveModule extends PrivateModule {
     }
 
     @Override protected void configure() {
+        bind(SwerveInstance.class).toInstance(new SwerveInstance(annotation.getSimpleName()));
+
         bind(SwerveModuleSubsystem.class).annotatedWith(annotation).to(SwerveModuleSubsystem.class);
         expose(SwerveModuleSubsystem.class).annotatedWith(annotation);
 
-        // bind individual components
-        bind(SwerveInstance.class).toInstance(new SwerveInstance(annotation.getSimpleName()));
-        bind(SwerveDriveSubsystem.class);
-        bind(SwerveSteeringSubsystem.class);
+        bind(SwerveDriveSubsystem.class).annotatedWith(annotation).to(SwerveDriveSubsystem.class);
+        expose(SwerveDriveSubsystem.class).annotatedWith(annotation);
+        
+        bind(SwerveDriveMaintainerCommand.class).annotatedWith(annotation).to(SwerveDriveMaintainerCommand.class);
+        expose(SwerveDriveMaintainerCommand.class).annotatedWith(annotation);
+
+        bind(SwerveSteeringSubsystem.class).annotatedWith(annotation).to(SwerveSteeringSubsystem.class);
+        expose(SwerveSteeringSubsystem.class).annotatedWith(annotation);
+        
+        bind(SwerveSteeringMaintainerCommand.class).annotatedWith(annotation).to(SwerveSteeringMaintainerCommand.class);
+        expose(SwerveSteeringMaintainerCommand.class).annotatedWith(annotation);
     }
 }

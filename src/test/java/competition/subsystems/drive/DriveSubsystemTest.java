@@ -48,9 +48,9 @@ public class DriveSubsystemTest extends BaseCompetitionTest {
         assertSame(
             driveSubsystem.getFrontLeftSwerveModuleSubsystem().getSteeringSubsystem(),
             anotheDriveSubsystem.getFrontLeftSwerveModuleSubsystem().getSteeringSubsystem());
-            assertSame(
-                driveSubsystem.getFrontLeftSwerveModuleSubsystem().getDriveSubsystem(),
-                anotheDriveSubsystem.getFrontLeftSwerveModuleSubsystem().getDriveSubsystem());
+        assertSame(
+            driveSubsystem.getFrontLeftSwerveModuleSubsystem().getDriveSubsystem(),
+            anotheDriveSubsystem.getFrontLeftSwerveModuleSubsystem().getDriveSubsystem());
     }
 
 }
