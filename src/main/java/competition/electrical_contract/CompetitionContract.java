@@ -17,16 +17,16 @@ public class CompetitionContract extends ElectricalContract {
     public DeviceInfo getDriveNeo(SwerveInstance swerveInstance) {
         switch (swerveInstance.getLabel()) {
             case "FrontLeftDrive":
-                return new DeviceInfo(1, false, simulationScalingValue);
+                return new DeviceInfo(22, false, simulationScalingValue);
 
             case "FrontRightDrive":
-                return new DeviceInfo(2, false, simulationScalingValue);
+                return new DeviceInfo(30, false, simulationScalingValue);
 
             case "RearLeftDrive":
-                return new DeviceInfo(3, false, simulationScalingValue);
+                return new DeviceInfo(20, false, simulationScalingValue);
 
             case "RearRightDrive":
-                return new DeviceInfo(4, false, simulationScalingValue);
+                return new DeviceInfo(38, false, simulationScalingValue);
 
             default:
                 return null;
@@ -39,16 +39,16 @@ public class CompetitionContract extends ElectricalContract {
 
         switch (swerveInstance.getLabel()) {
             case "FrontLeftDrive":
-                return new DeviceInfo(11, false, simulationScalingValue);
+                return new DeviceInfo(23, false, simulationScalingValue);
 
             case "FrontRightDrive":
-                return new DeviceInfo(12, false, simulationScalingValue);
+                return new DeviceInfo(31, false, simulationScalingValue);
 
             case "RearLeftDrive":
-                return new DeviceInfo(13, false, simulationScalingValue);
+                return new DeviceInfo(21, false, simulationScalingValue);
 
             case "RearRightDrive":
-                return new DeviceInfo(14, false, simulationScalingValue);
+                return new DeviceInfo(39, false, simulationScalingValue);
 
             default:
                 return null;
@@ -61,19 +61,59 @@ public class CompetitionContract extends ElectricalContract {
 
         switch (swerveInstance.getLabel()) {
             case "FrontLeftDrive":
-                return new DeviceInfo(21, false, simulationScalingValue);
+                return new DeviceInfo(3, false, simulationScalingValue);
 
             case "FrontRightDrive":
-                return new DeviceInfo(22, false, simulationScalingValue);
+                return new DeviceInfo(1, false, simulationScalingValue);
 
             case "RearLeftDrive":
-                return new DeviceInfo(23, false, simulationScalingValue);
+                return new DeviceInfo(4, false, simulationScalingValue);
 
             case "RearRightDrive":
-                return new DeviceInfo(24, false, simulationScalingValue);
+                return new DeviceInfo(2, false, simulationScalingValue);
 
             default:
                 return null;
         }
+    }
+
+    @Override
+    public boolean isIntakeReady() {
+        return false;
+    }
+
+    @Override
+    public DeviceInfo getIntakeNeo() {
+        return new DeviceInfo(26, false);
+    }
+
+    @Override
+    public boolean isClimberReady() {
+        return false;
+    }
+
+    @Override
+    public DeviceInfo getLeftClimberNeo() {
+        return new DeviceInfo(37, false);
+    }
+
+    @Override
+    public DeviceInfo getRightClimberNeo() {
+        return new DeviceInfo(22, false);
+    }
+
+    @Override
+    public boolean isShooterReady() {
+        return false;
+    }
+
+    @Override
+    public DeviceInfo getPrimaryShooterNeo() {
+        return new DeviceInfo(32, false);
+    }
+
+    @Override
+    public DeviceInfo getSecondaryShooterNeo() {
+        return new DeviceInfo(34, false);
     }
 }
