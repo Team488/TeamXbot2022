@@ -57,7 +57,7 @@ public class SwerveModuleSubsystem extends BaseSubsystem {
         this.targetState = SwerveModuleState.optimize(swerveModuleState, Rotation2d.fromDegrees(getSteeringSubsystem().getCurrentValue()));
 
         this.getSteeringSubsystem().setTargetValue(new WrappedRotation2d(this.targetState.angle.getRadians()).getDegrees());
-        this.getDriveSubsystem().setTargetValue(this.targetState.speedMetersPerSecond / BasePoseSubsystem.INCHES_IN_A_METER);
+        this.getDriveSubsystem().setTargetValue(this.targetState.speedMetersPerSecond / BasePoseSubsystem.INCHES_IN_A_METER*100);
     }
 
     public SwerveModuleState getCurrentState() {
@@ -102,13 +102,13 @@ public class SwerveModuleSubsystem extends BaseSubsystem {
     private XYPair getDefaultModuleOffsets(SwerveInstance swerveInstance) {
         switch (swerveInstance.getLabel()) {
             case "FrontLeftDrive":
-                return new XYPair(-1, 1);
+                return new XYPair(-15, 15);
             case "FrontRightDrive":
-                return new XYPair(1, 1);
+                return new XYPair(15, 15);
             case "RearLeftDrive":
-                return new XYPair(-1, -1);
+                return new XYPair(-15, -15);
             case "RearRightDrive":
-                return new XYPair(-1, 1);
+                return new XYPair(-15, 15);
             default:
                 return new XYPair(0, 0);
         }

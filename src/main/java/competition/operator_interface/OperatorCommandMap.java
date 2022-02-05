@@ -43,6 +43,7 @@ public class OperatorCommandMap {
         operatorInterface.gamepad.getifAvailable(3).whenPressed(goToNextActiveSwerveModule);
     }
 
+    @Inject
     public void setupGeneralSwerveCommands(
         OperatorInterface operatorInterface,
         @FrontLeftDrive SwerveSteeringMaintainerCommand maintainSteeringFrontLeft,

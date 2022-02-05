@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.math.MathUtils;
 import xbot.common.math.PIDManager;
 import xbot.common.math.XYPair;
 import xbot.common.properties.DoubleProperty;
@@ -35,6 +36,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     private final SwerveModuleSubsystem rearRightSwerveModuleSubsystem;
 
     private final DoubleProperty maxTargetSpeed;
+    private final DoubleProperty maxTargetTurnRate;
 
     private final SwerveDriveKinematics swerveDriveKinematics;
     private final StringProperty activeModuleProp;
@@ -73,6 +75,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         );
 
         this.maxTargetSpeed = pf.createPersistentProperty("MaxTargetSpeedInchesPerSecond", 1.0);
+        this.maxTargetTurnRate = pf.createPersistentProperty("MaxTargetTurnRate", MathUtils.Tau);
         this.activeModuleProp = pf.createEphemeralProperty("ActiveModule", activeModule.toString());
     }
 
@@ -110,7 +113,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     public void move(XYPair translate, double rotate, XYPair centerOfRotation) {
         double targetX = translate.x * maxTargetSpeed.get() * BasePoseSubsystem.INCHES_IN_A_METER;
         double targetY = translate.y * maxTargetSpeed.get() * BasePoseSubsystem.INCHES_IN_A_METER;
-        double targetRotation = Math.toRadians(rotate);
+        double targetRotation = rotate * maxTargetTurnRate.get();
 
         ChassisSpeeds targetMotion = new ChassisSpeeds(targetX, targetY, targetRotation);
 

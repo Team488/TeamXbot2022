@@ -27,6 +27,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
 
     private final DoubleProperty powerScale;
     private final DoubleProperty targetRotation;
+    private final DoubleProperty currentModuleHeading;
 
     private XCANSparkMax motorController;
     private XAbsoluteEncoder encoder;
@@ -42,11 +43,14 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         this.pid = pidf.createPIDManager(this.getPrefix() + "PID", 0.1, 0.0, 0.0, -1.0, 1.0);
         this.powerScale = pf.createPersistentProperty("PowerScaleFactor", 0.1);
         this.targetRotation = pf.createEphemeralProperty("TargetRotation", 0.0);
+        this.currentModuleHeading = pf.createEphemeralProperty("CurrentModuleHeading", 0.0);
 
         if (electricalContract.isDriveReady()) {
             this.motorController = factory.createCANSparkMax(electricalContract.getSteeringNeo(swerveInstance), this.getPrefix(), "SteeringNeo");
             this.encoder = factory.createAbsoluteEncoder(electricalContract.getSteeringEncoder(swerveInstance), this.getPrefix());
         }
+
+        this.register();
     }
 
     public String getLabel() {
@@ -119,12 +123,17 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         double errorInDegrees = WrappedRotation2d.fromDegrees(getTargetValue() - getCurrentValue()).getDegrees();
                 
         // Now we feed it into a PID system, where the goal is to have 0 error.
-        double rotationalPower = this.pid.calculate(0, errorInDegrees);
+        double rotationalPower = -this.pid.calculate(0, errorInDegrees);
         
         return rotationalPower * this.powerScale.get();
     }
 
     public void resetPid() {
         this.pid.reset();
+    }
+
+    @Override
+    public void periodic() {
+        currentModuleHeading.set(getCurrentValue());
     }
 }

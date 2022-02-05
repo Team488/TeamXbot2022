@@ -9,8 +9,8 @@ import competition.injection.swerve.RearLeftDrive;
 import competition.injection.swerve.RearRightDrive;
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.drive.commands.SwerveDriveMaintainerCommand;
+import competition.subsystems.drive.commands.SwerveDriveWithJoysticksCommand;
 import competition.subsystems.drive.commands.SwerveSteeringMaintainerCommand;
-import competition.subsystems.drive.commands.TankDriveWithJoysticksCommand;
 import competition.subsystems.drive.swerve.SwerveDriveSubsystem;
 import competition.subsystems.drive.swerve.SwerveSteeringSubsystem;
 
@@ -19,7 +19,7 @@ public class SubsystemDefaultCommandMap {
     // For setting the default commands on subsystems
 
     @Inject
-    public void setupDriveSubsystem(DriveSubsystem driveSubsystem, TankDriveWithJoysticksCommand command) {
+    public void setupDriveSubsystem(DriveSubsystem driveSubsystem, SwerveDriveWithJoysticksCommand command) {
         driveSubsystem.setDefaultCommand(command);
     }
 
