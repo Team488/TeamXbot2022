@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 
 import xbot.common.command.BaseSetpointSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
+import xbot.common.injection.electrical_contract.DeviceInfo;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.math.MathUtils;
 
@@ -14,7 +15,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem{
 
     @Inject
     public ClimberArmSubsystem(CommonLibFactory factory){
-        armMotor = factory.createCANSparkMax(3, this.getPrefix(), "ArmMotor");
+        armMotor = factory.createCANSparkMax(new DeviceInfo(3), this.getPrefix(), "ArmMotor");
     }
 
     private void setMotorPower(double power, boolean isSafe){

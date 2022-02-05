@@ -10,23 +10,23 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public boolean isDriveReady() {
-        return false;
+        return true;
     }
 
     @Override
     public DeviceInfo getDriveNeo(SwerveInstance swerveInstance) {
         switch (swerveInstance.getLabel()) {
             case "FrontLeftDrive":
-                return new DeviceInfo(26, false, simulationScalingValue);
+                return new DeviceInfo(1, false, simulationScalingValue);
 
             case "FrontRightDrive":
-                return new DeviceInfo(27, false, simulationScalingValue);
+                return new DeviceInfo(2, false, simulationScalingValue);
 
             case "RearLeftDrive":
-                return new DeviceInfo(28, false, simulationScalingValue);
+                return new DeviceInfo(3, false, simulationScalingValue);
 
             case "RearRightDrive":
-                return new DeviceInfo(29, false, simulationScalingValue);
+                return new DeviceInfo(4, false, simulationScalingValue);
 
             default:
                 return null;
@@ -39,16 +39,16 @@ public class CompetitionContract extends ElectricalContract {
 
         switch (swerveInstance.getLabel()) {
             case "FrontLeftDrive":
-                return new DeviceInfo(30, false, simulationScalingValue);
+                return new DeviceInfo(11, false, simulationScalingValue);
 
             case "FrontRightDrive":
-                return new DeviceInfo(31, false, simulationScalingValue);
+                return new DeviceInfo(12, false, simulationScalingValue);
 
             case "RearLeftDrive":
-                return new DeviceInfo(32, false, simulationScalingValue);
+                return new DeviceInfo(13, false, simulationScalingValue);
 
             case "RearRightDrive":
-                return new DeviceInfo(33, false, simulationScalingValue);
+                return new DeviceInfo(14, false, simulationScalingValue);
 
             default:
                 return null;
@@ -57,18 +57,20 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public DeviceInfo getSteeringEncoder(SwerveInstance swerveInstance) {
+        double simulationScalingValue = 1.0;
+
         switch (swerveInstance.getLabel()) {
             case "FrontLeftDrive":
-                return new DeviceInfo(34, false);
+                return new DeviceInfo(21, false, simulationScalingValue);
 
             case "FrontRightDrive":
-                return new DeviceInfo(35, false);
+                return new DeviceInfo(22, false, simulationScalingValue);
 
             case "RearLeftDrive":
-                return new DeviceInfo(36, false);
+                return new DeviceInfo(23, false, simulationScalingValue);
 
             case "RearRightDrive":
-                return new DeviceInfo(37, false);
+                return new DeviceInfo(24, false, simulationScalingValue);
 
             default:
                 return null;

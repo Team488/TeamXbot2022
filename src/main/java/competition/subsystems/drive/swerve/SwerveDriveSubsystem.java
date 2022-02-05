@@ -42,8 +42,12 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
         this.targetVelocity = pf.createEphemeralProperty("TargetVelocity", 0.0);
 
         if (electricalContract.isDriveReady()) {
-            this.motorController = factory.createCANSparkMax(electricalContract.getDriveNeo(swerveInstance).channel, this.getPrefix(), "DriveNeo");
+            this.motorController = factory.createCANSparkMax(electricalContract.getDriveNeo(swerveInstance), this.getPrefix(), "DriveNeo");
         }
+    }
+
+    public String getLabel() {
+        return this.label;
     }
 
     @Override
@@ -88,7 +92,7 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
 
     @Override
     public boolean isCalibrated() {
-        return false;
+        return true;
     }
     
 

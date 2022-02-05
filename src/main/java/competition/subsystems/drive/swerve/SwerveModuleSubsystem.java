@@ -89,13 +89,13 @@ public class SwerveModuleSubsystem extends BaseSubsystem {
 
     private XYPair getDefaultModuleOffsets(SwerveInstance swerveInstance) {
         switch (swerveInstance.getLabel()) {
-            case "FrontLeft":
+            case "FrontLeftDrive":
                 return new XYPair(-1, 1);
-            case "FrontRight":
+            case "FrontRightDrive":
                 return new XYPair(1, 1);
-            case "RearLeft":
+            case "RearLeftDrive":
                 return new XYPair(-1, -1);
-            case "RearRight":
+            case "RearRightDrive":
                 return new XYPair(-1, 1);
             default:
                 return new XYPair(0, 0);
