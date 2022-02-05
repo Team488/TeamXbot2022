@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 
 import competition.operator_interface.OperatorInterface;
 import competition.subsystems.drive.DriveSubsystem;
+import competition.subsystems.pose.PoseSubsystem;
 import xbot.common.command.BaseCommand;
 import xbot.common.math.MathUtils;
 import xbot.common.math.XYPair;
@@ -11,12 +12,14 @@ import xbot.common.math.XYPair;
 public class SwerveDriveWithJoysticksCommand extends BaseCommand {
 
     DriveSubsystem drive;
+    PoseSubsystem pose;
     OperatorInterface oi;
 
     @Inject
-    public SwerveDriveWithJoysticksCommand(DriveSubsystem drive, OperatorInterface oi) {
+    public SwerveDriveWithJoysticksCommand(DriveSubsystem drive, PoseSubsystem pose, OperatorInterface oi) {
         this.drive = drive;
         this.oi = oi;
+        this.pose = pose;
         this.addRequirements(drive);
     }
 
@@ -31,6 +34,8 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
         double yPower = MathUtils.deadband(oi.gamepad.getLeftStickY(), 0.15, (a) -> a);
         double rotatePower = MathUtils.deadband(oi.gamepad.getRightStickX(), 0.15, (a) -> a);
 
-        drive.move(new XYPair(xPower, yPower), rotatePower);
+        // Get the current heading, use that for field-oriented operations
+        XYPair translationIntent = new XYPair(xPower, yPower);
+        drive.fieldOrientedDrive(translationIntent, rotatePower, pose.getCurrentHeading().getDegrees(), false);
     }
 }

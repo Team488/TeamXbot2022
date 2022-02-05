@@ -53,16 +53,25 @@ public class SwerveModuleSubsystem extends BaseSubsystem {
         this.targetState = new SwerveModuleState();
     }
 
+    /**
+     * Sets the target steering angle and drive power for this module, in METRIC UNITS. 
+     * @param swerveModuleState Metric swerve module state
+     */
     public void setTargetState(SwerveModuleState swerveModuleState) {
         this.targetState = SwerveModuleState.optimize(swerveModuleState, Rotation2d.fromDegrees(getSteeringSubsystem().getCurrentValue()));
 
         this.getSteeringSubsystem().setTargetValue(new WrappedRotation2d(this.targetState.angle.getRadians()).getDegrees());
-        this.getDriveSubsystem().setTargetValue(this.targetState.speedMetersPerSecond / BasePoseSubsystem.INCHES_IN_A_METER*100);
+        // The kinetmatics library does everything in metric, so we need to transform that back to US Customary Units
+        this.getDriveSubsystem().setTargetValue(this.targetState.speedMetersPerSecond * BasePoseSubsystem.INCHES_IN_A_METER);
     }
 
+    /**
+     * Gets the current state of the module, in METRIC UNITS.
+     * @return Metric swerve module state
+     */
     public SwerveModuleState getCurrentState() {
         return new SwerveModuleState(
-            this.getDriveSubsystem().getCurrentValue() * BasePoseSubsystem.INCHES_IN_A_METER,
+            this.getDriveSubsystem().getCurrentValue() / BasePoseSubsystem.INCHES_IN_A_METER,
             Rotation2d.fromDegrees(this.getSteeringSubsystem().getCurrentValue()));
     }
 

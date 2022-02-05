@@ -40,6 +40,10 @@ public class DriveSubsystem extends BaseDriveSubsystem {
 
     private final SwerveDriveKinematics swerveDriveKinematics;
     private final StringProperty activeModuleProp;
+    
+    private final DoubleProperty translationXTargetMPS;
+    private final DoubleProperty translationYTargetMPS;
+    private final DoubleProperty rotationTargetRadians;
 
     public enum SwerveModuleLocation {
         FRONT_LEFT,
@@ -74,9 +78,16 @@ public class DriveSubsystem extends BaseDriveSubsystem {
             this.rearRightSwerveModuleSubsystem.getModuleTranslation()
         );
 
-        this.maxTargetSpeed = pf.createPersistentProperty("MaxTargetSpeedInchesPerSecond", 1.0);
+        this.maxTargetSpeed = pf.createPersistentProperty("MaxTargetSpeedInchesPerSecond", 120.0);
         this.maxTargetTurnRate = pf.createPersistentProperty("MaxTargetTurnRate", MathUtils.Tau);
         this.activeModuleProp = pf.createEphemeralProperty("ActiveModule", activeModule.toString());
+        this.translationXTargetMPS = pf.createEphemeralProperty("TranslationXMetersPerSecond", 0.0);
+        this.translationYTargetMPS = pf.createEphemeralProperty("TranslationYMetersPerSecond", 0.0);
+        this.rotationTargetRadians = pf.createEphemeralProperty("RotationTargetRadians", 0.0);
+    }
+
+    public double getMaxTargetSpeedInchesPerSecond() {
+        return maxTargetSpeed.get();
     }
 
     @Override
@@ -111,18 +122,23 @@ public class DriveSubsystem extends BaseDriveSubsystem {
      * @param centerOfRotation The center of rotation.
      */
     public void move(XYPair translate, double rotate, XYPair centerOfRotation) {
-        double targetX = translate.x * maxTargetSpeed.get() * BasePoseSubsystem.INCHES_IN_A_METER;
-        double targetY = translate.y * maxTargetSpeed.get() * BasePoseSubsystem.INCHES_IN_A_METER;
-        double targetRotation = rotate * maxTargetTurnRate.get();
+        double targetXmetersPerSecond = translate.x * maxTargetSpeed.get() / BasePoseSubsystem.INCHES_IN_A_METER;
+        double targetYmetersPerSecond = translate.y * maxTargetSpeed.get() / BasePoseSubsystem.INCHES_IN_A_METER;
+        double targetRotationRadiansPerSecond = rotate * maxTargetTurnRate.get();
 
-        ChassisSpeeds targetMotion = new ChassisSpeeds(targetX, targetY, targetRotation);
+        translationXTargetMPS.set(targetXmetersPerSecond);
+        translationYTargetMPS.set(targetYmetersPerSecond);
+        rotationTargetRadians.set(targetRotationRadiansPerSecond);
+
+        // Now that we are in metric units, we can use the kinematics to convert the target speeds to wheel speeds.
+        ChassisSpeeds targetMotion = new ChassisSpeeds(targetXmetersPerSecond, targetYmetersPerSecond, targetRotationRadiansPerSecond);
 
         Translation2d centerOfRotationTranslation = new Translation2d(
-            centerOfRotation.x * BasePoseSubsystem.INCHES_IN_A_METER,
-            centerOfRotation.y * BasePoseSubsystem.INCHES_IN_A_METER);
+            centerOfRotation.x / BasePoseSubsystem.INCHES_IN_A_METER,
+            centerOfRotation.y / BasePoseSubsystem.INCHES_IN_A_METER);
         SwerveModuleState[] moduleStates = swerveDriveKinematics.toSwerveModuleStates(targetMotion, centerOfRotationTranslation);
 
-        SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, maxTargetSpeed.get() * BasePoseSubsystem.INCHES_IN_A_METER);
+        SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, maxTargetSpeed.get() / BasePoseSubsystem.INCHES_IN_A_METER);
 
         this.getFrontLeftSwerveModuleSubsystem().setTargetState(moduleStates[0]);
         this.getFrontRightSwerveModuleSubsystem().setTargetState(moduleStates[1]);
