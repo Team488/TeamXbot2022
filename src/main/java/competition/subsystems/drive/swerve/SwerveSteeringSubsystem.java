@@ -125,7 +125,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         // Now we feed it into a PID system, where the goal is to have 0 error.
         double rotationalPower = -this.pid.calculate(0, errorInDegrees);
         
-        return rotationalPower * this.powerScale.get();
+        return rotationalPower;
     }
 
     public void resetPid() {
