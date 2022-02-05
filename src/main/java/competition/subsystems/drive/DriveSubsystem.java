@@ -20,6 +20,7 @@ import xbot.common.math.PIDManager;
 import xbot.common.math.XYPair;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
+import xbot.common.properties.StringProperty;
 import xbot.common.properties.XPropertyManager;
 import xbot.common.subsystems.drive.BaseDriveSubsystem;
 import xbot.common.subsystems.pose.BasePoseSubsystem;
@@ -36,6 +37,21 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     private final DoubleProperty maxTargetSpeed;
 
     private final SwerveDriveKinematics swerveDriveKinematics;
+    private final StringProperty activeModuleProp;
+
+    public enum SwerveModuleLocation {
+        FRONT_LEFT,
+        FRONT_RIGHT,
+        REAR_LEFT,
+        REAR_RIGHT;
+
+        private static SwerveModuleLocation[] values = values();
+        public SwerveModuleLocation next() {
+            return values[(this.ordinal() + 1) % values.length];
+        }
+    }
+
+    private SwerveModuleLocation activeModule = SwerveModuleLocation.FRONT_LEFT;
 
     @Inject
     public DriveSubsystem(CommonLibFactory factory, XPropertyManager propManager, ElectricalContract contract, PropertyFactory pf,
@@ -57,6 +73,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         );
 
         this.maxTargetSpeed = pf.createPersistentProperty("MaxTargetSpeedInchesPerSecond", 1.0);
+        this.activeModuleProp = pf.createEphemeralProperty("ActiveModule", activeModule.toString());
     }
 
     @Override
@@ -151,5 +168,64 @@ public class DriveSubsystem extends BaseDriveSubsystem {
 
     public SwerveModuleSubsystem getRearRightSwerveModuleSubsystem() {
         return this.rearRightSwerveModuleSubsystem;
+    }
+
+    /**
+     * Meant to be used alongside methods such as {@link #controlOnlyActiveSwerveModuleSubsystem(SwerveModuleLocation)}. 
+     * Has no effect when the robot is in normal, "Maintainer" operation.
+     * @param activeModule Which module to set as the active module.
+     */
+    public void setActiveModule(SwerveModuleLocation activeModule) {
+        this.activeModule = activeModule;
+        activeModuleProp.set(activeModule.toString());
+    }
+
+    /**
+     * Meant to be used alongside methods such as {@link #controlOnlyActiveSwerveModuleSubsystem(SwerveModuleLocation)}. 
+     * Has no effect when the robot is in normal, "Maintainer" operation.
+     * Moves the active module to the next module, according to the pattern FrontLeft, FrontRight, RearLeft, RearRight.
+     */
+    public void setNextModuleAsActiveModule() {
+        setActiveModule(this.activeModule.next());
+    }
+
+    private SwerveModuleSubsystem getSwerveModuleSubsystem(SwerveModuleLocation location) {
+        switch (location) {
+            case FRONT_LEFT:
+                return this.getFrontLeftSwerveModuleSubsystem();
+            case FRONT_RIGHT:
+                return this.getFrontRightSwerveModuleSubsystem();
+            case REAR_LEFT:
+                return this.getRearLeftSwerveModuleSubsystem();
+            case REAR_RIGHT:
+                return this.getRearRightSwerveModuleSubsystem();
+            default:
+                log.warn("Attempted to get a SwerveModuleSubsystem for an invalid SwerveModuleLocation. Returning front left so that something is returned.");
+                return this.getFrontLeftSwerveModuleSubsystem();
+        }
+    }
+
+    private SwerveModuleSubsystem getActiveSwerveModuleSubsystem() {
+        return this.getSwerveModuleSubsystem(this.activeModule);
+    }
+    
+    private void stopInactiveModules() {
+        SwerveModuleLocation[] values = SwerveModuleLocation.values();
+        for (SwerveModuleLocation value : values) {
+            if (value != this.activeModule) {
+                this.getSwerveModuleSubsystem(value).setPowers(0, 0);
+            }
+        }
+    }
+
+    /**
+     * Controls the drive power and steering power of the active module. Stops all other modules.
+     * Intended for use when you want to investigate a single module without moving all the others.
+     * @param drivePower -1 to 1 power to apply to the drive component.
+     * @param steeringPower -1 to 1 power to apply to the steering component.
+     */
+    public void controlOnlyActiveSwerveModuleSubsystem(double drivePower, double steeringPower) {
+        this.getActiveSwerveModuleSubsystem().setPowers(drivePower, steeringPower);
+        stopInactiveModules();
     }
 }
