@@ -86,7 +86,7 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
     @Override
     public void setPower(double power) {
         if (this.contract.isDriveReady()) {
-            this.motorController.set(power * this.velocityScaleFactor.get());
+            this.motorController.set(power);
         }
     }
 

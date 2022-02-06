@@ -5,9 +5,7 @@ import com.google.inject.Singleton;
 
 import xbot.common.command.BaseSubsystem;
 import xbot.common.controls.actuators.XSolenoid;
-import xbot.common.controls.sensors.XPowerDistributionPanel;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
-import xbot.common.math.MathUtils;
 
 @Singleton
 public class ClimberPivotSubsystem extends BaseSubsystem {

@@ -25,11 +25,14 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     private final PIDManager pid;
     private final ElectricalContract contract;
 
-    private final DoubleProperty powerScale;
     private final DoubleProperty targetRotation;
+    private final DoubleProperty currentModuleHeading;
 
     private XCANSparkMax motorController;
     private XAbsoluteEncoder encoder;
+
+    private double positionOffset;
+    private boolean calibrated = false;
 
     @Inject
     public SwerveSteeringSubsystem(SwerveInstance swerveInstance, CommonLibFactory factory,
@@ -40,13 +43,20 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
 
         this.contract = electricalContract;
         this.pid = pidf.createPIDManager(this.getPrefix() + "PID", 0.1, 0.0, 0.0, -1.0, 1.0);
-        this.powerScale = pf.createPersistentProperty("PowerScaleFactor", 0.1);
         this.targetRotation = pf.createEphemeralProperty("TargetRotation", 0.0);
+        this.currentModuleHeading = pf.createEphemeralProperty("CurrentModuleHeading", 0.0);
 
         if (electricalContract.isDriveReady()) {
             this.motorController = factory.createCANSparkMax(electricalContract.getSteeringNeo(swerveInstance), this.getPrefix(), "SteeringNeo");
-            this.encoder = factory.createAbsoluteEncoder(electricalContract.getSteeringEncoder(swerveInstance), this.getPrefix());
         }
+        if (electricalContract.areCanCodersReady()) {
+            this.encoder = factory.createAbsoluteEncoder(electricalContract.getSteeringEncoder(swerveInstance), this.getPrefix());
+            // Since the CANCoders start with absolute knowledge from the start, that means this system
+            // is always calibrated.
+            calibrated = true;
+        }
+
+        this.register();
     }
 
     public String getLabel() {
@@ -63,11 +73,15 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
      */
     @Override
     public double getCurrentValue() {
-        if (this.contract.isDriveReady()) {
+        if (this.contract.areCanCodersReady()) {
             return this.encoder.getPosition();
-        } else {
-            return 0;
         }
+        if (this.contract.isDriveReady()) {
+            // If the CANCoders aren't available, we can use the built-in encoders in the steering motors. Experience suggests
+            // that this will work for about 30 seconds of driving before getting wildly out of alignment.
+            return ((this.motorController.getPosition() - positionOffset) * 30)+90;
+        }
+        return 0.0;
     }
 
     /**
@@ -95,7 +109,14 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
 
     @Override
     public boolean isCalibrated() {
-        return true;
+        return calibrated;
+    }
+
+    public void calibrateHere() {
+        if (this.contract.isDriveReady()) {
+            this.positionOffset = this.motorController.getPosition();
+        }
+        this.calibrated = true;
     }
 
     public XCANSparkMax getSparkMax() {
@@ -119,12 +140,17 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         double errorInDegrees = WrappedRotation2d.fromDegrees(getTargetValue() - getCurrentValue()).getDegrees();
                 
         // Now we feed it into a PID system, where the goal is to have 0 error.
-        double rotationalPower = this.pid.calculate(0, errorInDegrees);
+        double rotationalPower = -this.pid.calculate(0, errorInDegrees);
         
-        return rotationalPower * this.powerScale.get();
+        return rotationalPower;
     }
 
     public void resetPid() {
         this.pid.reset();
+    }
+
+    @Override
+    public void periodic() {
+        currentModuleHeading.set(getCurrentValue());
     }
 }
