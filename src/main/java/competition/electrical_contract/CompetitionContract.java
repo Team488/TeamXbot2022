@@ -17,16 +17,16 @@ public class CompetitionContract extends ElectricalContract {
     public DeviceInfo getDriveNeo(SwerveInstance swerveInstance) {
         switch (swerveInstance.getLabel()) {
             case "FrontLeftDrive":
-                return new DeviceInfo(1, false, simulationScalingValue);
+                return new DeviceInfo(31, false, simulationScalingValue);
 
             case "FrontRightDrive":
-                return new DeviceInfo(2, false, simulationScalingValue);
+                return new DeviceInfo(29, false, simulationScalingValue);
 
             case "RearLeftDrive":
-                return new DeviceInfo(3, false, simulationScalingValue);
+                return new DeviceInfo(39, false, simulationScalingValue);
 
             case "RearRightDrive":
-                return new DeviceInfo(4, false, simulationScalingValue);
+                return new DeviceInfo(21, false, simulationScalingValue);
 
             default:
                 return null;
@@ -39,16 +39,16 @@ public class CompetitionContract extends ElectricalContract {
 
         switch (swerveInstance.getLabel()) {
             case "FrontLeftDrive":
-                return new DeviceInfo(11, false, simulationScalingValue);
+                return new DeviceInfo(30, false, simulationScalingValue);
 
             case "FrontRightDrive":
-                return new DeviceInfo(12, false, simulationScalingValue);
+                return new DeviceInfo(28, false, simulationScalingValue);
 
             case "RearLeftDrive":
-                return new DeviceInfo(13, false, simulationScalingValue);
+                return new DeviceInfo(38, false, simulationScalingValue);
 
             case "RearRightDrive":
-                return new DeviceInfo(14, false, simulationScalingValue);
+                return new DeviceInfo(20, false, simulationScalingValue);
 
             default:
                 return null;
