@@ -31,7 +31,7 @@ public class OperatorCommandMap {
             SetRobotHeadingCommand resetHeading)
     {
         resetHeading.setHeadingToApply(90);
-        operatorInterface.gamepad.getifAvailable(1).whenPressed(resetHeading);
+        operatorInterface.driverGamepad.getifAvailable(1).whenPressed(resetHeading);
     }
 
     @Inject
@@ -41,9 +41,9 @@ public class OperatorCommandMap {
         DebuggingSwerveWithJoysticksCommand swerveDebugging,
         GoToNextActiveSwerveModuleCommand goToNextActiveSwerveModule) 
     {
-        operatorInterface.gamepad.getifAvailable(4).whenPressed(crabDrive);
-        operatorInterface.gamepad.getifAvailable(2).whenPressed(swerveDebugging);
-        operatorInterface.gamepad.getifAvailable(3).whenPressed(goToNextActiveSwerveModule);
+        operatorInterface.driverGamepad.getifAvailable(4).whenPressed(crabDrive);
+        operatorInterface.driverGamepad.getifAvailable(2).whenPressed(swerveDebugging);
+        operatorInterface.driverGamepad.getifAvailable(3).whenPressed(goToNextActiveSwerveModule);
     }
 
     @Inject
@@ -72,7 +72,7 @@ public class OperatorCommandMap {
             swerveDriveWithJoysticks
             );
 
-        operatorInterface.gamepad.getifAvailable(5).whenPressed(calibrateSteering);
-        operatorInterface.gamepad.getifAvailable(6).whenPressed(swerveCommands);
+        operatorInterface.driverGamepad.getifAvailable(5).whenPressed(calibrateSteering);
+        operatorInterface.driverGamepad.getifAvailable(6).whenPressed(swerveCommands);
     }
 }
