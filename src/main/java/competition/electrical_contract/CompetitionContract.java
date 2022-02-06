@@ -76,4 +76,9 @@ public class CompetitionContract extends ElectricalContract {
                 return null;
         }
     }
+
+    @Override
+    public boolean areCanCodersReady() {
+        return false;
+    }
 }

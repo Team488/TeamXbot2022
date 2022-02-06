@@ -7,10 +7,13 @@ import competition.injection.swerve.FrontLeftDrive;
 import competition.injection.swerve.FrontRightDrive;
 import competition.injection.swerve.RearLeftDrive;
 import competition.injection.swerve.RearRightDrive;
+import competition.subsystems.drive.DriveSubsystem;
+import competition.subsystems.drive.commands.CalibrateSteeringCommand;
 import competition.subsystems.drive.commands.DebuggingSwerveWithJoysticksCommand;
 import competition.subsystems.drive.commands.GoToNextActiveSwerveModuleCommand;
 import competition.subsystems.drive.commands.SimpleCrabDriveFromGamepadCommand;
 import competition.subsystems.drive.commands.SwerveDriveMaintainerCommand;
+import competition.subsystems.drive.commands.SwerveDriveWithJoysticksCommand;
 import competition.subsystems.drive.commands.SwerveSteeringMaintainerCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
@@ -53,7 +56,9 @@ public class OperatorCommandMap {
         @RearLeftDrive SwerveSteeringMaintainerCommand maintainSteeringRearLeft,
         @RearLeftDrive SwerveDriveMaintainerCommand maintainDriveRearLeft,
         @RearRightDrive SwerveSteeringMaintainerCommand maintainSteeringRearRight,
-        @RearRightDrive SwerveDriveMaintainerCommand maintainDriveRearRight) 
+        @RearRightDrive SwerveDriveMaintainerCommand maintainDriveRearRight,
+        SwerveDriveWithJoysticksCommand swerveDriveWithJoysticks,
+        CalibrateSteeringCommand calibrateSteering) 
     {
         ParallelCommandGroup swerveCommands = new ParallelCommandGroup(
             maintainSteeringFrontLeft,
@@ -63,7 +68,11 @@ public class OperatorCommandMap {
             maintainSteeringRearLeft,
             maintainDriveRearLeft,
             maintainSteeringRearRight,
-            maintainDriveRearRight);
-        operatorInterface.gamepad.getifAvailable(5).whenPressed(swerveCommands);
+            maintainDriveRearRight,
+            swerveDriveWithJoysticks
+            );
+
+        operatorInterface.gamepad.getifAvailable(5).whenPressed(calibrateSteering);
+        operatorInterface.gamepad.getifAvailable(6).whenPressed(swerveCommands);
     }
 }

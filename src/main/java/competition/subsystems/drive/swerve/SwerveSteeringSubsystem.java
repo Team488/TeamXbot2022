@@ -32,6 +32,9 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     private XCANSparkMax motorController;
     private XAbsoluteEncoder encoder;
 
+    private double positionOffset;
+    private boolean calibrated = false;
+
     @Inject
     public SwerveSteeringSubsystem(SwerveInstance swerveInstance, CommonLibFactory factory,
             PropertyFactory pf, PIDFactory pidf, ElectricalContract electricalContract) {
@@ -47,7 +50,10 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
 
         if (electricalContract.isDriveReady()) {
             this.motorController = factory.createCANSparkMax(electricalContract.getSteeringNeo(swerveInstance), this.getPrefix(), "SteeringNeo");
+        }
+        if (electricalContract.areCanCodersReady()) {
             this.encoder = factory.createAbsoluteEncoder(electricalContract.getSteeringEncoder(swerveInstance), this.getPrefix());
+            calibrated = true;
         }
 
         this.register();
@@ -67,11 +73,13 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
      */
     @Override
     public double getCurrentValue() {
-        if (this.contract.isDriveReady()) {
+        if (this.contract.areCanCodersReady()) {
             return this.encoder.getPosition();
-        } else {
-            return 0;
         }
+        if (this.contract.isDriveReady()) {
+            return ((this.motorController.getPosition() - positionOffset) * 30)+90;
+        }
+        return 0.0;
     }
 
     /**
@@ -99,7 +107,14 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
 
     @Override
     public boolean isCalibrated() {
-        return true;
+        return calibrated;
+    }
+
+    public void calibrateHere() {
+        if (this.contract.isDriveReady()) {
+            this.positionOffset = this.motorController.getPosition();
+        }
+        this.calibrated = true;
     }
 
     public XCANSparkMax getSparkMax() {
