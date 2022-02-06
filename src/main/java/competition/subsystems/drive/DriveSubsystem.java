@@ -1,5 +1,8 @@
 package competition.subsystems.drive;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -45,6 +48,8 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     private final DoubleProperty translationYTargetMPS;
     private final DoubleProperty rotationTargetRadians;
 
+    private XYPair lastCommandedDirection;
+
     public enum SwerveModuleLocation {
         FRONT_LEFT,
         FRONT_RIGHT,
@@ -84,6 +89,11 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         this.translationXTargetMPS = pf.createEphemeralProperty("TranslationXMetersPerSecond", 0.0);
         this.translationYTargetMPS = pf.createEphemeralProperty("TranslationYMetersPerSecond", 0.0);
         this.rotationTargetRadians = pf.createEphemeralProperty("RotationTargetRadians", 0.0);
+
+        // TODO: eventually, this should retrieved from auto or the pose subsystem as a field like 
+        // "Desired initial wheel direction" so there's no thrash right at the start of a match.
+        // Probably not a huge priority, Since as soon as we move once the robot remembers the last commanded direction.
+        lastCommandedDirection = new XYPair(0, 90);
     }
 
     public double getMaxTargetSpeedInchesPerSecond() {
@@ -122,6 +132,20 @@ public class DriveSubsystem extends BaseDriveSubsystem {
      * @param centerOfRotation The center of rotation.
      */
     public void move(XYPair translate, double rotate, XYPair centerOfRotation) {
+
+        // First, we need to check if we've been asked to move at all. If not, we should look at the last time we were given a commanded direction
+        // and keep the wheels pointed that way. That prevents the wheels from returning to "0" degrees when the driver has gone back to 
+        // neutral joystick position.
+        boolean isNotMoving = translate.getMagnitude() < 0.01 && Math.abs(rotate) < 0.01;
+
+        if (isNotMoving)
+        {
+            translate = lastCommandedDirection;
+        }
+
+        // Then we translate the translation and rotation "intents" into velocities. Basically,
+        // going from the -1 to 1 power scale to -maxTargetSpeed to +maxTargetSpeed. We also need to convert them
+        // into metric units, since the next library we call expects metric units.
         double targetXmetersPerSecond = translate.x * maxTargetSpeed.get() / BasePoseSubsystem.INCHES_IN_A_METER;
         double targetYmetersPerSecond = translate.y * maxTargetSpeed.get() / BasePoseSubsystem.INCHES_IN_A_METER;
         double targetRotationRadiansPerSecond = rotate * maxTargetTurnRate.get();
@@ -130,20 +154,39 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         translationYTargetMPS.set(targetYmetersPerSecond);
         rotationTargetRadians.set(targetRotationRadiansPerSecond);
 
-        // Now that we are in metric units, we can use the kinematics to convert the target speeds to wheel speeds.
+        // This handy library from WPILib will take our robot's overall desired translation & rotation and figure out
+        // what each swerve module should be doing in order to achieve that.
         ChassisSpeeds targetMotion = new ChassisSpeeds(targetXmetersPerSecond, targetYmetersPerSecond, targetRotationRadiansPerSecond);
 
+        // One optional step - we can choose to rotate around a specific point, rather than the center of the robot.
         Translation2d centerOfRotationTranslation = new Translation2d(
             centerOfRotation.x / BasePoseSubsystem.INCHES_IN_A_METER,
             centerOfRotation.y / BasePoseSubsystem.INCHES_IN_A_METER);
         SwerveModuleState[] moduleStates = swerveDriveKinematics.toSwerveModuleStates(targetMotion, centerOfRotationTranslation);
 
-        SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, maxTargetSpeed.get() / BasePoseSubsystem.INCHES_IN_A_METER);
+        // Another potentially optional step - it's possible that in the calculations above, one or more swerve modules could be asked to
+        // move at higer than its maximum speed. At this point, we have a choice. Either:
+        // - "Prioritize speed/power" - don't change any module powers, and anything going above 100% will, due to reality, be capped at 100%.
+        //   This means that the robot's motion might be a little odd, but this could be useful if we want to push as hard as possible.
+        // - "Prioritize motion" - reduce all module powers proportionately so that the "fastest" module is moving at 100%. For example, if you had modules
+        //   initially asked to move at 200%, 100%, 100%, and 50%, this would reduce them all to 100%, 50%, 50%, and 25%.
+        //   This means the overall motion will be more correct, but we will lose some speed/power.
+        // For now, we're choosing to prioritize motion. We're somewhat new to swerve, so debugging any strange motion will be easier if we know the system is
+        // always trying to prioritize motion.
+
+        // Also, one more special check - if there was no commanded motion, set the maximum speed to 0.
+        double topSpeedMetersPerSecond = isNotMoving ? 0 : maxTargetSpeed.get();
+        SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, topSpeedMetersPerSecond);
 
         this.getFrontLeftSwerveModuleSubsystem().setTargetState(moduleStates[0]);
         this.getFrontRightSwerveModuleSubsystem().setTargetState(moduleStates[1]);
         this.getRearLeftSwerveModuleSubsystem().setTargetState(moduleStates[2]);
         this.getRearRightSwerveModuleSubsystem().setTargetState(moduleStates[3]);
+
+        // If we were asked to move in a direction, remember that direction.
+        if (translate.getMagnitude() > 0.05) {
+            lastCommandedDirection = translate;
+        }
     }
 
     /***
