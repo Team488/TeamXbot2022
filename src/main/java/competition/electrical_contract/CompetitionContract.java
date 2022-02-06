@@ -56,29 +56,68 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     @Override
+    public boolean areCanCodersReady() {
+        return false;
+    }
+
+    @Override
     public DeviceInfo getSteeringEncoder(SwerveInstance swerveInstance) {
         double simulationScalingValue = 1.0;
 
         switch (swerveInstance.getLabel()) {
             case "FrontLeftDrive":
-                return new DeviceInfo(21, false, simulationScalingValue);
+                return new DeviceInfo(3, false, simulationScalingValue);
 
             case "FrontRightDrive":
-                return new DeviceInfo(22, false, simulationScalingValue);
+                return new DeviceInfo(1, false, simulationScalingValue);
 
             case "RearLeftDrive":
-                return new DeviceInfo(23, false, simulationScalingValue);
+                return new DeviceInfo(4, false, simulationScalingValue);
 
             case "RearRightDrive":
-                return new DeviceInfo(24, false, simulationScalingValue);
+                return new DeviceInfo(2, false, simulationScalingValue);
 
             default:
                 return null;
         }
     }
+    
+    public boolean isIntakeReady() {
+        return false;
+    }
 
     @Override
-    public boolean areCanCodersReady() {
+    public DeviceInfo getIntakeNeo() {
+        return new DeviceInfo(26, false);
+    }
+
+    @Override
+    public boolean isClimberReady() {
         return false;
+    }
+
+    @Override
+    public DeviceInfo getLeftClimberNeo() {
+        return new DeviceInfo(37, false);
+    }
+
+    @Override
+    public DeviceInfo getRightClimberNeo() {
+        return new DeviceInfo(22, false);
+    }
+
+    @Override
+    public boolean isShooterReady() {
+        return false;
+    }
+
+    @Override
+    public DeviceInfo getPrimaryShooterNeo() {
+        return new DeviceInfo(32, false);
+    }
+
+    @Override
+    public DeviceInfo getSecondaryShooterNeo() {
+        return new DeviceInfo(34, false);
     }
 }
