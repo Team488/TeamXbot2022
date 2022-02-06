@@ -13,6 +13,11 @@ import competition.subsystems.drive.swerve.SwerveSteeringSubsystem;
 import xbot.common.command.BaseCommand;
 import xbot.common.math.MathUtils;
 
+/**
+ * Special debug command that takes control of all the swerve modules, but only controls one
+ * at a time while having all the others stay stopped. Useful for testing individual modules
+ * without the distraction of having all the other ones run.
+ */
 public class DebuggingSwerveWithJoysticksCommand extends BaseCommand {
 
     final DriveSubsystem drive;

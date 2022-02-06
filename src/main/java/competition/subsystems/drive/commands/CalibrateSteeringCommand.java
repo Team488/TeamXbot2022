@@ -9,6 +9,12 @@ import competition.injection.swerve.RearRightDrive;
 import competition.subsystems.drive.swerve.SwerveSteeringSubsystem;
 import xbot.common.command.BaseCommand;
 
+/**
+ * Used to force all the swerve steering modules to calibrate at their current position.
+ * Make sure that the wheels are all facing forward before running this command!
+ * You should also never need to run this command once we have the CANCoders active, since they
+ * should be able to always read the true, absolute position of the steering modules.
+ */
 public class CalibrateSteeringCommand extends BaseCommand {
 
     private final SwerveSteeringSubsystem frontLeft;

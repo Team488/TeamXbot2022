@@ -9,6 +9,9 @@ import xbot.common.command.BaseCommand;
 import xbot.common.math.MathUtils;
 import xbot.common.math.XYPair;
 
+/**
+ * The main swerve drive command that links up the human input (from gamepad joysticks) to the drive subsystem.
+ */
 public class SwerveDriveWithJoysticksCommand extends BaseCommand {
 
     DriveSubsystem drive;

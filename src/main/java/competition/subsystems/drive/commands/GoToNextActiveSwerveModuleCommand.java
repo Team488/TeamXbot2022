@@ -5,6 +5,9 @@ import com.google.inject.Inject;
 import competition.subsystems.drive.DriveSubsystem;
 import xbot.common.command.BaseCommand;
 
+/**
+ * Changes the active swerve module when debugging. Meant to be used with {@link DebuggingSwerveWithJoysticksCommand}
+ */
 public class GoToNextActiveSwerveModuleCommand extends BaseCommand {
 
     DriveSubsystem drive;

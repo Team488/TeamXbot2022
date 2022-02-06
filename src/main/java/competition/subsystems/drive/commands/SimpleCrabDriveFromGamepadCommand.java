@@ -13,6 +13,11 @@ import competition.subsystems.drive.swerve.SwerveSteeringSubsystem;
 import xbot.common.command.BaseCommand;
 import xbot.common.math.MathUtils;
 
+/**
+ * A really basic crab drive command that sets raw powers to the swerve modules. As a result,
+ * the wheels go out of alignment very quickly. Only used for extremely basic benchtop testing,
+ * and the {@link DebuggingSwerveWithJoysticksCommand} is probably a better choice in most scenarios.
+ */
 public class SimpleCrabDriveFromGamepadCommand extends BaseCommand {
 
     final DriveSubsystem drive;
