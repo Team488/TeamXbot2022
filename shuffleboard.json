@@ -1,845 +1,6 @@
 {
   "tabPane": [
     {
-      "title": "SmartDashboard",
-      "autoPopulate": true,
-      "autoPopulatePrefix": "SmartDashboard/",
-      "widgetPane": {
-        "gridSize": 128.0,
-        "showGrid": true,
-        "hgap": 16.0,
-        "vgap": 16.0,
-        "titleType": 0,
-        "tiles": {
-          "0,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearRightDrive/SwerveDriveMaintainerCommand/Subsystem Ready",
-              "_title": "SwerveDriveSubsystem/RearRightDrive/SwerveDriveMaintainerCommand/Subsystem Ready",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "1,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/DriveNeo/kP",
-              "_title": "SwerveDriveSubsystem/FrontLeftDrive/DriveNeo/kP"
-            }
-          },
-          "2,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearRightDrive/PID/Is Enabled",
-              "_title": "SwerveDriveSubsystem/RearRightDrive/PID/Is Enabled",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "3,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearRightDrive/SimulationScale",
-              "_title": "SwerveSteeringSubsystem/RearRightDrive/SimulationScale"
-            }
-          },
-          "4,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearLeftDrive/PID/P",
-              "_title": "SwerveDriveSubsystem/RearLeftDrive/PID/P"
-            }
-          },
-          "5,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearLeftDrive/DriveNeo/Current",
-              "_title": "SwerveDriveSubsystem/RearLeftDrive/DriveNeo/Current"
-            }
-          },
-          "6,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearRightDrive/SteeringNeo/Current",
-              "_title": "SwerveSteeringSubsystem/RearRightDrive/SteeringNeo/Current"
-            }
-          },
-          "7,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/SwerveDriveMaintainerCommand/Decider/Coast Time",
-              "_title": "SwerveDriveSubsystem/FrontLeftDrive/SwerveDriveMaintainerCommand/Decider/Coast Time"
-            }
-          },
-          "0,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Webots/Robot Template",
-              "_title": "Webots/Robot Template"
-            }
-          },
-          "1,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/DriveSubsystem/ActiveModule",
-              "_title": "DriveSubsystem/ActiveModule"
-            }
-          },
-          "2,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontRightDrive/PID/Error threshold",
-              "_title": "SwerveDriveSubsystem/FrontRightDrive/PID/Error threshold"
-            }
-          },
-          "3,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearLeftDrive/PID/D",
-              "_title": "SwerveSteeringSubsystem/RearLeftDrive/PID/D"
-            }
-          },
-          "4,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearLeftDrive/PID/F",
-              "_title": "SwerveSteeringSubsystem/RearLeftDrive/PID/F"
-            }
-          },
-          "5,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearLeftDrive/PID/I",
-              "_title": "SwerveSteeringSubsystem/RearLeftDrive/PID/I"
-            }
-          },
-          "6,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearRightDrive/PID/Error threshold",
-              "_title": "SwerveDriveSubsystem/RearRightDrive/PID/Error threshold"
-            }
-          },
-          "7,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearLeftDrive/SwerveSteeringMaintainerCommand/Decider/Coast Time",
-              "_title": "SwerveSteeringSubsystem/RearLeftDrive/SwerveSteeringMaintainerCommand/Decider/Coast Time"
-            }
-          },
-          "0,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearLeftDrive/PID/P",
-              "_title": "SwerveSteeringSubsystem/RearLeftDrive/PID/P"
-            }
-          },
-          "1,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/PID/Enable error threshold",
-              "_title": "SwerveDriveSubsystem/FrontLeftDrive/PID/Enable error threshold",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "2,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontRightDrive/PID/F",
-              "_title": "SwerveSteeringSubsystem/FrontRightDrive/PID/F"
-            }
-          },
-          "3,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontLeftDrive/PID/Max Output",
-              "_title": "SwerveSteeringSubsystem/FrontLeftDrive/PID/Max Output"
-            }
-          },
-          "4,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Total distance X",
-              "_title": "PoseSubsystem/Total distance X"
-            }
-          },
-          "5,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontRightDrive/PID/I",
-              "_title": "SwerveSteeringSubsystem/FrontRightDrive/PID/I"
-            }
-          },
-          "6,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearLeftDrive/PID/Enable time threshold",
-              "_title": "SwerveDriveSubsystem/RearLeftDrive/PID/Enable time threshold",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "7,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontLeftDrive/SimulationScale",
-              "_title": "SwerveSteeringSubsystem/FrontLeftDrive/SimulationScale"
-            }
-          },
-          "0,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontRightDrive/PID/Min Output",
-              "_title": "SwerveDriveSubsystem/FrontRightDrive/PID/Min Output"
-            }
-          },
-          "1,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontRightDrive/PID/P",
-              "_title": "SwerveSteeringSubsystem/FrontRightDrive/PID/P"
-            }
-          },
-          "2,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontLeftDrive/SteeringNeo/kMaxOutput",
-              "_title": "SwerveSteeringSubsystem/FrontLeftDrive/SteeringNeo/kMaxOutput"
-            }
-          },
-          "3,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontRightDrive/SwerveDriveMaintainerCommand/Decider/Coast Time",
-              "_title": "SwerveDriveSubsystem/FrontRightDrive/SwerveDriveMaintainerCommand/Decider/Coast Time"
-            }
-          },
-          "4,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontRightDrive/SwerveSteeringMaintainerCommand/Error Is Time Stable",
-              "_title": "SwerveSteeringSubsystem/FrontRightDrive/SwerveSteeringMaintainerCommand/Error Is Time Stable",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "5,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Total distance Y",
-              "_title": "PoseSubsystem/Total distance Y"
-            }
-          },
-          "6,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearRightDrive/PID/Enable time threshold",
-              "_title": "SwerveDriveSubsystem/RearRightDrive/PID/Enable time threshold",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "7,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontRightDrive/PID/D",
-              "_title": "SwerveSteeringSubsystem/FrontRightDrive/PID/D"
-            }
-          },
-          "0,4": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Right drive distance",
-              "_title": "PoseSubsystem/Right drive distance"
-            }
-          },
-          "1,4": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontLeftDrive/SteeringNeo/Percent",
-              "_title": "SwerveSteeringSubsystem/FrontLeftDrive/SteeringNeo/Percent"
-            }
-          },
-          "2,4": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/SwerveDriveMaintainerCommand/Decider/Deadband",
-              "_title": "SwerveDriveSubsystem/FrontLeftDrive/SwerveDriveMaintainerCommand/Decider/Deadband"
-            }
-          },
-          "3,4": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearLeftDrive/SwerveSteeringMaintainerCommand/Error Within Tolerance",
-              "_title": "SwerveSteeringSubsystem/RearLeftDrive/SwerveSteeringMaintainerCommand/Error Within Tolerance",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "4,4": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearRightDrive/SwerveSteeringMaintainerCommand/Decider/Deadband",
-              "_title": "SwerveSteeringSubsystem/RearRightDrive/SwerveSteeringMaintainerCommand/Decider/Deadband"
-            }
-          },
-          "5,4": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearRightDrive/PID/Max Output",
-              "_title": "SwerveDriveSubsystem/RearRightDrive/PID/Max Output"
-            }
-          },
-          "6,4": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearRightDrive/PID/F",
-              "_title": "SwerveDriveSubsystem/RearRightDrive/PID/F"
-            }
-          },
-          "7,4": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearRightDrive/PID/D",
-              "_title": "SwerveDriveSubsystem/RearRightDrive/PID/D"
-            }
-          },
-          "0,5": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontRightDrive/TargetVelocity",
-              "_title": "SwerveDriveSubsystem/FrontRightDrive/TargetVelocity"
-            }
-          },
-          "1,5": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearRightDrive/PID/I",
-              "_title": "SwerveDriveSubsystem/RearRightDrive/PID/I"
-            }
-          },
-          "2,5": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/DriveNeo/Current",
-              "_title": "SwerveDriveSubsystem/FrontLeftDrive/DriveNeo/Current"
-            }
-          },
-          "3,5": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontRightDrive/PowerScaleFactor",
-              "_title": "SwerveSteeringSubsystem/FrontRightDrive/PowerScaleFactor"
-            }
-          },
-          "4,5": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearRightDrive/PID/P",
-              "_title": "SwerveDriveSubsystem/RearRightDrive/PID/P"
-            }
-          },
-          "5,5": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontRightDrive/SwerveDriveMaintainerCommand/Error Tolerance",
-              "_title": "SwerveDriveSubsystem/FrontRightDrive/SwerveDriveMaintainerCommand/Error Tolerance"
-            }
-          },
-          "6,5": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearRightDrive/SwerveSteeringMaintainerCommand/Decider/Coast Time",
-              "_title": "SwerveSteeringSubsystem/RearRightDrive/SwerveSteeringMaintainerCommand/Decider/Coast Time"
-            }
-          },
-          "7,5": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontRightDrive/SwerveSteeringMaintainerCommand/Error Tolerance",
-              "_title": "SwerveSteeringSubsystem/FrontRightDrive/SwerveSteeringMaintainerCommand/Error Tolerance"
-            }
-          },
-          "8,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Current autonomous command name",
-              "_title": "Current autonomous command name"
-            }
-          },
-          "9,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/PID/P",
-              "_title": "SwerveDriveSubsystem/FrontLeftDrive/PID/P"
-            }
-          },
-          "10,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/PID/I",
-              "_title": "SwerveDriveSubsystem/FrontLeftDrive/PID/I"
-            }
-          },
-          "8,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/PID/D",
-              "_title": "SwerveDriveSubsystem/FrontLeftDrive/PID/D"
-            }
-          },
-          "9,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/PID/F",
-              "_title": "SwerveDriveSubsystem/FrontLeftDrive/PID/F"
-            }
-          },
-          "10,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/PID/Error threshold",
-              "_title": "SwerveDriveSubsystem/FrontLeftDrive/PID/Error threshold"
-            }
-          },
-          "8,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/PID/Derivative threshold",
-              "_title": "SwerveDriveSubsystem/FrontLeftDrive/PID/Derivative threshold"
-            }
-          },
-          "9,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/PID/Time threshold",
-              "_title": "SwerveDriveSubsystem/FrontLeftDrive/PID/Time threshold"
-            }
-          },
-          "10,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/PID/Enable derivative threshold",
-              "_title": "SwerveDriveSubsystem/FrontLeftDrive/PID/Enable derivative threshold",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "8,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/PID/Enable time threshold",
-              "_title": "SwerveDriveSubsystem/FrontLeftDrive/PID/Enable time threshold",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "9,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/PID/Max Output",
-              "_title": "SwerveDriveSubsystem/FrontLeftDrive/PID/Max Output"
-            }
-          },
-          "10,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/PID/Min Output",
-              "_title": "SwerveDriveSubsystem/FrontLeftDrive/PID/Min Output"
-            }
-          },
-          "8,4": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/PID/Is Enabled",
-              "_title": "SwerveDriveSubsystem/FrontLeftDrive/PID/Is Enabled",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "9,4": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/PID/OffTargetReason",
-              "_title": "SwerveDriveSubsystem/FrontLeftDrive/PID/OffTargetReason"
-            }
-          },
-          "10,4": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/VelocityScaleFactor",
-              "_title": "SwerveDriveSubsystem/FrontLeftDrive/VelocityScaleFactor"
-            }
-          },
-          "8,5": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/TargetVelocity",
-              "_title": "SwerveDriveSubsystem/FrontLeftDrive/TargetVelocity"
-            }
-          },
-          "9,5": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/DriveNeo/kI",
-              "_title": "SwerveDriveSubsystem/FrontLeftDrive/DriveNeo/kI"
-            }
-          },
-          "10,5": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/DriveNeo/kD",
-              "_title": "SwerveDriveSubsystem/FrontLeftDrive/DriveNeo/kD"
-            }
-          }
-        }
-      }
-    },
-    {
-      "title": "LiveWindow",
-      "autoPopulate": true,
-      "autoPopulatePrefix": "LiveWindow/",
-      "widgetPane": {
-        "gridSize": 128.0,
-        "showGrid": true,
-        "hgap": 16.0,
-        "vgap": 16.0,
-        "titleType": 0,
-        "tiles": {
-          "0,0": {
-            "size": [
-              2,
-              4
-            ],
-            "content": {
-              "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/SwerveDriveSubsystem",
-              "_title": "SwerveDriveSubsystem",
-              "Layout/Label position": "BOTTOM",
-              "_children": []
-            }
-          },
-          "2,0": {
-            "size": [
-              2,
-              4
-            ],
-            "content": {
-              "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/PoseSubsystem",
-              "_title": "PoseSubsystem",
-              "Layout/Label position": "BOTTOM",
-              "_children": []
-            }
-          },
-          "4,0": {
-            "size": [
-              2,
-              4
-            ],
-            "content": {
-              "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/Ungrouped",
-              "_title": "Ungrouped",
-              "Layout/Label position": "BOTTOM",
-              "_children": []
-            }
-          },
-          "6,0": {
-            "size": [
-              2,
-              4
-            ],
-            "content": {
-              "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/AutonomousCommandSelector",
-              "_title": "AutonomousCommandSelector",
-              "Layout/Label position": "BOTTOM",
-              "_children": []
-            }
-          },
-          "8,0": {
-            "size": [
-              2,
-              4
-            ],
-            "content": {
-              "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/DriveSubsystem",
-              "_title": "DriveSubsystem",
-              "Layout/Label position": "BOTTOM",
-              "_children": []
-            }
-          }
-        }
-      }
-    },
-    {
       "title": "Swerve",
       "autoPopulate": false,
       "autoPopulatePrefix": "",
@@ -850,7 +11,7 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "7,5": {
+          "2,2": {
             "size": [
               1,
               1
@@ -861,169 +22,211 @@
               "_title": "/SmartDashboard/PoseSubsystem/CurrentHeading"
             }
           },
-          "3,0": {
+          "8,0": {
             "size": [
               1,
-              1
+              2
             ],
             "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontLeftDrive/CurrentModuleHeading",
-              "_title": "/SmartDashboard/SwerveSteeringSubsystem/FrontLeftDrive/CurrentModuleHeading"
+              "_type": "Subsystem Layout",
+              "_title": "Drive PID",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///Preferences/SwerveDriveSubsystem/PID/P",
+                  "_title": "P"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///Preferences/SwerveDriveSubsystem/PID/I",
+                  "_title": "I"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///Preferences/SwerveDriveSubsystem/PID/D",
+                  "_title": "D"
+                }
+              ]
             }
           },
           "4,0": {
             "size": [
               1,
-              1
+              2
             ],
             "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontLeftDrive/TargetRotation",
-              "_title": "/SmartDashboard/SwerveSteeringSubsystem/FrontLeftDrive/TargetRotation"
+              "_type": "Subsystem Layout",
+              "_title": "Steering PID",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///Preferences/SwerveSteeringSubsystem/PID/P",
+                  "_title": "P"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///Preferences/SwerveSteeringSubsystem/PID/I",
+                  "_title": "I"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///Preferences/SwerveSteeringSubsystem/PID/D",
+                  "_title": "D"
+                }
+              ]
             }
           },
-          "7,0": {
+          "4,2": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontRightDrive/CurrentModuleHeading",
-              "_title": "/SmartDashboard/SwerveSteeringSubsystem/FrontRightDrive/CurrentModuleHeading"
-            }
-          },
-          "8,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontRightDrive/TargetRotation",
-              "_title": "/SmartDashboard/SwerveSteeringSubsystem/FrontRightDrive/TargetRotation"
-            }
-          },
-          "3,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearLeftDrive/CurrentModuleHeading",
-              "_title": "/SmartDashboard/SwerveSteeringSubsystem/RearLeftDrive/CurrentModuleHeading"
-            }
-          },
-          "4,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearLeftDrive/TargetRotation",
-              "_title": "/SmartDashboard/SwerveSteeringSubsystem/RearLeftDrive/TargetRotation"
-            }
-          },
-          "7,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearRightDrive/CurrentModuleHeading",
-              "_title": "/SmartDashboard/SwerveSteeringSubsystem/RearRightDrive/CurrentModuleHeading"
-            }
-          },
-          "8,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearRightDrive/TargetRotation",
-              "_title": "/SmartDashboard/SwerveSteeringSubsystem/RearRightDrive/TargetRotation"
-            }
-          },
-          "3,4": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/DriveSubsystem/TranslationXMetersPerSecond",
-              "_title": "/SmartDashboard/DriveSubsystem/TranslationXMetersPerSecond"
-            }
-          },
-          "4,4": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/DriveSubsystem/TranslationYMetersPerSecond",
-              "_title": "/SmartDashboard/DriveSubsystem/TranslationYMetersPerSecond"
-            }
-          },
-          "5,4": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/DriveSubsystem/RotationTargetRadians",
-              "_title": "/SmartDashboard/DriveSubsystem/RotationTargetRadians"
+              "_source0": "network_table:///Preferences/SwerveSteeringSubsystem/PowerScaleFactor",
+              "_title": "Steering scale"
             }
           },
           "5,0": {
             "size": [
               1,
-              1
+              2
             ],
             "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/TargetVelocity",
-              "_title": "/SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/TargetVelocity"
+              "_type": "Subsystem Layout",
+              "_title": "Front Left",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontLeftDrive/CurrentModuleHeading",
+                  "_title": "CurrentModuleHeading"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontLeftDrive/TargetRotation",
+                  "_title": "TargetRotation"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/TargetVelocity",
+                  "_title": "TargetVelocity"
+                }
+              ]
             }
           },
-          "9,0": {
+          "6,0": {
             "size": [
               1,
-              1
+              2
             ],
             "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontRightDrive/TargetVelocity",
-              "_title": "/SmartDashboard/SwerveDriveSubsystem/FrontRightDrive/TargetVelocity"
+              "_type": "Subsystem Layout",
+              "_title": "Front Right",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontRightDrive/CurrentModuleHeading",
+                  "_title": "CurrentModuleHeading"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontRightDrive/TargetRotation",
+                  "_title": "TargetRotation"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontRightDrive/TargetVelocity",
+                  "_title": "TargetVelocity"
+                }
+              ]
             }
           },
-          "5,1": {
+          "5,2": {
             "size": [
               1,
-              1
+              2
             ],
             "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearLeftDrive/TargetVelocity",
-              "_title": "/SmartDashboard/SwerveDriveSubsystem/RearLeftDrive/TargetVelocity"
+              "_type": "Subsystem Layout",
+              "_title": "Rear Left",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearLeftDrive/CurrentModuleHeading",
+                  "_title": "CurrentModuleHeading"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearLeftDrive/TargetRotation",
+                  "_title": "TargetRotation"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearLeftDrive/TargetVelocity",
+                  "_title": "TargetVelocity"
+                }
+              ]
             }
           },
-          "9,1": {
+          "6,2": {
             "size": [
               1,
-              1
+              2
             ],
             "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearRightDrive/TargetVelocity",
-              "_title": "/SmartDashboard/SwerveDriveSubsystem/RearRightDrive/TargetVelocity"
+              "_type": "Subsystem Layout",
+              "_title": "Rear Right",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearRightDrive/CurrentModuleHeading",
+                  "_title": "CurrentModuleHeading"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearRightDrive/TargetRotation",
+                  "_title": "TargetRotation"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearRightDrive/TargetVelocity",
+                  "_title": "TargetVelocity"
+                }
+              ]
+            }
+          },
+          "2,0": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "Subsystem Layout",
+              "_title": "Target Movement",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/DriveSubsystem/TranslationXMetersPerSecond",
+                  "_title": "TranslationXMetersPerSecond"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/DriveSubsystem/TranslationYMetersPerSecond",
+                  "_title": "TranslationYMetersPerSecond"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/DriveSubsystem/RotationTargetRadians",
+                  "_title": "RotationTargetRadians"
+                }
+              ]
             }
           }
         }
@@ -1031,9 +234,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 589.0,
-    "y": 135.0,
-    "width": 1594.0,
-    "height": 1000.0
+    "x": -7.333333492279053,
+    "y": -7.333333492279053,
+    "width": 1721.3333740234375,
+    "height": 926.6666870117188
   }
 }

@@ -11,6 +11,7 @@ import xbot.common.command.BaseSetpointSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
 import xbot.common.controls.sensors.XAbsoluteEncoder;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.math.MathUtils;
 import xbot.common.math.PIDFactory;
 import xbot.common.math.PIDManager;
 import xbot.common.math.WrappedRotation2d;
@@ -25,6 +26,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     private final PIDManager pid;
     private final ElectricalContract contract;
 
+    private final DoubleProperty powerScale;
     private final DoubleProperty targetRotation;
     private final DoubleProperty currentModuleHeading;
 
@@ -39,10 +41,16 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
             PropertyFactory pf, PIDFactory pidf, ElectricalContract electricalContract) {
         this.label = swerveInstance.getLabel();
         log.info("Creating SwerveRotationSubsystem " + this.label);
-        pf.setPrefix(this);
 
         this.contract = electricalContract;
-        this.pid = pidf.createPIDManager(this.getPrefix() + "PID", 0.1, 0.0, 0.0, -1.0, 1.0);
+
+        // Create properties shared among all instances
+        pf.setPrefix(super.getPrefix());
+        this.pid = pidf.createPIDManager(super.getPrefix() + "PID", 0.1, 0.0, 0.0, -1.0, 1.0);
+        this.powerScale = pf.createPersistentProperty("PowerScaleFactor", 5);
+
+        // Create properties that are unique to each instance
+        pf.setPrefix(this);
         this.targetRotation = pf.createEphemeralProperty("TargetRotation", 0.0);
         this.currentModuleHeading = pf.createEphemeralProperty("CurrentModuleHeading", 0.0);
 
@@ -138,9 +146,14 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         // Goal is 0 and Current is our error.
         
         double errorInDegrees = WrappedRotation2d.fromDegrees(getTargetValue() - getCurrentValue()).getDegrees();
+
+        // Constrain the error values before calculating PID. PID only constrains the output after
+        // calculating the outputs, which means it could accumulate values significantly larger than
+        // max power internally if we don't constrain the input.
+        double scaledError = MathUtils.constrainDouble(errorInDegrees / 90 * powerScale.get(), -1, 1);
                 
         // Now we feed it into a PID system, where the goal is to have 0 error.
-        double rotationalPower = -this.pid.calculate(0, errorInDegrees);
+        double rotationalPower = -this.pid.calculate(0, scaledError);
         
         return rotationalPower;
     }
