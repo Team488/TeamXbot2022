@@ -50,8 +50,8 @@ public class DebuggingSwerveWithJoysticksCommand extends BaseCommand {
 
     @Override
     public void execute() {
-        double drivePower = MathUtils.deadband(oi.gamepad.getLeftStickY(), 0.15, (a) -> a);
-        double steeringPower = MathUtils.deadband(oi.gamepad.getRightStickX(), 0.15, (a) -> a);
+        double drivePower = MathUtils.deadband(oi.driverGamepad.getLeftStickY(), oi.getDriverGamepadTypicalDeadband(), (a) -> a);
+        double steeringPower = MathUtils.deadband(oi.driverGamepad.getRightStickX(), oi.getDriverGamepadTypicalDeadband(), (a) -> a);
 
         drive.controlOnlyActiveSwerveModuleSubsystem(drivePower, steeringPower);
     }

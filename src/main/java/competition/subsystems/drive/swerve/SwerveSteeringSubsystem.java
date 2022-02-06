@@ -25,7 +25,6 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     private final PIDManager pid;
     private final ElectricalContract contract;
 
-    private final DoubleProperty powerScale;
     private final DoubleProperty targetRotation;
     private final DoubleProperty currentModuleHeading;
 
@@ -44,7 +43,6 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
 
         this.contract = electricalContract;
         this.pid = pidf.createPIDManager(this.getPrefix() + "PID", 0.1, 0.0, 0.0, -1.0, 1.0);
-        this.powerScale = pf.createPersistentProperty("PowerScaleFactor", 0.1);
         this.targetRotation = pf.createEphemeralProperty("TargetRotation", 0.0);
         this.currentModuleHeading = pf.createEphemeralProperty("CurrentModuleHeading", 0.0);
 
@@ -53,6 +51,8 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         }
         if (electricalContract.areCanCodersReady()) {
             this.encoder = factory.createAbsoluteEncoder(electricalContract.getSteeringEncoder(swerveInstance), this.getPrefix());
+            // Since the CANCoders start with absolute knowledge from the start, that means this system
+            // is always calibrated.
             calibrated = true;
         }
 
@@ -77,6 +77,8 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
             return this.encoder.getPosition();
         }
         if (this.contract.isDriveReady()) {
+            // If the CANCoders aren't available, we can use the built-in encoders in the steering motors. Experience suggests
+            // that this will work for about 30 seconds of driving before getting wildly out of alignment.
             return ((this.motorController.getPosition() - positionOffset) * 30)+90;
         }
         return 0.0;

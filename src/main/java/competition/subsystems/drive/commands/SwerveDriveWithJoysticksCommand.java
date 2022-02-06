@@ -33,9 +33,9 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
 
     @Override
     public void execute() {
-        double xPower = MathUtils.deadband(oi.gamepad.getLeftStickX(), 0.15, (a) -> a);
-        double yPower = MathUtils.deadband(oi.gamepad.getLeftStickY(), 0.15, (a) -> a);
-        double rotatePower = MathUtils.deadband(oi.gamepad.getRightStickX(), 0.15, (a) -> a);
+        double xPower = MathUtils.deadband(oi.driverGamepad.getLeftStickX(), oi.getDriverGamepadTypicalDeadband(), (a) -> a);
+        double yPower = MathUtils.deadband(oi.driverGamepad.getLeftStickY(), oi.getDriverGamepadTypicalDeadband(), (a) -> a);
+        double rotatePower = MathUtils.deadband(oi.driverGamepad.getRightStickX(), oi.getDriverGamepadTypicalDeadband(), (a) -> a);
 
         // Get the current heading, use that for field-oriented operations
         XYPair translationIntent = new XYPair(xPower, yPower);

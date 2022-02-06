@@ -1,8 +1,5 @@
 package competition.subsystems.drive;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -191,6 +188,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
 
     /***
      * Give the same power to all steering modules, and the another power to all the drive wheels.
+     * Does not currently use PID! As a result, wheel positions will vary wildly!
      * @param drivePower -1 to 1 power to apply to the drive wheels.
      * @param steeringPower -1 to 1 power to apply to the steering modules.
      */
