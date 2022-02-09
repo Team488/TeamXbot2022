@@ -49,4 +49,29 @@ public class ClimberArmsubsystemTest extends BaseCompetitionTest {
         assertEquals("Arm should be stopping", 0, climberArmSubsystem.armMotor.get(), 0.0001);
 
     }
+    @Test
+    public void testSafetyExtend(){
+        ClimberArmSubsystem climberArmSubsystem = this.injector.getInstance(ClimberArmSubsystem.class);
+        assertEquals("Arm should start not moving", 0, climberArmSubsystem.armMotor.get(), 0.0001);
+        climberArmSubsystem.setPower(1);
+        assertEquals("Arm should be extending", 1, climberArmSubsystem.armMotor.get(), 0.0001);
+        climberArmSubsystem.armMotor.setPosition(20);
+        climberArmSubsystem.setPower(1);
+        assertEquals("Arm should start not moving", 0, climberArmSubsystem.armMotor.get(), 0.0001);
+        climberArmSubsystem.setPower(-1);
+        assertEquals("Arm should be retracting", -1, climberArmSubsystem.armMotor.get(), 0.0001);
+    }
+
+    @Test
+    public void testSafetyRetract(){
+        ClimberArmSubsystem climberArmSubsystem = this.injector.getInstance(ClimberArmSubsystem.class);
+        assertEquals("Arm should start not moving", 0, climberArmSubsystem.armMotor.get(), 0.0001);
+        climberArmSubsystem.setPower(-1);
+        assertEquals("Arm should be retracting", -1, climberArmSubsystem.armMotor.get(), 0.0001);
+        climberArmSubsystem.armMotor.setPosition(-25);
+        climberArmSubsystem.setPower(-1);
+        assertEquals("Arm should start not moving", 0, climberArmSubsystem.armMotor.get(), 0.0001);
+        climberArmSubsystem.setPower(1);
+        assertEquals("Arm should be extending", 1, climberArmSubsystem.armMotor.get(), 0.0001);
+    }
 }

@@ -16,13 +16,5 @@ public class MotorArmStopCommandTest extends BaseCompetitionTest{
         climberArmSubsystem.motorStop(0);
         assertEquals("Arm stops", 0, climberArmSubsystem.armMotor.get(), 0.0001);
     }
-    @Test
-    public void testDoubleArmStop(){
-        ClimberArmSubsystem climberArmSubsystem = this.injector.getInstance(ClimberArmSubsystem.class);
-        assertEquals("Arm should start stopped", 0, climberArmSubsystem.armMotor.get(), 0.0001);
-        climberArmSubsystem.motorStop(0);
-        assertEquals("Arm stops", 0, climberArmSubsystem.armMotor.get(), 0.0001);
-        climberArmSubsystem.motorStop(0);
-        assertEquals("Arm stops", 0, climberArmSubsystem.armMotor.get(), 0.0001);
-    }
+   
 }
