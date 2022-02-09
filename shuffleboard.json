@@ -1,0 +1,242 @@
+{
+  "tabPane": [
+    {
+      "title": "Swerve",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "2,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/CurrentHeading",
+              "_title": "/SmartDashboard/PoseSubsystem/CurrentHeading"
+            }
+          },
+          "8,0": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "Subsystem Layout",
+              "_title": "Drive PID",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///Preferences/SwerveDriveSubsystem/PID/P",
+                  "_title": "P"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///Preferences/SwerveDriveSubsystem/PID/I",
+                  "_title": "I"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///Preferences/SwerveDriveSubsystem/PID/D",
+                  "_title": "D"
+                }
+              ]
+            }
+          },
+          "4,0": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "Subsystem Layout",
+              "_title": "Steering PID",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///Preferences/SwerveSteeringSubsystem/PID/P",
+                  "_title": "P"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///Preferences/SwerveSteeringSubsystem/PID/I",
+                  "_title": "I"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///Preferences/SwerveSteeringSubsystem/PID/D",
+                  "_title": "D"
+                }
+              ]
+            }
+          },
+          "4,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Preferences/SwerveSteeringSubsystem/PowerScaleFactor",
+              "_title": "Steering scale"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "Subsystem Layout",
+              "_title": "Front Left",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontLeftDrive/CurrentModuleHeading",
+                  "_title": "CurrentModuleHeading"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontLeftDrive/TargetRotation",
+                  "_title": "TargetRotation"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/TargetVelocity",
+                  "_title": "TargetVelocity"
+                }
+              ]
+            }
+          },
+          "6,0": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "Subsystem Layout",
+              "_title": "Front Right",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontRightDrive/CurrentModuleHeading",
+                  "_title": "CurrentModuleHeading"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontRightDrive/TargetRotation",
+                  "_title": "TargetRotation"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontRightDrive/TargetVelocity",
+                  "_title": "TargetVelocity"
+                }
+              ]
+            }
+          },
+          "5,2": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "Subsystem Layout",
+              "_title": "Rear Left",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearLeftDrive/CurrentModuleHeading",
+                  "_title": "CurrentModuleHeading"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearLeftDrive/TargetRotation",
+                  "_title": "TargetRotation"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearLeftDrive/TargetVelocity",
+                  "_title": "TargetVelocity"
+                }
+              ]
+            }
+          },
+          "6,2": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "Subsystem Layout",
+              "_title": "Rear Right",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearRightDrive/CurrentModuleHeading",
+                  "_title": "CurrentModuleHeading"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearRightDrive/TargetRotation",
+                  "_title": "TargetRotation"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearRightDrive/TargetVelocity",
+                  "_title": "TargetVelocity"
+                }
+              ]
+            }
+          },
+          "2,0": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "Subsystem Layout",
+              "_title": "Target Movement",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/DriveSubsystem/TranslationXMetersPerSecond",
+                  "_title": "TranslationXMetersPerSecond"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/DriveSubsystem/TranslationYMetersPerSecond",
+                  "_title": "TranslationYMetersPerSecond"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/DriveSubsystem/RotationTargetRadians",
+                  "_title": "RotationTargetRadians"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ],
+  "windowGeometry": {
+    "x": -7.333333492279053,
+    "y": -7.333333492279053,
+    "width": 1721.3333740234375,
+    "height": 926.6666870117188
+  }
+}

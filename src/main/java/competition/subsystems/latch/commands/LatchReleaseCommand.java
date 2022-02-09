@@ -1,9 +1,9 @@
 package competition.subsystems.latch.commands;
 
 import com.google.inject.Inject;
+
 import competition.subsystems.latch.LatchSubsystem;
 import xbot.common.command.BaseCommand;
-import xbot.common.logic.Latch;
 
 public class LatchReleaseCommand extends BaseCommand {
 

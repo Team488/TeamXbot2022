@@ -36,14 +36,18 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
         pf.setPrefix(this);
 
         this.contract = electricalContract;
-        this.pid = pidf.createPIDManager(this.getPrefix() + "PID", 1.0, 0.0, 0.0, -1.0, 1.0);
+        this.pid = pidf.createPIDManager(super.getPrefix() + "PID", 1.0, 0.0, 0.0, -1.0, 1.0);
 
         this.velocityScaleFactor = pf.createPersistentProperty("VelocityScaleFactor", 0.1);
         this.targetVelocity = pf.createEphemeralProperty("TargetVelocity", 0.0);
 
         if (electricalContract.isDriveReady()) {
-            this.motorController = factory.createCANSparkMax(electricalContract.getDriveNeo(swerveInstance).channel, this.getPrefix(), "DriveNeo");
+            this.motorController = factory.createCANSparkMax(electricalContract.getDriveNeo(swerveInstance), this.getPrefix(), "DriveNeo");
         }
+    }
+
+    public String getLabel() {
+        return this.label;
     }
 
     @Override
@@ -82,13 +86,13 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
     @Override
     public void setPower(double power) {
         if (this.contract.isDriveReady()) {
-            this.motorController.set(power * this.velocityScaleFactor.get());
+            this.motorController.set(power);
         }
     }
 
     @Override
     public boolean isCalibrated() {
-        return false;
+        return true;
     }
     
 

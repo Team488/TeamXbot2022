@@ -1,7 +1,7 @@
 package competition.injection;
 
-import competition.electrical_contract.CompetitionContract;
 import competition.electrical_contract.ElectricalContract;
+import competition.electrical_contract.SimulationContract;
 import competition.injection.swerve.FrontLeftDrive;
 import competition.injection.swerve.FrontRightDrive;
 import competition.injection.swerve.RearLeftDrive;
@@ -23,7 +23,7 @@ public class SimulationModule extends SimulatorModule {
     @Override
     protected void configure() {
         super.configure();
-        this.bind(ElectricalContract.class).to(CompetitionContract.class);
+        this.bind(ElectricalContract.class).to(SimulationContract.class);
         this.bind(BasePoseSubsystem.class).to(CompetitionModule.CHOSEN_POSE_SUBSYSTEM);
         this.bind(BaseDriveSubsystem.class).to(CompetitionModule.CHOSEN_DRIVE_SUBSYSTEM);
 

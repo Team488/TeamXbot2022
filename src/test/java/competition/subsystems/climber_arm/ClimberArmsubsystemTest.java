@@ -1,14 +1,10 @@
 package competition.subsystems.climber_arm;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import com.fasterxml.jackson.databind.JsonSerializable.Base;
 
 import org.junit.Test;
 
 import competition.BaseCompetitionTest;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class ClimberArmsubsystemTest extends BaseCompetitionTest {
     
