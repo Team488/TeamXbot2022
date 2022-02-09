@@ -37,16 +37,14 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem{
 
 
     private void setMotorPower(double power, boolean isSafe){
-        boolean overExtend = isArmOverExtended();
-        boolean overRetracts = isArmOverRetracted();
 
 
         if (isSafe) {
 
-            if (overExtend) {
+            if (isArmOverExtended()) {
                 power = MathUtils.constrainDouble(power, -1, 0);
 
-            } else if (overRetracts) {
+            } else if (isArmOverRetracted()) {
                 power = MathUtils.constrainDouble(power, 0, 1);
             }
         }

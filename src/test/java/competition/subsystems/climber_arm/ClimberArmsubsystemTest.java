@@ -62,6 +62,8 @@ public class ClimberArmsubsystemTest extends BaseCompetitionTest {
         climberArmSubsystem.armMotor.setPosition(20);
         climberArmSubsystem.setPower(1);
         assertEquals("Arm should start not moving", 0, climberArmSubsystem.armMotor.get(), 0.0001);
+        climberArmSubsystem.setPower(-1);
+        assertEquals("Arm should be retracting", -1, climberArmSubsystem.armMotor.get(), 0.0001);
     }
 
     @Test
@@ -73,5 +75,7 @@ public class ClimberArmsubsystemTest extends BaseCompetitionTest {
         climberArmSubsystem.armMotor.setPosition(-25);
         climberArmSubsystem.setPower(-1);
         assertEquals("Arm should start not moving", 0, climberArmSubsystem.armMotor.get(), 0.0001);
+        climberArmSubsystem.setPower(1);
+        assertEquals("Arm should be extending", 1, climberArmSubsystem.armMotor.get(), 0.0001);
     }
 }
