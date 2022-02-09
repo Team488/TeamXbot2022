@@ -3,6 +3,7 @@ package competition.subsystems.climber_arm;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import competition.electrical_contract.ElectricalContract;
 import xbot.common.command.BaseSetpointSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
 import xbot.common.injection.electrical_contract.DeviceInfo;
@@ -29,9 +30,9 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem{
     }
 
     @Inject
-<<<<<<< HEAD
-    public ClimberArmSubsystem(CommonLibFactory factory, PropertyFactory pf){
-        armMotor = factory.createCANSparkMax(4, this.getPrefix(), "ArmMotor");
+
+    public ClimberArmSubsystem(CommonLibFactory factory, PropertyFactory pf, ElectricalContract eContract){
+        armMotor = factory.createCANSparkMax(eContract.getLeftClimberNeo(), this.getPrefix(), "ArmMotor");
         pf.setPrefix(this);
         safeArmExtendedNumber = pf.createPersistentProperty("safelyExtendable", 10);
         safeArmRetractedNumber = pf.createPersistentProperty("safelyRetractable", -10);
