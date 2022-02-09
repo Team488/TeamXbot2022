@@ -19,15 +19,6 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem{
     public final DoubleProperty safeArmExtendedNumber;
     public final DoubleProperty safeArmRetractedNumber;
     
-    public boolean isArmOverExtended(){
-        armMotorPosition = armMotor.getPosition();
-        return armMotorPosition > safeArmExtendedNumber.get();
-    }
-
-    public boolean isArmOverRetracted(){
-        armMotor.getPosition();
-        return armMotorPosition < safeArmRetractedNumber.get();
-    }
 
     @Inject
 
@@ -47,7 +38,8 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem{
             if (isArmOverExtended()) {
                 power = MathUtils.constrainDouble(power, -1, 0);
 
-            } else if (isArmOverRetracted()) {
+            } 
+            if (isArmOverRetracted()) {
                 power = MathUtils.constrainDouble(power, 0, 1);
             }
         }
@@ -90,6 +82,14 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem{
         
         return false;
     }
+    public boolean isArmOverExtended(){
+        armMotorPosition = armMotor.getPosition();
+        return armMotorPosition > safeArmExtendedNumber.get();
+    }
 
+    public boolean isArmOverRetracted(){
+        armMotor.getPosition();
+        return armMotorPosition < safeArmRetractedNumber.get();
+    }
 
 }
