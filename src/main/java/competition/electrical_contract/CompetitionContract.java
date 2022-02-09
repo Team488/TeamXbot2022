@@ -57,7 +57,7 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public boolean areCanCodersReady() {
-        return false;
+        return true;
     }
 
     @Override
@@ -66,16 +66,16 @@ public class CompetitionContract extends ElectricalContract {
 
         switch (swerveInstance.getLabel()) {
             case "FrontLeftDrive":
-                return new DeviceInfo(3, false, simulationScalingValue);
+                return new DeviceInfo(51, false, simulationScalingValue);
 
             case "FrontRightDrive":
-                return new DeviceInfo(1, false, simulationScalingValue);
+                return new DeviceInfo(52, false, simulationScalingValue);
 
             case "RearLeftDrive":
-                return new DeviceInfo(4, false, simulationScalingValue);
+                return new DeviceInfo(53, false, simulationScalingValue);
 
             case "RearRightDrive":
-                return new DeviceInfo(2, false, simulationScalingValue);
+                return new DeviceInfo(54, false, simulationScalingValue);
 
             default:
                 return null;

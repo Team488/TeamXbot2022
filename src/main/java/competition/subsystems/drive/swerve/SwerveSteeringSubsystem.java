@@ -81,15 +81,19 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
      */
     @Override
     public double getCurrentValue() {
+        double position = 0;
+        
         if (this.contract.areCanCodersReady()) {
-            return this.encoder.getPosition();
+            position = this.encoder.getAbsolutePosition();
         }
         if (this.contract.isDriveReady()) {
             // If the CANCoders aren't available, we can use the built-in encoders in the steering motors. Experience suggests
             // that this will work for about 30 seconds of driving before getting wildly out of alignment.
-            return ((this.motorController.getPosition() - positionOffset) * 30)+90;
+            position =  this.motorController.getPosition() * 30;
         }
-        return 0.0;
+        
+        double adjustedPosition = (position - positionOffset) + 90;
+        return adjustedPosition;
     }
 
     /**
