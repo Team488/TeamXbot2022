@@ -74,6 +74,10 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         setMotorPower(power, true);
     }
 
+    public void setPower(double power, boolean isSafe) {
+        setMotorPower(power, isSafe);
+    }
+
     @Override
     public boolean isCalibrated() {
         return isCalibratedProp.get();
