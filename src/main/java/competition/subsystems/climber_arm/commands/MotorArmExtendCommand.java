@@ -14,6 +14,7 @@ public class MotorArmExtendCommand extends BaseCommand{
     @Inject
     public MotorArmExtendCommand(ClimberArmSubsystem armExtends, PropertyFactory pf){
         armExtends = this.armExtends;
+        pf.setPrefix(this);
         motorExtendSpeed = pf.createPersistentProperty("extendSpeed", 0.1);
         addRequirements(armExtends);
     }

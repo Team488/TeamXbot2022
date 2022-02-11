@@ -54,7 +54,7 @@ public class OperatorCommandMap {
 
     }
     @Inject
-    public void setupclimbingCommands(
+    public void setupClimbingCommands(
         OperatorInterface operatorInterface,
         MotorArmExtendCommand extendArmCommand,
         MotorArmRetractCommand retractArmCommand,
