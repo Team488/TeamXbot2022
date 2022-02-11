@@ -6,7 +6,7 @@ import competition.operator_interface.OperatorInterface;
 import competition.subsystems.launcher.LauncherSubsystem;
 import xbot.common.command.BaseCommand;
 
-public class StopLauncherCommand extends BaseCommand{
+public class StopLauncherCommandf extends BaseCommand{
     
     final LauncherSubsystem launch;
     final OperatorInterface oi;

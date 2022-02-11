@@ -8,14 +8,14 @@ import xbot.common.command.BaseCommand;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 
-public class PewPewCommand extends BaseCommand{
+public class SpinShooterWheelCommand extends BaseCommand{
 
     final LauncherSubsystem launch;
     final OperatorInterface oi;
     final DoubleProperty maxPowerProp;
 
     @Inject
-    public PewPewCommand(OperatorInterface oi, 
+    public SpinShooterWheelCommand(OperatorInterface oi, 
     LauncherSubsystem launch, PropertyFactory pf){
         this.oi = oi;
         pf.setPrefix(this);
