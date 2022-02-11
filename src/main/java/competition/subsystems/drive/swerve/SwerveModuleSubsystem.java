@@ -117,7 +117,7 @@ public class SwerveModuleSubsystem extends BaseSubsystem {
             case "RearLeftDrive":
                 return new XYPair(-15, -15);
             case "RearRightDrive":
-                return new XYPair(-15, 15);
+                return new XYPair(15, -15);
             default:
                 return new XYPair(0, 0);
         }

@@ -107,4 +107,11 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
     public double calculatePower() {
         return this.pid.calculate(this.getTargetValue(), this.getCurrentValue());
     }
+
+    @Override
+    public void periodic() {
+        if (contract.isDriveReady()) {
+            //this.motorController.periodic();
+        }
+    }
 }

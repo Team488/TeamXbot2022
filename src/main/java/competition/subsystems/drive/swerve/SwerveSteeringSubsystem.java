@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import competition.electrical_contract.ElectricalContract;
 import competition.injection.swerve.SwerveInstance;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Rotation2d;
 import xbot.common.command.BaseSetpointSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
 import xbot.common.controls.sensors.XAbsoluteEncoder;
@@ -184,5 +183,8 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     public void periodic() {
         currentModuleHeading.set(getCurrentValue());
         canCoderStatus.set(this.encoder.getHealth().toString());
+        if (this.contract.isDriveReady()) {
+            //this.motorController.periodic();
+        }
     }
 }

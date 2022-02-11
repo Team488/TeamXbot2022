@@ -120,4 +120,14 @@ public class CompetitionContract extends ElectricalContract {
     public DeviceInfo getSecondaryShooterNeo() {
         return new DeviceInfo(34, false);
     }
+
+    @Override
+    public DeviceInfo getArduinoDio1() {
+        return new DeviceInfo(0);
+    }
+
+    @Override
+    public DeviceInfo getArduinoDio2() {
+        return new DeviceInfo(1);
+    }
 }
