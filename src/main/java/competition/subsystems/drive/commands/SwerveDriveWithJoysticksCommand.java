@@ -20,6 +20,7 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
     PoseSubsystem pose;
     OperatorInterface oi;
     final DoubleProperty input_exponent;
+    final DoubleProperty powerFactor;
 
     @Inject
     public SwerveDriveWithJoysticksCommand(DriveSubsystem drive, PoseSubsystem pose, OperatorInterface oi, PropertyFactory pf) {
@@ -28,6 +29,7 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
         this.pose = pose;
         pf.setPrefix(this);
         this.input_exponent = pf.createPersistentProperty("Input Exponent", 2);
+        this.powerFactor = pf.createPersistentProperty("Power Factor", 1);
         this.addRequirements(drive);
     }
 
@@ -38,18 +40,25 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
 
     @Override
     public void execute() {
-        double xPower = Math.pow(
-            MathUtils.deadband(oi.driverGamepad.getLeftStickX(), oi.getDriverGamepadTypicalDeadband(), (a) -> a),
-            input_exponent.get()
-        );
-        double yPower = Math.pow(
-            MathUtils.deadband(oi.driverGamepad.getLeftStickY(), oi.getDriverGamepadTypicalDeadband(), (a) -> a),
-            input_exponent.get()
-        );
+        double xPower = 
+            MathUtils.deadband(
+                oi.driverGamepad.getLeftStickX(), 
+                oi.getDriverGamepadTypicalDeadband(), 
+                (a) -> MathUtils.exponentAndRetainSign(a, (int)input_exponent.get()));
+
+        double yPower = 
+            MathUtils.deadband(
+                oi.driverGamepad.getLeftStickY(), 
+                oi.getDriverGamepadTypicalDeadband(), 
+                (a) -> MathUtils.exponentAndRetainSign(a, (int)input_exponent.get()));
+
+
+
         double rotatePower = MathUtils.deadband(oi.driverGamepad.getRightStickX(), oi.getDriverGamepadTypicalDeadband(), (a) -> a);
 
         // Get the current heading, use that for field-oriented operations
         XYPair translationIntent = new XYPair(xPower, yPower);
+        translationIntent = translationIntent.scale(powerFactor.get());
         drive.fieldOrientedDrive(translationIntent, rotatePower, pose.getCurrentHeading().getDegrees(), false);
     }
 }

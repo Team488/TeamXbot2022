@@ -13,7 +13,7 @@ public class ClimberPivotSubsystem extends BaseSubsystem {
 
     @Inject
     public ClimberPivotSubsystem(CommonLibFactory factory) {
-        pivot = factory.createSolenoid(2);
+        //pivot = factory.createSolenoid(2);
     }
 
     public void pivotIn() {

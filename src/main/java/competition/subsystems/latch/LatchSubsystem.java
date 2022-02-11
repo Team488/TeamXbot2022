@@ -13,7 +13,7 @@ public class LatchSubsystem extends BaseSubsystem {
 
     @Inject
     public LatchSubsystem(CommonLibFactory factory) {
-        latch = factory.createSolenoid(1);
+        //latch = factory.createSolenoid(1);
     }
 
     public void arm(){

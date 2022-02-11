@@ -53,6 +53,7 @@ public class OperatorCommandMap {
         operatorInterface.driverGamepad.getifAvailable(3).whenPressed(goToNextActiveSwerveModule);
 
     }
+    /*
     @Inject
     public void setupClimbingCommands(
         OperatorInterface operatorInterface,
@@ -70,6 +71,7 @@ public class OperatorCommandMap {
         operatorInterface.operatorGamepad.getifAvailable(5).whenPressed(pivotIn);
         operatorInterface.operatorGamepad.getifAvailable(6).whenPressed(pivotOut);
     }
+    */
     @Inject
     public void setupGeneralSwerveCommands(
         OperatorInterface operatorInterface,

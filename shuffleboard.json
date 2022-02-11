@@ -22,7 +22,7 @@
               "_title": "/SmartDashboard/PoseSubsystem/CurrentHeading"
             }
           },
-          "8,0": {
+          "9,0": {
             "size": [
               1,
               2
@@ -45,34 +45,6 @@
                 {
                   "_type": "Text View",
                   "_source0": "network_table:///Preferences/SwerveDriveSubsystem/PID/D",
-                  "_title": "D"
-                }
-              ]
-            }
-          },
-          "4,0": {
-            "size": [
-              1,
-              2
-            ],
-            "content": {
-              "_type": "Subsystem Layout",
-              "_title": "Steering PID",
-              "Layout/Label position": "BOTTOM",
-              "_children": [
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///Preferences/SwerveSteeringSubsystem/PID/P",
-                  "_title": "P"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///Preferences/SwerveSteeringSubsystem/PID/I",
-                  "_title": "I"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///Preferences/SwerveSteeringSubsystem/PID/D",
                   "_title": "D"
                 }
               ]
@@ -228,14 +200,200 @@
                 }
               ]
             }
+          },
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/PID/P",
+              "_title": "SmartDashboard/SwerveSteeringSubsystem/PID/P"
+            }
+          },
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/PID/D",
+              "_title": "SmartDashboard/SwerveSteeringSubsystem/PID/D"
+            }
+          },
+          "8,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveDriveWithJoysticksCommand/Power Factor",
+              "_title": "SmartDashboard/SwerveDriveWithJoysticksCommand/Power Factor"
+            }
+          },
+          "9,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveDriveWithJoysticksCommand/Input Exponent",
+              "_title": "SmartDashboard/SwerveDriveWithJoysticksCommand/Input Exponent"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Swerve Details",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/TargetVelocity",
+              "_title": "SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/TargetVelocity"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontRightDrive/TargetVelocity",
+              "_title": "SmartDashboard/SwerveDriveSubsystem/FrontRightDrive/TargetVelocity"
+            }
+          },
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearLeftDrive/TargetVelocity",
+              "_title": "SmartDashboard/SwerveDriveSubsystem/RearLeftDrive/TargetVelocity"
+            }
+          },
+          "5,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearRightDrive/TargetVelocity",
+              "_title": "SmartDashboard/SwerveDriveSubsystem/RearRightDrive/TargetVelocity"
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/DriveNeo/Voltage",
+              "_title": "SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/DriveNeo/Voltage"
+            }
+          },
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearRightDrive/DriveNeo/Voltage",
+              "_title": "SmartDashboard/SwerveDriveSubsystem/RearRightDrive/DriveNeo/Voltage"
+            }
+          },
+          "7,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearLeftDrive/DriveNeo/Voltage",
+              "_title": "SmartDashboard/SwerveDriveSubsystem/RearLeftDrive/DriveNeo/Voltage"
+            }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearRightDrive/DriveNeo/Voltage",
+              "_title": "SmartDashboard/SwerveDriveSubsystem/RearRightDrive/DriveNeo/Voltage"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Arduino",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ArduinoCommunicationSubsystem/dio1State",
+              "_title": "SmartDashboard/ArduinoCommunicationSubsystem/dio1State",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ArduinoCommunicationSubsystem/dio2State",
+              "_title": "SmartDashboard/ArduinoCommunicationSubsystem/dio2State",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
           }
         }
       }
     }
   ],
   "windowGeometry": {
-    "x": 14.399999618530273,
-    "y": 26.399999618530273,
+    "x": -127.19999694824219,
+    "y": 84.80000305175781,
     "width": 1553.5999755859375,
     "height": 692.7999877929688
   }
