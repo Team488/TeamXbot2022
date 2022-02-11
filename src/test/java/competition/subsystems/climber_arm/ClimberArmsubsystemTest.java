@@ -1,6 +1,8 @@
 package competition.subsystems.climber_arm;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -73,5 +75,22 @@ public class ClimberArmsubsystemTest extends BaseCompetitionTest {
         assertEquals("Arm should start not moving", 0, climberArmSubsystem.armMotor.get(), 0.0001);
         climberArmSubsystem.setPower(1);
         assertEquals("Arm should be extending", 1, climberArmSubsystem.armMotor.get(), 0.0001);
+    }
+
+    @Test
+    public void testSetCurrentPositionToZero() {
+        ClimberArmSubsystem subsystem = this.injector.getInstance(ClimberArmSubsystem.class);
+
+        assertEquals("Arm position defaults to zero", 0, subsystem.getPosition(), 0.001);
+        assertFalse("Arm should start uncalibrated", subsystem.isCalibrated());
+        subsystem.armMotor.setPosition(10);
+        assertFalse("Arm should still be uncalibrated after motor position changes", subsystem.isCalibrated());
+        assertEquals("Arm position should be the motor position", 10, subsystem.getPosition(), 0.001);
+        subsystem.setCurrentPositionToZero();
+        assertTrue("Arm should be calibrated after zeroing", subsystem.isCalibrated());
+        assertEquals("Arm position should be zero again", 0, subsystem.getPosition(), 0.001);
+        subsystem.armMotor.setPosition(10);
+        assertTrue("Arm should still be calibrated after motor position changes", subsystem.isCalibrated());
+        assertEquals("Arm position should be the motor position", 10, subsystem.getPosition(), 0.001);
     }
 }
