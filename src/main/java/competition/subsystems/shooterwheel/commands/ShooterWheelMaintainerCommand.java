@@ -1,41 +1,42 @@
-package competition.subsystems.launcher.commands;
+package competition.subsystems.shooterwheel.commands;
+
+import com.google.inject.Inject;
 
 import competition.operator_interface.OperatorInterface;
-import competition.subsystems.launcher.LauncherSubsystem;
+import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
 import xbot.common.command.BaseMaintainerCommand;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.properties.PropertyFactory;
 
-public class LauncherMaintainerCommand extends BaseMaintainerCommand {
-    
-    final LauncherSubsystem launch;
+public class ShooterWheelMaintainerCommand extends BaseMaintainerCommand {
+   
+    final ShooterWheelSubsystem wheel;
     final OperatorInterface oi;
 
-    public LauncherMaintainerCommand (LauncherSubsystem launch, OperatorInterface oi, 
-    PropertyFactory pf, CommonLibFactory clf){
-        super(launch, pf, clf, 50, 0.25); // ask John about the 50 and .25 bc values from 2020 code
-
+    @Inject
+    public ShooterWheelMaintainerCommand(OperatorInterface oi, ShooterWheelSubsystem wheel, PropertyFactory pf, CommonLibFactory clf){
+        super(wheel, pf, clf, 50, 0.25);
         this.oi = oi;
-        this.launch = launch;
-        this.addRequirements(this.launch);
+        this.wheel = wheel;
+        this.addRequirements(this.wheel);
     }
-    
+
     @Override
     public void initialize() {
         log.info("Initializing");
-        launch.setCurrentLimits();
-        launch.configurePID();
+        wheel.setCurrentLimits();
+        wheel.configurePID();
     }
-
+    
     @Override
     protected void calibratedMachineControlAction() {
-        double speed = launch.getTargetRPM();
-        launch.setPidSetpoint(speed);
+        double speed = wheel.getTargetRPM();
+        wheel.setPidSetpoint(speed);
     }
 
     @Override
     protected void initializeMachineControlAction() {
-        launch.resetPID();
+        wheel.resetPID();
         super.initializeMachineControlAction();
     }
 
@@ -47,7 +48,6 @@ public class LauncherMaintainerCommand extends BaseMaintainerCommand {
 
     @Override
     public void end(boolean interrupted) {
-        launch.resetWheel();
+        wheel.resetWheel();
     }
-
 }

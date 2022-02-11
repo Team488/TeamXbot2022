@@ -1,6 +1,7 @@
-package competition.subsystems.launcher;
+package competition.subsystems.shooterwheel;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.revrobotics.CANSparkMax.ControlType;
 
 import competition.electrical_contract.ElectricalContract;
@@ -10,8 +11,9 @@ import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 
-public class LauncherSubsystem extends BaseSetpointSubsystem{
-
+@Singleton
+public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
+    
     private final DoubleProperty targetRpmProp;
     private final DoubleProperty currentRpmProp;
     private final DoubleProperty rpmTrimProp;
@@ -21,7 +23,7 @@ public class LauncherSubsystem extends BaseSetpointSubsystem{
     ElectricalContract contract;
 
     @Inject
-    public LauncherSubsystem(CommonLibFactory factory, PropertyFactory pf, ElectricalContract contract) {
+    public ShooterWheelSubsystem(CommonLibFactory factory, PropertyFactory pf, ElectricalContract contract) {
         log.info("Creating ShooterWheelSubsystem");
         pf.setPrefix(this);
         this.contract = contract;
