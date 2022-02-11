@@ -8,32 +8,35 @@ import xbot.common.command.BaseSetpointSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.math.MathUtils;
+import xbot.common.properties.BooleanProperty;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 
 @Singleton
-public class ClimberArmSubsystem extends BaseSetpointSubsystem{
+public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     public XCANSparkMax armMotor;
     public double armMotorPosition;
     public final DoubleProperty safeArmExtendedNumber;
     public final DoubleProperty safeArmRetractedNumber;
+    private final DoubleProperty armMotorPositionProp;
+    private final BooleanProperty isCalibratedProp;
     
 
     @Inject
-
     public ClimberArmSubsystem(CommonLibFactory factory, PropertyFactory pf, ElectricalContract eContract){
         armMotor = factory.createCANSparkMax(eContract.getLeftClimberNeo(), this.getPrefix(), "ArmMotor");
         pf.setPrefix(this);
         safeArmExtendedNumber = pf.createPersistentProperty("safelyExtendable", 10);
         safeArmRetractedNumber = pf.createPersistentProperty("safelyRetractable", -10);
+        armMotorPositionProp = pf.createEphemeralProperty("ArmMotorPosition", 0.0);
+        isCalibratedProp = pf.createEphemeralProperty("IsArmCalibrated", false);
+
+        this.register();
     }
 
 
-    private void setMotorPower(double power, boolean isSafe){
-
-
+    private void setMotorPower(double power, boolean isSafe) {
         if (isSafe) {
-
             if (isArmOverExtended()) {
                 power = MathUtils.constrainDouble(power, -1, 0);
 
@@ -54,41 +57,49 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem{
 
     @Override
     public double getCurrentValue() {
-        
         return 0;
     }
 
     @Override
     public double getTargetValue() {
-        
         return 0;
     }
 
     @Override
     public void setTargetValue(double value) {
-        
-        
     }
 
     @Override
     public void setPower(double power) {
         setMotorPower(power, true);
-        
     }
 
     @Override
     public boolean isCalibrated() {
-        
-        return false;
+        return isCalibratedProp.get();
     }
-    public boolean isArmOverExtended(){
-        armMotorPosition = armMotor.getPosition();
+
+    public void setCurrentPositionToZero() {
+        armMotor.setPosition(0);
+        isCalibratedProp.set(true);
+    }
+
+    public boolean isArmOverExtended() {
+        armMotorPosition = getPosition();
         return armMotorPosition > safeArmExtendedNumber.get();
     }
 
-    public boolean isArmOverRetracted(){
-        armMotor.getPosition();
+    public boolean isArmOverRetracted() {
+        armMotorPosition = getPosition();
         return armMotorPosition < safeArmRetractedNumber.get();
     }
 
+    public double getPosition() {
+        return armMotor.getPosition();
+    }
+
+    @Override
+    public void periodic() {
+        this.armMotorPositionProp.set(armMotor.getPosition());
+    }
 }
