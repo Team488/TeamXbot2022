@@ -7,6 +7,8 @@ import org.apache.log4j.Logger;
 
 import competition.electrical_contract.ElectricalContract;
 import competition.injection.swerve.SwerveInstance;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Rotation2d;
 import xbot.common.command.BaseSetpointSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
 import xbot.common.controls.sensors.XAbsoluteEncoder;
@@ -17,6 +19,8 @@ import xbot.common.math.PIDManager;
 import xbot.common.math.WrappedRotation2d;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
+import xbot.common.properties.StringProperty;
+import xbot.common.resiliency.DeviceHealth;
 
 @Singleton
 public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
@@ -29,12 +33,15 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     private final DoubleProperty powerScale;
     private final DoubleProperty targetRotation;
     private final DoubleProperty currentModuleHeading;
+    private final StringProperty canCoderStatus;
+    private final DoubleProperty degreesPerMotorRotation;
 
     private XCANSparkMax motorController;
     private XAbsoluteEncoder encoder;
 
     private double positionOffset;
     private boolean calibrated = false;
+    private boolean canCoderUnavailable = false;
 
     @Inject
     public SwerveSteeringSubsystem(SwerveInstance swerveInstance, CommonLibFactory factory,
@@ -48,11 +55,13 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         pf.setPrefix(super.getPrefix());
         this.pid = pidf.createPIDManager(super.getPrefix() + "PID", 0.1, 0.0, 0.0, -1.0, 1.0);
         this.powerScale = pf.createPersistentProperty("PowerScaleFactor", 5);
+        this.degreesPerMotorRotation = pf.createPersistentProperty("DegreesPerMotorRotation", 28.1502912);
 
         // Create properties that are unique to each instance
         pf.setPrefix(this);
         this.targetRotation = pf.createEphemeralProperty("TargetRotation", 0.0);
         this.currentModuleHeading = pf.createEphemeralProperty("CurrentModuleHeading", 0.0);
+        this.canCoderStatus = pf.createEphemeralProperty("CANCoderStatus", "unknown");
 
         if (electricalContract.isDriveReady()) {
             this.motorController = factory.createCANSparkMax(electricalContract.getSteeringNeo(swerveInstance), this.getPrefix(), "SteeringNeo");
@@ -62,6 +71,10 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
             // Since the CANCoders start with absolute knowledge from the start, that means this system
             // is always calibrated.
             calibrated = true;
+
+            if (this.encoder.getHealth() == DeviceHealth.Unhealthy) {
+                canCoderUnavailable = true;
+            }
         }
 
         this.register();
@@ -81,15 +94,20 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
      */
     @Override
     public double getCurrentValue() {
-        if (this.contract.areCanCodersReady()) {
-            return this.encoder.getPosition();
+        double position = 0;
+        
+        if (this.contract.areCanCodersReady() && !canCoderUnavailable) {
+            position = this.encoder.getAbsolutePosition();
         }
-        if (this.contract.isDriveReady()) {
+        else if (this.contract.isDriveReady() || canCoderUnavailable) {
             // If the CANCoders aren't available, we can use the built-in encoders in the steering motors. Experience suggests
             // that this will work for about 30 seconds of driving before getting wildly out of alignment.
-            return ((this.motorController.getPosition() - positionOffset) * 30)+90;
+            position =  this.motorController.getPosition() * degreesPerMotorRotation.get();
+            position = MathUtil.inputModulus(position, -180, 180);
         }
-        return 0.0;
+        
+        double adjustedPosition = (position - positionOffset) + 90;
+        return adjustedPosition;
     }
 
     /**
@@ -165,5 +183,6 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     @Override
     public void periodic() {
         currentModuleHeading.set(getCurrentValue());
+        canCoderStatus.set(this.encoder.getHealth().toString());
     }
 }
