@@ -6,7 +6,6 @@ import com.google.inject.Singleton;
 import competition.electrical_contract.ElectricalContract;
 import xbot.common.command.BaseSetpointSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
-import xbot.common.injection.electrical_contract.DeviceInfo;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.math.MathUtils;
 import xbot.common.properties.DoubleProperty;
