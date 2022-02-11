@@ -17,6 +17,7 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
     DriveSubsystem drive;
     PoseSubsystem pose;
     OperatorInterface oi;
+    final double DRIVE_INPUT_EXPONENT = 2;
 
     @Inject
     public SwerveDriveWithJoysticksCommand(DriveSubsystem drive, PoseSubsystem pose, OperatorInterface oi) {
@@ -33,8 +34,8 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
 
     @Override
     public void execute() {
-        double xPower = MathUtils.deadband(oi.driverGamepad.getLeftStickX(), oi.getDriverGamepadTypicalDeadband(), (a) -> a);
-        double yPower = MathUtils.deadband(oi.driverGamepad.getLeftStickY(), oi.getDriverGamepadTypicalDeadband(), (a) -> a);
+        double xPower = Math.pow(MathUtils.deadband(oi.driverGamepad.getLeftStickX(), oi.getDriverGamepadTypicalDeadband(), (a) -> a), DRIVE_INPUT_EXPONENT);
+        double yPower = Math.pow(MathUtils.deadband(oi.driverGamepad.getLeftStickY(), oi.getDriverGamepadTypicalDeadband(), (a) -> a), DRIVE_INPUT_EXPONENT);
         double rotatePower = MathUtils.deadband(oi.driverGamepad.getRightStickX(), oi.getDriverGamepadTypicalDeadband(), (a) -> a);
 
         // Get the current heading, use that for field-oriented operations
