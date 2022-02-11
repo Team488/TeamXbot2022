@@ -6,7 +6,7 @@ import xbot.common.command.BaseMaintainerCommand;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.properties.PropertyFactory;
 
-public class LauncherMaintainerCommand extends BaseMaintainerCommand{
+public class LauncherMaintainerCommand extends BaseMaintainerCommand {
     
     final LauncherSubsystem launch;
     final OperatorInterface oi;
@@ -23,16 +23,31 @@ public class LauncherMaintainerCommand extends BaseMaintainerCommand{
     @Override
     public void initialize() {
         log.info("Initializing");
+        launch.setCurrentLimits();
+        launch.configurePID();
     }
 
     @Override
-    protected void calibratedMachineControlAction(){
-        
+    protected void calibratedMachineControlAction() {
+        double speed = launch.getTargetRPM();
+        launch.setPidSetpoint(speed);
+    }
+
+    @Override
+    protected void initializeMachineControlAction() {
+        launch.resetPID();
+        super.initializeMachineControlAction();
     }
 
     @Override
     protected double getHumanInput() {
+        // Currently, never hooked into human input. This may change.
         return 0;
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        launch.resetWheel();
     }
 
 }

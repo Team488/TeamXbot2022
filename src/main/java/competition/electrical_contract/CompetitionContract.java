@@ -148,18 +148,19 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public boolean isLauncherReady() {
-        return true;
+        return false;
     }
 
-    //TODO: temporary channel numbers
+    // Still temporary, we need to renumber the shooter motors
     @Override
     public DeviceInfo getShooterMotorLeader() {
-        return new DeviceInfo(10, true);
+        return new DeviceInfo(5, true);
     }
 
+    // Still temporary, we need to renumber the shooter motors
     @Override
     public DeviceInfo getShooterMotorFollower() {
-        return new DeviceInfo(15, false);
+        return new DeviceInfo(6, false);
     }
 
 }
