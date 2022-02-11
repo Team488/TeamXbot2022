@@ -14,12 +14,16 @@ import xbot.common.logging.RobotAssertionManager;
 @Singleton
 public class OperatorInterface {
     public XXboxController driverGamepad;
+    public XXboxController operatorGamepad;
 
     @Inject
     public OperatorInterface(CommonLibFactory factory, RobotAssertionManager assertionManager) {
         driverGamepad = factory.createXboxController(0);
+        operatorGamepad = factory.createXboxController(1);
         driverGamepad.setLeftInversion(false, true);
         driverGamepad.setRightInversion(true, true);
+        operatorGamepad.setLeftInversion(false, true);
+        operatorGamepad.setRightInversion(true, true);
     }
 
     public double getDriverGamepadTypicalDeadband() {

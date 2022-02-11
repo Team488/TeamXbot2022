@@ -8,14 +8,15 @@ import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 
 public class MotorArmRetractCommand extends BaseCommand{
-    public ClimberArmSubsystem armRetracts;
+    public ClimberArmSubsystem armRetract;
     final DoubleProperty motorRetractSpeed;
 
     @Inject
     public MotorArmRetractCommand(ClimberArmSubsystem armRetract, PropertyFactory pf){
-        addRequirements(armRetract);
-        armRetract = this.armRetracts;
+        this.armRetract = armRetract;
+        pf.setPrefix(this);
         motorRetractSpeed = pf.createPersistentProperty("retractSpeed", -0.1);
+        addRequirements(armRetract);
     }
     @Override
     public void initialize() {
@@ -26,7 +27,7 @@ public class MotorArmRetractCommand extends BaseCommand{
     @Override
     public void execute() {
         // 
-        armRetracts.setPower(motorRetractSpeed.get());
+        armRetract.setPower(motorRetractSpeed.get());
     }
 
 }
