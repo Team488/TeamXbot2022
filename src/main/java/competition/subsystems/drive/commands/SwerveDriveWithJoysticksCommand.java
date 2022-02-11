@@ -12,7 +12,8 @@ import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 
 /**
- * The main swerve drive command that links up the human input (from gamepad joysticks) to the drive subsystem.
+ * The main swerve drive command that links up the human input (from gamepad
+ * joysticks) to the drive subsystem.
  */
 public class SwerveDriveWithJoysticksCommand extends BaseCommand {
 
@@ -23,7 +24,8 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
     final DoubleProperty powerFactor;
 
     @Inject
-    public SwerveDriveWithJoysticksCommand(DriveSubsystem drive, PoseSubsystem pose, OperatorInterface oi, PropertyFactory pf) {
+    public SwerveDriveWithJoysticksCommand(DriveSubsystem drive, PoseSubsystem pose, OperatorInterface oi,
+            PropertyFactory pf) {
         this.drive = drive;
         this.oi = oi;
         this.pose = pose;
@@ -40,21 +42,20 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
 
     @Override
     public void execute() {
-        double xPower = 
-            MathUtils.deadband(
-                oi.driverGamepad.getLeftStickX(), 
-                oi.getDriverGamepadTypicalDeadband(), 
-                (a) -> MathUtils.exponentAndRetainSign(a, (int)input_exponent.get()));
+        double xPower = MathUtils.deadband(
+                oi.driverGamepad.getLeftStickX(),
+                oi.getDriverGamepadTypicalDeadband(),
+                (a) -> MathUtils.exponentAndRetainSign(a, (int) input_exponent.get()));
 
-        double yPower = 
-            MathUtils.deadband(
-                oi.driverGamepad.getLeftStickY(), 
-                oi.getDriverGamepadTypicalDeadband(), 
-                (a) -> MathUtils.exponentAndRetainSign(a, (int)input_exponent.get()));
+        double yPower = MathUtils.deadband(
+                oi.driverGamepad.getLeftStickY(),
+                oi.getDriverGamepadTypicalDeadband(),
+                (a) -> MathUtils.exponentAndRetainSign(a, (int) input_exponent.get()));
 
-
-
-        double rotatePower = MathUtils.deadband(oi.driverGamepad.getRightStickX(), oi.getDriverGamepadTypicalDeadband(), (a) -> a);
+        double rotatePower = MathUtils.deadband(
+                oi.driverGamepad.getRightStickX(),
+                oi.getDriverGamepadTypicalDeadband(),
+                (a) -> MathUtils.exponentAndRetainSign(a, (int) input_exponent.get()));
 
         // Get the current heading, use that for field-oriented operations
         XYPair translationIntent = new XYPair(xPower, yPower);

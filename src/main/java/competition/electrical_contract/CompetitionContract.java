@@ -130,4 +130,19 @@ public class CompetitionContract extends ElectricalContract {
     public DeviceInfo getArduinoDio2() {
         return new DeviceInfo(1);
     }
+
+    @Override
+    public boolean arePneumaticsReady() {
+        return false;
+    }
+
+    @Override
+    public DeviceInfo getLatchSolenoid() {
+        return new DeviceInfo(1);
+    }
+
+    @Override
+    public DeviceInfo getPivotSolenoid() {
+        return new DeviceInfo(2);
+    }
 }

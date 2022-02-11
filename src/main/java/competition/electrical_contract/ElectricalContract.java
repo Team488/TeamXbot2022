@@ -33,4 +33,10 @@ public abstract class ElectricalContract {
     public abstract DeviceInfo getArduinoDio1();
 
     public abstract DeviceInfo getArduinoDio2();
+
+    public abstract boolean arePneumaticsReady();
+
+    public abstract DeviceInfo getLatchSolenoid();
+
+    public abstract DeviceInfo getPivotSolenoid();
 }

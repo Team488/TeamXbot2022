@@ -184,6 +184,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         currentModuleHeading.set(getCurrentValue());
         canCoderStatus.set(this.encoder.getHealth().toString());
         if (this.contract.isDriveReady()) {
+            // Seems to cause a lot of lag.
             //this.motorController.periodic();
         }
     }

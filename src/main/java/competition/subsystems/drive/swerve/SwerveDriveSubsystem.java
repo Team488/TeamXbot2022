@@ -111,6 +111,7 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
     @Override
     public void periodic() {
         if (contract.isDriveReady()) {
+            // Seems to cause a lot of lag.
             //this.motorController.periodic();
         }
     }
