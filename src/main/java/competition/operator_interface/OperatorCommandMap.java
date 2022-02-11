@@ -63,12 +63,12 @@ public class OperatorCommandMap {
         PivotInCommand pivotIn,
         PivotOutCommand pivotOut
     ){
-        operatorInterface.driverGamepad.getifAvailable(9).whenPressed(extendArmCommand);
-        operatorInterface.driverGamepad.getifAvailable(10).whenPressed(retractArmCommand);
-        operatorInterface.driverGamepad.getifAvailable(8).whenPressed(latchArm);
-        operatorInterface.driverGamepad.getifAvailable(7).whenPressed(releaseArm);
-        operatorInterface.driverGamepad.getifAvailable(5).whenPressed(pivotIn);
-        operatorInterface.driverGamepad.getifAvailable(6).whenPressed(pivotOut);
+        operatorInterface.operatorGamepad.getifAvailable(9).whenHeld(extendArmCommand);
+        operatorInterface.operatorGamepad.getifAvailable(10).whenHeld(retractArmCommand);
+        operatorInterface.operatorGamepad.getifAvailable(8).whenPressed(latchArm);
+        operatorInterface.operatorGamepad.getifAvailable(7).whenPressed(releaseArm);
+        operatorInterface.operatorGamepad.getifAvailable(5).whenPressed(pivotIn);
+        operatorInterface.operatorGamepad.getifAvailable(6).whenPressed(pivotOut);
     }
     @Inject
     public void setupGeneralSwerveCommands(
