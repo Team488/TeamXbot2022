@@ -7,6 +7,11 @@ import competition.injection.swerve.FrontLeftDrive;
 import competition.injection.swerve.FrontRightDrive;
 import competition.injection.swerve.RearLeftDrive;
 import competition.injection.swerve.RearRightDrive;
+import competition.subsystems.climber_arm.ClimberArmSubsystem;
+import competition.subsystems.climber_arm.commands.MotorArmExtendCommand;
+import competition.subsystems.climber_arm.commands.MotorArmRetractCommand;
+import competition.subsystems.climber_pivot.commands.PivotInCommand;
+import competition.subsystems.climber_pivot.commands.PivotOutCommand;
 import competition.subsystems.drive.commands.CalibrateSteeringCommand;
 import competition.subsystems.drive.commands.DebuggingSwerveWithJoysticksCommand;
 import competition.subsystems.drive.commands.GoToNextActiveSwerveModuleCommand;
@@ -14,7 +19,10 @@ import competition.subsystems.drive.commands.SimpleCrabDriveFromGamepadCommand;
 import competition.subsystems.drive.commands.SwerveDriveMaintainerCommand;
 import competition.subsystems.drive.commands.SwerveDriveWithJoysticksCommand;
 import competition.subsystems.drive.commands.SwerveSteeringMaintainerCommand;
+import competition.subsystems.latch.commands.LatchArmCommand;
+import competition.subsystems.latch.commands.LatchReleaseCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import xbot.common.logic.Latch;
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 
 /**
@@ -43,8 +51,25 @@ public class OperatorCommandMap {
         operatorInterface.driverGamepad.getifAvailable(4).whenPressed(crabDrive);
         operatorInterface.driverGamepad.getifAvailable(2).whenPressed(swerveDebugging);
         operatorInterface.driverGamepad.getifAvailable(3).whenPressed(goToNextActiveSwerveModule);
-    }
 
+    }
+    @Inject
+    public void setupClimbingCommands(
+        OperatorInterface operatorInterface,
+        MotorArmExtendCommand extendArmCommand,
+        MotorArmRetractCommand retractArmCommand,
+        LatchArmCommand latchArm,
+        LatchReleaseCommand releaseArm,
+        PivotInCommand pivotIn,
+        PivotOutCommand pivotOut
+    ){
+        operatorInterface.operatorGamepad.getifAvailable(9).whenHeld(extendArmCommand);
+        operatorInterface.operatorGamepad.getifAvailable(10).whenHeld(retractArmCommand);
+        operatorInterface.operatorGamepad.getifAvailable(8).whenPressed(latchArm);
+        operatorInterface.operatorGamepad.getifAvailable(7).whenPressed(releaseArm);
+        operatorInterface.operatorGamepad.getifAvailable(5).whenPressed(pivotIn);
+        operatorInterface.operatorGamepad.getifAvailable(6).whenPressed(pivotOut);
+    }
     @Inject
     public void setupGeneralSwerveCommands(
         OperatorInterface operatorInterface,
