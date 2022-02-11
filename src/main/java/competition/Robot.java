@@ -5,6 +5,7 @@ import competition.injection.CompetitionModule;
 import competition.injection.SimulationModule;
 import competition.operator_interface.OperatorCommandMap;
 import competition.subsystems.SubsystemDefaultCommandMap;
+import competition.subsystems.arduino.ArduinoCommunicationSubsystem;
 import competition.subsystems.pose.PoseSubsystem;
 import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 import xbot.common.command.BaseRobot;
@@ -18,6 +19,7 @@ public class Robot extends BaseRobot {
         super.initializeSystems();
         this.injector.getInstance(SubsystemDefaultCommandMap.class);
         this.injector.getInstance(OperatorCommandMap.class);
+        this.injector.getInstance(ArduinoCommunicationSubsystem.class);
     }
 
     @Override

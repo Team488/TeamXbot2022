@@ -183,7 +183,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         // If we were asked to move in a direction, remember that direction.
         if (translate.getMagnitude() > 0.05) {
             lastCommandedDirection = translate;
-        }
+        }        
     }
 
     /***

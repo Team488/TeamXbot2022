@@ -7,4 +7,9 @@ public class TestElectricalContract extends CompetitionContract {
     public boolean isDriveReady() {
         return true;
     }
+
+    @Override
+    public boolean arePneumaticsReady() {
+        return true;
+    }
 }
