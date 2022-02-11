@@ -2,8 +2,6 @@ package competition.subsystems.latch;
 
 import static org.junit.Assert.assertTrue;
 
-import com.google.inject.assistedinject.AssistedInjectTargetVisitor;
-
 import org.junit.Test;
 
 import competition.BaseCompetitionTest;

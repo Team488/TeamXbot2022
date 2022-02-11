@@ -53,16 +53,25 @@ public class SwerveModuleSubsystem extends BaseSubsystem {
         this.targetState = new SwerveModuleState();
     }
 
+    /**
+     * Sets the target steering angle and drive power for this module, in METRIC UNITS. 
+     * @param swerveModuleState Metric swerve module state
+     */
     public void setTargetState(SwerveModuleState swerveModuleState) {
         this.targetState = SwerveModuleState.optimize(swerveModuleState, Rotation2d.fromDegrees(getSteeringSubsystem().getCurrentValue()));
 
         this.getSteeringSubsystem().setTargetValue(new WrappedRotation2d(this.targetState.angle.getRadians()).getDegrees());
-        this.getDriveSubsystem().setTargetValue(this.targetState.speedMetersPerSecond / BasePoseSubsystem.INCHES_IN_A_METER);
+        // The kinetmatics library does everything in metric, so we need to transform that back to US Customary Units
+        this.getDriveSubsystem().setTargetValue(this.targetState.speedMetersPerSecond * BasePoseSubsystem.INCHES_IN_A_METER);
     }
 
+    /**
+     * Gets the current state of the module, in METRIC UNITS.
+     * @return Metric swerve module state
+     */
     public SwerveModuleState getCurrentState() {
         return new SwerveModuleState(
-            this.getDriveSubsystem().getCurrentValue() * BasePoseSubsystem.INCHES_IN_A_METER,
+            this.getDriveSubsystem().getCurrentValue() / BasePoseSubsystem.INCHES_IN_A_METER,
             Rotation2d.fromDegrees(this.getSteeringSubsystem().getCurrentValue()));
     }
 
@@ -87,16 +96,28 @@ public class SwerveModuleSubsystem extends BaseSubsystem {
         return this.steeringSubsystem;
     }
 
+    /***
+     * Very basic drive method - bypasses all PID to directly control the motors.
+     * Ensure that your command has required control of all relevant subsystems before doing this,
+     * or you will be fighting the maintainers.
+     * @param drivePower -1 to 1 value for nodule wheel power
+     * @param steeringPower -1 to 1 value for module rotation power
+     */
+    public void setPowers(double drivePower, double steeringPower) {
+        getDriveSubsystem().setPower(drivePower);
+        getSteeringSubsystem().setPower(steeringPower);
+    }
+
     private XYPair getDefaultModuleOffsets(SwerveInstance swerveInstance) {
         switch (swerveInstance.getLabel()) {
             case "FrontLeftDrive":
-                return new XYPair(-1, 1);
+                return new XYPair(-15, 15);
             case "FrontRightDrive":
-                return new XYPair(1, 1);
+                return new XYPair(15, 15);
             case "RearLeftDrive":
-                return new XYPair(-1, -1);
+                return new XYPair(-15, -15);
             case "RearRightDrive":
-                return new XYPair(-1, 1);
+                return new XYPair(15, -15);
             default:
                 return new XYPair(0, 0);
         }
