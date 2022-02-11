@@ -145,4 +145,22 @@ public class CompetitionContract extends ElectricalContract {
     public DeviceInfo getPivotSolenoid() {
         return new DeviceInfo(2);
     }
+
+    @Override
+    public boolean isLauncherReady() {
+        return false;
+    }
+
+    // Still temporary, we need to renumber the shooter motors
+    @Override
+    public DeviceInfo getShooterMotorLeader() {
+        return new DeviceInfo(5, true);
+    }
+
+    // Still temporary, we need to renumber the shooter motors
+    @Override
+    public DeviceInfo getShooterMotorFollower() {
+        return new DeviceInfo(6, false);
+    }
+
 }
