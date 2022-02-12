@@ -93,6 +93,10 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         lastCommandedDirection = new XYPair(0, 90);
     }
 
+    public SwerveDriveKinematics getSwerveDriveKinematics() {
+        return swerveDriveKinematics;
+    }
+
     public double getMaxTargetSpeedInchesPerSecond() {
         return maxTargetSpeed.get();
     }
