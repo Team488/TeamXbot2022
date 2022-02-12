@@ -3,6 +3,8 @@ package competition.operator_interface;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import competition.injection.arm.LeftArm;
+import competition.injection.arm.RightArm;
 import competition.injection.swerve.FrontLeftDrive;
 import competition.injection.swerve.FrontRightDrive;
 import competition.injection.swerve.RearLeftDrive;
@@ -10,6 +12,7 @@ import competition.injection.swerve.RearRightDrive;
 import competition.subsystems.climber_arm.commands.DualArmControllerCommandWithJoysticks;
 import competition.subsystems.climber_arm.commands.MotorArmExtendCommand;
 import competition.subsystems.climber_arm.commands.MotorArmRetractCommand;
+import competition.subsystems.climber_arm.commands.MotorArmStopCommand;
 import competition.subsystems.climber_pivot.commands.PivotInCommand;
 import competition.subsystems.climber_pivot.commands.PivotOutCommand;
 import competition.subsystems.drive.commands.CalibrateSteeringCommand;
@@ -59,19 +62,22 @@ public class OperatorCommandMap {
         MotorArmExtendCommand extendArmCommand,
         MotorArmRetractCommand retractArmCommand,
         LatchArmCommand latchArm,
-        LatchReleaseCommand releaseArm,
+        LatchReleaseCommand latchRelease,
         PivotInCommand pivotIn,
         PivotOutCommand pivotOut,
-        DualArmControllerCommandWithJoysticks dualArmWithJoysticks)
+        DualArmControllerCommandWithJoysticks dualArmWithJoysticks,
+        @LeftArm MotorArmStopCommand stopLeftArm,
+        @RightArm MotorArmStopCommand stopRightArm)
     {
-        operatorInterface.operatorGamepad.getifAvailable(9).whenHeld(extendArmCommand);
-        operatorInterface.operatorGamepad.getifAvailable(10).whenHeld(retractArmCommand);
         operatorInterface.operatorGamepad.getifAvailable(8).whenPressed(latchArm);
-        operatorInterface.operatorGamepad.getifAvailable(7).whenPressed(releaseArm);
+        operatorInterface.operatorGamepad.getifAvailable(7).whenPressed(latchRelease);
         operatorInterface.operatorGamepad.getifAvailable(5).whenPressed(pivotIn);
         operatorInterface.operatorGamepad.getifAvailable(6).whenPressed(pivotOut);
 
+        ParallelCommandGroup stopBothArms = new ParallelCommandGroup(stopLeftArm, stopRightArm);
+
         operatorInterface.operatorGamepad.getifAvailable(1).whenPressed(dualArmWithJoysticks);
+        operatorInterface.operatorGamepad.getifAvailable(2).whenPressed(stopBothArms);
     }
     
     @Inject
