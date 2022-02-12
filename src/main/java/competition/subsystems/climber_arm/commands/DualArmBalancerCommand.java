@@ -9,14 +9,15 @@ import competition.subsystems.climber_arm.ClimberArmSubsystem;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.math.PIDManager;
 
-public class DualArmBalancerCommand extends DualArmControllerCommand {
+public class DualArmBalancerCommand extends BaseDoubleClimberArmCommand {
 
     final PIDManager balancePid;
+    final OperatorInterface oi;
 
     @Inject
     public DualArmBalancerCommand(@LeftArm ClimberArmSubsystem leftArm, @RightArm ClimberArmSubsystem rightArm, OperatorInterface oi, CommonLibFactory clf) {
-        super(leftArm, rightArm, oi);
-
+        super(leftArm, rightArm);
+        this.oi = oi;
         balancePid = clf.createPIDManager(this.getPrefix() + "BalancePID", 0.1, 0, 0);
     }
 

@@ -6,21 +6,16 @@ import competition.injection.arm.LeftArm;
 import competition.injection.arm.RightArm;
 import competition.operator_interface.OperatorInterface;
 import competition.subsystems.climber_arm.ClimberArmSubsystem;
-import xbot.common.command.BaseCommand;
 
-public class DualArmControllerCommand extends BaseCommand {
+public class DualArmControllerCommandWithJoysticks extends BaseDoubleClimberArmCommand {
 
-    protected final ClimberArmSubsystem leftArm;
-    protected final ClimberArmSubsystem rightArm;
     protected final OperatorInterface oi;
 
     boolean isSafe;
 
     @Inject
-    public DualArmControllerCommand(@LeftArm ClimberArmSubsystem leftArm, @RightArm ClimberArmSubsystem rightArm, OperatorInterface oi) {
-        this.addRequirements(leftArm, rightArm);
-        this.leftArm = leftArm;
-        this.rightArm = rightArm;
+    public DualArmControllerCommandWithJoysticks(@LeftArm ClimberArmSubsystem leftArm, @RightArm ClimberArmSubsystem rightArm, OperatorInterface oi) {
+        super(leftArm, rightArm);
         this.oi = oi;
     }
 

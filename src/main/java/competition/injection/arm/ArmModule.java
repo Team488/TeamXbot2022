@@ -5,6 +5,8 @@ import java.lang.annotation.Annotation;
 import com.google.inject.PrivateModule;
 
 import competition.subsystems.climber_arm.ClimberArmSubsystem;
+import competition.subsystems.climber_arm.commands.ClimberArmMaintainerCommand;
+import competition.subsystems.climber_arm.commands.MotorArmStopCommand;
 
 public class ArmModule extends PrivateModule {
     
@@ -18,21 +20,12 @@ public class ArmModule extends PrivateModule {
         bind(ArmInstance.class).toInstance(new ArmInstance(annotation.getSimpleName()));
 
         bind(ClimberArmSubsystem.class).annotatedWith(annotation).to(ClimberArmSubsystem.class);
+        expose(ClimberArmSubsystem.class).annotatedWith(annotation);
 
-        /*
-        bind(SwerveModuleSubsystem.class).annotatedWith(annotation).to(SwerveModuleSubsystem.class);
-        expose(SwerveModuleSubsystem.class).annotatedWith(annotation);
+        bind(MotorArmStopCommand.class).annotatedWith(annotation).to(MotorArmStopCommand.class);
+        expose(MotorArmStopCommand.class).annotatedWith(annotation);
 
-        bind(SwerveDriveSubsystem.class).annotatedWith(annotation).to(SwerveDriveSubsystem.class);
-        expose(SwerveDriveSubsystem.class).annotatedWith(annotation);
-        
-        bind(SwerveDriveMaintainerCommand.class).annotatedWith(annotation).to(SwerveDriveMaintainerCommand.class);
-        expose(SwerveDriveMaintainerCommand.class).annotatedWith(annotation);
-
-        bind(SwerveSteeringSubsystem.class).annotatedWith(annotation).to(SwerveSteeringSubsystem.class);
-        expose(SwerveSteeringSubsystem.class).annotatedWith(annotation);
-        
-        bind(SwerveSteeringMaintainerCommand.class).annotatedWith(annotation).to(SwerveSteeringMaintainerCommand.class);
-        expose(SwerveSteeringMaintainerCommand.class).annotatedWith(annotation);*/
+        bind(ClimberArmMaintainerCommand.class).annotatedWith(annotation).to(ClimberArmMaintainerCommand.class);
+        expose(ClimberArmMaintainerCommand.class).annotatedWith(annotation);
     }
 }
