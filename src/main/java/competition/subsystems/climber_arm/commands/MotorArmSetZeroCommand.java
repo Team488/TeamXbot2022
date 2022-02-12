@@ -2,26 +2,31 @@ package competition.subsystems.climber_arm.commands;
 
 import com.google.inject.Inject;
 
+import competition.injection.arm.LeftArm;
+import competition.injection.arm.RightArm;
 import competition.subsystems.climber_arm.ClimberArmSubsystem;
-import xbot.common.command.BaseCommand;
 
-public class MotorArmSetZeroCommand extends BaseCommand {
-
-    private final ClimberArmSubsystem subsystem;
+public class MotorArmSetZeroCommand extends BaseDoubleClimberArmCommand {
 
     @Inject
-    public MotorArmSetZeroCommand(ClimberArmSubsystem subsystem) {
-        this.subsystem = subsystem;
+    public MotorArmSetZeroCommand(@LeftArm ClimberArmSubsystem leftArm, @RightArm ClimberArmSubsystem rightArm) {
+        super(leftArm, rightArm);
     }
 
     @Override
     public void initialize() {
-        // nothing to do
+        leftArm.setCurrentPositionToZero();
+        rightArm.setCurrentPositionToZero();
     }
 
     @Override
     public void execute() {
-        this.subsystem.setCurrentPositionToZero();
+        // Nothing to do here
+    }
+
+    @Override
+    public boolean isFinished() {
+        return true;
     }
     
 }

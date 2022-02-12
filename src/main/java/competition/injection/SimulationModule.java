@@ -2,6 +2,9 @@ package competition.injection;
 
 import competition.electrical_contract.ElectricalContract;
 import competition.electrical_contract.SimulationContract;
+import competition.injection.arm.ArmModule;
+import competition.injection.arm.LeftArm;
+import competition.injection.arm.RightArm;
 import competition.injection.swerve.FrontLeftDrive;
 import competition.injection.swerve.FrontRightDrive;
 import competition.injection.swerve.RearLeftDrive;
@@ -31,5 +34,8 @@ public class SimulationModule extends SimulatorModule {
         this.install(new SwerveModule(FrontRightDrive.class));
         this.install(new SwerveModule(RearLeftDrive.class));
         this.install(new SwerveModule(RearRightDrive.class));
+
+        this.install(new ArmModule(LeftArm.class));
+        this.install(new ArmModule(RightArm.class));
     }
 }

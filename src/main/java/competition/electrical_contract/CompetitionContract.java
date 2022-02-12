@@ -1,5 +1,6 @@
 package competition.electrical_contract;
 
+import competition.injection.arm.ArmInstance;
 import competition.injection.swerve.SwerveInstance;
 import competition.subsystems.pose.PoseSubsystem;
 import xbot.common.injection.electrical_contract.DeviceInfo;
@@ -81,7 +82,7 @@ public class CompetitionContract extends ElectricalContract {
                 return null;
         }
     }
-    
+
     public boolean isIntakeReady() {
         return false;
     }
@@ -94,16 +95,6 @@ public class CompetitionContract extends ElectricalContract {
     @Override
     public boolean isClimberReady() {
         return false;
-    }
-
-    @Override
-    public DeviceInfo getLeftClimberNeo() {
-        return new DeviceInfo(37, false);
-    }
-
-    @Override
-    public DeviceInfo getRightClimberNeo() {
-        return new DeviceInfo(22, false);
     }
 
     @Override
@@ -161,6 +152,18 @@ public class CompetitionContract extends ElectricalContract {
     @Override
     public DeviceInfo getShooterMotorFollower() {
         return new DeviceInfo(6, false);
+    }
+
+    @Override
+    public DeviceInfo getClimberNeo(ArmInstance armInstance) {
+        switch (armInstance.getLabel()) {
+            case "LeftArm":
+                return new DeviceInfo(7, false);
+            case "RightArm":
+                return new DeviceInfo(8, false);
+            default:
+                return null;
+        }
     }
 
 }

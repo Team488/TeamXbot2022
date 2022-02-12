@@ -3,10 +3,14 @@ package competition.subsystems;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import competition.injection.arm.LeftArm;
+import competition.injection.arm.RightArm;
 import competition.injection.swerve.FrontLeftDrive;
 import competition.injection.swerve.FrontRightDrive;
 import competition.injection.swerve.RearLeftDrive;
 import competition.injection.swerve.RearRightDrive;
+import competition.subsystems.climber_arm.ClimberArmSubsystem;
+import competition.subsystems.climber_arm.commands.MotorArmStopCommand;
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.drive.commands.DebuggingSwerveWithJoysticksCommand;
 import competition.subsystems.drive.commands.SwerveDriveMaintainerCommand;
@@ -77,5 +81,17 @@ public class SubsystemDefaultCommandMap {
             @RearRightDrive SwerveDriveSubsystem subsystem,
             @RearRightDrive SwerveDriveMaintainerCommand command) {
         subsystem.setDefaultCommand(command);
+    }
+
+    // For now, have the default state of the arms be stopped - that's pretty safe. Later,
+    // once we have the PIDs tuned, we can move to using the maintainers.
+    @Inject
+    public void setupArms(
+        @LeftArm ClimberArmSubsystem leftArm,
+        @RightArm ClimberArmSubsystem rightArm,
+        @LeftArm MotorArmStopCommand leftArmStopCommand,
+        @RightArm MotorArmStopCommand rightArmStopCommand) {
+        leftArm.setDefaultCommand(leftArmStopCommand);
+        rightArm.setDefaultCommand(rightArmStopCommand);
     }
 }

@@ -1,5 +1,6 @@
 package competition.electrical_contract;
 
+import competition.injection.arm.ArmInstance;
 import competition.injection.swerve.SwerveInstance;
 import xbot.common.injection.electrical_contract.DeviceInfo;
 
@@ -20,9 +21,7 @@ public abstract class ElectricalContract {
 
     public abstract boolean isClimberReady();
 
-    public abstract DeviceInfo getLeftClimberNeo();
-
-    public abstract DeviceInfo getRightClimberNeo();
+    public abstract DeviceInfo getClimberNeo(ArmInstance armInstance);
 
     public abstract boolean isShooterReady();
 
