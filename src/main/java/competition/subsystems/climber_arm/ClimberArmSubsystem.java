@@ -28,6 +28,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     private final DoubleProperty armPositionTarget;
     private final DoubleProperty armInchesPerRotation;
     private final Latch safetyLatch;
+    final String label;
 
     private enum PidSlot {
         Position(0),
@@ -48,6 +49,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     public ClimberArmSubsystem(ArmInstance armInstance, CommonLibFactory factory, PropertyFactory pf, ElectricalContract eContract){
         armMotor = factory.createCANSparkMax(eContract.getClimberNeo(armInstance) , this.getPrefix(), "ArmMotor");
         armMotor.enableVoltageCompensation(12);
+        label = armInstance.getLabel();
         
         // Shared properties
         pf.setPrefix(super.getPrefix());
@@ -74,6 +76,11 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         });
 
         this.register();
+    }
+
+    @Override
+    public String getPrefix() {
+        return super.getPrefix() + this.label + "/";
     }
 
     private void setSoftLimitsEnabled(boolean enabled) {

@@ -23,7 +23,7 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
     private final PIDManager pid;
     private final ElectricalContract contract;
 
-    private final DoubleProperty velocityScaleFactor;
+    private final DoubleProperty inchesPerMotorRotation;
     private final DoubleProperty targetVelocity;
 
     private XCANSparkMax motorController;
@@ -33,12 +33,15 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
             PropertyFactory pf, PIDFactory pidf, ElectricalContract electricalContract) {
         this.label = swerveInstance.getLabel();
         log.info("Creating SwerveDriveSubsystem " + this.label);
-        pf.setPrefix(this);
-
+        
+        // Create properties shared among all instances
+        pf.setPrefix(super.getPrefix());
         this.contract = electricalContract;
         this.pid = pidf.createPIDManager(super.getPrefix() + "PID", 1.0, 0.0, 0.0, -1.0, 1.0);
-
-        this.velocityScaleFactor = pf.createPersistentProperty("VelocityScaleFactor", 0.1);
+        this.inchesPerMotorRotation = pf.createPersistentProperty("InchesPerMotorRotation", 2.022488);
+        
+        // Create properties unique to this instance.
+        pf.setPrefix(this);
         this.targetVelocity = pf.createEphemeralProperty("TargetVelocity", 0.0);
 
         if (electricalContract.isDriveReady()) {
@@ -61,7 +64,7 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
     @Override
     public double getCurrentValue() {
         if (this.contract.isDriveReady()) {
-            return this.motorController.get() / this.velocityScaleFactor.get();
+            return this.motorController.get() * this.inchesPerMotorRotation.get();
         } else {
             return 0;
         }
