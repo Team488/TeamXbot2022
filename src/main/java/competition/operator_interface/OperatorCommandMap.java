@@ -24,7 +24,9 @@ import competition.subsystems.drive.commands.SwerveDriveWithJoysticksCommand;
 import competition.subsystems.drive.commands.SwerveSteeringMaintainerCommand;
 import competition.subsystems.latch.commands.LatchArmCommand;
 import competition.subsystems.latch.commands.LatchReleaseCommand;
+import competition.subsystems.pose.PoseSubsystem;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import xbot.common.command.NamedInstantCommand;
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 
 /**
@@ -37,10 +39,14 @@ public class OperatorCommandMap {
     @Inject
     public void setupMyCommands(
             OperatorInterface operatorInterface,
-            SetRobotHeadingCommand resetHeading)
+            SetRobotHeadingCommand resetHeading,
+            PoseSubsystem pose)
     {
         resetHeading.setHeadingToApply(90);
-        operatorInterface.driverGamepad.getifAvailable(1).whenPressed(resetHeading);
+
+        NamedInstantCommand resetPosition = new NamedInstantCommand("Reset Position", () -> pose.setCurrentPosition(0,0));
+        ParallelCommandGroup resetPose = new ParallelCommandGroup(resetPosition, resetHeading);
+        operatorInterface.driverGamepad.getifAvailable(1).whenPressed(resetPose);
     }
 
     @Inject

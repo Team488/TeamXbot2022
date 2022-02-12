@@ -17,11 +17,6 @@ public class PoseSubsystem extends BasePoseSubsystem {
 
     private final DriveSubsystem drive;
     
-    public final SwerveModuleState frontLeftSwerveModuleState;
-    public final SwerveModuleState frontRightSwerveModuleState;
-    public final SwerveModuleState rearLeftSwerveModuleState;
-    public final SwerveModuleState rearRightSwerveModuleState;
-
     final SwerveDriveOdometry swerveOdometry;
 
     @Inject
@@ -56,11 +51,6 @@ public class PoseSubsystem extends BasePoseSubsystem {
         // utilities that expect the same conventions.
 
         swerveOdometry = new SwerveDriveOdometry(drive.getSwerveDriveKinematics(), new Rotation2d(), new Pose2d(0, 0, new Rotation2d()));
-        
-        frontLeftSwerveModuleState = new SwerveModuleState();
-        frontRightSwerveModuleState = new SwerveModuleState();
-        rearLeftSwerveModuleState = new SwerveModuleState();
-        rearRightSwerveModuleState = new SwerveModuleState();
     }
 
     @Override
@@ -74,8 +64,19 @@ public class PoseSubsystem extends BasePoseSubsystem {
             drive.getRearRightSwerveModuleSubsystem().getCurrentState());
 
             // Convert back to inches
-            totalDistanceX.set(updatedPosition.getX() * PoseSubsystem.INCHES_IN_A_METER);
-            totalDistanceY.set(updatedPosition.getY() * PoseSubsystem.INCHES_IN_A_METER);
+            totalDistanceX.set(updatedPosition.getY() * PoseSubsystem.INCHES_IN_A_METER);
+            totalDistanceY.set(-updatedPosition.getX() * PoseSubsystem.INCHES_IN_A_METER);
+    }
+
+    @Override
+    public void setCurrentPosition(double newXPosition, double newYPosition) {
+        super.setCurrentPosition(newXPosition, newYPosition);
+        swerveOdometry.resetPosition(
+            new Pose2d(
+                newXPosition / PoseSubsystem.INCHES_IN_A_METER, 
+                newYPosition / PoseSubsystem.INCHES_IN_A_METER, 
+                this.getCurrentHeading()),
+            this.getCurrentHeading());
     }
 
     @Override

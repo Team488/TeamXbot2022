@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import competition.subsystems.climber_arm.ClimberArmSubsystem;
-
 public class MotorArmRetractCommandTest extends BaseClimberArmTest {
     @Test
     public void testArmRetract (){

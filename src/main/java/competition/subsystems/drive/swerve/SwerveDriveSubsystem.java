@@ -25,6 +25,7 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
 
     private final DoubleProperty inchesPerMotorRotation;
     private final DoubleProperty targetVelocity;
+    private final DoubleProperty currentVelocity;
 
     private XCANSparkMax motorController;
 
@@ -43,6 +44,7 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
         // Create properties unique to this instance.
         pf.setPrefix(this);
         this.targetVelocity = pf.createEphemeralProperty("TargetVelocity", 0.0);
+        this.currentVelocity = pf.createEphemeralProperty("CurrentVelocity", 0.0);
 
         if (electricalContract.isDriveReady()) {
             this.motorController = factory.createCANSparkMax(electricalContract.getDriveNeo(swerveInstance), this.getPrefix(), "DriveNeo");
@@ -64,7 +66,8 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
     @Override
     public double getCurrentValue() {
         if (this.contract.isDriveReady()) {
-            return this.motorController.get() * this.inchesPerMotorRotation.get();
+            // Spark returns in RPM - need to convert to inches per second
+            return this.motorController.getVelocity() * this.inchesPerMotorRotation.get() / 60.0;
         } else {
             return 0;
         }
@@ -114,8 +117,7 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
     @Override
     public void periodic() {
         if (contract.isDriveReady()) {
-            // Seems to cause a lot of lag.
-            //this.motorController.periodic();
+            currentVelocity.set(this.getCurrentValue());
         }
     }
 }

@@ -29,6 +29,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     private final DoubleProperty armInchesPerRotation;
     private final Latch safetyLatch;
     final String label;
+    final ElectricalContract contract;
 
     private enum PidSlot {
         Position(0),
@@ -47,9 +48,13 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
 
     @Inject
     public ClimberArmSubsystem(ArmInstance armInstance, CommonLibFactory factory, PropertyFactory pf, ElectricalContract eContract){
-        armMotor = factory.createCANSparkMax(eContract.getClimberNeo(armInstance) , this.getPrefix(), "ArmMotor");
-        armMotor.enableVoltageCompensation(12);
+        if (eContract.isClimberReady()) {
+            armMotor = factory.createCANSparkMax(eContract.getClimberNeo(armInstance) , this.getPrefix(), "ArmMotor");
+            armMotor.enableVoltageCompensation(12);
+        }
+        
         label = armInstance.getLabel();
+        this.contract = eContract;
         
         // Shared properties
         pf.setPrefix(super.getPrefix());
@@ -84,8 +89,10 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     }
 
     private void setSoftLimitsEnabled(boolean enabled) {
-        armMotor.enableSoftLimit(SoftLimitDirection.kForward, enabled);
-        armMotor.enableSoftLimit(SoftLimitDirection.kForward, enabled);
+        if (contract.isClimberReady()) {
+            armMotor.enableSoftLimit(SoftLimitDirection.kForward, enabled);
+            armMotor.enableSoftLimit(SoftLimitDirection.kForward, enabled);
+        }
     }
 
 
@@ -103,7 +110,9 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
             }
         }
         
-        armMotor.set(power);
+        if (contract.isClimberReady()) {
+            armMotor.set(power);
+        }
     }
 
     public void stop(){
@@ -112,11 +121,14 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
 
     @Override
     public double getCurrentValue() {
-        return armMotor.getPosition() * armInchesPerRotation.get();
+        return getPosition();
     }
 
     public double getVelocity() {
-        return armMotor.getVelocity();
+        if (contract.isClimberReady()) {
+            return armMotor.getVelocity() * armInchesPerRotation.get();
+        }
+        return 0;
     }
 
     @Override
@@ -140,12 +152,18 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
 
     public void setPositionReference(double positionInInches) {
         // Convert from inches to rotations (the native unit of the controller)
-        armMotor.setReference(positionInInches / armInchesPerRotation.get(), ControlType.kPosition, PidSlot.Position.getSlot());
+        if (contract.isClimberReady()) {
+            armMotor.setReference(positionInInches / armInchesPerRotation.get(), ControlType.kPosition, PidSlot.Position.getSlot());
+        }
+        
     }
 
     public void setVelocityReference(double velocityInInchesPerSecond) {
         // Convert from inches to rotations/sec (the native unit of the controller)
-        armMotor.setReference(velocityInInchesPerSecond / armInchesPerRotation.get(), ControlType.kVelocity, PidSlot.Velocity.getSlot());
+        if (contract.isClimberReady()) {
+            armMotor.setReference(velocityInInchesPerSecond / armInchesPerRotation.get(), ControlType.kVelocity, PidSlot.Velocity.getSlot());
+        }
+        
     }
 
     @Override
@@ -154,7 +172,9 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     }
 
     public void setCurrentPositionToZero() {
-        armMotor.setPosition(0);
+        if (contract.isClimberReady()) {
+            armMotor.setPosition(0);
+        }
         isCalibratedProp.set(true);
     }
 
@@ -169,11 +189,14 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     }
 
     public double getPosition() {
-        return armMotor.getPosition();
+        if (contract.isClimberReady()) {
+            return armMotor.getPosition() * armInchesPerRotation.get();
+        }
+        return 0;
     }
 
     @Override
     public void periodic() {
-        this.armMotorPositionProp.set(armMotor.getPosition());
+        this.armMotorPositionProp.set(getPosition());
     }
 }
