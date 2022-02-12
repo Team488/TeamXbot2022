@@ -65,6 +65,8 @@ public class PoseSubsystem extends BasePoseSubsystem {
 
     @Override
     protected void updateOdometry() {
+        // The swerve modules return units in meters, which is what the swerve odometry expects.
+        // In principle the input/output here is unitless, but we're using meters for consistency.
         Pose2d updatedPosition = swerveOdometry.update(this.getCurrentHeading(),
             drive.getFrontLeftSwerveModuleSubsystem().getCurrentState(),
             drive.getFrontRightSwerveModuleSubsystem().getCurrentState(),
@@ -75,15 +77,6 @@ public class PoseSubsystem extends BasePoseSubsystem {
             totalDistanceX.set(updatedPosition.getX() * PoseSubsystem.INCHES_IN_A_METER);
             totalDistanceY.set(updatedPosition.getY() * PoseSubsystem.INCHES_IN_A_METER);
     }
-
-    /*
-    public static FieldPose fromPose2d(Pose2d wpiPose) {
-        XYPair translation = new XYPair(wpiPose.getX(), wpiPose.getY());
-        translation = translation.rotate(-90);
-        // Reflect - that is, swap X and Y.
-        FieldPose xbotPose = new FieldPose(wpiPose.getX(), wpiPose.getY(), wpiPose.getRotation().getDegrees());
-        xbotPose
-    }*/
 
     @Override
     protected double getLeftDriveDistance() {
