@@ -32,6 +32,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     private final DoubleProperty powerScale;
     private final DoubleProperty targetRotation;
     private final DoubleProperty currentModuleHeading;
+    private final DoubleProperty motorPosition;
     private final StringProperty canCoderStatus;
     private final DoubleProperty degreesPerMotorRotation;
 
@@ -60,6 +61,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         pf.setPrefix(this);
         this.targetRotation = pf.createEphemeralProperty("TargetRotation", 0.0);
         this.currentModuleHeading = pf.createEphemeralProperty("CurrentModuleHeading", 0.0);
+        this.motorPosition = pf.createEphemeralProperty("CurrentMotorPosition", 0.0);
         this.canCoderStatus = pf.createEphemeralProperty("CANCoderStatus", "unknown");
 
         if (electricalContract.isDriveReady()) {
@@ -183,7 +185,10 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     public void periodic() {
         currentModuleHeading.set(getCurrentValue());
         canCoderStatus.set(this.encoder.getHealth().toString());
+
         if (this.contract.isDriveReady()) {
+            this.motorPosition.set(this.motorController.getPosition());
+            
             // Seems to cause a lot of lag.
             //this.motorController.periodic();
         }
