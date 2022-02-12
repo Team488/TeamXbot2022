@@ -26,12 +26,12 @@ public class DualArmControllerCommandTest extends BaseClimberArmTest {
         // Move left joystick/arm
         ((MockXboxControllerAdapter)oi.operatorGamepad).setLeftStick(0, 0.5);
         command.execute();
-        checkArmPowers(0.5, 0);
+        checkArmPowers(0.5, 0, 0.2);
 
         // Move the right joystick/arm
         ((MockXboxControllerAdapter)oi.operatorGamepad).setRightStick(0, 0.5);
         command.execute();
-        checkArmPowers(0.5, 0.5);
+        checkArmPowers(0.5, 0.5, 0.2);
 
         // Move the arm way out of safe boundaries
         leftArm.armMotor.setPosition(1000);
@@ -51,24 +51,28 @@ public class DualArmControllerCommandTest extends BaseClimberArmTest {
         // Move left joystick/arm
         ((MockXboxControllerAdapter)oi.operatorGamepad).setLeftStick(0, 0.5);
         command.execute();
-        checkArmPowers(0.5, 0);
+        checkArmPowers(0.5, 0, 0.2);
 
         // Move the right joystick/arm
         ((MockXboxControllerAdapter)oi.operatorGamepad).setRightStick(0, 0.5);
         command.execute();
-        checkArmPowers(0.5, 0.5);
+        checkArmPowers(0.5, 0.5, 0.2);
 
         // Move the arm way out of safe boundaries
         leftArm.armMotor.setPosition(1000);
         rightArm.armMotor.setPosition(1000);
 
         command.execute();
-        checkArmPowers(0.5, 0.5);
+        checkArmPowers(0.5, 0.5, 0.2);
+    }
+
+    protected void checkArmPowers(double leftPower, double rightPower, double tolerance) {
+        assertEquals(leftPower, leftArm.armMotor.get(), tolerance);
+        assertEquals(rightPower, rightArm.armMotor.get(), tolerance);
     }
 
     protected void checkArmPowers(double leftPower, double rightPower) {
-        assertEquals(leftPower, leftArm.armMotor.get(), 0.01);
-        assertEquals(rightPower, rightArm.armMotor.get(), 0.01);
+        checkArmPowers(leftPower, rightPower, 0.001);
     }
 
 }
