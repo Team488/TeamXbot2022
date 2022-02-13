@@ -160,7 +160,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         if (this.contract.areCanCodersReady() && !canCoderUnavailable) {
             return getAbsoluteEncoderPositionInDegrees();
         }
-        else if (this.contract.isDriveReady() || canCoderUnavailable) {
+        else if (this.contract.isDriveReady()) {
             // If the CANCoders aren't available, we can use the built-in encoders in the steering motors. Experience suggests
             // that this will work for about 30 seconds of driving before getting wildly out of alignment.
             return getMotorControllerEncoderPosiitonInDegrees();
@@ -237,10 +237,11 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
 
     /**
      * Calculates the nearest position on the motor encoder to targetDegrees and sets the controller's PID target.
-     * @param targetDegrees The target angle of the wheels, relative to the robot.
      */
-    public void setMotorControllerTarget(double targetDegrees) {
+    public void setMotorControllerPidTarget() {
         if (this.contract.isDriveReady()) {
+            double targetDegrees = getTargetValue();
+
             // We can rely on either encoder for the starting position, to get the change in angle. Using the CANCoder
             // position to calculate this will help us to avoid any drift on the motor encoder. Then we just set our
             // target based on the motor encoder's current position. Unless the wheels are moving rapidly, the measurements

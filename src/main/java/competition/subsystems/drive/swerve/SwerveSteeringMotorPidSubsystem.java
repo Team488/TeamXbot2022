@@ -30,6 +30,15 @@ public class SwerveSteeringMotorPidSubsystem extends BaseSubsystem {
         kMaxOutput = pf.createPersistentProperty("kMaxOutput", 1.0);
     }
 
+    public void setAllProperties(double p, double i, double d, double ff, double minOutput, double maxOutput) {
+        this.kP.set(p);
+        this.kI.set(i);
+        this.kD.set(d);
+        this.kFF.set(ff);
+        this.kMinOutput.set(minOutput);
+        this.kMaxOutput.set(maxOutput);
+    }
+
     public double getP() {
         return kP.get();
     }
