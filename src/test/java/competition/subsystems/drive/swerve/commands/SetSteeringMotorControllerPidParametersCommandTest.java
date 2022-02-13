@@ -39,33 +39,40 @@ public class SetSteeringMotorControllerPidParametersCommandTest extends BaseComp
         assertEquals("I should be set correctly", 2, this.driveSubsystem.getFrontLeftSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getI(), 0.001);
         assertEquals("D should be set correctly", 3, this.driveSubsystem.getFrontLeftSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getD(), 0.001);
         assertEquals("FF should be set correctly", 4, this.driveSubsystem.getFrontLeftSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getFF(), 0.001);
-        assertEquals("MinOutput should be set correctly", 5, this.driveSubsystem.getFrontLeftSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getOutputMin(), 0.001);
-        assertEquals("MaxOutput should be set correctly", 6, this.driveSubsystem.getFrontLeftSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getOutputMax(), 0.001);
+        assertEquals("MinOutput should be set correctly",
+            5, this.driveSubsystem.getFrontLeftSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getOutputMin(), 0.001);
+        assertEquals("MaxOutput should be set correctly",
+            6, this.driveSubsystem.getFrontLeftSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getOutputMax(), 0.001);
 
         // Front right
         assertEquals("P should be set correctly", 1, this.driveSubsystem.getFrontRightSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getP(), 0.001);
         assertEquals("I should be set correctly", 2, this.driveSubsystem.getFrontRightSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getI(), 0.001);
         assertEquals("D should be set correctly", 3, this.driveSubsystem.getFrontRightSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getD(), 0.001);
         assertEquals("FF should be set correctly", 4, this.driveSubsystem.getFrontRightSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getFF(), 0.001);
-        assertEquals("MinOutput should be set correctly", 5, this.driveSubsystem.getFrontRightSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getOutputMin(), 0.001);
-        assertEquals("MaxOutput should be set correctly", 6, this.driveSubsystem.getFrontRightSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getOutputMax(), 0.001);
+        assertEquals("MinOutput should be set correctly",
+            5, this.driveSubsystem.getFrontRightSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getOutputMin(), 0.001);
+        assertEquals("MaxOutput should be set correctly",
+            6, this.driveSubsystem.getFrontRightSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getOutputMax(), 0.001);
 
         // Rear left
         assertEquals("P should be set correctly", 1, this.driveSubsystem.getRearLeftSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getP(), 0.001);
         assertEquals("I should be set correctly", 2, this.driveSubsystem.getRearLeftSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getI(), 0.001);
         assertEquals("D should be set correctly", 3, this.driveSubsystem.getRearLeftSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getD(), 0.001);
         assertEquals("FF should be set correctly", 4, this.driveSubsystem.getRearLeftSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getFF(), 0.001);
-        assertEquals("MinOutput should be set correctly", 5, this.driveSubsystem.getRearLeftSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getOutputMin(), 0.001);
-        assertEquals("MaxOutput should be set correctly", 6, this.driveSubsystem.getRearLeftSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getOutputMax(), 0.001);
+        assertEquals("MinOutput should be set correctly",
+            5, this.driveSubsystem.getRearLeftSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getOutputMin(), 0.001);
+        assertEquals("MaxOutput should be set correctly",
+            6, this.driveSubsystem.getRearLeftSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getOutputMax(), 0.001);
 
         // Rear right
         assertEquals("P should be set correctly", 1, this.driveSubsystem.getRearRightSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getP(), 0.001);
         assertEquals("I should be set correctly", 2, this.driveSubsystem.getRearRightSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getI(), 0.001);
         assertEquals("D should be set correctly", 3, this.driveSubsystem.getRearRightSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getD(), 0.001);
         assertEquals("FF should be set correctly", 4, this.driveSubsystem.getRearRightSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getFF(), 0.001);
-        assertEquals("MinOutput should be set correctly", 5, this.driveSubsystem.getRearRightSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getOutputMin(), 0.001);
-        assertEquals("MaxOutput should be set correctly", 6, this.driveSubsystem.getRearRightSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getOutputMax(), 0.001);
-
+        assertEquals("MinOutput should be set correctly",
+            5, this.driveSubsystem.getRearRightSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getOutputMin(), 0.001);
+        assertEquals("MaxOutput should be set correctly",
+            6, this.driveSubsystem.getRearRightSwerveModuleSubsystem().getSteeringSubsystem().getSparkMax().getOutputMax(), 0.001);
     }
 
 }
