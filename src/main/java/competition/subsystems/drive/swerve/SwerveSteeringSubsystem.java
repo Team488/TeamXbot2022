@@ -2,6 +2,7 @@ package competition.subsystems.drive.swerve;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.revrobotics.CANSparkMax.ControlType;
 
 import org.apache.log4j.Logger;
 
@@ -16,6 +17,7 @@ import xbot.common.math.MathUtils;
 import xbot.common.math.PIDFactory;
 import xbot.common.math.PIDManager;
 import xbot.common.math.WrappedRotation2d;
+import xbot.common.properties.BooleanProperty;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.properties.StringProperty;
@@ -35,6 +37,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     private final DoubleProperty motorPosition;
     private final StringProperty canCoderStatus;
     private final DoubleProperty degreesPerMotorRotation;
+    private final BooleanProperty useMotorControllerPid;
 
     private XCANSparkMax motorController;
     private XAbsoluteEncoder encoder;
@@ -56,6 +59,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         this.pid = pidf.createPIDManager(super.getPrefix() + "PID", 0.1, 0.0, 0.0, -1.0, 1.0);
         this.powerScale = pf.createPersistentProperty("PowerScaleFactor", 5);
         this.degreesPerMotorRotation = pf.createPersistentProperty("DegreesPerMotorRotation", 28.1502912);
+        this.useMotorControllerPid = pf.createPersistentProperty("UseMotorControllerPID", false);
 
         // Create properties that are unique to each instance
         pf.setPrefix(this);
@@ -95,17 +99,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
      */
     @Override
     public double getCurrentValue() {
-        double position = 0;
-        
-        if (this.contract.areCanCodersReady() && !canCoderUnavailable) {
-            position = this.encoder.getAbsolutePosition();
-        }
-        else if (this.contract.isDriveReady() || canCoderUnavailable) {
-            // If the CANCoders aren't available, we can use the built-in encoders in the steering motors. Experience suggests
-            // that this will work for about 30 seconds of driving before getting wildly out of alignment.
-            position =  this.motorController.getPosition() * degreesPerMotorRotation.get();
-            position = MathUtil.inputModulus(position, -180, 180);
-        }
+        double position = getBestEncoderPositionInDegrees();
         
         double adjustedPosition = (position - positionOffset) + 90;
         return adjustedPosition;
@@ -120,13 +114,17 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     }
 
     /**
-     * Sets target value in degrees
+     * Sets target angle in degrees
      */
     @Override
     public void setTargetValue(double value) {
         this.targetRotation.set(value);
     }
 
+    /**
+     * Sets the output power of the motor.
+     * @param power The power value, between -1 and 1.
+     */
     @Override
     public void setPower(double power) {
         if (this.contract.isDriveReady()) {
@@ -154,6 +152,51 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         return this.encoder;
     }
 
+    /**
+     * Gets the current position of the mechanism using the best available encoder.
+     * @return The position in degrees.
+     */
+    public double getBestEncoderPositionInDegrees() {
+        if (this.contract.areCanCodersReady() && !canCoderUnavailable) {
+            return getAbsoluteEncoderPositionInDegrees();
+        }
+        else if (this.contract.isDriveReady() || canCoderUnavailable) {
+            // If the CANCoders aren't available, we can use the built-in encoders in the steering motors. Experience suggests
+            // that this will work for about 30 seconds of driving before getting wildly out of alignment.
+            return getMotorControllerEncoderPosiitonInDegrees();
+        }
+
+        return 0;
+    }
+
+    /**
+     * Gets the reported position of the CANCoder.
+     * @return The position of the CANCoder.
+     */
+    public double getAbsoluteEncoderPositionInDegrees() {
+        if (this.contract.areCanCodersReady()) {
+            return this.encoder.getAbsolutePosition();
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Gets the reported position of the encoder on the NEO motor.
+     * @return The position of the encoder on the NEO motor.
+     */
+    public double getMotorControllerEncoderPosiitonInDegrees() {
+        if (this.contract.isDriveReady()) {
+            return MathUtil.inputModulus(this.motorController.getPosition() * degreesPerMotorRotation.get(), -180, 180);
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Calculate the target motor power using software PID.
+     * @return The target power required to approach our setpoint.
+     */
     public double calculatePower() {
         // We need to calculate our own error function. Why?
         // PID works great, but it assumes there is a linear relationship between your current state and
@@ -177,8 +220,47 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         return rotationalPower;
     }
 
+    /**
+     * Reset the software PID.
+     */
     public void resetPid() {
         this.pid.reset();
+    }
+
+    /**
+     * Gets a flag indicating whether we are using the motor controller's PID or software PID.
+     * @return <b>true</b> if using motor controller's PID.
+     */
+    public boolean isUsingMotorControllerPid() {
+        return this.useMotorControllerPid.get();
+    }
+
+    /**
+     * Calculates the nearest position on the motor encoder to targetDegrees and sets the controller's PID target.
+     * @param targetDegrees The target angle of the wheels, relative to the robot.
+     */
+    public void setMotorControllerTarget(double targetDegrees) {
+        if (this.contract.isDriveReady()) {
+            // We can rely on either encoder for the starting position, to get the change in angle. Using the CANCoder
+            // position to calculate this will help us to avoid any drift on the motor encoder. Then we just set our
+            // target based on the motor encoder's current position. Unless the wheels are moving rapidly, the measurements
+            // on each encoder are probably taken close enough together in time for our purposes.
+            double currentPositionDegrees = getBestEncoderPositionInDegrees();
+            double changeInDegrees = MathUtil.inputModulus(targetDegrees - currentPositionDegrees, -180, 180);
+            double targetPosition = this.motorController.getPosition() + (changeInDegrees / degreesPerMotorRotation.get());
+
+            this.motorController.setReference(targetPosition, ControlType.kPosition, 0);
+        }
+    }
+
+    public void setMotorControllerPositionPidParameters(double p, double i, double d, double ff, double minOutput, double maxOutput) {
+        if (this.contract.isDriveReady()) {
+            this.motorController.setP(p);
+            this.motorController.setI(i);
+            this.motorController.setD(d);
+            this.motorController.setFF(ff);
+            this.motorController.setOutputRange(minOutput, maxOutput);
+        }
     }
 
     @Override
