@@ -19,7 +19,11 @@ public class SwerveSteeringMaintainerCommand extends BaseMaintainerCommand {
 
     @Override
     protected void calibratedMachineControlAction() {
-        this.subsystem.setPower(this.subsystem.calculatePower());
+        if (this.subsystem.isUsingMotorControllerPid()) {
+            this.subsystem.setMotorControllerPidTarget();
+        } else {
+            this.subsystem.setPower(this.subsystem.calculatePower());
+        }
     }
 
     @Override
