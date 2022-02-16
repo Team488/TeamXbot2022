@@ -23,6 +23,8 @@ public abstract class ElectricalContract {
 
     public abstract DeviceInfo getClimberNeo(ArmInstance armInstance);
 
+    public abstract DeviceInfo getCollectorMotor();
+
     public abstract boolean isShooterReady();
 
     public abstract DeviceInfo getPrimaryShooterNeo();
