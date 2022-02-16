@@ -9,6 +9,7 @@ import competition.electrical_contract.ElectricalContract;
 import competition.injection.arm.ArmInstance;
 import xbot.common.command.BaseSetpointSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
+import xbot.common.controls.actuators.XSolenoid;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.logic.Latch;
 import xbot.common.logic.Latch.EdgeType;
@@ -20,6 +21,7 @@ import xbot.common.properties.PropertyFactory;
 @Singleton
 public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     public XCANSparkMax armMotor;
+    public XSolenoid armPawl;
     public double armMotorPosition;
     public final DoubleProperty safeArmExtendedNumber;
     public final DoubleProperty safeArmRetractedNumber;
@@ -27,6 +29,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     private final BooleanProperty isCalibratedProp;
     private final DoubleProperty armPositionTarget;
     private final DoubleProperty armInchesPerRotation;
+    private final DoubleProperty pawlDeadband;
     private final Latch safetyLatch;
     final String label;
     final ElectricalContract contract;
@@ -51,6 +54,8 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         if (eContract.isClimberReady()) {
             armMotor = factory.createCANSparkMax(eContract.getClimberNeo(armInstance) , this.getPrefix(), "ArmMotor");
             armMotor.enableVoltageCompensation(12);
+
+            armPawl = factory.createSolenoid(eContract.getClimberPawl(armInstance).channel);
         }
         
         label = armInstance.getLabel();
@@ -62,6 +67,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         safeArmRetractedNumber = pf.createPersistentProperty("safelyRetractable", -10);
         // Assume this is shared - if not, we'll split it out.
         armInchesPerRotation = pf.createPersistentProperty("ArmInchesPerRotation", 1.0);
+        pawlDeadband = pf.createPersistentProperty("PawlDeadband", 0.02);
 
         // Unique properties
         pf.setPrefix(this);
@@ -95,10 +101,30 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         }
     }
 
+    private void setPawl(boolean engaged) {
+        armPawl.setOn(engaged);
+    }
+
+    public void engagePawl() {
+        setPawl(true);
+    }
+
+    public void disengagePawl() {
+        setPawl(false);
+    }
+
 
     private void setMotorPower(double power, boolean isSafe) {
 
         safetyLatch.setValue(isSafe);
+
+        // To a first approximation, whenever the device is moving, the pawl should be disengaged.
+        // If there is any hint of power, the pawl should be disengaged.
+
+        // We will not optimistically re-engage the pawl - that will only be done via manual action.
+        if (Math.abs(power) > pawlDeadband.get()) {
+            disengagePawl();
+        }
 
         if (isSafe) {
             if (isArmOverExtended()) {
@@ -117,6 +143,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
 
     public void stop(){
         setMotorPower(0, true);
+        engagePawl();
     }
 
     @Override
@@ -151,6 +178,9 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     }
 
     public void setPositionReference(double positionInInches) {
+        // Since we can no longer be sure what the motor is doing, release the pawl just in case
+        disengagePawl();
+        
         // Convert from inches to rotations (the native unit of the controller)
         if (contract.isClimberReady()) {
             armMotor.setReference(positionInInches / armInchesPerRotation.get(), ControlType.kPosition, PidSlot.Position.getSlot());
@@ -159,11 +189,13 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     }
 
     public void setVelocityReference(double velocityInInchesPerSecond) {
+        // Since we can no longer be sure what the motor is doing, release the pawl just in case
+        disengagePawl();
+
         // Convert from inches to rotations/sec (the native unit of the controller)
         if (contract.isClimberReady()) {
             armMotor.setReference(velocityInInchesPerSecond / armInchesPerRotation.get(), ControlType.kVelocity, PidSlot.Velocity.getSlot());
         }
-        
     }
 
     @Override
