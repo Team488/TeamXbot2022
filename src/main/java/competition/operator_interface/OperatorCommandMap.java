@@ -18,6 +18,7 @@ import competition.subsystems.climber_pivot.commands.PivotOutCommand;
 import competition.subsystems.drive.commands.CalibrateSteeringCommand;
 import competition.subsystems.drive.commands.DebuggingSwerveWithJoysticksCommand;
 import competition.subsystems.drive.commands.GoToNextActiveSwerveModuleCommand;
+import competition.subsystems.drive.commands.SetSteeringMotorControllerPidParametersCommand;
 import competition.subsystems.drive.commands.SimpleCrabDriveFromGamepadCommand;
 import competition.subsystems.drive.commands.SwerveDriveMaintainerCommand;
 import competition.subsystems.drive.commands.SwerveDriveWithJoysticksCommand;
@@ -98,7 +99,8 @@ public class OperatorCommandMap {
         @RearRightDrive SwerveSteeringMaintainerCommand maintainSteeringRearRight,
         @RearRightDrive SwerveDriveMaintainerCommand maintainDriveRearRight,
         SwerveDriveWithJoysticksCommand swerveDriveWithJoysticks,
-        CalibrateSteeringCommand calibrateSteering) 
+        CalibrateSteeringCommand calibrateSteering,
+        SetSteeringMotorControllerPidParametersCommand setSteeringPidValues) 
     {
         ParallelCommandGroup swerveCommands = new ParallelCommandGroup(
             maintainSteeringFrontLeft,
@@ -114,5 +116,6 @@ public class OperatorCommandMap {
 
         operatorInterface.driverGamepad.getifAvailable(5).whenPressed(calibrateSteering);
         operatorInterface.driverGamepad.getifAvailable(6).whenPressed(swerveCommands);
+        operatorInterface.driverGamepad.getifAvailable(7).whenPressed(setSteeringPidValues);
     }
 }
