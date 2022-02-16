@@ -1,7 +1,9 @@
 package competition.subsystems.drive.swerve;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import com.revrobotics.CANSparkMax.ControlType;
 
@@ -90,6 +92,20 @@ public class SwerveSteeringSubsystemTest extends BaseCompetitionTest {
         subsystem.setMotorControllerPidTarget();
 
         assertEquals("Motor controller target should handle an offset", 6.803, motorController.getReference(), 0.001);
+    }
+
+    @Test
+    public void testIsMotorControllerDriftTooHigh() {
+        assertFalse(SwerveSteeringSubsystem.isMotorControllerDriftTooHigh(0, 0, 1));
+        assertFalse(SwerveSteeringSubsystem.isMotorControllerDriftTooHigh(-180, 180, 1));
+        assertFalse(SwerveSteeringSubsystem.isMotorControllerDriftTooHigh(180, -180, 1));
+        assertFalse(SwerveSteeringSubsystem.isMotorControllerDriftTooHigh(360, 0, 1));
+        assertFalse(SwerveSteeringSubsystem.isMotorControllerDriftTooHigh(0, 360, 1));
+        assertFalse(SwerveSteeringSubsystem.isMotorControllerDriftTooHigh(720, 0, 1));
+
+        assertTrue(SwerveSteeringSubsystem.isMotorControllerDriftTooHigh(0, 90, 1));
+        assertTrue(SwerveSteeringSubsystem.isMotorControllerDriftTooHigh(15, 25, 10));
+        assertTrue(SwerveSteeringSubsystem.isMotorControllerDriftTooHigh(25, 15, 10));
     }
 
 }

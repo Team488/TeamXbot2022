@@ -38,6 +38,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     private final StringProperty canCoderStatus;
     private final DoubleProperty degreesPerMotorRotation;
     private final BooleanProperty useMotorControllerPid;
+    private final DoubleProperty maxMotorEncoderDrift;
 
     private XCANSparkMax motorController;
     private XAbsoluteEncoder encoder;
@@ -60,6 +61,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         this.powerScale = pf.createPersistentProperty("PowerScaleFactor", 5);
         this.degreesPerMotorRotation = pf.createPersistentProperty("DegreesPerMotorRotation", 28.1502912);
         this.useMotorControllerPid = pf.createPersistentProperty("UseMotorControllerPID", false);
+        this.maxMotorEncoderDrift = pf.createPersistentProperty("MaxEncoderDriftDegrees", 1.0);
 
         // Create properties that are unique to each instance
         pf.setPrefix(this);
@@ -142,6 +144,33 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
             this.positionOffset = this.motorController.getPosition();
         }
         this.calibrated = true;
+    }
+
+    /**
+     * Reset the SparkMax encoder position based on the CanCoder measurement.
+     * This should only be called when the mechanism is stationary.
+     */
+    public void calibrateMotorControllerPositionFromCanCoder() {
+        if (this.contract.isDriveReady() && this.contract.areCanCodersReady() && !canCoderUnavailable) {
+            double currentCanCoderPosition = getAbsoluteEncoderPositionInDegrees();
+            double currentSparkMaxPosition = getMotorControllerEncoderPosiitonInDegrees();
+
+            if (isMotorControllerDriftTooHigh(currentCanCoderPosition, currentSparkMaxPosition, this.maxMotorEncoderDrift.get())) {
+                if (Math.abs(this.motorController.get()) > 0) {
+                    log.error("This should not be called when the motor is moving!");
+                } else {
+                    log.warn("Motor controller encoder drift is too high, recalibrating!");
+
+                    // Force motors to manual control before resetting position
+                    this.setPower(0);
+                    this.motorController.setPosition(currentCanCoderPosition / this.degreesPerMotorRotation.get());
+                }
+            }
+        }
+    }
+
+    public static boolean isMotorControllerDriftTooHigh(double currentCanCoderPosition, double currentSparkMaxPosition, double maxDelta) {
+        return Math.abs(MathUtil.inputModulus(currentCanCoderPosition - currentSparkMaxPosition, -180, 180)) >= maxDelta;
     }
 
     public XCANSparkMax getSparkMax() {
