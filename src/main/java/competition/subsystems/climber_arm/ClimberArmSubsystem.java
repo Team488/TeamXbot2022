@@ -101,16 +101,16 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         }
     }
 
-    private void setPawl(boolean engaged) {
-        armPawl.setOn(engaged);
+    private void setPawl(boolean disengaged) {
+        armPawl.setOn(disengaged);
     }
 
-    public void engagePawl() {
-        setPawl(true);
-    }
-
-    public void disengagePawl() {
+    public void lockPawl() {
         setPawl(false);
+    }
+
+    public void freePawl() {
+        setPawl(true);
     }
 
 
@@ -123,7 +123,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
 
         // We will not optimistically re-engage the pawl - that will only be done via manual action.
         if (Math.abs(power) > pawlDeadband.get()) {
-            disengagePawl();
+            freePawl();
         }
 
         if (isSafe) {
@@ -143,7 +143,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
 
     public void stop(){
         setMotorPower(0, true);
-        engagePawl();
+        lockPawl();
     }
 
     @Override
@@ -179,7 +179,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
 
     public void setPositionReference(double positionInInches) {
         // Since we can no longer be sure what the motor is doing, release the pawl just in case
-        disengagePawl();
+        freePawl();
         
         // Convert from inches to rotations (the native unit of the controller)
         if (contract.isClimberReady()) {
@@ -190,7 +190,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
 
     public void setVelocityReference(double velocityInInchesPerSecond) {
         // Since we can no longer be sure what the motor is doing, release the pawl just in case
-        disengagePawl();
+        freePawl();
 
         // Convert from inches to rotations/sec (the native unit of the controller)
         if (contract.isClimberReady()) {
