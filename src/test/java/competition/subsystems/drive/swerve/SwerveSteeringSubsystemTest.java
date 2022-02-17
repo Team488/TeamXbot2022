@@ -1,7 +1,9 @@
 package competition.subsystems.drive.swerve;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import com.revrobotics.CANSparkMax.ControlType;
 
@@ -19,6 +21,7 @@ public class SwerveSteeringSubsystemTest extends BaseCompetitionTest {
     private TestElectricalContract contract;
     private SwerveSteeringSubsystem subsystem;
     private MockCANSparkMax motorController;
+    private MockAbsoluteEncoder absoluteEncoder;
 
     @Override
     public void setUp() {
@@ -28,6 +31,7 @@ public class SwerveSteeringSubsystemTest extends BaseCompetitionTest {
             .getFrontLeftSwerveModuleSubsystem()
             .getSteeringSubsystem();
         this.motorController = (MockCANSparkMax)subsystem.getSparkMax();
+        this.absoluteEncoder = (MockAbsoluteEncoder)subsystem.getEncoder();
     }
 
     @Test
@@ -90,6 +94,43 @@ public class SwerveSteeringSubsystemTest extends BaseCompetitionTest {
         subsystem.setMotorControllerPidTarget();
 
         assertEquals("Motor controller target should handle an offset", 6.803, motorController.getReference(), 0.001);
+    }
+
+    @Test
+    public void testIsMotorControllerDriftTooHigh() {
+        assertFalse(SwerveSteeringSubsystem.isMotorControllerDriftTooHigh(0, 0, 1));
+        assertFalse(SwerveSteeringSubsystem.isMotorControllerDriftTooHigh(-180, 180, 1));
+        assertFalse(SwerveSteeringSubsystem.isMotorControllerDriftTooHigh(180, -180, 1));
+        assertFalse(SwerveSteeringSubsystem.isMotorControllerDriftTooHigh(360, 0, 1));
+        assertFalse(SwerveSteeringSubsystem.isMotorControllerDriftTooHigh(0, 360, 1));
+        assertFalse(SwerveSteeringSubsystem.isMotorControllerDriftTooHigh(720, 0, 1));
+
+        assertTrue(SwerveSteeringSubsystem.isMotorControllerDriftTooHigh(0, 90, 1));
+        assertTrue(SwerveSteeringSubsystem.isMotorControllerDriftTooHigh(15, 25, 10));
+        assertTrue(SwerveSteeringSubsystem.isMotorControllerDriftTooHigh(25, 15, 10));
+    }
+
+    @Test
+    public void testCalibrateMotorControllerEncoderFromCanCoder() {
+        assertEquals("CanCoder should default to 0 position", 0, subsystem.getAbsoluteEncoderPositionInDegrees(), 0.001);
+        assertEquals("Neo encoder should default to 0 position", 0, subsystem.getMotorControllerEncoderPosiitonInDegrees(), 0.001);
+
+        absoluteEncoder.setAbsolutePosition(50);
+        
+        assertEquals("CanCoder position should be updated", 50, subsystem.getAbsoluteEncoderPositionInDegrees(), 0.001);
+        assertEquals("Neo encoder should still be at 0 position", 0, subsystem.getMotorControllerEncoderPosiitonInDegrees(), 0.001);
+
+        subsystem.calibrateMotorControllerPositionFromCanCoder();
+
+        assertEquals("CanCoder position should be 50", 50, subsystem.getAbsoluteEncoderPositionInDegrees(), 0.001);
+        assertEquals("Neo encoder should match CanCoder", 50, subsystem.getMotorControllerEncoderPosiitonInDegrees(), 0.001);
+
+        absoluteEncoder.setAbsolutePosition(10);
+        motorController.set(10);
+        subsystem.calibrateMotorControllerPositionFromCanCoder();
+
+        assertEquals("CanCoder position should be 10", 10, subsystem.getAbsoluteEncoderPositionInDegrees(), 0.001);
+        assertEquals("Neo encoder should not be updated since robot is in motion", 50, subsystem.getMotorControllerEncoderPosiitonInDegrees(), 0.001);
     }
 
 }
