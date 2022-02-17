@@ -32,4 +32,9 @@ public class TestElectricalContract extends CompetitionContract {
     public void setCanCodersReady(boolean areReady) {
         canCodersReady = areReady;
     }
+
+    @Override
+    public boolean isClimberReady() {
+        return true;
+    }
 }

@@ -21,7 +21,8 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
     PoseSubsystem pose;
     OperatorInterface oi;
     final DoubleProperty input_exponent;
-    final DoubleProperty powerFactor;
+    final DoubleProperty drivePowerFactor;
+    final DoubleProperty turnPowerFactor;
 
     @Inject
     public SwerveDriveWithJoysticksCommand(DriveSubsystem drive, PoseSubsystem pose, OperatorInterface oi,
@@ -31,7 +32,9 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
         this.pose = pose;
         pf.setPrefix(this);
         this.input_exponent = pf.createPersistentProperty("Input Exponent", 2);
-        this.powerFactor = pf.createPersistentProperty("Power Factor", 1);
+        this.drivePowerFactor = pf.createPersistentProperty("Power Factor", 1);
+        this.turnPowerFactor = pf.createPersistentProperty("Turn Power Factor", 0.5);
+
         this.addRequirements(drive);
     }
 
@@ -59,7 +62,7 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
 
         // Get the current heading, use that for field-oriented operations
         XYPair translationIntent = new XYPair(xPower, yPower);
-        translationIntent = translationIntent.scale(powerFactor.get());
-        drive.fieldOrientedDrive(translationIntent, rotatePower, pose.getCurrentHeading().getDegrees(), false);
+        translationIntent = translationIntent.scale(drivePowerFactor.get());
+        drive.fieldOrientedDrive(translationIntent, rotatePower * turnPowerFactor.get(), pose.getCurrentHeading().getDegrees(), false);
     }
 }

@@ -244,6 +244,17 @@
               "_source0": "network_table:///SmartDashboard/SwerveDriveWithJoysticksCommand/Input Exponent",
               "_title": "SmartDashboard/SwerveDriveWithJoysticksCommand/Input Exponent"
             }
+          },
+          "8,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveDriveWithJoysticksCommand/Turn Power Factor",
+              "_title": "/SmartDashboard/SwerveDriveWithJoysticksCommand/Turn Power Factor"
+            }
           }
         }
       }
@@ -389,11 +400,102 @@
           }
         }
       }
+    },
+    {
+      "title": "Odometry",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/CurrentHeading",
+              "_title": "SmartDashboard/PoseSubsystem/CurrentHeading"
+            }
+          },
+          "6,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Total distance X",
+              "_title": "SmartDashboard/PoseSubsystem/Total distance X"
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Total distance Y",
+              "_title": "SmartDashboard/PoseSubsystem/Total distance Y"
+            }
+          },
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/CurrentVelocity",
+              "_title": "SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/CurrentVelocity"
+            }
+          },
+          "5,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontRightDrive/CurrentVelocity",
+              "_title": "SmartDashboard/SwerveDriveSubsystem/FrontRightDrive/CurrentVelocity"
+            }
+          },
+          "4,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearLeftDrive/CurrentVelocity",
+              "_title": "SmartDashboard/SwerveDriveSubsystem/RearLeftDrive/CurrentVelocity"
+            }
+          },
+          "5,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearRightDrive/CurrentVelocity",
+              "_title": "SmartDashboard/SwerveDriveSubsystem/RearRightDrive/CurrentVelocity"
+            }
+          }
+        }
+      }
     }
   ],
   "windowGeometry": {
-    "x": -127.19999694824219,
-    "y": 84.80000305175781,
+    "x": 3.200000047683716,
+    "y": 32.0,
     "width": 1553.5999755859375,
     "height": 692.7999877929688
   }

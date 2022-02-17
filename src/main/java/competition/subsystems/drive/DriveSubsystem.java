@@ -45,6 +45,9 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     private final DoubleProperty translationYTargetMPS;
     private final DoubleProperty rotationTargetRadians;
 
+    private final PIDManager positionalPidManager;
+    private final PIDManager headingPidManager;
+
     private XYPair lastCommandedDirection;
 
     public enum SwerveModuleLocation {
@@ -91,6 +94,9 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         // "Desired initial wheel direction" so there's no thrash right at the start of a match.
         // Probably not a huge priority, Since as soon as we move once the robot remembers the last commanded direction.
         lastCommandedDirection = new XYPair(0, 90);
+
+        positionalPidManager = factory.createPIDManager(this.getPrefix() + "PositionPID", 1.0/90, 0, 0);
+        headingPidManager = factory.createPIDManager(this.getPrefix() + "HeadingPID", 1.0/36, 0, 0);
     }
 
     public SwerveDriveKinematics getSwerveDriveKinematics() {
