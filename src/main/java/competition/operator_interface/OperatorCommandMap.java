@@ -20,7 +20,6 @@ import competition.subsystems.drive.commands.CalibrateSteeringCommand;
 import competition.subsystems.drive.commands.DebuggingSwerveWithJoysticksCommand;
 import competition.subsystems.drive.commands.GoToNextActiveSwerveModuleCommand;
 import competition.subsystems.drive.commands.SetSteeringMotorControllerPidParametersCommand;
-import competition.subsystems.drive.commands.SimpleCrabDriveFromGamepadCommand;
 import competition.subsystems.drive.commands.SwerveDriveMaintainerCommand;
 import competition.subsystems.drive.commands.SwerveDriveWithJoysticksCommand;
 import competition.subsystems.drive.commands.SwerveSteeringMaintainerCommand;
@@ -40,14 +39,13 @@ import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 @Singleton
 public class OperatorCommandMap {
 
-
     final OperatorInterface operatorInterface;
 
     @Inject
     public OperatorCommandMap(OperatorInterface operatorInterface) {
         this.operatorInterface = operatorInterface;
     }
-    
+
     // Example for setting up a command to fire when a button is pressed:
     @Inject
     public void setupMyCommands(
@@ -73,16 +71,15 @@ public class OperatorCommandMap {
     @Inject
     public void setupClimbingCommands(
 
-        MotorArmExtendCommand extendArmCommand,
-        MotorArmRetractCommand retractArmCommand,
-        LatchArmCommand latchArm,
-        LatchReleaseCommand latchRelease,
-        PivotInCommand pivotIn,
-        PivotOutCommand pivotOut,
-        DualArmControllerCommandWithJoysticks dualArmWithJoysticks,
-        @LeftArm MotorArmStopCommand stopLeftArm,
-        @RightArm MotorArmStopCommand stopRightArm)
-    {
+            MotorArmExtendCommand extendArmCommand,
+            MotorArmRetractCommand retractArmCommand,
+            LatchArmCommand latchArm,
+            LatchReleaseCommand latchRelease,
+            PivotInCommand pivotIn,
+            PivotOutCommand pivotOut,
+            DualArmControllerCommandWithJoysticks dualArmWithJoysticks,
+            @LeftArm MotorArmStopCommand stopLeftArm,
+            @RightArm MotorArmStopCommand stopRightArm) {
         operatorInterface.operatorGamepad.getifAvailable(8).whenPressed(latchArm);
         operatorInterface.operatorGamepad.getifAvailable(7).whenPressed(latchRelease);
         operatorInterface.operatorGamepad.getifAvailable(5).whenPressed(pivotIn);
@@ -96,18 +93,17 @@ public class OperatorCommandMap {
 
     @Inject
     public void setupGeneralSwerveCommands(
-        @FrontLeftDrive SwerveSteeringMaintainerCommand maintainSteeringFrontLeft,
-        @FrontLeftDrive SwerveDriveMaintainerCommand maintainDriveFrontLeft,
-        @FrontRightDrive SwerveSteeringMaintainerCommand maintainSteeringFrontRight,
-        @FrontRightDrive SwerveDriveMaintainerCommand maintainDriveFrontRight,
-        @RearLeftDrive SwerveSteeringMaintainerCommand maintainSteeringRearLeft,
-        @RearLeftDrive SwerveDriveMaintainerCommand maintainDriveRearLeft,
-        @RearRightDrive SwerveSteeringMaintainerCommand maintainSteeringRearRight,
-        @RearRightDrive SwerveDriveMaintainerCommand maintainDriveRearRight,
-        SwerveDriveWithJoysticksCommand swerveDriveWithJoysticks,
-        CalibrateSteeringCommand calibrateSteering,
-        SetSteeringMotorControllerPidParametersCommand setSteeringPidValues) 
-    {
+            @FrontLeftDrive SwerveSteeringMaintainerCommand maintainSteeringFrontLeft,
+            @FrontLeftDrive SwerveDriveMaintainerCommand maintainDriveFrontLeft,
+            @FrontRightDrive SwerveSteeringMaintainerCommand maintainSteeringFrontRight,
+            @FrontRightDrive SwerveDriveMaintainerCommand maintainDriveFrontRight,
+            @RearLeftDrive SwerveSteeringMaintainerCommand maintainSteeringRearLeft,
+            @RearLeftDrive SwerveDriveMaintainerCommand maintainDriveRearLeft,
+            @RearRightDrive SwerveSteeringMaintainerCommand maintainSteeringRearRight,
+            @RearRightDrive SwerveDriveMaintainerCommand maintainDriveRearRight,
+            SwerveDriveWithJoysticksCommand swerveDriveWithJoysticks,
+            CalibrateSteeringCommand calibrateSteering,
+            SetSteeringMotorControllerPidParametersCommand setSteeringPidValues) {
         ParallelCommandGroup swerveCommands = new ParallelCommandGroup(
                 maintainSteeringFrontLeft,
                 maintainDriveFrontLeft,
@@ -132,11 +128,12 @@ public class OperatorCommandMap {
         swerveToPoint.setTargetPosition(new XYPair(0, 36));
         oi.driverGamepad.getifAvailable(8).whenPressed(turnleft90);
         oi.driverGamepad.getifAvailable(4).whenPressed(swerveToPoint);
-	}
-	
-	@Inject
-        public void setupCollectorStage2Commands(CollectorStage2Subsystem subsystem) {
-        // TODO: Change these mappings, this is just an example to prove the concept of the SimpleMotorSubsystem
+    }
+
+    @Inject
+    public void setupCollectorStage2Commands(CollectorStage2Subsystem subsystem) {
+        // TODO: Change these mappings, this is just an example to prove the concept of
+        // the SimpleMotorSubsystem
         // operatorInterface.driverGamepad.getifAvailable(1).whenHeld(subsystem.getForwardCommand());
         // operatorInterface.driverGamepad.getifAvailable(2).whenHeld(subsystem.getReverseCommand());
     }

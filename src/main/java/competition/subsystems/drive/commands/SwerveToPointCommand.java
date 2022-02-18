@@ -45,7 +45,7 @@ public class SwerveToPointCommand extends BaseCommand {
         // PID on the magnitude of the goal. Kind of similar to rotation,
         // our goal is "zero error".
         double magnitudeGoal = goalVector.getMagnitude();
-        double drivePower = 0.1;//drive.getPositionalPid().calculate(magnitudeGoal, 0);
+        double drivePower = drive.getPositionalPid().calculate(magnitudeGoal, 0);
 
         // Create a vector in the direction of the goal, scaled by the drivePower.
         XYPair intent = XYPair.fromPolar(goalVector.getAngle(), drivePower);

@@ -24,7 +24,6 @@ public class IntakeCommandTest extends BaseCompetitionTest {
     @Test
     public void testingDoubleIntakeCommand (){
     IntakeCommand intakeCommand = this.injector.getInstance(IntakeCommand.class);
-    CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
 
     intakeCommand.initialize();
     intakeCommand.execute();
