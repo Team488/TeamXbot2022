@@ -126,7 +126,7 @@ public class OperatorCommandMap {
     @Inject
     public void setupCollectorStage2Commands(CollectorStage2Subsystem subsystem) {
         // TODO: Change these mappings, this is just an example to prove the concept of the SimpleMotorSubsystem
-        // operatorInterface.driverGamepad.getifAvailable(1).whileHeld(subsystem.getForwardCommand());
-        // operatorInterface.driverGamepad.getifAvailable(2).whileHeld(subsystem.getReverseCommand());
+        // operatorInterface.driverGamepad.getifAvailable(1).whenHeld(subsystem.getForwardCommand());
+        // operatorInterface.driverGamepad.getifAvailable(2).whenHeld(subsystem.getReverseCommand());
     }
 }

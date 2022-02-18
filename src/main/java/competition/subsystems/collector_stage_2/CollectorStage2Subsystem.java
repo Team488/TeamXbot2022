@@ -17,7 +17,9 @@ public class CollectorStage2Subsystem extends SimpleMotorSubsystem {
     @Inject
     public CollectorStage2Subsystem(PropertyFactory pf, CommonLibFactory clf, ElectricalContract eContract) {
         super("CollectorStage2", pf);
-        motor = clf.createCANSparkMax(eContract.getCollectorStage2Motor(), this.getPrefix(), "Collector Stage2 Motor");
+        if(eContract.isCollectorStage2Ready()) {
+            motor = clf.createCANSparkMax(eContract.getCollectorStage2Motor(), this.getPrefix(), "Collector Stage2 Motor");
+        }
     }
 
     @Override

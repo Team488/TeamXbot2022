@@ -188,4 +188,9 @@ public class CompetitionContract extends ElectricalContract {
         return new DeviceInfo(8);
     }
 
+    @Override
+    public boolean isCollectorStage2Ready() {
+        return false;
+    }
+
 }
