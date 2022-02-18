@@ -183,4 +183,14 @@ public class CompetitionContract extends ElectricalContract {
        return new DeviceInfo(7);
     }
 
+    @Override
+    public DeviceInfo getCollectorStage2Motor() {
+        return new DeviceInfo(8);
+    }
+
+    @Override
+    public boolean isCollectorStage2Ready() {
+        return false;
+    }
+
 }

@@ -25,6 +25,10 @@ public abstract class ElectricalContract {
 
     public abstract DeviceInfo getCollectorMotor();
 
+    public abstract DeviceInfo getCollectorStage2Motor();
+
+    public abstract boolean isCollectorStage2Ready();
+
     public abstract DeviceInfo getClimberPawl(ArmInstance armInstance);
 
     public abstract boolean isShooterReady();

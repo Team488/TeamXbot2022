@@ -15,6 +15,7 @@ import competition.subsystems.climber_arm.commands.MotorArmRetractCommand;
 import competition.subsystems.climber_arm.commands.MotorArmStopCommand;
 import competition.subsystems.climber_pivot.commands.PivotInCommand;
 import competition.subsystems.climber_pivot.commands.PivotOutCommand;
+import competition.subsystems.collector_stage_2.CollectorStage2Subsystem;
 import competition.subsystems.drive.commands.CalibrateSteeringCommand;
 import competition.subsystems.drive.commands.DebuggingSwerveWithJoysticksCommand;
 import competition.subsystems.drive.commands.GoToNextActiveSwerveModuleCommand;
@@ -35,11 +36,17 @@ import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
  */
 @Singleton
 public class OperatorCommandMap {
+
+    final OperatorInterface operatorInterface;
+
+    @Inject
+    public OperatorCommandMap(OperatorInterface operatorInterface) {
+        this.operatorInterface = operatorInterface;
+    }
     
     // Example for setting up a command to fire when a button is pressed:
     @Inject
     public void setupMyCommands(
-            OperatorInterface operatorInterface,
             SetRobotHeadingCommand resetHeading,
             PoseSubsystem pose)
     {
@@ -52,7 +59,6 @@ public class OperatorCommandMap {
 
     @Inject
     public void setupDriveCommands(
-        OperatorInterface operatorInterface, 
         SimpleCrabDriveFromGamepadCommand crabDrive,
         DebuggingSwerveWithJoysticksCommand swerveDebugging,
         GoToNextActiveSwerveModuleCommand goToNextActiveSwerveModule) 
@@ -65,7 +71,6 @@ public class OperatorCommandMap {
     
     @Inject
     public void setupClimbingCommands(
-        OperatorInterface operatorInterface,
         MotorArmExtendCommand extendArmCommand,
         MotorArmRetractCommand retractArmCommand,
         LatchArmCommand latchArm,
@@ -89,7 +94,6 @@ public class OperatorCommandMap {
     
     @Inject
     public void setupGeneralSwerveCommands(
-        OperatorInterface operatorInterface,
         @FrontLeftDrive SwerveSteeringMaintainerCommand maintainSteeringFrontLeft,
         @FrontLeftDrive SwerveDriveMaintainerCommand maintainDriveFrontLeft,
         @FrontRightDrive SwerveSteeringMaintainerCommand maintainSteeringFrontRight,
@@ -117,5 +121,12 @@ public class OperatorCommandMap {
         operatorInterface.driverGamepad.getifAvailable(5).whenPressed(calibrateSteering);
         operatorInterface.driverGamepad.getifAvailable(6).whenPressed(swerveCommands);
         operatorInterface.driverGamepad.getifAvailable(7).whenPressed(setSteeringPidValues);
+    }
+
+    @Inject
+    public void setupCollectorStage2Commands(CollectorStage2Subsystem subsystem) {
+        // TODO: Change these mappings, this is just an example to prove the concept of the SimpleMotorSubsystem
+        // operatorInterface.driverGamepad.getifAvailable(1).whenHeld(subsystem.getForwardCommand());
+        // operatorInterface.driverGamepad.getifAvailable(2).whenHeld(subsystem.getReverseCommand());
     }
 }
