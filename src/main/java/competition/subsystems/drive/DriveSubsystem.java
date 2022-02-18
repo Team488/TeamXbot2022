@@ -109,12 +109,12 @@ public class DriveSubsystem extends BaseDriveSubsystem {
 
     @Override
     public PIDManager getPositionalPid() {
-        return null;
+        return positionalPidManager;
     }
 
     @Override
     public PIDManager getRotateToHeadingPid() {
-        return null;
+        return headingPidManager;
     }
 
     @Override
