@@ -187,5 +187,14 @@ public class CompetitionContract extends ElectricalContract {
     public DeviceInfo getDeploymentSoleniod() {
         return new DeviceInfo(0);
     }
+  
+    public DeviceInfo getCollectorStage2Motor() {
+        return new DeviceInfo(8);
+    }
+
+    @Override
+    public boolean isCollectorStage2Ready() {
+        return false;
+    }
 
 }
