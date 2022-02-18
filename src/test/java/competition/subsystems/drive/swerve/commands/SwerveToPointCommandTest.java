@@ -25,7 +25,7 @@ public class SwerveToPointCommandTest extends BaseCompetitionTest {
     }
 
     @Test
-    public void forwardTest() {
+    public void multiplePositionsTest() {
 
         pose.setCurrentPosition(0, 0);
         pose.setCurrentHeading(90);
