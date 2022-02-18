@@ -158,9 +158,21 @@ public class CompetitionContract extends ElectricalContract {
     public DeviceInfo getClimberNeo(ArmInstance armInstance) {
         switch (armInstance.getLabel()) {
             case "LeftArm":
-                return new DeviceInfo(7, false);
+                return new DeviceInfo(37, false);
             case "RightArm":
-                return new DeviceInfo(8, false);
+                return new DeviceInfo(22, false);
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public DeviceInfo getClimberPawl(ArmInstance armInstance) {
+        switch (armInstance.getLabel()) {
+            case "LeftArm":
+                return new DeviceInfo(3, false);
+            case "RightArm":
+                return new DeviceInfo(4, false);
             default:
                 return null;
         }

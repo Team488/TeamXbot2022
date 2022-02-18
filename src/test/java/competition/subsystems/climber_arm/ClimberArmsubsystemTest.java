@@ -13,9 +13,11 @@ public class ClimberArmsubsystemTest extends BaseClimberArmTest {
     @Test
     public void testMotorArmExtend(){
 
+        checkIsPawlFree(false);
         leftArm.stop();
         assertEquals("Arm should start stopped", 0, leftArm.armMotor.get(), 0.0001);
         leftArm.setPower(1);
+        checkIsPawlFree(true);
         assertEquals("Arm should be extending", 1, leftArm.armMotor.get(), 0.0001);
 
     }
@@ -23,7 +25,9 @@ public class ClimberArmsubsystemTest extends BaseClimberArmTest {
     @Test
     public void testArmRetract(){
         assertEquals("Arm should start stopped", 0, leftArm.armMotor.get(), 0.0001);
+        checkIsPawlFree(false);
         leftArm.setPower(-1);
+        checkIsPawlFree(true);
         assertEquals("Arm should be retracting", -1, leftArm.armMotor.get(), 0.0001);
     }
 
@@ -36,14 +40,19 @@ public class ClimberArmsubsystemTest extends BaseClimberArmTest {
 
     @Test
     public void testExtrastStopRetractStop(){
+        checkIsPawlFree(false);
         assertEquals("Arm should start stopped", 0, leftArm.armMotor.get(), 0.0001);
         leftArm.setPower(1);
+        checkIsPawlFree(true);
         assertEquals("Arm should be extending", 1, leftArm.armMotor.get(), 0.0001);
         leftArm.stop();
+        checkIsPawlFree(false);
         assertEquals("Arm should be stopping", 0, leftArm.armMotor.get(), 0.0001);
         leftArm.setPower(-1);
+        checkIsPawlFree(true);
         assertEquals("Arm should be retracting", -1, leftArm.armMotor.get(), 0.0001);
         leftArm.stop();
+        checkIsPawlFree(false);
         assertEquals("Arm should be stopping", 0, leftArm.armMotor.get(), 0.0001);
 
     }
