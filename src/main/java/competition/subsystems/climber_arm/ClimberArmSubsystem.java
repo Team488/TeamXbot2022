@@ -102,7 +102,9 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     }
 
     private void setPawl(boolean disengaged) {
-        armPawl.setOn(disengaged);
+        if (contract.isClimberReady()) {
+            armPawl.setOn(disengaged);
+        }
     }
 
     public void lockPawl() {

@@ -26,7 +26,9 @@ public class SimulationContract extends CompetitionContract {
 
     @Override
     public DeviceInfo getSteeringNeo(SwerveInstance swerveInstance) {
-        double simulationScalingValue = 1.0;
+        // The steering encoders report in radians in the simulator; e.g. a half turn is 3.14 (pi). We'd like this to return degrees.
+        // So we'll multiply by 180/pi, but we need to undo the scaling factor applied in SwerveSteeringSubsystem.
+        double simulationScalingValue = 180 / Math.PI / 28.1502912;
 
         switch (swerveInstance.getLabel()) {
             case "FrontLeftDrive":
