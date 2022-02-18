@@ -193,4 +193,14 @@ public class CompetitionContract extends ElectricalContract {
         return false;
     }
 
+    @Override
+    public DeviceInfo getConveyerMotor() {
+        return new DeviceInfo(9);
+    }
+
+    @Override
+    public boolean isConveyerReady() {
+        return false;
+    }
+
 }

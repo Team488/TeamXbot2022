@@ -52,4 +52,8 @@ public abstract class ElectricalContract {
     public abstract DeviceInfo getShooterMotorLeader();
 
     public abstract DeviceInfo getShooterMotorFollower();
+
+    public abstract DeviceInfo getConveyerMotor();
+
+    public abstract boolean isConveyerReady();
 }
