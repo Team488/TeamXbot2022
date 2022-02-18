@@ -15,10 +15,10 @@ public class IntakeCommandTest extends BaseCompetitionTest {
     CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
 
     collectorSubsystem.collectorMotor.set(-1);
-    assertEquals(-1, collectorSubsystem.collectorMotor.get(), 0.001);
+    checkCollectorPower(-1);
     intakeCommand.initialize();
     intakeCommand.execute();
-    assertEquals(1, collectorSubsystem.collectorMotor.get(), 0.001);
+    checkCollectorPower(1);
     }
 
     @Test
@@ -28,10 +28,16 @@ public class IntakeCommandTest extends BaseCompetitionTest {
 
     intakeCommand.initialize();
     intakeCommand.execute();
-    assertEquals(1, collectorSubsystem.collectorMotor.get(), 0.001);
+    checkCollectorPower(1);
     intakeCommand.initialize();
     intakeCommand.execute();
-    assertEquals(1, collectorSubsystem.collectorMotor.get(), 0.001);
+    checkCollectorPower(1);
+    }
+
+    public void checkCollectorPower(double power) {
+        CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
+
+        assertEquals(power, collectorSubsystem.collectorMotor.get(), 0.001);
     }
 
 }

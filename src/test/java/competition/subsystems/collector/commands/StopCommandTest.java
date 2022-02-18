@@ -14,10 +14,10 @@ public class StopCommandTest extends BaseCollectorTest {
         CollectorSubsystem collectorSubsystem = injector.getInstance(CollectorSubsystem.class);
 
         collectorSubsystem.collectorMotor.set(1);
-        assertEquals(1, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(1);
         stopCommand.initialize();
         stopCommand.execute();
-        assertEquals(0, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(0);
     }
 
     @Test
@@ -26,9 +26,15 @@ public class StopCommandTest extends BaseCollectorTest {
         CollectorSubsystem collectorSubsystem = injector.getInstance(CollectorSubsystem.class);
 
         collectorSubsystem.collectorMotor.set(0);
-        assertEquals(0, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(0);
         stopCommand.initialize();
         stopCommand.execute();
-        assertEquals(0, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(0);
+    }
+
+    public void checkCollectorPower(double power) {
+        CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
+
+        assertEquals(power, collectorSubsystem.collectorMotor.get(), 0.001);
     }
 }

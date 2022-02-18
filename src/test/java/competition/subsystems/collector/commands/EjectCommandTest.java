@@ -14,10 +14,10 @@ public class EjectCommandTest extends BaseCompetitionTest{
         EjectCommand ejectCommand = this.injector.getInstance(EjectCommand.class);
 
         collectorSubsystem.collectorMotor.set(1);
-        assertEquals(1, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(1);
         ejectCommand.initialize();
         ejectCommand.execute();
-        assertEquals(-1, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(-1);
     }
 
     @Test
@@ -27,9 +27,15 @@ public class EjectCommandTest extends BaseCompetitionTest{
 
         ejectCommand.initialize();
         ejectCommand.execute();
-        assertEquals(-1, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(-1);
         ejectCommand.initialize();
         ejectCommand.execute();
-        assertEquals(-1, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(-1);
+    }
+
+    public void checkCollectorPower(double power) {
+        CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
+
+        assertEquals(power, collectorSubsystem.collectorMotor.get(), 0.001);
     }
 }

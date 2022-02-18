@@ -12,13 +12,13 @@ public class CollectorSubsystemTest extends BaseCompetitionTest{
         CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
 
         collectorSubsystem.collectorMotor.set(1);
-        assertEquals(1, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(1);
         collectorSubsystem.eject();
         assertEquals(-1, collectorSubsystem.collectorMotor.get(), 0.001);
         collectorSubsystem.intake();
-        assertEquals(1, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(1);
         collectorSubsystem.stop();
-        assertEquals(0, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(0);
         collectorSubsystem.eject();
         assertEquals(-1, collectorSubsystem.collectorMotor.get(), 0.001);
     }
@@ -28,13 +28,13 @@ public class CollectorSubsystemTest extends BaseCompetitionTest{
         CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
 
         collectorSubsystem.collectorMotor.set(1);
-        assertEquals(1, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(1);
         collectorSubsystem.eject();
-        assertEquals(-1, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(-1);
         collectorSubsystem.stop();
-        assertEquals(0, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(0);
         collectorSubsystem.eject();
-        assertEquals(-1, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(-1);
     }
 
     @Test
@@ -42,13 +42,13 @@ public class CollectorSubsystemTest extends BaseCompetitionTest{
         CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
 
         collectorSubsystem.collectorMotor.set(-1);
-        assertEquals(-1, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(-1);
         collectorSubsystem.intake();
-        assertEquals(1, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(1);
         collectorSubsystem.stop();
-        assertEquals(0, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(0);
         collectorSubsystem.intake();
-        assertEquals(1, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(1);
     }
 
     @Test
@@ -57,15 +57,21 @@ public class CollectorSubsystemTest extends BaseCompetitionTest{
 
 
         collectorSubsystem.intake();
-        assertEquals(1, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(1);
         collectorSubsystem.stop();
-        assertEquals(0, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(0);
         collectorSubsystem.eject();
-        assertEquals(-1, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(-1);
         collectorSubsystem.stop();
-        assertEquals(0, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(0);
         collectorSubsystem.stop();
-        assertEquals(0, collectorSubsystem.collectorMotor.get(), 0.001);
+        checkCollectorPower(0);
            
+    }
+
+    public void checkCollectorPower(double power) {
+        CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
+
+        assertEquals(power, collectorSubsystem.collectorMotor.get(), 0.001);
     }
 }
