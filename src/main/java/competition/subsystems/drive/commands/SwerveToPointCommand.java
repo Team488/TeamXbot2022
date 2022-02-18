@@ -38,7 +38,7 @@ public class SwerveToPointCommand extends BaseCommand {
     @Override
     public void execute() {
         // Get the difference between where we are, and where we want to be.
-        XYPair goalVector = targetPositionInInches.add(
+        XYPair goalVector = targetPositionInInches.clone().add(
             pose.getCurrentFieldPose().getPoint().scale(-1)
         );
 
