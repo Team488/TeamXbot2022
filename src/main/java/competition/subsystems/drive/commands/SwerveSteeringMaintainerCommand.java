@@ -48,6 +48,10 @@ public class SwerveSteeringMaintainerCommand extends BaseMaintainerCommand {
         this.subsystem.setTargetValue(this.subsystem.getCurrentValue());
         this.subsystem.setPower(0);
         this.subsystem.resetPid();
+        
+        if (enableAutoCalibrate.get()) {
+            this.subsystem.calibrateMotorControllerPositionFromCanCoder();
+        }
     }
 
     @Override

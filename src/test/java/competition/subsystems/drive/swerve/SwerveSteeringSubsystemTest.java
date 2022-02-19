@@ -85,15 +85,15 @@ public class SwerveSteeringSubsystemTest extends BaseCompetitionTest {
         
         assertEquals("Motor controller target should still be positive", 3.197, motorController.getReference(), 0.001);
 
-        subsystem.setTargetValue(-90);
+        subsystem.setTargetValue(90);
         subsystem.setMotorControllerPidTarget();
         
-        assertEquals("Motor controller target should still be negative", -3.197, motorController.getReference(), 0.001);
+        assertEquals("Motor controller target should still be positive", 3.197, motorController.getReference(), 0.001);
 
         motorController.setPosition(10);
         subsystem.setMotorControllerPidTarget();
 
-        assertEquals("Motor controller target should handle an offset", 6.803, motorController.getReference(), 0.001);
+        assertEquals("Motor controller target should handle an offset", 13.197, motorController.getReference(), 0.001);
     }
 
     @Test

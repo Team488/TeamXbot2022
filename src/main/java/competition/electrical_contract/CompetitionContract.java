@@ -4,6 +4,7 @@ import competition.injection.arm.ArmInstance;
 import competition.injection.swerve.SwerveInstance;
 import competition.subsystems.pose.PoseSubsystem;
 import xbot.common.injection.electrical_contract.DeviceInfo;
+import xbot.common.math.XYPair;
 
 public class CompetitionContract extends ElectricalContract {
 
@@ -82,6 +83,22 @@ public class CompetitionContract extends ElectricalContract {
                 return null;
         }
     }
+    
+    @Override
+    public XYPair getSwerveModuleOffsets(SwerveInstance swerveInstance) {
+        switch (swerveInstance.getLabel()) {
+            case "FrontLeftDrive":
+                return new XYPair(-15, 15);
+            case "FrontRightDrive":
+                return new XYPair(15, 15);
+            case "RearLeftDrive":
+                return new XYPair(-15, -15);
+            case "RearRightDrive":
+                return new XYPair(15, -15);
+            default:
+                return new XYPair(0, 0);
+        }
+    }
 
     public boolean isIntakeReady() {
         return false;
@@ -129,12 +146,22 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public DeviceInfo getLatchSolenoid() {
-        return new DeviceInfo(1);
+        return new DeviceInfo(11);
+    }
+
+    @Override
+    public DeviceInfo getLatchSolenoid2() {
+        return new DeviceInfo(12);
     }
 
     @Override
     public DeviceInfo getPivotSolenoid() {
-        return new DeviceInfo(2);
+        return new DeviceInfo(6);
+    }
+
+    @Override
+    public DeviceInfo getPivotSolenoid2() {
+        return new DeviceInfo(7);
     }
 
     @Override
@@ -183,11 +210,6 @@ public class CompetitionContract extends ElectricalContract {
        return new DeviceInfo(7);
     }
 
-    @Override
-    public DeviceInfo getCollectorDeviceSoleniod1() {
-        return new DeviceInfo(0);
-    }
-  
     public DeviceInfo getCollectorStage2Motor() {
         return new DeviceInfo(8);
     }
@@ -198,7 +220,22 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     @Override
+
     public DeviceInfo getCollectorDeviceSoleniod2() {
         return new DeviceInfo(1);
+    }
+    
+	@Override
+    public DeviceInfo getCollectorDeviceSoleniod1() {
+        return new DeviceInfo(0);
+    }
+  
+    public DeviceInfo getConveyerMotor() {
+        return new DeviceInfo(9);
+    }
+
+    @Override
+    public boolean isConveyerReady() {
+        return false;
     }
 }

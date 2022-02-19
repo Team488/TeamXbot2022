@@ -5,26 +5,29 @@ import com.google.inject.Singleton;
 
 import competition.electrical_contract.ElectricalContract;
 import xbot.common.command.BaseSubsystem;
-import xbot.common.controls.actuators.XSolenoid;
+import xbot.common.controls.actuators.XDoubleSolenoid;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 
 @Singleton
 public class LatchSubsystem extends BaseSubsystem {
-    public XSolenoid latch;
+    public XDoubleSolenoid latch;
 
     @Inject
     public LatchSubsystem(CommonLibFactory factory, ElectricalContract contract) {
         
         if (contract.arePneumaticsReady()) {
-            latch = factory.createSolenoid(contract.getLatchSolenoid().channel);
+            latch = factory.createDoubleSolenoid(
+                factory.createSolenoid(contract.getLatchSolenoid().channel), 
+                factory.createSolenoid(contract.getLatchSolenoid2().channel)
+            );
         }
     }
 
     public void arm(){
-        latch.setOn(true);
+        latch.setForward();
     }
     public void release(){
-        latch.setOn(false);
+        latch.setReverse();
     }
 
 }

@@ -1,4 +1,4 @@
-package competition.subsystems.collector_stage_2;
+package competition.subsystems.conveyer;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -10,17 +10,16 @@ import xbot.common.properties.PropertyFactory;
 import xbot.common.subsystems.simplemotor.SimpleMotorSubsystem;
 
 @Singleton
-public class CollectorStage2Subsystem extends SimpleMotorSubsystem {
-
+public class ConveyerSubsystem extends SimpleMotorSubsystem {
     public final XCANSparkMax motor;
     public final boolean isReady;
 
     @Inject
-    public CollectorStage2Subsystem(PropertyFactory pf, CommonLibFactory clf, ElectricalContract eContract) {
-        super("CollectorStage2", pf);
-        this.isReady = eContract.isCollectorStage2Ready();
+    public ConveyerSubsystem(PropertyFactory pf, CommonLibFactory clf, ElectricalContract eContract) {
+        super("ConveyerSubsystem", pf);
+        this.isReady = eContract.isConveyerReady();
         if(isReady) {
-            motor = clf.createCANSparkMax(eContract.getCollectorStage2Motor(), this.getPrefix(), "Collector Stage2 Motor");
+            motor = clf.createCANSparkMax(eContract.getConveyerMotor(), this.getPrefix(), "Conveyer Motor");
         } else {
             motor = null;
         }
@@ -32,4 +31,5 @@ public class CollectorStage2Subsystem extends SimpleMotorSubsystem {
             motor.set(power);
         }
     }
+    
 }

@@ -5,26 +5,29 @@ import com.google.inject.Singleton;
 
 import competition.electrical_contract.ElectricalContract;
 import xbot.common.command.BaseSubsystem;
-import xbot.common.controls.actuators.XSolenoid;
+import xbot.common.controls.actuators.XDoubleSolenoid;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 
 @Singleton
 public class ClimberPivotSubsystem extends BaseSubsystem {
-    public XSolenoid pivot;
+    public XDoubleSolenoid pivot;
 
     @Inject
     public ClimberPivotSubsystem(CommonLibFactory factory, ElectricalContract contract) {
         if (contract.arePneumaticsReady()) {
-            pivot = factory.createSolenoid(contract.getPivotSolenoid().channel);
+            pivot = factory.createDoubleSolenoid(
+                factory.createSolenoid(contract.getPivotSolenoid().channel),
+                factory.createSolenoid(contract.getPivotSolenoid2().channel)
+            );
         }
     }
 
     public void pivotIn() {
-        pivot.setOn(false);
+        pivot.setReverse();
     }
 
     public void pivotOut() {
-        pivot.setOn(true);
+        pivot.setForward();
     }
 
     

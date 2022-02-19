@@ -14,11 +14,11 @@ public class LatchArmCommandTest extends BaseCompetitionTest{
         LatchSubsystem latchSubsystem = this.injector.getInstance(LatchSubsystem.class);
 
         
-        latchSubsystem.latch.setOn(false);
-        assertTrue("Latch starts released", !latchSubsystem.latch.getAdjusted());
+        latchSubsystem.latch.setReverse();
+        assertTrue("Latch starts released", latchSubsystem.latch.getIsReverse());
         latchArmCommand.initialize();
         latchArmCommand.execute();
-        assertTrue("Latch is now armed", latchSubsystem.latch.getAdjusted());
+        assertTrue("Latch is now armed", latchSubsystem.latch.getIsForward());
 
 
     }
@@ -28,11 +28,11 @@ public class LatchArmCommandTest extends BaseCompetitionTest{
         LatchArmCommand latchArmCommand = this.injector.getInstance(LatchArmCommand.class);
         LatchSubsystem latchSubsystem = this.injector.getInstance(LatchSubsystem.class);
 
-        latchSubsystem.latch.setOn(true);
-        assertTrue("Latch starts released", latchSubsystem.latch.getAdjusted());
+        latchSubsystem.latch.setForward();
+        assertTrue("Latch starts released", latchSubsystem.latch.getIsForward());
         latchArmCommand.initialize();
         latchArmCommand.execute();
-        assertTrue("Latch stays released", latchSubsystem.latch.getAdjusted());
+        assertTrue("Latch stays released", latchSubsystem.latch.getIsForward());
 
     }
 }
