@@ -42,7 +42,7 @@ public class SwerveModuleSubsystem extends BaseSubsystem {
         this.driveSubsystem = driveSubsystem;
         this.steeringSubsystem = steeringSubsystem;
 
-        XYPair defaultModuleOffsets = getDefaultModuleOffsets(swerveInstance);
+        XYPair defaultModuleOffsets = contract.getSwerveModuleOffsets(swerveInstance);
         this.xOffsetInches = pf.createPersistentProperty("XOffsetInches", defaultModuleOffsets.x);
         this.yOffsetInches = pf.createPersistentProperty("YOffsetInches", defaultModuleOffsets.y);
 
@@ -106,20 +106,5 @@ public class SwerveModuleSubsystem extends BaseSubsystem {
     public void setPowers(double drivePower, double steeringPower) {
         getDriveSubsystem().setPower(drivePower);
         getSteeringSubsystem().setPower(steeringPower);
-    }
-
-    private XYPair getDefaultModuleOffsets(SwerveInstance swerveInstance) {
-        switch (swerveInstance.getLabel()) {
-            case "FrontLeftDrive":
-                return new XYPair(-15, 15);
-            case "FrontRightDrive":
-                return new XYPair(15, 15);
-            case "RearLeftDrive":
-                return new XYPair(-15, -15);
-            case "RearRightDrive":
-                return new XYPair(15, -15);
-            default:
-                return new XYPair(0, 0);
-        }
     }
 }

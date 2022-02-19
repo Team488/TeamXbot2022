@@ -2,6 +2,7 @@ package competition.electrical_contract;
 
 import competition.injection.swerve.SwerveInstance;
 import xbot.common.injection.electrical_contract.DeviceInfo;
+import xbot.common.math.XYPair;
 
 public class SimulationContract extends CompetitionContract {
     
@@ -26,7 +27,9 @@ public class SimulationContract extends CompetitionContract {
 
     @Override
     public DeviceInfo getSteeringNeo(SwerveInstance swerveInstance) {
-        double simulationScalingValue = 1.0;
+        // The steering encoders report in radians in the simulator; e.g. a half turn is 3.14 (pi). We'd like this to return degrees.
+        // So we'll multiply by 180/pi, but we need to undo the scaling factor applied in SwerveSteeringSubsystem.
+        double simulationScalingValue = 180 / Math.PI / 28.1502912;
 
         switch (swerveInstance.getLabel()) {
             case "FrontLeftDrive":
@@ -67,6 +70,22 @@ public class SimulationContract extends CompetitionContract {
 
             default:
                 return null;
+        }
+    }
+    
+    @Override
+    public XYPair getSwerveModuleOffsets(SwerveInstance swerveInstance) {
+        switch (swerveInstance.getLabel()) {
+            case "FrontLeftDrive":
+                return new XYPair(-14.7, 13.8);
+            case "FrontRightDrive":
+                return new XYPair(14.7, 13.8);
+            case "RearLeftDrive":
+                return new XYPair(-14.7, -13.8);
+            case "RearRightDrive":
+                return new XYPair(14.7, -13.8);
+            default:
+                return new XYPair(0, 0);
         }
     }
 }

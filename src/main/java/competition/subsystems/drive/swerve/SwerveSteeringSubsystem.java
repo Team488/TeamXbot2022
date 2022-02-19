@@ -43,7 +43,6 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     private XCANSparkMax motorController;
     private XAbsoluteEncoder encoder;
 
-    private double positionOffset;
     private boolean calibrated = false;
     private boolean canCoderUnavailable = false;
 
@@ -101,10 +100,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
      */
     @Override
     public double getCurrentValue() {
-        double position = getBestEncoderPositionInDegrees();
-        
-        double adjustedPosition = (position - positionOffset) + 90;
-        return adjustedPosition;
+        return getBestEncoderPositionInDegrees();
     }
 
     /**
@@ -136,12 +132,15 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
 
     @Override
     public boolean isCalibrated() {
-        return calibrated;
+        return !canCoderUnavailable || calibrated;
     }
 
+    /**
+     * Mark the current encoder position as facing forward (90 degrees)
+     */
     public void calibrateHere() {
         if (this.contract.isDriveReady()) {
-            this.positionOffset = this.motorController.getPosition();
+            this.motorController.setPosition(90 / degreesPerMotorRotation.get());
         }
         this.calibrated = true;
     }
@@ -276,7 +275,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
             // target based on the motor encoder's current position. Unless the wheels are moving rapidly, the measurements
             // on each encoder are probably taken close enough together in time for our purposes.
             double currentPositionDegrees = getBestEncoderPositionInDegrees();
-            double changeInDegrees = MathUtil.inputModulus(targetDegrees - currentPositionDegrees, -180, 180);
+            double changeInDegrees = MathUtil.inputModulus(targetDegrees - currentPositionDegrees, -90, 90);
             double targetPosition = this.motorController.getPosition() + (changeInDegrees / degreesPerMotorRotation.get());
 
             this.motorController.setReference(targetPosition, ControlType.kPosition, 0);

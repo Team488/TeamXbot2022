@@ -4,6 +4,7 @@ import competition.injection.arm.ArmInstance;
 import competition.injection.swerve.SwerveInstance;
 import competition.subsystems.pose.PoseSubsystem;
 import xbot.common.injection.electrical_contract.DeviceInfo;
+import xbot.common.math.XYPair;
 
 public class CompetitionContract extends ElectricalContract {
 
@@ -80,6 +81,22 @@ public class CompetitionContract extends ElectricalContract {
 
             default:
                 return null;
+        }
+    }
+    
+    @Override
+    public XYPair getSwerveModuleOffsets(SwerveInstance swerveInstance) {
+        switch (swerveInstance.getLabel()) {
+            case "FrontLeftDrive":
+                return new XYPair(-15, 15);
+            case "FrontRightDrive":
+                return new XYPair(15, 15);
+            case "RearLeftDrive":
+                return new XYPair(-15, -15);
+            case "RearRightDrive":
+                return new XYPair(15, -15);
+            default:
+                return new XYPair(0, 0);
         }
     }
 
