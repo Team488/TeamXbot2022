@@ -12,9 +12,9 @@ public class LatchSubsystemTest extends BaseCompetitionTest {
     public void testingArmLatch() {
         LatchSubsystem latchSubsystem = this.injector.getInstance(LatchSubsystem.class);
 
-        assertTrue("Latch starts disarmed", !latchSubsystem.latch.getAdjusted());
+        assertTrue("Latch starts off", latchSubsystem.latch.getIsOff());
         latchSubsystem.arm();
-        assertTrue("Latch is now armed", latchSubsystem.latch.getAdjusted());
+        assertTrue("Latch is now armed", latchSubsystem.latch.getIsForward());
 
         // Prepare
         // Get all the objects and classes we need
@@ -31,31 +31,29 @@ public class LatchSubsystemTest extends BaseCompetitionTest {
     public void testingReleaseLatch() {
         LatchSubsystem latchSubsystem = this.injector.getInstance(LatchSubsystem.class);
 
-        latchSubsystem.latch.setOn(true);
-        assertTrue("Latch starts armed", latchSubsystem.latch.getAdjusted());
+        latchSubsystem.latch.setForward();
+        assertTrue("Latch starts armed", latchSubsystem.latch.getIsForward());
         latchSubsystem.release();
-        assertTrue("Latch is now released", !latchSubsystem.latch.getAdjusted());
+        assertTrue("Latch is now released", latchSubsystem.latch.getIsReverse());
     }
 
     @Test
     public void testingArmAndReleaseLatch() {
         LatchSubsystem latchSubsystem = this.injector.getInstance(LatchSubsystem.class);
 
-        assertTrue("Latch starts disarmed", !latchSubsystem.latch.getAdjusted());
         latchSubsystem.arm();
-        assertTrue("Latch is now armed", latchSubsystem.latch.getAdjusted());
+        assertTrue("Latch is now armed", latchSubsystem.latch.getIsForward());
         latchSubsystem.release();
-        assertTrue("Latch is disarmed", !latchSubsystem.latch.getAdjusted());
+        assertTrue("Latch is disarmed", latchSubsystem.latch.getIsReverse());
     }
     
     @Test
     public void testingDoublesLatch() {
         LatchSubsystem latchSubsystem = this.injector.getInstance(LatchSubsystem.class);
 
-        assertTrue("Latch starts disarmed", !latchSubsystem.latch.getAdjusted());
         latchSubsystem.arm();
-        assertTrue("Latch is now armed", latchSubsystem.latch.getAdjusted());
+        assertTrue("Latch is now armed", latchSubsystem.latch.getIsForward());
         latchSubsystem.arm();
-        assertTrue("Latch is disarmed", latchSubsystem.latch.getAdjusted());
+        assertTrue("Latch is disarmed", latchSubsystem.latch.getIsForward());
     }
 }
