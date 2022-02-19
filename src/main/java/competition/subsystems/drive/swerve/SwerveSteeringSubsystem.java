@@ -2,6 +2,7 @@ package competition.subsystems.drive.swerve;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.revrobotics.REVLibError;
 import com.revrobotics.CANSparkMax.ControlType;
 
 import org.apache.log4j.Logger;
@@ -162,7 +163,10 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
 
                     // Force motors to manual control before resetting position
                     this.setPower(0);
-                    this.motorController.setPosition(currentCanCoderPosition / this.degreesPerMotorRotation.get());
+                    REVLibError error = this.motorController.setPosition(currentCanCoderPosition / this.degreesPerMotorRotation.get());
+                    if (error != REVLibError.kOk) {
+                        log.error("Failed to set position of motor controller: " + error.name());
+                    }
                 }
             }
         }
@@ -278,7 +282,10 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
             double changeInDegrees = MathUtil.inputModulus(targetDegrees - currentPositionDegrees, -90, 90);
             double targetPosition = this.motorController.getPosition() + (changeInDegrees / degreesPerMotorRotation.get());
 
-            this.motorController.setReference(targetPosition, ControlType.kPosition, 0);
+            REVLibError error = this.motorController.setReference(targetPosition, ControlType.kPosition, 0);
+            if (error != REVLibError.kOk) {
+                log.error("Error setting PID target: " + error.name());
+            }
         }
     }
 
