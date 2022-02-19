@@ -135,9 +135,12 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         return !canCoderUnavailable || calibrated;
     }
 
+    /**
+     * Mark the current encoder position as facing forward (90 degrees)
+     */
     public void calibrateHere() {
         if (this.contract.isDriveReady()) {
-            this.motorController.setPosition(0);
+            this.motorController.setPosition(90 / degreesPerMotorRotation.get());
         }
         this.calibrated = true;
     }
