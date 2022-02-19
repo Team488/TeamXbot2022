@@ -8,39 +8,121 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import xbot.common.command.BaseSubsystem;
 import xbot.common.controls.actuators.XDigitalOutput;
+import xbot.common.controls.actuators.XPWM;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.properties.BooleanProperty;
+import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
+import xbot.common.properties.StringProperty;
 
 @Singleton
 public class ArduinoCommunicationSubsystem extends BaseSubsystem {
     
+    XDigitalOutput dio0;
     XDigitalOutput dio1;
     XDigitalOutput dio2;
+    XDigitalOutput dio3;
+    XDigitalOutput allianceDio;
+    XPWM analogOutput;
 
-    private final BooleanProperty dio1State;
-    private final BooleanProperty dio2State;
+    XDigitalOutput[] dioOutputs;
+
+    private final StringProperty chosenState;
+    private final StringProperty binaryString;
+    private final BooleanProperty dio0Property;
+    private final BooleanProperty dio1Property;
+    private final BooleanProperty dio2Property;
+    private final BooleanProperty dio3Property;
+    private final BooleanProperty allianceDioProperty;
+    private final DoubleProperty analogOutputProperty;
+
+    public enum ArduinoStateMessage {
+        RobotNotBooted(0),
+        RobotDisabled(1),
+        RobotEnabled(2);
+
+        private int value;
+
+        private ArduinoStateMessage(final int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
     
     @Inject
     public ArduinoCommunicationSubsystem(CommonLibFactory clf, ElectricalContract contract, PropertyFactory pf) {
+        dio0 = clf.createDigitalOutput(contract.getArduinoDio0().channel);
         dio1 = clf.createDigitalOutput(contract.getArduinoDio1().channel);
         dio2 = clf.createDigitalOutput(contract.getArduinoDio2().channel);
-        this.register();
+        dio3 = clf.createDigitalOutput(contract.getArduinoDio3().channel);
+        allianceDio = clf.createDigitalOutput(contract.getArduinoAllianceDio().channel);
+        analogOutput = clf.createPWM(contract.getArduinoAnalogOutput().channel);
+
+        dioOutputs = new XDigitalOutput[] { dio3, dio2, dio1, dio0 };
 
         pf.setPrefix(this);
-        dio1State = pf.createEphemeralProperty("dio1State", false);
-        dio2State = pf.createEphemeralProperty("dio2State", false);
+        chosenState = pf.createEphemeralProperty("ArduinoState", "Nothing Yet Set");
+        binaryString = pf.createEphemeralProperty("ArduinoBinaryString", "Nothing Yet Set");
+        dio0Property = pf.createEphemeralProperty("DIO0", false);
+        dio1Property = pf.createEphemeralProperty("DIO1", false);
+        dio2Property = pf.createEphemeralProperty("DIO2", false);
+        dio3Property = pf.createEphemeralProperty("DIO3", false);
+        allianceDioProperty = pf.createEphemeralProperty("AllianceDIO", false);
+        analogOutputProperty = pf.createEphemeralProperty("AnalogOutput", 0.0);
+
+        this.register();
     }
+
+    public static String toBinary(int x, int digits) {
+        return String.format("%" + digits + "s", Integer.toBinaryString(x)).replaceAll(" ", "0");
+    }
+ 
+    int counter = 0;
 
     @Override
     public void periodic() {
         boolean dsEnabled = DriverStation.isEnabled();
         boolean isRedAlliance = DriverStation.getAlliance() == Alliance.Red;
 
-        dio1State.set(dsEnabled);
-        dio2State.set(isRedAlliance);
+        // Red alliance is 1, Blue alliance is 0.
+        allianceDio.set(isRedAlliance);
 
-        dio1.set(dsEnabled);
-        dio2.set(isRedAlliance);
+        ArduinoStateMessage currentState = ArduinoStateMessage.RobotNotBooted;
+
+        // Figure out what we want to send to the arduino
+        if (!dsEnabled) {
+            currentState = ArduinoStateMessage.RobotDisabled;
+        } else if (dsEnabled) {
+            currentState = ArduinoStateMessage.RobotEnabled;
+        }
+
+        // Convert the state to a 4-bit binary string
+        String stateBinary = toBinary(currentState.getValue(), 4);
+
+        // Go through the 4-bit string and set the appropriate dio
+        // The a value of 3 would show as 0011.
+        // We start at the right and work our way left, so we start at
+        // index 3 (picking up that leftmost 1). The dioOutputs array is ordered
+        // such that the element at index 3 is dio0 to match how the arduino currently
+        // parses the binary data.
+        for (int i = 3; i >=0; i--) {
+            dioOutputs[i].set(stateBinary.charAt(i) == '1');
+        }
+
+        // Sweep through PWM values for now.
+        analogOutput.setRaw(counter % 255);
+        counter++;
+
+        chosenState.set(currentState.toString());
+        binaryString.set(stateBinary);
+        dio0Property.set(dio0.get());
+        dio1Property.set(dio1.get());
+        dio2Property.set(dio2.get());
+        dio3Property.set(dio3.get());
+        allianceDioProperty.set(allianceDio.get());
+        analogOutputProperty.set(analogOutput.getRaw());
     }
 }

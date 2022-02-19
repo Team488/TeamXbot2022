@@ -12,7 +12,46 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public boolean isDriveReady() {
-        return true;
+        return false;
+    }
+
+    @Override
+    public boolean areCanCodersReady() {
+        return false;
+    }
+
+    @Override
+    public boolean isClimberReady() {
+        return false;
+    }
+
+    @Override
+    public boolean isShooterReady() {
+        return false;
+    }
+
+    public boolean isIntakeReady() {
+        return false;
+    }
+
+    @Override
+    public boolean arePneumaticsReady() {
+        return false;
+    }
+
+    @Override
+    public boolean isLauncherReady() {
+        return false;
+    }
+
+    @Override
+    public boolean isConveyerReady() {
+        return false;
+    }
+
+    @Override
+    public boolean isCollectorStage2Ready() {
+        return false;
     }
 
     @Override
@@ -58,11 +97,6 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     @Override
-    public boolean areCanCodersReady() {
-        return true;
-    }
-
-    @Override
     public DeviceInfo getSteeringEncoder(SwerveInstance swerveInstance) {
         double simulationScalingValue = 1.0;
 
@@ -83,7 +117,7 @@ public class CompetitionContract extends ElectricalContract {
                 return null;
         }
     }
-    
+
     @Override
     public XYPair getSwerveModuleOffsets(SwerveInstance swerveInstance) {
         switch (swerveInstance.getLabel()) {
@@ -100,23 +134,9 @@ public class CompetitionContract extends ElectricalContract {
         }
     }
 
-    public boolean isIntakeReady() {
-        return false;
-    }
-
     @Override
     public DeviceInfo getIntakeNeo() {
         return new DeviceInfo(26, false);
-    }
-
-    @Override
-    public boolean isClimberReady() {
-        return true;
-    }
-
-    @Override
-    public boolean isShooterReady() {
-        return false;
     }
 
     @Override
@@ -130,18 +150,33 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     @Override
-    public DeviceInfo getArduinoDio1() {
+    public DeviceInfo getArduinoDio0() {
         return new DeviceInfo(0);
     }
 
     @Override
-    public DeviceInfo getArduinoDio2() {
+    public DeviceInfo getArduinoDio1() {
         return new DeviceInfo(1);
     }
 
     @Override
-    public boolean arePneumaticsReady() {
-        return true;
+    public DeviceInfo getArduinoDio2() {
+        return new DeviceInfo(2);
+    }
+
+    @Override
+    public DeviceInfo getArduinoDio3() {
+        return new DeviceInfo(3);
+    }
+
+    @Override
+    public DeviceInfo getArduinoAllianceDio() {
+        return new DeviceInfo(4);
+    }
+
+    @Override
+    public DeviceInfo getArduinoAnalogOutput() {
+        return new DeviceInfo(0);
     }
 
     @Override
@@ -162,11 +197,6 @@ public class CompetitionContract extends ElectricalContract {
     @Override
     public DeviceInfo getPivotSolenoid2() {
         return new DeviceInfo(7);
-    }
-
-    @Override
-    public boolean isLauncherReady() {
-        return false;
     }
 
     // Still temporary, we need to renumber the shooter motors
@@ -207,7 +237,7 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public DeviceInfo getCollectorMotor() {
-       return new DeviceInfo(7);
+        return new DeviceInfo(7);
     }
 
     @Override
@@ -216,18 +246,8 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     @Override
-    public boolean isCollectorStage2Ready() {
-        return false;
-    }
-
-    @Override
     public DeviceInfo getConveyerMotor() {
         return new DeviceInfo(9);
-    }
-
-    @Override
-    public boolean isConveyerReady() {
-        return false;
     }
 
 }

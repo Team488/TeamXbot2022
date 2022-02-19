@@ -40,9 +40,12 @@ public abstract class ElectricalContract {
 
     public abstract DeviceInfo getSecondaryShooterNeo();
 
+    public abstract DeviceInfo getArduinoDio0();
     public abstract DeviceInfo getArduinoDio1();
-
     public abstract DeviceInfo getArduinoDio2();
+    public abstract DeviceInfo getArduinoDio3();
+    public abstract DeviceInfo getArduinoAllianceDio();
+    public abstract DeviceInfo getArduinoAnalogOutput();
 
     public abstract boolean arePneumaticsReady();
 
