@@ -1,6 +1,5 @@
-package competition.subsystems.climber_deployment;
+package competition.subsystems.collector_deployment;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
