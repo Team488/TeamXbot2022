@@ -30,6 +30,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     private final DoubleProperty armPositionTarget;
     private final DoubleProperty armInchesPerRotation;
     private final DoubleProperty pawlDeadband;
+    private final DoubleProperty armPowerFactor;
     private final Latch safetyLatch;
     final String label;
     final ElectricalContract contract;
@@ -68,6 +69,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         // Assume this is shared - if not, we'll split it out.
         armInchesPerRotation = pf.createPersistentProperty("ArmInchesPerRotation", 1.0);
         pawlDeadband = pf.createPersistentProperty("PawlDeadband", 0.02);
+        armPowerFactor = pf.createPersistentProperty("PowerFactor", 0.3);
 
         // Unique properties
         pf.setPrefix(this);
@@ -97,7 +99,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     private void setSoftLimitsEnabled(boolean enabled) {
         if (contract.isClimberReady()) {
             armMotor.enableSoftLimit(SoftLimitDirection.kForward, enabled);
-            armMotor.enableSoftLimit(SoftLimitDirection.kForward, enabled);
+            armMotor.enableSoftLimit(SoftLimitDirection.kReverse, enabled);
         }
     }
 
@@ -119,6 +121,8 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     private void setMotorPower(double power, boolean isSafe) {
 
         safetyLatch.setValue(isSafe);
+
+        power *= MathUtils.constrainDoubleToRobotScale(armPowerFactor.get());
 
         // To a first approximation, whenever the device is moving, the pawl should be disengaged.
         // If there is any hint of power, the pawl should be disengaged.
