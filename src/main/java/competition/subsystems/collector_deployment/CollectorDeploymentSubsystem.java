@@ -5,26 +5,30 @@ import com.google.inject.Singleton;
 
 import competition.electrical_contract.ElectricalContract;
 import xbot.common.command.BaseSubsystem;
+import xbot.common.controls.actuators.XDoubleSolenoid;
 import xbot.common.controls.actuators.XSolenoid;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 
 @Singleton
 public class CollectorDeploymentSubsystem extends BaseSubsystem{
-    public XSolenoid deploy;
+    public XDoubleSolenoid deploy;
 
     @Inject
     public CollectorDeploymentSubsystem(CommonLibFactory factory, ElectricalContract eContract){
         if (eContract.arePneumaticsReady()) {
-        deploy = factory.createSolenoid(eContract.getDeploymentSoleniod().channel);
-        }
+        deploy = factory.createDoubleSolenoid(
+            factory.createSolenoid(eContract.getCollectorDeviceSoleniod1().channel),
+            factory.createSolenoid(eContract.getCollectorDeviceSoleniod2().channel)
+        );
+    }
     }
 
     public void deploy (){
-        deploy.setOn(true);
+        deploy.setForward();
     }
 
     public void retract (){
-        deploy.setOn(false);
+        deploy.setReverse();
     }
     
 }

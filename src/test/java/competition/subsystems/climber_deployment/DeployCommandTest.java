@@ -15,11 +15,11 @@ public class DeployCommandTest extends BaseCompetitionTest{
         CollectorDeploymentSubsystem collectorDeploymentSubsystem = this.injector.getInstance(CollectorDeploymentSubsystem.class);
         DeployCommand deployCommand = this.injector.getInstance(DeployCommand.class);
 
-        collectorDeploymentSubsystem.deploy.setOn(false);
-        assertFalse("Collector retracts", collectorDeploymentSubsystem.deploy.getAdjusted());
+        collectorDeploymentSubsystem.deploy.setReverse();;
+        assertTrue("Collector retracts", collectorDeploymentSubsystem.deploy.getIsReverse());
         deployCommand.initialize();
         deployCommand.execute();
-        assertTrue("Collector deploys", collectorDeploymentSubsystem.deploy.getAdjusted());
+        assertTrue("Collector deploys", collectorDeploymentSubsystem.deploy.getIsForward());
     }
 
     @Test  
@@ -27,10 +27,10 @@ public class DeployCommandTest extends BaseCompetitionTest{
         CollectorDeploymentSubsystem collectorDeploymentSubsystem = this.injector.getInstance(CollectorDeploymentSubsystem.class);
         DeployCommand deployCommand = this.injector.getInstance(DeployCommand.class);
 
-        collectorDeploymentSubsystem.deploy.setOn(true);
-        assertTrue("Collector Starts Deployed", collectorDeploymentSubsystem.deploy.getAdjusted());
+        collectorDeploymentSubsystem.deploy.setForward();
+        assertTrue("Collector Starts Deployed", collectorDeploymentSubsystem.deploy.getIsForward());
         deployCommand.initialize();
         deployCommand.execute();
-        assertTrue("Collector Stays Deployed", collectorDeploymentSubsystem.deploy.getAdjusted());
+        assertTrue("Collector Stays Deployed", collectorDeploymentSubsystem.deploy.getIsForward());
     }
 }

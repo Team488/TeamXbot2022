@@ -47,11 +47,12 @@ public abstract class ElectricalContract {
 
     public abstract DeviceInfo getPivotSolenoid();
 
-    public abstract DeviceInfo getDeploymentSoleniod();
-
     public abstract boolean isLauncherReady();
 
     public abstract DeviceInfo getShooterMotorLeader();
 
     public abstract DeviceInfo getShooterMotorFollower();
+
+    public abstract DeviceInfo getCollectorDeviceSoleniod1();
+    public abstract DeviceInfo getCollectorDeviceSoleniod2();
 }

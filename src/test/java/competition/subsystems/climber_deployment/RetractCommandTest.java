@@ -16,22 +16,23 @@ public class RetractCommandTest extends BaseCompetitionTest{
         CollectorDeploymentSubsystem collectorDeploymentSubsystem = this.injector.getInstance(CollectorDeploymentSubsystem.class);
         RetractCommand retractCommand = this.injector.getInstance(RetractCommand.class);
 
-        collectorDeploymentSubsystem.deploy.setOn(true);
-        assertTrue("Collector Deploys", collectorDeploymentSubsystem.deploy.getAdjusted());
+        collectorDeploymentSubsystem.deploy.setForward();
+        assertTrue("Collector Deploys", collectorDeploymentSubsystem.deploy.getIsForward());
         retractCommand.initialize();
         retractCommand.execute();
-        assertFalse("Collector retracts", collectorDeploymentSubsystem.deploy.getAdjusted());
+        assertTrue("Collector retracts", collectorDeploymentSubsystem.deploy.getIsReverse());
     }
+    
     @Test  
     public void testingDoubleRetractCommand(){
         CollectorDeploymentSubsystem collectorDeploymentSubsystem = this.injector.getInstance(CollectorDeploymentSubsystem.class);
         RetractCommand retractCommand = this.injector.getInstance(RetractCommand.class);
 
-        collectorDeploymentSubsystem.deploy.setOn(false);
-        assertFalse("Collector Retracts", collectorDeploymentSubsystem.deploy.getAdjusted());
+        collectorDeploymentSubsystem.deploy.setReverse();
+        assertTrue("Collector Retracts", collectorDeploymentSubsystem.deploy.getIsReverse());
         retractCommand.initialize();
         retractCommand.execute();
-        assertFalse("Collector Stays Retracted", collectorDeploymentSubsystem.deploy.getAdjusted());
+        assertTrue("Collector Stays Retracted", collectorDeploymentSubsystem.deploy.getIsReverse());
     }
     
 }

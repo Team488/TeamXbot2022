@@ -184,7 +184,7 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     @Override
-    public DeviceInfo getDeploymentSoleniod() {
+    public DeviceInfo getCollectorDeviceSoleniod1() {
         return new DeviceInfo(0);
     }
   
@@ -197,4 +197,8 @@ public class CompetitionContract extends ElectricalContract {
         return false;
     }
 
+    @Override
+    public DeviceInfo getCollectorDeviceSoleniod2() {
+        return new DeviceInfo(1);
+    }
 }

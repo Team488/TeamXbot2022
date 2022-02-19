@@ -13,6 +13,7 @@ public class RetractCommand extends BaseCommand{
         this.deploy = deploy;
         addRequirements(deploy);
     }
+    
     @Override
     public void initialize() {
         log.info("Initializing");

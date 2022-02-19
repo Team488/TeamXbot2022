@@ -14,10 +14,10 @@ public class CollectorDeploymentSubsystemTest extends BaseCompetitionTest{
     public void testingDeploymentSubsystem (){
         CollectorDeploymentSubsystem collectorDeploymentSubsystem = this.injector.getInstance(CollectorDeploymentSubsystem.class);
 
-        collectorDeploymentSubsystem.deploy.setOn(true);
-        assertTrue("Collector Deploys", collectorDeploymentSubsystem.deploy.getAdjusted());
-        collectorDeploymentSubsystem.deploy.setOn(false);
-        assertFalse("Collector Retracts", collectorDeploymentSubsystem.deploy.getAdjusted());
+        collectorDeploymentSubsystem.deploy.setForward();;
+        assertTrue("Collector Deploys", collectorDeploymentSubsystem.deploy.getIsForward());
+        collectorDeploymentSubsystem.deploy.setReverse();;
+        assertTrue("Collector Retracts", collectorDeploymentSubsystem.deploy.getIsReverse());
         
     }
 }
