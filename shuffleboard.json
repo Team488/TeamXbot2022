@@ -750,6 +750,101 @@
           }
         }
       }
+    },
+    {
+      "title": "Arm",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/ArmMotorPosition",
+              "_title": "SmartDashboard/ClimberArmSubsystem/LeftArm/ArmMotorPosition"
+            }
+          },
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/IsArmCalibrated",
+              "_title": "SmartDashboard/ClimberArmSubsystem/LeftArm/IsArmCalibrated",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/ArmMotorPosition",
+              "_title": "SmartDashboard/ClimberArmSubsystem/RightArm/ArmMotorPosition"
+            }
+          },
+          "6,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/IsArmCalibrated",
+              "_title": "SmartDashboard/ClimberArmSubsystem/RightArm/IsArmCalibrated",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/ArmInchesPerRotation",
+              "_title": "SmartDashboard/ClimberArmSubsystem/ArmInchesPerRotation"
+            }
+          },
+          "9,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/safelyExtendable",
+              "_title": "SmartDashboard/ClimberArmSubsystem/safelyExtendable"
+            }
+          },
+          "9,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/safelyRetractable",
+              "_title": "SmartDashboard/ClimberArmSubsystem/safelyRetractable"
+            }
+          }
+        }
+      }
     }
   ],
   "windowGeometry": {

@@ -77,6 +77,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         armMotorPositionProp = pf.createEphemeralProperty("ArmMotorPosition", 0.0);
         armPositionTarget = pf.createEphemeralProperty("TargetPosition", 0);
 
+
         safetyLatch = new Latch(true, EdgeType.Both, edge -> {
             if(edge == EdgeType.RisingEdge) {
                 // re-enable internal safety features

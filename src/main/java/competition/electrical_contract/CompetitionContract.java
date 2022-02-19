@@ -111,7 +111,7 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public boolean isClimberReady() {
-        return false;
+        return true;
     }
 
     @Override
