@@ -234,6 +234,14 @@ public class CompetitionContract extends ElectricalContract {
         return new DeviceInfo(9);
     }
 
+    public DeviceInfo getDeployHoodSoleniod1() {
+        return new DeviceInfo(8);
+    }
+    
+    public DeviceInfo getDeployHoodSoleniod2() {
+        return new DeviceInfo(8);
+    }
+
     @Override
     public boolean isConveyerReady() {
         return false;
