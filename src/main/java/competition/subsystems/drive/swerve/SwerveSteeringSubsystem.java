@@ -43,7 +43,6 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     private XCANSparkMax motorController;
     private XAbsoluteEncoder encoder;
 
-    private double positionOffset;
     private boolean calibrated = false;
     private boolean canCoderUnavailable = false;
 
@@ -101,10 +100,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
      */
     @Override
     public double getCurrentValue() {
-        double position = getBestEncoderPositionInDegrees();
-        
-        double adjustedPosition = (position - positionOffset);
-        return adjustedPosition;
+        return getBestEncoderPositionInDegrees();
     }
 
     /**
@@ -136,12 +132,12 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
 
     @Override
     public boolean isCalibrated() {
-        return calibrated;
+        return !canCoderUnavailable || calibrated;
     }
 
     public void calibrateHere() {
         if (this.contract.isDriveReady()) {
-            this.positionOffset = this.motorController.getPosition();
+            this.motorController.setPosition(0);
         }
         this.calibrated = true;
     }
