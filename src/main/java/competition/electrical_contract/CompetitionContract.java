@@ -83,7 +83,7 @@ public class CompetitionContract extends ElectricalContract {
                 return null;
         }
     }
-    
+
     @Override
     public XYPair getSwerveModuleOffsets(SwerveInstance swerveInstance) {
         switch (swerveInstance.getLabel()) {
@@ -207,10 +207,9 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public DeviceInfo getCollectorMotor() {
-       return new DeviceInfo(7);
+        return new DeviceInfo(7);
     }
 
-    @Override
     public DeviceInfo getCollectorStage2Motor() {
         return new DeviceInfo(8);
     }
@@ -221,6 +220,16 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     @Override
+
+    public DeviceInfo getCollectorDeviceSoleniod2() {
+        return new DeviceInfo(1);
+    }
+
+    @Override
+    public DeviceInfo getCollectorDeviceSoleniod1() {
+        return new DeviceInfo(0);
+    }
+
     public DeviceInfo getConveyerMotor() {
         return new DeviceInfo(9);
     }
@@ -229,5 +238,4 @@ public class CompetitionContract extends ElectricalContract {
     public boolean isConveyerReady() {
         return false;
     }
-
 }
