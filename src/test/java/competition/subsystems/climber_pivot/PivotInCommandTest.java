@@ -17,7 +17,7 @@ public class PivotInCommandTest extends BaseCompetitionTest{
         assertTrue("Pivoted out", climberPivotSubsystem.pivot.getIsForward());
         pivotInCommand.initialize();
         pivotInCommand.execute();
-        assertTrue("Pivoted in", !climberPivotSubsystem.pivot.getIsReverse());
+        assertTrue("Pivoted in", climberPivotSubsystem.pivot.getIsReverse());
 
     }
 
@@ -26,11 +26,11 @@ public class PivotInCommandTest extends BaseCompetitionTest{
         ClimberPivotSubsystem climberPivotSubsystem = this.injector.getInstance(ClimberPivotSubsystem.class);
         PivotInCommand pivotInCommand = this.injector.getInstance(PivotInCommand.class);
 
-        climberPivotSubsystem.pivot.setForward();
-        assertTrue("Pivoted in", climberPivotSubsystem.pivot.getIsForward());
+        climberPivotSubsystem.pivot.setReverse();
+        assertTrue("Pivoted in", climberPivotSubsystem.pivot.getIsReverse());
         pivotInCommand.initialize();
         pivotInCommand.execute();
-        assertTrue("Stays pivoted in", climberPivotSubsystem.pivot.getIsForward());
+        assertTrue("Stays pivoted in", climberPivotSubsystem.pivot.getIsReverse());
 
     }
     

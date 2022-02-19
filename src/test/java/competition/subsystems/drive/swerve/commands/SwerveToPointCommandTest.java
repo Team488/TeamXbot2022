@@ -45,8 +45,8 @@ public class SwerveToPointCommandTest extends BaseCompetitionTest {
         pose.setCurrentPosition(100, 150);
         command.execute();
 
-        testAllModuleAngle(90);
-        testAllModulesGoingForward(false);
+        testAllModuleAngle(-90);
+        testAllModulesGoingForward(true);
     }
 
     private void testAllModuleAngle(double angle) {

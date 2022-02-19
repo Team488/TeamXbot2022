@@ -26,7 +26,7 @@ public class ClimberPivotSubsystemTest extends BaseCompetitionTest {
 
         climberPivotSubsystem.pivotOut();
 
-        assertTrue("Latch is pivoted out", climberPivotSubsystem.pivot.getIsReverse());
+        assertTrue("Latch is pivoted out", climberPivotSubsystem.pivot.getIsForward());
     }
 
     @Test
@@ -36,7 +36,7 @@ public class ClimberPivotSubsystemTest extends BaseCompetitionTest {
         climberPivotSubsystem.pivot.setForward();
         assertTrue("Latch starts pivoted out", climberPivotSubsystem.pivot.getIsForward());
         climberPivotSubsystem.pivotIn();
-        assertTrue("Latch starts pivoted in", !climberPivotSubsystem.pivot.getIsReverse());
+        assertTrue("Latch starts pivoted in", climberPivotSubsystem.pivot.getIsReverse());
         climberPivotSubsystem.pivotOut();
         assertTrue("Latch is pivoted out again", climberPivotSubsystem.pivot.getIsForward());
 
