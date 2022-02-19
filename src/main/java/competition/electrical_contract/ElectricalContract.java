@@ -47,8 +47,10 @@ public abstract class ElectricalContract {
     public abstract boolean arePneumaticsReady();
 
     public abstract DeviceInfo getLatchSolenoid();
+    public abstract DeviceInfo getLatchSolenoid2();
 
     public abstract DeviceInfo getPivotSolenoid();
+    public abstract DeviceInfo getPivotSolenoid2();
 
     public abstract boolean isLauncherReady();
 
