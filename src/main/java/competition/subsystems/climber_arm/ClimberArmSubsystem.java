@@ -69,7 +69,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         // Assume this is shared - if not, we'll split it out.
         armInchesPerRotation = pf.createPersistentProperty("ArmInchesPerRotation", 1.0);
         pawlDeadband = pf.createPersistentProperty("PawlDeadband", 0.02);
-        armPowerFactor = pf.createPersistentProperty("PowerFactor", 0.3);
+        armPowerFactor = pf.createPersistentProperty("PowerFactor", 1);
 
         // Unique properties
         pf.setPrefix(this);
