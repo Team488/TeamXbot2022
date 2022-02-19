@@ -34,14 +34,14 @@ public class TurnLeft90DegreesCommand extends BaseCommand {
     public void initialize() {
         log.info("Initializing");
         initialHeading = pose.getCurrentHeading();
-        goalHeading = initialHeading.plus(new Rotation2d(90));
+        goalHeading = initialHeading.plus(Rotation2d.fromDegrees(90));
     }
 
     @Override
     public void execute() {
         double power = headingModule.calculateHeadingPower(goalHeading);
         // Just rotate.
-        drive.move(new XYPair(), -power);
+        drive.move(new XYPair(), power);
     }
 
     @Override

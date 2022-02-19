@@ -491,12 +491,271 @@
           }
         }
       }
+    },
+    {
+      "title": "RotationalPIDs",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/HeadingPID/P",
+              "_title": "SmartDashboard/DriveSubsystem/HeadingPID/P"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/HeadingPID/D",
+              "_title": "SmartDashboard/DriveSubsystem/HeadingPID/D"
+            }
+          },
+          "5,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/HeadingPID/Min Output",
+              "_title": "SmartDashboard/DriveSubsystem/HeadingPID/Min Output"
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/CurrentHeading",
+              "_title": "SmartDashboard/PoseSubsystem/CurrentHeading"
+            }
+          },
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/HeadingPID/Max Output",
+              "_title": "SmartDashboard/DriveSubsystem/HeadingPID/Max Output"
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/HeadingPID/Enable error threshold",
+              "_title": "SmartDashboard/DriveSubsystem/HeadingPID/Enable error threshold"
+            }
+          },
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/HeadingPID/Error threshold",
+              "_title": "SmartDashboard/DriveSubsystem/HeadingPID/Error threshold"
+            }
+          },
+          "8,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/HeadingPID/OffTargetReason",
+              "_title": "SmartDashboard/DriveSubsystem/HeadingPID/OffTargetReason"
+            }
+          },
+          "7,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/HeadingPID/Enable time threshold",
+              "_title": "SmartDashboard/DriveSubsystem/HeadingPID/Enable time threshold"
+            }
+          },
+          "8,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/HeadingPID/Time threshold",
+              "_title": "SmartDashboard/DriveSubsystem/HeadingPID/Time threshold"
+            }
+          },
+          "4,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/CurrentVelocity",
+              "_title": "SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/CurrentVelocity"
+            }
+          },
+          "5,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/TargetVelocity",
+              "_title": "SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/TargetVelocity"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "TranslationalPIDs",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/PositionPID/P",
+              "_title": "SmartDashboard/DriveSubsystem/PositionPID/P"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/PositionPID/D",
+              "_title": "SmartDashboard/DriveSubsystem/PositionPID/D"
+            }
+          },
+          "4,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/PositionPID/Max Output",
+              "_title": "SmartDashboard/DriveSubsystem/PositionPID/Max Output"
+            }
+          },
+          "5,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/PositionPID/Min Output",
+              "_title": "SmartDashboard/DriveSubsystem/PositionPID/Min Output"
+            }
+          },
+          "7,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/PositionPID/OffTargetReason",
+              "_title": "SmartDashboard/DriveSubsystem/PositionPID/OffTargetReason"
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/PositionPID/Enable error threshold",
+              "_title": "SmartDashboard/DriveSubsystem/PositionPID/Enable error threshold"
+            }
+          },
+          "7,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/PositionPID/Enable time threshold",
+              "_title": "SmartDashboard/DriveSubsystem/PositionPID/Enable time threshold"
+            }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/PositionPID/Time threshold",
+              "_title": "SmartDashboard/DriveSubsystem/PositionPID/Time threshold"
+            }
+          },
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveSubsystem/PositionPID/Error threshold",
+              "_title": "SmartDashboard/DriveSubsystem/PositionPID/Error threshold"
+            }
+          }
+        }
+      }
     }
   ],
   "windowGeometry": {
-    "x": 3.200000047683716,
-    "y": 32.0,
-    "width": 1553.5999755859375,
-    "height": 692.7999877929688
+    "x": -7.199999809265137,
+    "y": -7.199999809265137,
+    "width": 1550.4000244140625,
+    "height": 830.4000244140625
   }
 }

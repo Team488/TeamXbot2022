@@ -22,7 +22,6 @@ public class EjectCommandTest extends BaseCompetitionTest{
 
     @Test
     public void testingDoubleEjectCommand (){
-        CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
         EjectCommand ejectCommand = this.injector.getInstance(EjectCommand.class);
 
         ejectCommand.initialize();
