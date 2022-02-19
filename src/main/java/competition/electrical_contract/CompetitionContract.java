@@ -141,7 +141,7 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public boolean arePneumaticsReady() {
-        return false;
+        return true;
     }
 
     @Override
