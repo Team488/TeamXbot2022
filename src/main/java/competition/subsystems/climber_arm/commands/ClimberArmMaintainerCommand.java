@@ -9,8 +9,8 @@ import xbot.common.command.BaseMaintainerCommand;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.logic.CalibrationDecider;
 import xbot.common.logic.CalibrationDecider.CalibrationMode;
-import xbot.common.math.PIDManager;
 import xbot.common.logic.TimeStableValidator;
+import xbot.common.math.PIDManager;
 import xbot.common.properties.BooleanProperty;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
@@ -58,6 +58,7 @@ public class ClimberArmMaintainerCommand extends BaseMaintainerCommand {
     public void initialize() {
         log.info("Initializing");
         calibrationDecider.reset();
+        arm.setTargetValue(arm.getCurrentValue());
     }
 
     @Override

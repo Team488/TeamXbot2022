@@ -99,6 +99,12 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
 
     private void setSoftLimitsEnabled(boolean enabled) {
         if (contract.isClimberReady()) {
+
+            if (enabled) {
+                armMotor.setSoftLimit(SoftLimitDirection.kForward, (float)(safeArmExtendedNumber.get() / armInchesPerRotation.get()));
+                armMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)(safeArmRetractedNumber.get() / armInchesPerRotation.get()));
+            }
+
             armMotor.enableSoftLimit(SoftLimitDirection.kForward, enabled);
             armMotor.enableSoftLimit(SoftLimitDirection.kReverse, enabled);
         }
@@ -233,6 +239,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         }
         return 0;
     }
+
 
     @Override
     public void periodic() {
