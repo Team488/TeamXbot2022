@@ -28,6 +28,11 @@ public class ClimberArmMaintainerCommand extends BaseMaintainerCommand {
     private final DoubleProperty waitForMotorStallCalibrationTime;
     private final BooleanProperty attemptAutomaticCalibration;
 
+    private final DoubleProperty positionFullyRetractedProperty;
+    private final DoubleProperty positionClearCurrentBarProperty;
+    private final DoubleProperty positionFullyExtendedProperty;
+    private final DoubleProperty positionEngageNextBarProperty;
+
     @Inject
     public ClimberArmMaintainerCommand(ArmInstance armInstance, ClimberArmSubsystem arm, PropertyFactory pf,
             CommonLibFactory clf, OperatorInterface oi) {
@@ -49,6 +54,11 @@ public class ClimberArmMaintainerCommand extends BaseMaintainerCommand {
         calibrationAttemptState = pf.createEphemeralProperty("CalibrationAttemptState", "Uninitialized");
 
         calibrationDecider = clf.createCalibrationDecider(this.getPrefix() + armLabel);
+
+        positionFullyRetractedProperty = pf.createPersistentProperty("FullyRetractedPositionInches", 0.0);
+        positionClearCurrentBarProperty = pf.createPersistentProperty("ClearCurrentBarPositionInches", 6.0);
+        positionFullyExtendedProperty = pf.createPersistentProperty("FullyExtendedPositionInches", 24.5);
+        positionEngageNextBarProperty = pf.createPersistentProperty("EngageNextBarPositionInches", 22.5);
     }
 
     @Override
