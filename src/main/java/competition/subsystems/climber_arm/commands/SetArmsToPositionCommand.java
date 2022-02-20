@@ -1,5 +1,7 @@
 package competition.subsystems.climber_arm.commands;
 
+import com.google.inject.Inject;
+
 import competition.injection.arm.LeftArm;
 import competition.injection.arm.RightArm;
 import competition.subsystems.climber_arm.ClimberArmSubsystem;
