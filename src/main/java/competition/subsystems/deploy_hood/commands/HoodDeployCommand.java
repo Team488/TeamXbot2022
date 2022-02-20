@@ -1,10 +1,18 @@
 package competition.subsystems.deploy_hood.commands;
 
+import com.google.inject.Inject;
+
 import competition.subsystems.deploy_hood.HoodSubsystem;
 import xbot.common.command.BaseCommand;
 
 public class HoodDeployCommand extends BaseCommand{
+    final HoodSubsystem hoodDeploy;
     
+    @Inject
+    public HoodDeployCommand (HoodSubsystem hoodDeploy) {
+        this.hoodDeploy = hoodDeploy;
+        addRequirements(hoodDeploy);
+    }
 
     @Override
     public void initialize() {
@@ -13,7 +21,7 @@ public class HoodDeployCommand extends BaseCommand{
 
     @Override
     public void execute() {
-        // TODO Auto-generated method stub
+        hoodDeploy.deploy();
         
     }
     
