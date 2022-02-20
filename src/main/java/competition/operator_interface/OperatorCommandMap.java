@@ -95,16 +95,6 @@ public class OperatorCommandMap {
             @LeftArm ClimberArmSubsystem leftArm,
             @RightArm ClimberArmSubsystem rightArm,
             CommonLibFactory clf) {
-        operatorInterface.operatorGamepad.getifAvailable(8).whenPressed(latchArm);
-        operatorInterface.operatorGamepad.getifAvailable(7).whenPressed(latchRelease);
-        operatorInterface.operatorGamepad.getifAvailable(5).whenPressed(pivotIn);
-        operatorInterface.operatorGamepad.getifAvailable(6).whenPressed(pivotOut);
-
-        ParallelCommandGroup stopBothArms = new ParallelCommandGroup(stopLeftArm, stopRightArm);
-
-        operatorInterface.operatorGamepad.getifAvailable(1).whenPressed(dualArmWithJoysticks);
-        operatorInterface.operatorGamepad.getifAvailable(2).whenPressed(stopBothArms);
-
         setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.FullyRetracted).includeOnSmartDashboard();
         setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.ClearCurrentBar).includeOnSmartDashboard();
         setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.FullyExtended).includeOnSmartDashboard();
