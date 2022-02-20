@@ -31,6 +31,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     private final String label;
     private final PIDManager pid;
     private final ElectricalContract contract;
+    private final SwerveSteeringMotorPidSubsystem pidConfigSybsustem;
 
     private final DoubleProperty powerScale;
     private final DoubleProperty targetRotation;
@@ -50,11 +51,13 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
 
     @Inject
     public SwerveSteeringSubsystem(SwerveInstance swerveInstance, CommonLibFactory factory,
-            PropertyFactory pf, PIDFactory pidf, ElectricalContract electricalContract) {
+            PropertyFactory pf, PIDFactory pidf, ElectricalContract electricalContract, 
+            SwerveSteeringMotorPidSubsystem pidConfigSubsystem) {
         this.label = swerveInstance.getLabel();
         log.info("Creating SwerveRotationSubsystem " + this.label);
 
         this.contract = electricalContract;
+        this.pidConfigSybsustem = pidConfigSubsystem;
 
         // Create properties shared among all instances
         pf.setPrefix(super.getPrefix());
@@ -74,6 +77,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
 
         if (electricalContract.isDriveReady()) {
             this.motorController = factory.createCANSparkMax(electricalContract.getSteeringNeo(swerveInstance), this.getPrefix(), "SteeringNeo");
+            setMotorControllerPositionPidParameters();
         }
         if (electricalContract.areCanCodersReady()) {
             this.encoder = factory.createAbsoluteEncoder(electricalContract.getSteeringEncoder(swerveInstance), this.getPrefix());
@@ -291,13 +295,14 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         }
     }
 
-    public void setMotorControllerPositionPidParameters(double p, double i, double d, double ff, double minOutput, double maxOutput) {
+    public void setMotorControllerPositionPidParameters() {
         if (this.contract.isDriveReady()) {
-            this.motorController.setP(p);
-            this.motorController.setI(i);
-            this.motorController.setD(d);
-            this.motorController.setFF(ff);
-            this.motorController.setOutputRange(minOutput, maxOutput);
+            this.motorController.setP(pidConfigSybsustem.getP());
+            this.motorController.setI(pidConfigSybsustem.getI());
+            this.motorController.setD(pidConfigSybsustem.getD());
+            this.motorController.setFF(pidConfigSybsustem.getFF());
+            this.motorController.setOutputRange(pidConfigSybsustem.getMinOutput(), pidConfigSybsustem.getMaxOutput());
+            this.motorController.setClosedLoopRampRate(pidConfigSybsustem.getClosedLoopRampRate());
         }
     }
 
