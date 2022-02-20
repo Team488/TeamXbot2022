@@ -1,4 +1,4 @@
-package competition.subsystems.collector_deployment;
+package competition.subsystems.collector_deployment.commands;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
