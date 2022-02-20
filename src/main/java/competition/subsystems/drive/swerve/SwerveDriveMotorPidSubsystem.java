@@ -6,13 +6,13 @@ import competition.subsystems.BaseMotorPidSubsystem;
 import xbot.common.properties.PropertyFactory;
 
 /**
- * Container for steering motor controller PIDs.
+ * Container for drive motor controller PIDs.
  */
-public class SwerveSteeringMotorPidSubsystem extends BaseMotorPidSubsystem {
+public class SwerveDriveMotorPidSubsystem extends BaseMotorPidSubsystem {
 
     @Inject
-    public SwerveSteeringMotorPidSubsystem(PropertyFactory pf) {
+    public SwerveDriveMotorPidSubsystem(PropertyFactory pf) {
         super(pf);
     }
-    
+
 }

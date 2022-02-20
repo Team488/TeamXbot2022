@@ -22,6 +22,7 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
     private final String label;
     private final PIDManager pid;
     private final ElectricalContract contract;
+    private final SwerveDriveMotorPidSubsystem pidConfigSubsystem;
 
     private final DoubleProperty inchesPerMotorRotation;
     private final DoubleProperty targetVelocity;
@@ -31,7 +32,8 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
 
     @Inject
     public SwerveDriveSubsystem(SwerveInstance swerveInstance, CommonLibFactory factory,
-            PropertyFactory pf, PIDFactory pidf, ElectricalContract electricalContract) {
+            PropertyFactory pf, PIDFactory pidf, ElectricalContract electricalContract,
+            SwerveDriveMotorPidSubsystem pidConfigSubsystem) {
         this.label = swerveInstance.getLabel();
         log.info("Creating SwerveDriveSubsystem " + this.label);
         
@@ -46,8 +48,11 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
         this.targetVelocity = pf.createEphemeralProperty("TargetVelocity", 0.0);
         this.currentVelocity = pf.createEphemeralProperty("CurrentVelocity", 0.0);
 
+        this.pidConfigSubsystem = pidConfigSubsystem;
+
         if (electricalContract.isDriveReady()) {
             this.motorController = factory.createCANSparkMax(electricalContract.getDriveNeo(swerveInstance), this.getPrefix(), "DriveNeo");
+            setMotorControllerPositionPidParameters();
         }
     }
 
@@ -112,6 +117,18 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
     
     public double calculatePower() {
         return this.pid.calculate(this.getTargetValue(), this.getCurrentValue());
+    }
+
+    public void setMotorControllerPositionPidParameters() {
+        if (this.contract.isDriveReady()) {
+            this.motorController.setP(pidConfigSubsystem.getP());
+            this.motorController.setI(pidConfigSubsystem.getI());
+            this.motorController.setD(pidConfigSubsystem.getD());
+            this.motorController.setFF(pidConfigSubsystem.getFF());
+            this.motorController.setOutputRange(pidConfigSubsystem.getMinOutput(), pidConfigSubsystem.getMaxOutput());
+            this.motorController.setClosedLoopRampRate(pidConfigSubsystem.getClosedLoopRampRate());
+            this.motorController.setOpenLoopRampRate(pidConfigSubsystem.getOpenLoopRampRate());
+        }
     }
 
     @Override
