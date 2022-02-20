@@ -12,17 +12,17 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public boolean isDriveReady() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean areCanCodersReady() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isClimberReady() {
-        return false;
+        return true;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public boolean arePneumaticsReady() {
-        return false;
+        return true;
     }
 
     @Override
@@ -240,14 +240,22 @@ public class CompetitionContract extends ElectricalContract {
         return new DeviceInfo(7);
     }
 
-    @Override
     public DeviceInfo getCollectorStage2Motor() {
         return new DeviceInfo(8);
     }
 
     @Override
+
+    public DeviceInfo getCollectorDeviceSoleniod2() {
+        return new DeviceInfo(1);
+    }
+
+    @Override
+    public DeviceInfo getCollectorDeviceSoleniod1() {
+        return new DeviceInfo(0);
+    }
+
     public DeviceInfo getConveyerMotor() {
         return new DeviceInfo(9);
     }
-
 }
