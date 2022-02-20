@@ -10,6 +10,7 @@ import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.logic.CalibrationDecider;
 import xbot.common.logic.CalibrationDecider.CalibrationMode;
 import xbot.common.logic.TimeStableValidator;
+import xbot.common.math.MathUtils;
 import xbot.common.math.PIDManager;
 import xbot.common.properties.BooleanProperty;
 import xbot.common.properties.DoubleProperty;
@@ -123,9 +124,13 @@ public class ClimberArmMaintainerCommand extends BaseMaintainerCommand {
     protected double getHumanInput() {
         switch (armLabel) {
             case "LeftArm":
-                return oi.operatorGamepad.getLeftStickY();
+                return MathUtils.deadband(
+                    oi.operatorGamepad.getLeftStickY(),
+                    oi.getDriverGamepadTypicalDeadband());
             case "RightArm":
-                return oi.operatorGamepad.getRightStickY();
+                return MathUtils.deadband(
+                    oi.operatorGamepad.getRightStickY(),
+                    oi.getDriverGamepadTypicalDeadband());
             default:
                 return 0;
         }
