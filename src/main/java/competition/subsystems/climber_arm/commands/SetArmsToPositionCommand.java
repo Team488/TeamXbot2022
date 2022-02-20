@@ -74,6 +74,10 @@ public class SetArmsToPositionCommand extends BaseSetpointCommand {
         // pass
     }
 
-    // TODO: implement an isFinished() that waits for at goal for long enough
+    @Override
+    public boolean isFinished() {
+        // return instantly, someone else will wait for is at goal
+        return true; 
+    }
     
 }
