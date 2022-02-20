@@ -9,6 +9,7 @@ import competition.injection.swerve.FrontLeftDrive;
 import competition.injection.swerve.FrontRightDrive;
 import competition.injection.swerve.RearLeftDrive;
 import competition.injection.swerve.RearRightDrive;
+import competition.subsystems.climber_arm.ClimberArmSubsystem;
 import competition.subsystems.climber_arm.commands.DualArmControllerCommandWithJoysticks;
 import competition.subsystems.climber_arm.commands.MotorArmExtendCommand;
 import competition.subsystems.climber_arm.commands.MotorArmRetractCommand;
@@ -30,6 +31,9 @@ import competition.subsystems.latch.commands.LatchReleaseCommand;
 import competition.subsystems.pose.PoseSubsystem;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import xbot.common.command.NamedInstantCommand;
+import xbot.common.controls.sensors.ChordButton;
+import xbot.common.controls.sensors.XXboxController.XboxButton;
+import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.math.XYPair;
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 
@@ -77,18 +81,49 @@ public class OperatorCommandMap {
             LatchReleaseCommand latchRelease,
             PivotInCommand pivotIn,
             PivotOutCommand pivotOut,
-            DualArmControllerCommandWithJoysticks dualArmWithJoysticks,
+            DualArmControllerCommandWithJoysticks dualArmWithJoysticksSafe,
+            DualArmControllerCommandWithJoysticks dualArmWithJoysticksUnsafe,
             @LeftArm MotorArmStopCommand stopLeftArm,
-            @RightArm MotorArmStopCommand stopRightArm) {
-        operatorInterface.operatorGamepad.getifAvailable(8).whenPressed(latchArm);
-        operatorInterface.operatorGamepad.getifAvailable(7).whenPressed(latchRelease);
-        operatorInterface.operatorGamepad.getifAvailable(5).whenPressed(pivotIn);
-        operatorInterface.operatorGamepad.getifAvailable(6).whenPressed(pivotOut);
+            @RightArm MotorArmStopCommand stopRightArm,
+            @LeftArm ClimberArmSubsystem leftArm,
+            @RightArm ClimberArmSubsystem rightArm,
+            CommonLibFactory clf) {
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.Start).whenPressed(latchArm);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(pivotIn);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(pivotOut);
 
         ParallelCommandGroup stopBothArms = new ParallelCommandGroup(stopLeftArm, stopRightArm);
 
-        operatorInterface.operatorGamepad.getifAvailable(1).whenPressed(dualArmWithJoysticks);
-        operatorInterface.operatorGamepad.getifAvailable(2).whenPressed(stopBothArms);
+        NamedInstantCommand freePawl = new NamedInstantCommand("FreePawlCommand", () -> {
+            leftArm.freePawl();
+            rightArm.freePawl();
+        });
+
+        NamedInstantCommand lockPawl = new NamedInstantCommand("LockPawlCommand", () -> {
+            leftArm.lockPawl();
+            rightArm.lockPawl();
+        });
+
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftTrigger).whenPressed(freePawl);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightTrigger).whenPressed(lockPawl);
+
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.A).whenPressed(stopBothArms);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.B).whenPressed(dualArmWithJoysticksSafe);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.X).whenPressed(dualArmWithJoysticksUnsafe);
+
+        ChordButton driverNuclearLaunch = clf.createChordButton(
+            operatorInterface.driverGamepad.getifAvailable(XboxButton.LeftTrigger),
+            operatorInterface.driverGamepad.getifAvailable(XboxButton.RightTrigger)
+        );
+
+        ChordButton totalNuclearLaunch = clf.createChordButton(
+            driverNuclearLaunch,
+            operatorInterface.operatorGamepad.getifAvailable(XboxButton.Back)
+        );
+
+        totalNuclearLaunch.whenPressed(latchRelease);
+            
+
     }
 
     @Inject
