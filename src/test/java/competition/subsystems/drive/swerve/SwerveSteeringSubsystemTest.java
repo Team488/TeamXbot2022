@@ -126,7 +126,7 @@ public class SwerveSteeringSubsystemTest extends BaseCompetitionTest {
         assertEquals("Neo encoder should match CanCoder", 50, subsystem.getMotorControllerEncoderPosiitonInDegrees(), 0.001);
 
         absoluteEncoder.setAbsolutePosition(10);
-        motorController.set(10);
+        motorController.setVelocity(10);
         subsystem.calibrateMotorControllerPositionFromCanCoder();
 
         assertEquals("CanCoder position should be 10", 10, subsystem.getAbsoluteEncoderPositionInDegrees(), 0.001);
