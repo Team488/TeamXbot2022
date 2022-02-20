@@ -10,9 +10,12 @@ import competition.injection.swerve.FrontLeftDrive;
 import competition.injection.swerve.FrontRightDrive;
 import competition.injection.swerve.RearLeftDrive;
 import competition.injection.swerve.RearRightDrive;
+import competition.subsystems.climber_arm.ClimberArmSubsystem;
+import competition.subsystems.climber_arm.commands.ClimberArmMaintainerCommand;
 import competition.subsystems.climber_arm.commands.DualArmControllerCommandWithJoysticks;
 import competition.subsystems.climber_arm.commands.MotorArmExtendCommand;
 import competition.subsystems.climber_arm.commands.MotorArmRetractCommand;
+import competition.subsystems.climber_arm.commands.MotorArmSetZeroCommand;
 import competition.subsystems.climber_arm.commands.MotorArmStopCommand;
 import competition.subsystems.climber_arm.commands.SetArmsToPositionCommand;
 import competition.subsystems.climber_pivot.commands.PivotInCommand;
@@ -32,6 +35,9 @@ import competition.subsystems.latch.commands.LatchReleaseCommand;
 import competition.subsystems.pose.PoseSubsystem;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import xbot.common.command.NamedInstantCommand;
+import xbot.common.controls.sensors.ChordButton;
+import xbot.common.controls.sensors.XXboxController.XboxButton;
+import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.math.XYPair;
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 
@@ -72,17 +78,23 @@ public class OperatorCommandMap {
 
     @Inject
     public void setupClimbingCommands(
-
             MotorArmExtendCommand extendArmCommand,
             MotorArmRetractCommand retractArmCommand,
             LatchArmCommand latchArm,
             LatchReleaseCommand latchRelease,
             PivotInCommand pivotIn,
             PivotOutCommand pivotOut,
-            DualArmControllerCommandWithJoysticks dualArmWithJoysticks,
+            DualArmControllerCommandWithJoysticks dualArmWithJoysticksSafe,
+            DualArmControllerCommandWithJoysticks dualArmWithJoysticksUnsafe,
+            MotorArmSetZeroCommand calibrateBothArms,
+            @LeftArm ClimberArmMaintainerCommand leftArmMaintainer,
+            @RightArm ClimberArmMaintainerCommand rightArmMaintainer,
             @LeftArm MotorArmStopCommand stopLeftArm,
             @RightArm MotorArmStopCommand stopRightArm,
-            Provider<SetArmsToPositionCommand> setArmPositionCommandProvider) {
+            Provider<SetArmsToPositionCommand> setArmPositionCommandProvider,
+            @LeftArm ClimberArmSubsystem leftArm,
+            @RightArm ClimberArmSubsystem rightArm,
+            CommonLibFactory clf) {
         operatorInterface.operatorGamepad.getifAvailable(8).whenPressed(latchArm);
         operatorInterface.operatorGamepad.getifAvailable(7).whenPressed(latchRelease);
         operatorInterface.operatorGamepad.getifAvailable(5).whenPressed(pivotIn);
@@ -97,6 +109,43 @@ public class OperatorCommandMap {
         setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.ClearCurrentBar).includeOnSmartDashboard();
         setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.FullyExtended).includeOnSmartDashboard();
         setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.EngageNextBar).includeOnSmartDashboard();
+
+        ParallelCommandGroup stopBothArms = new ParallelCommandGroup(stopLeftArm, stopRightArm);
+
+        NamedInstantCommand freePawl = new NamedInstantCommand("FreePawlCommand", () -> {
+            leftArm.freePawl();
+            rightArm.freePawl();
+        });
+
+        NamedInstantCommand lockPawl = new NamedInstantCommand("LockPawlCommand", () -> {
+            leftArm.lockPawl();
+            rightArm.lockPawl();
+
+        });
+        ParallelCommandGroup maintainArms = new ParallelCommandGroup(leftArmMaintainer, rightArmMaintainer);
+
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.A).whenPressed(stopBothArms);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.B).whenPressed(maintainArms);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.X).whenPressed(dualArmWithJoysticksUnsafe);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.Y).whenPressed(calibrateBothArms);
+        
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(pivotIn);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(pivotOut);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftTrigger).whenPressed(freePawl);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightTrigger).whenPressed(lockPawl);    
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.Start).whenPressed(latchArm);
+
+        ChordButton driverNuclearLaunch = clf.createChordButton(
+            operatorInterface.driverGamepad.getifAvailable(XboxButton.LeftTrigger),
+            operatorInterface.driverGamepad.getifAvailable(XboxButton.RightTrigger)
+        );
+
+        ChordButton totalNuclearLaunch = clf.createChordButton(
+            driverNuclearLaunch,
+            operatorInterface.operatorGamepad.getifAvailable(XboxButton.Back)
+        );
+
+        totalNuclearLaunch.whenPressed(latchRelease);
     }
 
     @Inject
@@ -126,6 +175,8 @@ public class OperatorCommandMap {
         operatorInterface.driverGamepad.getifAvailable(5).whenPressed(calibrateSteering);
         operatorInterface.driverGamepad.getifAvailable(6).whenPressed(swerveCommands);
         operatorInterface.driverGamepad.getifAvailable(7).whenPressed(setSteeringPidValues);
+
+        setSteeringPidValues.includeOnSmartDashboard("Commit steering pid values");
     }
 
     @Inject

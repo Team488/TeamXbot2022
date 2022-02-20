@@ -10,6 +10,7 @@ import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.logic.CalibrationDecider;
 import xbot.common.logic.CalibrationDecider.CalibrationMode;
 import xbot.common.logic.TimeStableValidator;
+import xbot.common.math.PIDManager;
 import xbot.common.properties.BooleanProperty;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
@@ -27,6 +28,7 @@ public class ClimberArmMaintainerCommand extends BaseMaintainerCommand {
     private final TimeStableValidator calibrationValidator;
     private final DoubleProperty waitForMotorStallCalibrationTime;
     private final BooleanProperty attemptAutomaticCalibration;
+    private final PIDManager positionPid;
 
     @Inject
     public ClimberArmMaintainerCommand(ArmInstance armInstance, ClimberArmSubsystem arm, PropertyFactory pf,
@@ -43,6 +45,7 @@ public class ClimberArmMaintainerCommand extends BaseMaintainerCommand {
         waitForMotorStallCalibrationTime = pf.createPersistentProperty("Motor Stall Calibration Time", 0.25);
         calibrationValidator = new TimeStableValidator(() -> waitForMotorStallCalibrationTime.get());
         attemptAutomaticCalibration = pf.createPersistentProperty("Attempt Automatic Calibration", false);
+        positionPid = clf.createPIDManager(super.getPrefix() + "PositionPID", 0.33, 0, 0);
 
         // Properties that are unique to each arm
         pf.setPrefix(this + armLabel);
@@ -55,11 +58,13 @@ public class ClimberArmMaintainerCommand extends BaseMaintainerCommand {
     public void initialize() {
         log.info("Initializing");
         calibrationDecider.reset();
+        arm.setTargetValue(arm.getCurrentValue());
     }
 
     @Override
     protected void calibratedMachineControlAction() {
-        // 
+        double power = positionPid.calculate(arm.getTargetValue(), arm.getCurrentValue());
+        arm.setPower(power);
     }
 
     @Override
@@ -108,7 +113,8 @@ public class ClimberArmMaintainerCommand extends BaseMaintainerCommand {
                     break;
             }
         } else {
-            // We're not trying to calibrate, so let the humans take over and handle calibration themselves.
+            // We're not trying to calibrate, so let the humans take over and handle
+            // calibration themselves.
             humanControlAction();
         }
     }

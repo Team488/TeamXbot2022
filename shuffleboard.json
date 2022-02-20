@@ -372,30 +372,102 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "4,0": {
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ArduinoCommunicationSubsystem/ArduinoState",
+              "_title": "/SmartDashboard/ArduinoCommunicationSubsystem/ArduinoState"
+            }
+          },
+          "5,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ArduinoCommunicationSubsystem/ArduinoBinaryString",
+              "_title": "/SmartDashboard/ArduinoCommunicationSubsystem/ArduinoBinaryString"
+            }
+          },
+          "7,2": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/ArduinoCommunicationSubsystem/dio1State",
-              "_title": "SmartDashboard/ArduinoCommunicationSubsystem/dio1State",
+              "_source0": "network_table:///SmartDashboard/ArduinoCommunicationSubsystem/DIO0",
+              "_title": "/SmartDashboard/ArduinoCommunicationSubsystem/DIO0",
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "5,0": {
+          "6,2": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/ArduinoCommunicationSubsystem/dio2State",
-              "_title": "SmartDashboard/ArduinoCommunicationSubsystem/dio2State",
+              "_source0": "network_table:///SmartDashboard/ArduinoCommunicationSubsystem/DIO1",
+              "_title": "/SmartDashboard/ArduinoCommunicationSubsystem/DIO1",
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "5,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ArduinoCommunicationSubsystem/DIO2",
+              "_title": "/SmartDashboard/ArduinoCommunicationSubsystem/DIO2",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "4,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ArduinoCommunicationSubsystem/DIO3",
+              "_title": "/SmartDashboard/ArduinoCommunicationSubsystem/DIO3",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ArduinoCommunicationSubsystem/AllianceDIO",
+              "_title": "/SmartDashboard/ArduinoCommunicationSubsystem/AllianceDIO",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ArduinoCommunicationSubsystem/AnalogOutput",
+              "_title": "/SmartDashboard/ArduinoCommunicationSubsystem/AnalogOutput"
             }
           }
         }
@@ -752,7 +824,7 @@
       }
     },
     {
-      "title": "Steering Motor Controller PID",
+      "title": "Arm",
       "autoPopulate": false,
       "autoPopulatePrefix": "",
       "widgetPane": {
@@ -762,90 +834,154 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "1,0": {
+          "4,1": {
             "size": [
-              2,
-              4
+              1,
+              1
             ],
             "content": {
-              "_type": "Subsystem Layout",
-              "_title": "Motor controller PID values",
-              "Layout/Label position": "BOTTOM",
-              "_children": [
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/SwerveSteeringMotorPidSubsystem/kP",
-                  "_title": "P"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/SwerveSteeringMotorPidSubsystem/kI",
-                  "_title": "I"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/SwerveSteeringMotorPidSubsystem/kD",
-                  "_title": "D"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/SwerveSteeringMotorPidSubsystem/kFF",
-                  "_title": "FF"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/SwerveSteeringMotorPidSubsystem/kMinOutput",
-                  "_title": "MinOutput"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/SwerveSteeringMotorPidSubsystem/kMaxOutput",
-                  "_title": "MaxOutput"
-                },
-                {
-                  "_type": "Toggle Switch",
-                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/UseMotorControllerPID",
-                  "_title": "Use Motor Controller PID"
-                }
-              ]
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/ArmMotorPosition",
+              "_title": "/SmartDashboard/ClimberArmSubsystem/LeftArm/ArmMotorPosition"
             }
           },
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/IsArmCalibrated",
+              "_title": "/SmartDashboard/ClimberArmSubsystem/LeftArm/IsArmCalibrated",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/ArmMotorPosition",
+              "_title": "/SmartDashboard/ClimberArmSubsystem/RightArm/ArmMotorPosition"
+            }
+          },
+          "6,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/IsArmCalibrated",
+              "_title": "/SmartDashboard/ClimberArmSubsystem/RightArm/IsArmCalibrated",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/ArmInchesPerRotation",
+              "_title": "/SmartDashboard/ClimberArmSubsystem/ArmInchesPerRotation"
+            }
+          },
+          "9,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/safelyExtendable",
+              "_title": "/SmartDashboard/ClimberArmSubsystem/safelyExtendable"
+            }
+          },
+          "9,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/safelyRetractable",
+              "_title": "/SmartDashboard/ClimberArmSubsystem/safelyRetractable"
+            }
+          },
+          "9,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/PowerFactor",
+              "_title": "/SmartDashboard/ClimberArmSubsystem/PowerFactor"
+            }
+          },
+          "4,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/TargetPosition",
+              "_title": "SmartDashboard/ClimberArmSubsystem/LeftArm/TargetPosition"
+            }
+          },
+          "6,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/TargetPosition",
+              "_title": "SmartDashboard/ClimberArmSubsystem/RightArm/TargetPosition"
+            }
+          },
+          "4,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/ArmInchesPerRotation",
+              "_title": "SmartDashboard/ClimberArmSubsystem/ArmInchesPerRotation"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Tab 8",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
           "3,0": {
             "size": [
-              2,
+              7,
               4
             ],
             "content": {
-              "_type": "Subsystem Layout",
-              "_title": "Auto calibrate motor encoder",
-              "Layout/Label position": "BOTTOM",
-              "_children": [
-                {
-                  "_type": "Toggle Switch",
-                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontLeftDrive/SwerveSteeringMaintainerCommand/EnableAutomaticMotorControllerCalibration",
-                  "_title": "Enable Front Left"
-                },
-                {
-                  "_type": "Toggle Switch",
-                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontRightDrive/SwerveSteeringMaintainerCommand/EnableAutomaticMotorControllerCalibration",
-                  "_title": "Enable Front Right"
-                },
-                {
-                  "_type": "Toggle Switch",
-                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearLeftDrive/SwerveSteeringMaintainerCommand/EnableAutomaticMotorControllerCalibration",
-                  "_title": "Enable Rear Left"
-                },
-                {
-                  "_type": "Toggle Switch",
-                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearRightDrive/SwerveSteeringMaintainerCommand/EnableAutomaticMotorControllerCalibration",
-                  "_title": "Enable Rear Right"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/MaxEncoderDriftDegrees",
-                  "_title": "Max acceptable drift degrees"
-                }
-              ]
+              "_type": "Network Table Tree",
+              "_source0": "network_table:///SmartDashboard/Scheduler",
+              "_title": "/SmartDashboard/Scheduler"
             }
           }
         }
@@ -856,6 +992,6 @@
     "x": -7.199999809265137,
     "y": -7.199999809265137,
     "width": 1550.4000244140625,
-    "height": 838.4000244140625
+    "height": 830.4000244140625
   }
 }
