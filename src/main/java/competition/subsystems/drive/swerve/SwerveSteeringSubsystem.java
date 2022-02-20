@@ -303,10 +303,14 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
 
     @Override
     public void periodic() {
-        canCoderStatus.set(this.encoder.getHealth().toString());
+        if (contract.areCanCodersReady()) {
+            canCoderStatus.set(this.encoder.getHealth().toString());
+            absoluteEncoderPosition.set(getAbsoluteEncoderPositionInDegrees());
+        }
+        if (contract.isDriveReady()) {
+            motorEncoderPosition.set(getMotorControllerEncoderPosiitonInDegrees());
+        }
 
         currentModuleHeading.set(getCurrentValue());
-        absoluteEncoderPosition.set(getAbsoluteEncoderPositionInDegrees());
-        motorEncoderPosition.set(getMotorControllerEncoderPosiitonInDegrees());
     }
 }
