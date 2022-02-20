@@ -118,6 +118,8 @@ public class OperatorCommandMap {
         operatorInterface.driverGamepad.getifAvailable(5).whenPressed(calibrateSteering);
         operatorInterface.driverGamepad.getifAvailable(6).whenPressed(swerveCommands);
         operatorInterface.driverGamepad.getifAvailable(7).whenPressed(setSteeringPidValues);
+
+        setSteeringPidValues.includeOnSmartDashboard("Commit steering pid values");
     }
 
     @Inject
