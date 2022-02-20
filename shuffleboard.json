@@ -925,6 +925,39 @@
               "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/PowerFactor",
               "_title": "/SmartDashboard/ClimberArmSubsystem/PowerFactor"
             }
+          },
+          "4,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/TargetPosition",
+              "_title": "SmartDashboard/ClimberArmSubsystem/LeftArm/TargetPosition"
+            }
+          },
+          "6,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/TargetPosition",
+              "_title": "SmartDashboard/ClimberArmSubsystem/RightArm/TargetPosition"
+            }
+          },
+          "4,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/ArmInchesPerRotation",
+              "_title": "SmartDashboard/ClimberArmSubsystem/ArmInchesPerRotation"
+            }
           }
         }
       }
@@ -1050,12 +1083,37 @@
           }
         }
       }
+    },
+    {
+      "title": "Tab 8",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "3,0": {
+            "size": [
+              7,
+              4
+            ],
+            "content": {
+              "_type": "Network Table Tree",
+              "_source0": "network_table:///SmartDashboard/Scheduler",
+              "_title": "/SmartDashboard/Scheduler"
+            }
+          }
+        }
+      }
     }
   ],
   "windowGeometry": {
     "x": -7.199999809265137,
     "y": -7.199999809265137,
     "width": 1550.4000244140625,
-    "height": 878.4000244140625
+    "height": 838.4000244140625
   }
 }
