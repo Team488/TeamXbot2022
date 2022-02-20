@@ -1,6 +1,7 @@
 package competition.operator_interface;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
 import competition.injection.arm.LeftArm;
@@ -13,6 +14,7 @@ import competition.subsystems.climber_arm.commands.DualArmControllerCommandWithJ
 import competition.subsystems.climber_arm.commands.MotorArmExtendCommand;
 import competition.subsystems.climber_arm.commands.MotorArmRetractCommand;
 import competition.subsystems.climber_arm.commands.MotorArmStopCommand;
+import competition.subsystems.climber_arm.commands.SetArmsToPositionCommand;
 import competition.subsystems.climber_pivot.commands.PivotInCommand;
 import competition.subsystems.climber_pivot.commands.PivotOutCommand;
 import competition.subsystems.collector_stage_2.CollectorStage2Subsystem;
@@ -79,7 +81,8 @@ public class OperatorCommandMap {
             PivotOutCommand pivotOut,
             DualArmControllerCommandWithJoysticks dualArmWithJoysticks,
             @LeftArm MotorArmStopCommand stopLeftArm,
-            @RightArm MotorArmStopCommand stopRightArm) {
+            @RightArm MotorArmStopCommand stopRightArm,
+            Provider<SetArmsToPositionCommand> setArmPositionCommandProvider) {
         operatorInterface.operatorGamepad.getifAvailable(8).whenPressed(latchArm);
         operatorInterface.operatorGamepad.getifAvailable(7).whenPressed(latchRelease);
         operatorInterface.operatorGamepad.getifAvailable(5).whenPressed(pivotIn);
@@ -89,6 +92,11 @@ public class OperatorCommandMap {
 
         operatorInterface.operatorGamepad.getifAvailable(1).whenPressed(dualArmWithJoysticks);
         operatorInterface.operatorGamepad.getifAvailable(2).whenPressed(stopBothArms);
+
+        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.FullyRetracted).includeOnSmartDashboard();
+        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.ClearCurrentBar).includeOnSmartDashboard();
+        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.FullyExtended).includeOnSmartDashboard();
+        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.EngageNextBar).includeOnSmartDashboard();
     }
 
     @Inject
