@@ -26,6 +26,7 @@ public class SetArmsToPositionCommand extends BaseSetpointCommand {
         EngageNextBar
     }
 
+    @Inject
     public SetArmsToPositionCommand(@LeftArm ClimberArmSubsystem leftArm, @RightArm ClimberArmSubsystem rightArm, PropertyFactory pf) {
         super(leftArm, rightArm);
         this.leftArm = leftArm;
