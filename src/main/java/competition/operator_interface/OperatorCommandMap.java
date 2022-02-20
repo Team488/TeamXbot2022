@@ -1,6 +1,7 @@
 package competition.operator_interface;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
 import competition.injection.arm.LeftArm;
@@ -16,6 +17,7 @@ import competition.subsystems.climber_arm.commands.MotorArmExtendCommand;
 import competition.subsystems.climber_arm.commands.MotorArmRetractCommand;
 import competition.subsystems.climber_arm.commands.MotorArmSetZeroCommand;
 import competition.subsystems.climber_arm.commands.MotorArmStopCommand;
+import competition.subsystems.climber_arm.commands.SetArmsToPositionCommand;
 import competition.subsystems.climber_pivot.commands.PivotInCommand;
 import competition.subsystems.climber_pivot.commands.PivotOutCommand;
 import competition.subsystems.collector_stage_2.CollectorStage2Subsystem;
@@ -76,7 +78,6 @@ public class OperatorCommandMap {
 
     @Inject
     public void setupClimbingCommands(
-
             MotorArmExtendCommand extendArmCommand,
             MotorArmRetractCommand retractArmCommand,
             LatchArmCommand latchArm,
@@ -90,10 +91,14 @@ public class OperatorCommandMap {
             @RightArm ClimberArmMaintainerCommand rightArmMaintainer,
             @LeftArm MotorArmStopCommand stopLeftArm,
             @RightArm MotorArmStopCommand stopRightArm,
+            Provider<SetArmsToPositionCommand> setArmPositionCommandProvider,
             @LeftArm ClimberArmSubsystem leftArm,
             @RightArm ClimberArmSubsystem rightArm,
             CommonLibFactory clf) {
-
+        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.FullyRetracted).includeOnSmartDashboard();
+        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.ClearCurrentBar).includeOnSmartDashboard();
+        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.FullyExtended).includeOnSmartDashboard();
+        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.EngageNextBar).includeOnSmartDashboard();
 
         ParallelCommandGroup stopBothArms = new ParallelCommandGroup(stopLeftArm, stopRightArm);
 
@@ -131,8 +136,6 @@ public class OperatorCommandMap {
         );
 
         totalNuclearLaunch.whenPressed(latchRelease);
-            
-
     }
 
     @Inject
