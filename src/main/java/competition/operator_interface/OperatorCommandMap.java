@@ -39,6 +39,8 @@ import xbot.common.controls.sensors.ChordButton;
 import xbot.common.controls.sensors.XXboxController.XboxButton;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.math.XYPair;
+import xbot.common.properties.DoubleProperty;
+import xbot.common.properties.PropertyFactory;
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 
 /**
@@ -136,6 +138,7 @@ public class OperatorCommandMap {
         );
 
         totalNuclearLaunch.whenPressed(latchRelease);
+        latchRelease.includeOnSmartDashboard();
     }
 
     @Inject
@@ -172,9 +175,18 @@ public class OperatorCommandMap {
     @Inject
     public void setupMobilityCommands(OperatorInterface oi,
             TurnLeft90DegreesCommand turnleft90,
-            SwerveToPointCommand swerveToPoint) {
+            SwerveToPointCommand swerveToPoint,
+            PropertyFactory pf) {
 
-        swerveToPoint.setTargetPosition(new XYPair(0, 36));
+
+        DoubleProperty xTarget = pf.createEphemeralProperty("OI/SwerveToPointTargetX", 0);
+        DoubleProperty yTarget = pf.createEphemeralProperty("OI/SwerveToPointTargetY", 0);
+
+        swerveToPoint.setTargetSupplier(
+            () -> {
+                return new XYPair(xTarget.get(), yTarget.get());
+            }
+        );
         oi.driverGamepad.getifAvailable(8).whenPressed(turnleft90);
         oi.driverGamepad.getifAvailable(4).whenPressed(swerveToPoint);
     }

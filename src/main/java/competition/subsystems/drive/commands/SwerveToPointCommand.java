@@ -1,5 +1,7 @@
 package competition.subsystems.drive.commands;
 
+import java.util.function.Supplier;
+
 import com.google.inject.Inject;
 
 import competition.subsystems.drive.DriveSubsystem;
@@ -13,8 +15,9 @@ public class SwerveToPointCommand extends BaseCommand {
 
     DriveSubsystem drive;
     PoseSubsystem pose;
-    XYPair targetPositionInInches;
     DoubleProperty directionToTarget;
+
+    private Supplier<XYPair> targetPositionSupplier;
 
     @Inject
     public SwerveToPointCommand(DriveSubsystem drive, PoseSubsystem pose, PropertyFactory pf) {
@@ -32,13 +35,17 @@ public class SwerveToPointCommand extends BaseCommand {
     }
 
     public void setTargetPosition(XYPair targetPositionInInches) {
-        this.targetPositionInInches = targetPositionInInches;
+        this.targetPositionSupplier = () -> targetPositionInInches;
+    }
+
+    public void setTargetSupplier(Supplier<XYPair> targetPositionSupplier) {
+        this.targetPositionSupplier = targetPositionSupplier;
     }
 
     @Override
     public void execute() {
         // Get the difference between where we are, and where we want to be.
-        XYPair goalVector = targetPositionInInches.clone().add(
+        XYPair goalVector = targetPositionSupplier.get().clone().add(
             pose.getCurrentFieldPose().getPoint().scale(-1)
         );
 
@@ -51,5 +58,10 @@ public class SwerveToPointCommand extends BaseCommand {
         XYPair intent = XYPair.fromPolar(goalVector.getAngle(), drivePower);
         directionToTarget.set(goalVector.getAngle());
         drive.move(intent, 0);
+    }
+
+    @Override
+    public boolean isFinished() {
+        return drive.getPositionalPid().isOnTarget();
     }
 }

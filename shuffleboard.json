@@ -882,7 +882,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "8,1": {
+          "9,3": {
             "size": [
               1,
               1
@@ -954,34 +954,130 @@
               1
             ],
             "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/ArmInchesPerRotation",
-              "_title": "SmartDashboard/ClimberArmSubsystem/ArmInchesPerRotation"
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand: FullyRetracted",
+              "_title": "SmartDashboard/SetArmsToPositionCommand: FullyRetracted"
             }
-          }
-        }
-      }
-    },
-    {
-      "title": "Tab 8",
-      "autoPopulate": false,
-      "autoPopulatePrefix": "",
-      "widgetPane": {
-        "gridSize": 128.0,
-        "showGrid": true,
-        "hgap": 16.0,
-        "vgap": 16.0,
-        "titleType": 0,
-        "tiles": {
-          "3,0": {
+          },
+          "5,3": {
             "size": [
-              7,
-              4
+              1,
+              1
             ],
             "content": {
-              "_type": "Network Table Tree",
-              "_source0": "network_table:///SmartDashboard/Scheduler",
-              "_title": "/SmartDashboard/Scheduler"
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand: ClearCurrentBar",
+              "_title": "SmartDashboard/SetArmsToPositionCommand: ClearCurrentBar"
+            }
+          },
+          "6,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand: EngageNextBar",
+              "_title": "SmartDashboard/SetArmsToPositionCommand: EngageNextBar"
+            }
+          },
+          "7,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand: FullyExtended",
+              "_title": "SmartDashboard/SetArmsToPositionCommand: FullyExtended"
+            }
+          },
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand/FullyRetractedPositionInches",
+              "_title": "SmartDashboard/SetArmsToPositionCommand/FullyRetractedPositionInches"
+            }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand/ClearCurrentBarPositionInches",
+              "_title": "SmartDashboard/SetArmsToPositionCommand/ClearCurrentBarPositionInches"
+            }
+          },
+          "8,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand/EngageNextBarPositionInches",
+              "_title": "SmartDashboard/SetArmsToPositionCommand/EngageNextBarPositionInches"
+            }
+          },
+          "8,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand/FullyExtendedPositionInches",
+              "_title": "SmartDashboard/SetArmsToPositionCommand/FullyExtendedPositionInches"
+            }
+          },
+          "3,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmMaintainerCommand/PositionPID/P",
+              "_title": "SmartDashboard/ClimberArmMaintainerCommand/PositionPID/P"
+            }
+          },
+          "3,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmMaintainerCommand/PositionPID/I",
+              "_title": "SmartDashboard/ClimberArmMaintainerCommand/PositionPID/I"
+            }
+          },
+          "3,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmMaintainerCommand/PositionPID/D",
+              "_title": "SmartDashboard/ClimberArmMaintainerCommand/PositionPID/D"
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/LatchReleaseCommand",
+              "_title": "SmartDashboard/LatchReleaseCommand"
             }
           }
         }
