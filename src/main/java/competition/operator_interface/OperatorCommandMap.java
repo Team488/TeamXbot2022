@@ -178,13 +178,17 @@ public class OperatorCommandMap {
             SwerveToPointCommand swerveToPoint,
             PropertyFactory pf) {
 
-
+        pf.setPrefix("OperatorCommandMap");
         DoubleProperty xTarget = pf.createEphemeralProperty("OI/SwerveToPointTargetX", 0);
         DoubleProperty yTarget = pf.createEphemeralProperty("OI/SwerveToPointTargetY", 0);
+        DoubleProperty angleTarget = pf.createEphemeralProperty("OI/SwerveToPointTargetAngle", 0);
 
         swerveToPoint.setTargetSupplier(
             () -> {
                 return new XYPair(xTarget.get(), yTarget.get());
+            },
+            () -> {
+                return angleTarget.get();
             }
         );
         oi.driverGamepad.getifAvailable(8).whenPressed(turnleft90);

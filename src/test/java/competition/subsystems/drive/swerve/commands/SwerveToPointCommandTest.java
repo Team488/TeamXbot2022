@@ -29,7 +29,7 @@ public class SwerveToPointCommandTest extends BaseCompetitionTest {
 
         pose.setCurrentPosition(0, 0);
         pose.setCurrentHeading(90);
-        command.setTargetPosition(new XYPair(100, 100));
+        command.setTargetPosition(new XYPair(100, 100), 90);
         command.initialize();
         command.execute();
 
