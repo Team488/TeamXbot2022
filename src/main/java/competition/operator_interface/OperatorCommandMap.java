@@ -24,7 +24,7 @@ import competition.subsystems.collector_stage_2.CollectorStage2Subsystem;
 import competition.subsystems.drive.commands.CalibrateSteeringCommand;
 import competition.subsystems.drive.commands.DebuggingSwerveWithJoysticksCommand;
 import competition.subsystems.drive.commands.GoToNextActiveSwerveModuleCommand;
-import competition.subsystems.drive.commands.SetSteeringMotorControllerPidParametersCommand;
+import competition.subsystems.drive.commands.SetSwerveMotorControllerPidParametersCommand;
 import competition.subsystems.drive.commands.SwerveDriveMaintainerCommand;
 import competition.subsystems.drive.commands.SwerveDriveWithJoysticksCommand;
 import competition.subsystems.drive.commands.SwerveSteeringMaintainerCommand;
@@ -150,7 +150,7 @@ public class OperatorCommandMap {
             @RearRightDrive SwerveDriveMaintainerCommand maintainDriveRearRight,
             SwerveDriveWithJoysticksCommand swerveDriveWithJoysticks,
             CalibrateSteeringCommand calibrateSteering,
-            SetSteeringMotorControllerPidParametersCommand setSteeringPidValues) {
+            SetSwerveMotorControllerPidParametersCommand setSteeringPidValues) {
         ParallelCommandGroup swerveCommands = new ParallelCommandGroup(
                 maintainSteeringFrontLeft,
                 maintainDriveFrontLeft,
