@@ -1082,6 +1082,153 @@
           }
         }
       }
+    },
+    {
+      "title": "Steering Motor Controller PID",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "1,0": {
+            "size": [
+              2,
+              4
+            ],
+            "content": {
+              "_type": "Subsystem Layout",
+              "_title": "Motor controller PID values",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringMotorPidSubsystem/kP",
+                  "_title": "P"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringMotorPidSubsystem/kI",
+                  "_title": "I"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringMotorPidSubsystem/kD",
+                  "_title": "D"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringMotorPidSubsystem/kFF",
+                  "_title": "FF"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringMotorPidSubsystem/kMinOutput",
+                  "_title": "MinOutput"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringMotorPidSubsystem/kMaxOutput",
+                  "_title": "MaxOutput"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringMotorPidSubsystem/kClosedLoopRampRate",
+                  "_title": "SmartDashboard/SwerveSteeringMotorPidSubsystem/kClosedLoopRampRate"
+                }
+              ]
+            }
+          },
+          "3,0": {
+            "size": [
+              2,
+              4
+            ],
+            "content": {
+              "_type": "Subsystem Layout",
+              "_title": "Auto calibrate motor encoder",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Toggle Switch",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontLeftDrive/SwerveSteeringMaintainerCommand/EnableAutomaticMotorControllerCalibration",
+                  "_title": "Enable Front Left"
+                },
+                {
+                  "_type": "Toggle Switch",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/FrontRightDrive/SwerveSteeringMaintainerCommand/EnableAutomaticMotorControllerCalibration",
+                  "_title": "Enable Front Right"
+                },
+                {
+                  "_type": "Toggle Switch",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearLeftDrive/SwerveSteeringMaintainerCommand/EnableAutomaticMotorControllerCalibration",
+                  "_title": "Enable Rear Left"
+                },
+                {
+                  "_type": "Toggle Switch",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/RearRightDrive/SwerveSteeringMaintainerCommand/EnableAutomaticMotorControllerCalibration",
+                  "_title": "Enable Rear Right"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/MaxEncoderDriftDegrees",
+                  "_title": "Max acceptable drift degrees"
+                }
+              ]
+            }
+          },
+          "0,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Commit steering pid values/running",
+              "_title": "SmartDashboard/Commit steering pid values/running"
+            }
+          },
+          "0,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/UseMotorControllerPID",
+              "_title": "Use Motor Controller PID"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Tab 8",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "3,0": {
+            "size": [
+              7,
+              4
+            ],
+            "content": {
+              "_type": "Network Table Tree",
+              "_source0": "network_table:///SmartDashboard/Scheduler",
+              "_title": "/SmartDashboard/Scheduler"
+            }
+          }
+        }
+      }
     }
   ],
   "windowGeometry": {
