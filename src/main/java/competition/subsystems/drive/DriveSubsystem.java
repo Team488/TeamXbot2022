@@ -51,6 +51,8 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     private XYPair lastCommandedDirection;
     private double lastCommandedRotation;
 
+    private double desiredHeading;
+
     public enum SwerveModuleLocation {
         FRONT_LEFT,
         FRONT_RIGHT,
@@ -289,6 +291,14 @@ public class DriveSubsystem extends BaseDriveSubsystem {
                 this.getSwerveModuleSubsystem(value).setPowers(0, 0);
             }
         }
+    }
+
+    public void setDesiredHeading(double heading) {
+        this.desiredHeading = heading;
+    }
+
+    public double getDesiredHeading() {
+        return this.desiredHeading;
     }
 
     /**

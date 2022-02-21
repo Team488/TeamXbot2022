@@ -40,5 +40,28 @@
             "\t}",
             "}"
         ]
+    },
+    "XCompetitinTest" : {
+        "scope": "java",
+        "prefix": "xcomptest",
+        "body": [
+            "package ${TM_DIRECTORY/.*java[\\/\\\\](([^\\/\\\\]*)([\\/\\\\])?)|([\\/\\\\])([^\\/\\\\]*)/$2${3:+.}${5:+.}$5/g};",
+            "",
+            "import org.junit.Test;",
+            "import competition.BaseCompetitionTest;",
+            "",
+            "public class ${1:$TM_FILENAME_BASE} extends BaseCompetitionTest {",
+            "",
+            "\t@Override",
+            "\tpublic void setUp() {",
+            "\t\tsuper.setUp();",
+            "\t}",
+            "",
+            "\t@Test",
+            "\tpublic void test() {",
+            "\t\t",
+            "\t}",
+            "}"
+        ]
     }
 }
