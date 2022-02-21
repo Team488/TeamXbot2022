@@ -12,7 +12,6 @@ import competition.injection.swerve.RearRightDrive;
 import competition.subsystems.climber_arm.ClimberArmSubsystem;
 import competition.subsystems.climber_arm.commands.MotorArmStopCommand;
 import competition.subsystems.drive.DriveSubsystem;
-import competition.subsystems.drive.commands.DebuggingSwerveWithJoysticksCommand;
 import competition.subsystems.drive.commands.SwerveDriveMaintainerCommand;
 import competition.subsystems.drive.commands.SwerveDriveWithJoysticksCommand;
 import competition.subsystems.drive.commands.SwerveSteeringMaintainerCommand;

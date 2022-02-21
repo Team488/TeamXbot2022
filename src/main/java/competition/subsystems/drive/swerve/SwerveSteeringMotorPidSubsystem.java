@@ -17,6 +17,7 @@ public class SwerveSteeringMotorPidSubsystem extends BaseSubsystem {
     private final DoubleProperty kFF;
     private final DoubleProperty kMinOutput;
     private final DoubleProperty kMaxOutput;
+    private final DoubleProperty kClosedLoopRampRate;
 
     @Inject
     public SwerveSteeringMotorPidSubsystem(PropertyFactory pf) {
@@ -28,6 +29,7 @@ public class SwerveSteeringMotorPidSubsystem extends BaseSubsystem {
         kFF = pf.createPersistentProperty("kFF", 0);
         kMinOutput = pf.createPersistentProperty("kMinOutput", -1.0);
         kMaxOutput = pf.createPersistentProperty("kMaxOutput", 1.0);
+        kClosedLoopRampRate = pf.createPersistentProperty("kClosedLoopRampRate", 0.05);
     }
 
     public void setAllProperties(double p, double i, double d, double ff, double minOutput, double maxOutput) {
@@ -61,6 +63,10 @@ public class SwerveSteeringMotorPidSubsystem extends BaseSubsystem {
 
     public double getMaxOutput() {
         return kMaxOutput.get();
+    }
+
+    public double getClosedLoopRampRate() {
+        return kClosedLoopRampRate.get();
     }
     
 }
