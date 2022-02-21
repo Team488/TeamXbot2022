@@ -31,7 +31,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     private final String label;
     private final PIDManager pid;
     private final ElectricalContract contract;
-    private final SwerveSteeringMotorPidSubsystem pidConfigSybsustem;
+    private final SwerveSteeringMotorPidSubsystem pidConfigSubsystem;
 
     private final DoubleProperty powerScale;
     private final DoubleProperty targetRotation;
@@ -57,7 +57,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         log.info("Creating SwerveRotationSubsystem " + this.label);
 
         this.contract = electricalContract;
-        this.pidConfigSybsustem = pidConfigSubsystem;
+        this.pidConfigSubsystem = pidConfigSubsystem;
 
         // Create properties shared among all instances
         pf.setPrefix(super.getPrefix());
@@ -297,12 +297,13 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
 
     public void setMotorControllerPositionPidParameters() {
         if (this.contract.isDriveReady()) {
-            this.motorController.setP(pidConfigSybsustem.getP());
-            this.motorController.setI(pidConfigSybsustem.getI());
-            this.motorController.setD(pidConfigSybsustem.getD());
-            this.motorController.setFF(pidConfigSybsustem.getFF());
-            this.motorController.setOutputRange(pidConfigSybsustem.getMinOutput(), pidConfigSybsustem.getMaxOutput());
-            this.motorController.setClosedLoopRampRate(pidConfigSybsustem.getClosedLoopRampRate());
+            this.motorController.setP(pidConfigSubsystem.getP());
+            this.motorController.setI(pidConfigSubsystem.getI());
+            this.motorController.setD(pidConfigSubsystem.getD());
+            this.motorController.setFF(pidConfigSubsystem.getFF());
+            this.motorController.setOutputRange(pidConfigSubsystem.getMinOutput(), pidConfigSubsystem.getMaxOutput());
+            this.motorController.setClosedLoopRampRate(pidConfigSubsystem.getClosedLoopRampRate());
+            this.motorController.setOpenLoopRampRate(pidConfigSubsystem.getOpenLoopRampRate());
         }
     }
 

@@ -7,20 +7,20 @@ import org.junit.Test;
 
 import competition.BaseCompetitionTest;
 import competition.subsystems.drive.DriveSubsystem;
-import competition.subsystems.drive.commands.SetSteeringMotorControllerPidParametersCommand;
+import competition.subsystems.drive.commands.SetSwerveMotorControllerPidParametersCommand;
 import competition.subsystems.drive.swerve.SwerveSteeringMotorPidSubsystem;
 import competition.subsystems.drive.swerve.SwerveSteeringSubsystem;
 
 public class SetSteeringMotorControllerPidParametersCommandTest extends BaseCompetitionTest {
     
-    private SetSteeringMotorControllerPidParametersCommand command;
+    private SetSwerveMotorControllerPidParametersCommand command;
     private SwerveSteeringMotorPidSubsystem configSubsystem;
     private DriveSubsystem driveSubsystem;
 
     @Override
     public void setUp() {
         super.setUp();
-        this.command = injector.getInstance(SetSteeringMotorControllerPidParametersCommand.class);
+        this.command = injector.getInstance(SetSwerveMotorControllerPidParametersCommand.class);
         this.configSubsystem = injector.getInstance(SwerveSteeringMotorPidSubsystem.class);
         this.driveSubsystem = injector.getInstance(DriveSubsystem.class);
     }
@@ -28,7 +28,7 @@ public class SetSteeringMotorControllerPidParametersCommandTest extends BaseComp
     @Test
     public void testCommand() {
 
-        this.configSubsystem.setAllProperties(1, 2, 3, 4, 5, 6);
+        this.configSubsystem.setAllProperties(1, 2, 3, 4, 5, 6, 7, 8);
 
         this.command.initialize();
         this.command.execute();
