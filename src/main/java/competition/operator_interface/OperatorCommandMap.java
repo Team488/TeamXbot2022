@@ -34,6 +34,9 @@ import competition.subsystems.latch.commands.LatchArmCommand;
 import competition.subsystems.latch.commands.LatchReleaseCommand;
 import competition.subsystems.pose.PoseSubsystem;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import xbot.common.command.DelayViaSupplierCommand;
 import xbot.common.command.NamedInstantCommand;
 import xbot.common.controls.sensors.ChordButton;
 import xbot.common.controls.sensors.XXboxController.XboxButton;
@@ -96,7 +99,8 @@ public class OperatorCommandMap {
             Provider<SetArmsToPositionCommand> setArmPositionCommandProvider,
             @LeftArm ClimberArmSubsystem leftArm,
             @RightArm ClimberArmSubsystem rightArm,
-            CommonLibFactory clf) {
+            CommonLibFactory clf,
+            PropertyFactory pf) {
         setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.FullyRetracted).includeOnSmartDashboard();
         setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.ClearCurrentBar).includeOnSmartDashboard();
         setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.FullyExtended).includeOnSmartDashboard();
@@ -115,6 +119,13 @@ public class OperatorCommandMap {
 
         });
         ParallelCommandGroup maintainArms = new ParallelCommandGroup(leftArmMaintainer, rightArmMaintainer);
+
+        DoubleProperty pivotDelayTime = pf.createPersistentProperty("Pivot Delay Time", 0.15);
+
+        // When releasing the latch, we want to wait just a moment (to start falling) before actually pushing the pivot arm out
+        // to avoid slamming the climbing arms into the uprights.
+        ParallelRaceGroup latchReleaseAndSmallWait = new ParallelRaceGroup(latchRelease, new DelayViaSupplierCommand(() -> pivotDelayTime.get()));
+        SequentialCommandGroup latchReleaseThenPivotOut = new SequentialCommandGroup(latchReleaseAndSmallWait, pivotOut);
 
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.A).whenPressed(stopBothArms);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.B).whenPressed(maintainArms);
@@ -137,7 +148,7 @@ public class OperatorCommandMap {
             operatorInterface.operatorGamepad.getifAvailable(XboxButton.Back)
         );
 
-        totalNuclearLaunch.whenPressed(latchRelease);
+        totalNuclearLaunch.whenPressed(latchReleaseThenPivotOut);
         latchRelease.includeOnSmartDashboard();
     }
 
