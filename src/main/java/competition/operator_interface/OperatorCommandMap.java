@@ -120,6 +120,7 @@ public class OperatorCommandMap {
         });
         ParallelCommandGroup maintainArms = new ParallelCommandGroup(leftArmMaintainer, rightArmMaintainer);
 
+        pf.setPrefix("OperatorCommandMap/");
         DoubleProperty pivotDelayTime = pf.createPersistentProperty("Pivot Delay Time", 0.15);
 
         // When releasing the latch, we want to wait just a moment (to start falling) before actually pushing the pivot arm out
@@ -189,7 +190,7 @@ public class OperatorCommandMap {
             SwerveToPointCommand swerveToPoint,
             PropertyFactory pf) {
 
-        pf.setPrefix("OperatorCommandMap");
+        pf.setPrefix("OperatorCommandMap/");
         DoubleProperty xTarget = pf.createEphemeralProperty("OI/SwerveToPointTargetX", 0);
         DoubleProperty yTarget = pf.createEphemeralProperty("OI/SwerveToPointTargetY", 0);
         DoubleProperty angleTarget = pf.createEphemeralProperty("OI/SwerveToPointTargetAngle", 0);
