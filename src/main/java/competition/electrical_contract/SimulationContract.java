@@ -5,6 +5,50 @@ import xbot.common.injection.electrical_contract.DeviceInfo;
 import xbot.common.math.XYPair;
 
 public class SimulationContract extends CompetitionContract {
+
+    @Override
+    public boolean isDriveReady() {
+        return true;
+    }
+
+    @Override
+    public boolean areCanCodersReady() {
+        return true;
+    }
+
+    @Override
+    public boolean isClimberReady() {
+        return false;
+    }
+
+    @Override
+    public boolean isShooterReady() {
+        return false;
+    }
+
+    public boolean isIntakeReady() {
+        return false;
+    }
+
+    @Override
+    public boolean arePneumaticsReady() {
+        return false;
+    }
+
+    @Override
+    public boolean isLauncherReady() {
+        return false;
+    }
+
+    @Override
+    public boolean isConveyerReady() {
+        return false;
+    }
+
+    @Override
+    public boolean isCollectorStage2Ready() {
+        return false;
+    }
     
     public DeviceInfo getDriveNeo(SwerveInstance swerveInstance) {
         switch (swerveInstance.getLabel()) {
