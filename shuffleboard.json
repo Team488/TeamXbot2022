@@ -882,7 +882,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "8,1": {
+          "9,3": {
             "size": [
               1,
               1
@@ -954,9 +954,130 @@
               1
             ],
             "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand: FullyRetracted",
+              "_title": "SmartDashboard/SetArmsToPositionCommand: FullyRetracted"
+            }
+          },
+          "5,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand: ClearCurrentBar",
+              "_title": "SmartDashboard/SetArmsToPositionCommand: ClearCurrentBar"
+            }
+          },
+          "6,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand: EngageNextBar",
+              "_title": "SmartDashboard/SetArmsToPositionCommand: EngageNextBar"
+            }
+          },
+          "7,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand: FullyExtended",
+              "_title": "SmartDashboard/SetArmsToPositionCommand: FullyExtended"
+            }
+          },
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/ArmInchesPerRotation",
-              "_title": "SmartDashboard/ClimberArmSubsystem/ArmInchesPerRotation"
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand/FullyRetractedPositionInches",
+              "_title": "SmartDashboard/SetArmsToPositionCommand/FullyRetractedPositionInches"
+            }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand/ClearCurrentBarPositionInches",
+              "_title": "SmartDashboard/SetArmsToPositionCommand/ClearCurrentBarPositionInches"
+            }
+          },
+          "8,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand/EngageNextBarPositionInches",
+              "_title": "SmartDashboard/SetArmsToPositionCommand/EngageNextBarPositionInches"
+            }
+          },
+          "8,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand/FullyExtendedPositionInches",
+              "_title": "SmartDashboard/SetArmsToPositionCommand/FullyExtendedPositionInches"
+            }
+          },
+          "3,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmMaintainerCommand/PositionPID/P",
+              "_title": "SmartDashboard/ClimberArmMaintainerCommand/PositionPID/P"
+            }
+          },
+          "3,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmMaintainerCommand/PositionPID/I",
+              "_title": "SmartDashboard/ClimberArmMaintainerCommand/PositionPID/I"
+            }
+          },
+          "3,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmMaintainerCommand/PositionPID/D",
+              "_title": "SmartDashboard/ClimberArmMaintainerCommand/PositionPID/D"
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/LatchReleaseCommand",
+              "_title": "SmartDashboard/LatchReleaseCommand"
             }
           }
         }
@@ -1114,6 +1235,6 @@
     "x": -7.199999809265137,
     "y": -7.199999809265137,
     "width": 1550.4000244140625,
-    "height": 838.4000244140625
+    "height": 830.4000244140625
   }
 }

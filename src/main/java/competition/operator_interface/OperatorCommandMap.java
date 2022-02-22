@@ -34,11 +34,16 @@ import competition.subsystems.latch.commands.LatchArmCommand;
 import competition.subsystems.latch.commands.LatchReleaseCommand;
 import competition.subsystems.pose.PoseSubsystem;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import xbot.common.command.DelayViaSupplierCommand;
 import xbot.common.command.NamedInstantCommand;
 import xbot.common.controls.sensors.ChordButton;
 import xbot.common.controls.sensors.XXboxController.XboxButton;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.math.XYPair;
+import xbot.common.properties.DoubleProperty;
+import xbot.common.properties.PropertyFactory;
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 
 /**
@@ -94,7 +99,8 @@ public class OperatorCommandMap {
             Provider<SetArmsToPositionCommand> setArmPositionCommandProvider,
             @LeftArm ClimberArmSubsystem leftArm,
             @RightArm ClimberArmSubsystem rightArm,
-            CommonLibFactory clf) {
+            CommonLibFactory clf,
+            PropertyFactory pf) {
         setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.FullyRetracted).includeOnSmartDashboard();
         setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.ClearCurrentBar).includeOnSmartDashboard();
         setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.FullyExtended).includeOnSmartDashboard();
@@ -113,6 +119,14 @@ public class OperatorCommandMap {
 
         });
         ParallelCommandGroup maintainArms = new ParallelCommandGroup(leftArmMaintainer, rightArmMaintainer);
+
+        pf.setPrefix("OperatorCommandMap/");
+        DoubleProperty pivotDelayTime = pf.createPersistentProperty("Pivot Delay Time", 0.15);
+
+        // When releasing the latch, we want to wait just a moment (to start falling) before actually pushing the pivot arm out
+        // to avoid slamming the climbing arms into the uprights.
+        ParallelRaceGroup latchReleaseAndSmallWait = new ParallelRaceGroup(latchRelease, new DelayViaSupplierCommand(() -> pivotDelayTime.get()));
+        SequentialCommandGroup latchReleaseThenPivotOut = new SequentialCommandGroup(latchReleaseAndSmallWait, pivotOut);
 
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.A).whenPressed(stopBothArms);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.B).whenPressed(maintainArms);
@@ -135,7 +149,8 @@ public class OperatorCommandMap {
             operatorInterface.operatorGamepad.getifAvailable(XboxButton.Back)
         );
 
-        totalNuclearLaunch.whenPressed(latchRelease);
+        totalNuclearLaunch.whenPressed(latchReleaseThenPivotOut);
+        latchRelease.includeOnSmartDashboard();
     }
 
     @Inject
@@ -172,9 +187,22 @@ public class OperatorCommandMap {
     @Inject
     public void setupMobilityCommands(OperatorInterface oi,
             TurnLeft90DegreesCommand turnleft90,
-            SwerveToPointCommand swerveToPoint) {
+            SwerveToPointCommand swerveToPoint,
+            PropertyFactory pf) {
 
-        swerveToPoint.setTargetPosition(new XYPair(0, 36));
+        pf.setPrefix("OperatorCommandMap/");
+        DoubleProperty xTarget = pf.createEphemeralProperty("OI/SwerveToPointTargetX", 0);
+        DoubleProperty yTarget = pf.createEphemeralProperty("OI/SwerveToPointTargetY", 0);
+        DoubleProperty angleTarget = pf.createEphemeralProperty("OI/SwerveToPointTargetAngle", 0);
+
+        swerveToPoint.setTargetSupplier(
+            () -> {
+                return new XYPair(xTarget.get(), yTarget.get());
+            },
+            () -> {
+                return angleTarget.get();
+            }
+        );
         oi.driverGamepad.getifAvailable(8).whenPressed(turnleft90);
         oi.driverGamepad.getifAvailable(4).whenPressed(swerveToPoint);
     }

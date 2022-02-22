@@ -40,16 +40,16 @@ public class ClimberArmMaintainerCommand extends BaseMaintainerCommand {
         this.armLabel = armInstance.getLabel();
 
         // Properties that are shared between the two arms
-        pf.setPrefix(this);
+        pf.setPrefix(getName() + "/");
         calibrationPower = pf.createPersistentProperty("CalibrationPower", 0.0); // Change from 0 once we know safer
                                                                                  // values
         waitForMotorStallCalibrationTime = pf.createPersistentProperty("Motor Stall Calibration Time", 0.25);
         calibrationValidator = new TimeStableValidator(() -> waitForMotorStallCalibrationTime.get());
         attemptAutomaticCalibration = pf.createPersistentProperty("Attempt Automatic Calibration", false);
-        positionPid = clf.createPIDManager(super.getPrefix() + "PositionPID", 0.33, 0, 0);
+        positionPid = clf.createPIDManager(getName() + "/" + "PositionPID", 0.33, 0, 0);
 
         // Properties that are unique to each arm
-        pf.setPrefix(this + armLabel);
+        pf.setPrefix(getName() + "/" + armLabel);
         calibrationAttemptState = pf.createEphemeralProperty("CalibrationAttemptState", "Uninitialized");
 
         calibrationDecider = clf.createCalibrationDecider(this.getPrefix() + armLabel);
