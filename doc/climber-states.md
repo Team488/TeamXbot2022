@@ -23,12 +23,12 @@
 
 ```mermaid
 stateDiagram-v2
-    moving: Moving to bars <br> Arm- FullyRetracted <br> Pivot- PivotIn <br> Latch- Release
-    grounded: In position
-    initial_extend: Extend arms <br> Arm- FullyExtended
-    move_to_engage: Move to let hooks engage
-    initial_extend_verify: Engage first bar <br> Arm- EngageNextBar
-    first_lift: Lift to bar <br> Arm- FullyRetracted <br> Pivot- PivotIn <br> Latch- Arm
+    moving: <b>Moving to bars</b> <br> Arm- FullyRetracted <br> Pivot- PivotIn <br> Latch- Release
+    grounded: <b>In position</b>
+    initial_extend: <b>Extend arms</b> <br> Arm- FullyExtended
+    move_to_engage: <b>Move to let hooks engage</b>
+    initial_extend_verify: <b>Engage first bar</b> <br> Arm- EngageNextBar
+    first_lift: <b>Lift to bar</b> <br> Arm- FullyRetracted <br> Pivot- PivotIn <br> Latch- Arm
 
     [*] --> moving
     moving --> grounded
@@ -45,14 +45,15 @@ stateDiagram-v2
 
     %% Climbing cycle
     state Climbing {
-        lift: Lift to bar <br> Arm- FullyRetracted <br> Pivot- PivotIn <br> Latch- Arm
-        test_latch: Test latch <br> Arm- ClearCurrentBar <br> Pivot- PivotIn <br> Latch- Arm
-        pivot: Pivot arm <br> Arm- ClearCurrentBar <br> Pivot- PivotOut <br> Latch- Arm
-        extend: Extend arm <br> Arm- FullyExtended <br> Pivot- PivotOut <br> Latch- Arm
-        unpivot: Pivot arm in <br> Arm- FullyExtended <br> Pivot- PivotIn <br> Latch- Arm
-        engage_bar: Engage next bar <br> Arm- EngageNextBar <br> Pivot- PivotIn <br> Latch- Arm
-        unlatch: Unlatch ⚠ <br> Arm- EngageNextBar <br> Pivot- PivotIn <br> Latch- Release
-        disaster: 🔥🚒🧯
+        lift: <b>Lift to bar</b> <br> Arm- FullyRetracted <br> Pivot- PivotIn <br> Latch- Arm
+        test_latch: <b>Test latch</b> <br> Arm- ClearCurrentBar <br> Pivot- PivotIn <br> Latch- Arm
+        pivot: <b>Pivot arm</b> <br> Arm- ClearCurrentBar <br> Pivot- PivotOut <br> Latch- Arm
+        extend: <b>Extend arm</b> <br> Arm- FullyExtended <br> Pivot- PivotOut <br> Latch- Arm
+        unpivot: <b>Pivot arm in</b> <br> Arm- FullyExtended <br> Pivot- PivotIn <br> Latch- Arm
+        engage_bar: <b>Engage next bar</b> <br> Arm- EngageNextBar <br> Pivot- PivotIn <br> Latch- Arm
+        unlatch: <b>Unlatch ⚠</b> <br> Arm- EngageNextBar <br> Pivot- PivotIn <br> Latch- Release
+        fast_pivot: <b>Pivot to reduce impact</b> <br> Arm- EngageNextBar <br> Pivot- PivotOut <br> Latch- Release
+        disaster: 🔥🚒🧯🚑🏥
 
         [*] --> lift
         lift --> test_latch
@@ -65,9 +66,10 @@ stateDiagram-v2
 
         note right of unlatch : Make sure that both hooks are engaged!!
         engage_bar --> unlatch : If both hooks engaged
-        unlatch --> lift : If there is another bar to climb to
+        unlatch --> fast_pivot : Very quickly after unlatch
+        fast_pivot --> lift : If there is another bar to climb to
         unlatch --> disaster : If hooks were not engaged
-        unlatch --> [*] : If on last bar
+        fast_pivot --> [*] : If on last bar
 
     }
 ```
