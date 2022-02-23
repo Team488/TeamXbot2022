@@ -1,21 +1,25 @@
 # Climber states
 
-## Arm target positions
+## States
+
+### Arm target positions
 
 * FullyRetracted
 * ClearCurrentBar
 * FullyExtended
 * EngageNextBar
 
-## Pivot states
+### Pivot states
 
 * PivotIn
 * PivotOut
 
-## Latch states
+### Latch states
 
 * Arm
 * Release
+
+## Flow diagram
 
 ```mermaid
 stateDiagram-v2
