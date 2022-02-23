@@ -49,6 +49,9 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     private final PIDManager headingPidManager;
 
     private XYPair lastCommandedDirection;
+    private double lastCommandedRotation;
+
+    private double desiredHeading;
 
     public enum SwerveModuleLocation {
         FRONT_LEFT,
@@ -148,6 +151,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         if (isNotMoving)
         {
             translate = lastCommandedDirection;
+            rotate = lastCommandedRotation;
         }
 
         // Then we translate the translation and rotation "intents" into velocities. Basically,
@@ -191,8 +195,9 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         this.getRearRightSwerveModuleSubsystem().setTargetState(moduleStates[3]);
 
         // If we were asked to move in a direction, remember that direction.
-        if (translate.getMagnitude() > 0.05) {
+        if (translate.getMagnitude() > 0.05 || Math.abs(rotate) > 0.05) {
             lastCommandedDirection = translate;
+            lastCommandedRotation = rotate;
         }        
     }
 
@@ -286,6 +291,14 @@ public class DriveSubsystem extends BaseDriveSubsystem {
                 this.getSwerveModuleSubsystem(value).setPowers(0, 0);
             }
         }
+    }
+
+    public void setDesiredHeading(double heading) {
+        this.desiredHeading = heading;
+    }
+
+    public double getDesiredHeading() {
+        return this.desiredHeading;
     }
 
     /**

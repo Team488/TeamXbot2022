@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import competition.BaseCompetitionTest;
-import competition.subsystems.collector_deployment.CollectorDeploymentSubsystem;
 import competition.subsystems.collector_deployment.commands.DeployCommand;
 
 public class DeployCommandTest extends BaseCompetitionTest{

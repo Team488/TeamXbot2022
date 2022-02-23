@@ -372,30 +372,102 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "4,0": {
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ArduinoCommunicationSubsystem/ArduinoState",
+              "_title": "/SmartDashboard/ArduinoCommunicationSubsystem/ArduinoState"
+            }
+          },
+          "5,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ArduinoCommunicationSubsystem/ArduinoBinaryString",
+              "_title": "/SmartDashboard/ArduinoCommunicationSubsystem/ArduinoBinaryString"
+            }
+          },
+          "7,2": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/ArduinoCommunicationSubsystem/dio1State",
-              "_title": "SmartDashboard/ArduinoCommunicationSubsystem/dio1State",
+              "_source0": "network_table:///SmartDashboard/ArduinoCommunicationSubsystem/DIO0",
+              "_title": "/SmartDashboard/ArduinoCommunicationSubsystem/DIO0",
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "5,0": {
+          "6,2": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/ArduinoCommunicationSubsystem/dio2State",
-              "_title": "SmartDashboard/ArduinoCommunicationSubsystem/dio2State",
+              "_source0": "network_table:///SmartDashboard/ArduinoCommunicationSubsystem/DIO1",
+              "_title": "/SmartDashboard/ArduinoCommunicationSubsystem/DIO1",
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "5,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ArduinoCommunicationSubsystem/DIO2",
+              "_title": "/SmartDashboard/ArduinoCommunicationSubsystem/DIO2",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "4,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ArduinoCommunicationSubsystem/DIO3",
+              "_title": "/SmartDashboard/ArduinoCommunicationSubsystem/DIO3",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ArduinoCommunicationSubsystem/AllianceDIO",
+              "_title": "/SmartDashboard/ArduinoCommunicationSubsystem/AllianceDIO",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ArduinoCommunicationSubsystem/AnalogOutput",
+              "_title": "/SmartDashboard/ArduinoCommunicationSubsystem/AnalogOutput"
             }
           }
         }
@@ -752,6 +824,266 @@
       }
     },
     {
+      "title": "Arm",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/ArmMotorPosition",
+              "_title": "/SmartDashboard/ClimberArmSubsystem/LeftArm/ArmMotorPosition"
+            }
+          },
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/IsArmCalibrated",
+              "_title": "/SmartDashboard/ClimberArmSubsystem/LeftArm/IsArmCalibrated",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/ArmMotorPosition",
+              "_title": "/SmartDashboard/ClimberArmSubsystem/RightArm/ArmMotorPosition"
+            }
+          },
+          "6,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/IsArmCalibrated",
+              "_title": "/SmartDashboard/ClimberArmSubsystem/RightArm/IsArmCalibrated",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "9,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/ArmInchesPerRotation",
+              "_title": "/SmartDashboard/ClimberArmSubsystem/ArmInchesPerRotation"
+            }
+          },
+          "9,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/safelyExtendable",
+              "_title": "/SmartDashboard/ClimberArmSubsystem/safelyExtendable"
+            }
+          },
+          "9,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/safelyRetractable",
+              "_title": "/SmartDashboard/ClimberArmSubsystem/safelyRetractable"
+            }
+          },
+          "9,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/PowerFactor",
+              "_title": "/SmartDashboard/ClimberArmSubsystem/PowerFactor"
+            }
+          },
+          "4,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/TargetPosition",
+              "_title": "SmartDashboard/ClimberArmSubsystem/LeftArm/TargetPosition"
+            }
+          },
+          "6,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/TargetPosition",
+              "_title": "SmartDashboard/ClimberArmSubsystem/RightArm/TargetPosition"
+            }
+          },
+          "4,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand: FullyRetracted",
+              "_title": "SmartDashboard/SetArmsToPositionCommand: FullyRetracted"
+            }
+          },
+          "5,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand: ClearCurrentBar",
+              "_title": "SmartDashboard/SetArmsToPositionCommand: ClearCurrentBar"
+            }
+          },
+          "6,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand: EngageNextBar",
+              "_title": "SmartDashboard/SetArmsToPositionCommand: EngageNextBar"
+            }
+          },
+          "7,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand: FullyExtended",
+              "_title": "SmartDashboard/SetArmsToPositionCommand: FullyExtended"
+            }
+          },
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand/FullyRetractedPositionInches",
+              "_title": "SmartDashboard/SetArmsToPositionCommand/FullyRetractedPositionInches"
+            }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand/ClearCurrentBarPositionInches",
+              "_title": "SmartDashboard/SetArmsToPositionCommand/ClearCurrentBarPositionInches"
+            }
+          },
+          "8,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand/EngageNextBarPositionInches",
+              "_title": "SmartDashboard/SetArmsToPositionCommand/EngageNextBarPositionInches"
+            }
+          },
+          "8,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand/FullyExtendedPositionInches",
+              "_title": "SmartDashboard/SetArmsToPositionCommand/FullyExtendedPositionInches"
+            }
+          },
+          "3,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmMaintainerCommand/PositionPID/P",
+              "_title": "SmartDashboard/ClimberArmMaintainerCommand/PositionPID/P"
+            }
+          },
+          "3,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmMaintainerCommand/PositionPID/I",
+              "_title": "SmartDashboard/ClimberArmMaintainerCommand/PositionPID/I"
+            }
+          },
+          "3,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmMaintainerCommand/PositionPID/D",
+              "_title": "SmartDashboard/ClimberArmMaintainerCommand/PositionPID/D"
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/LatchReleaseCommand",
+              "_title": "SmartDashboard/LatchReleaseCommand"
+            }
+          }
+        }
+      }
+    },
+    {
       "title": "Steering Motor Controller PID",
       "autoPopulate": false,
       "autoPopulatePrefix": "",
@@ -803,9 +1135,9 @@
                   "_title": "MaxOutput"
                 },
                 {
-                  "_type": "Toggle Switch",
-                  "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/UseMotorControllerPID",
-                  "_title": "Use Motor Controller PID"
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/SwerveSteeringMotorPidSubsystem/kClosedLoopRampRate",
+                  "_title": "SmartDashboard/SwerveSteeringMotorPidSubsystem/kClosedLoopRampRate"
                 }
               ]
             }
@@ -847,6 +1179,53 @@
                 }
               ]
             }
+          },
+          "0,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Commit steering pid values/running",
+              "_title": "SmartDashboard/Commit steering pid values/running"
+            }
+          },
+          "0,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/SwerveSteeringSubsystem/UseMotorControllerPID",
+              "_title": "Use Motor Controller PID"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Tab 8",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "3,0": {
+            "size": [
+              7,
+              4
+            ],
+            "content": {
+              "_type": "Network Table Tree",
+              "_source0": "network_table:///SmartDashboard/Scheduler",
+              "_title": "/SmartDashboard/Scheduler"
+            }
           }
         }
       }
@@ -856,6 +1235,6 @@
     "x": -7.199999809265137,
     "y": -7.199999809265137,
     "width": 1550.4000244140625,
-    "height": 838.4000244140625
+    "height": 830.4000244140625
   }
 }

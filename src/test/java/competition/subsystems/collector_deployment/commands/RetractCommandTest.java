@@ -1,13 +1,10 @@
 package competition.subsystems.collector_deployment.commands;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import competition.BaseCompetitionTest;
-import competition.subsystems.climber_arm.ClimberArmSubsystem;
-import competition.subsystems.collector_deployment.CollectorDeploymentSubsystem;
 import competition.subsystems.collector_deployment.commands.RetractCommand;
 
 public class RetractCommandTest extends BaseCompetitionTest{

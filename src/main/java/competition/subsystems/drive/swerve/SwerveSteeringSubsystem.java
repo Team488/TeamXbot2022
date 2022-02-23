@@ -31,11 +31,13 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     private final String label;
     private final PIDManager pid;
     private final ElectricalContract contract;
+    private final SwerveSteeringMotorPidSubsystem pidConfigSubsystem;
 
     private final DoubleProperty powerScale;
     private final DoubleProperty targetRotation;
     private final DoubleProperty currentModuleHeading;
-    private final DoubleProperty motorPosition;
+    private final DoubleProperty absoluteEncoderPosition;
+    private final DoubleProperty motorEncoderPosition;
     private final StringProperty canCoderStatus;
     private final DoubleProperty degreesPerMotorRotation;
     private final BooleanProperty useMotorControllerPid;
@@ -49,11 +51,13 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
 
     @Inject
     public SwerveSteeringSubsystem(SwerveInstance swerveInstance, CommonLibFactory factory,
-            PropertyFactory pf, PIDFactory pidf, ElectricalContract electricalContract) {
+            PropertyFactory pf, PIDFactory pidf, ElectricalContract electricalContract, 
+            SwerveSteeringMotorPidSubsystem pidConfigSubsystem) {
         this.label = swerveInstance.getLabel();
         log.info("Creating SwerveRotationSubsystem " + this.label);
 
         this.contract = electricalContract;
+        this.pidConfigSubsystem = pidConfigSubsystem;
 
         // Create properties shared among all instances
         pf.setPrefix(super.getPrefix());
@@ -67,11 +71,13 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         pf.setPrefix(this);
         this.targetRotation = pf.createEphemeralProperty("TargetRotation", 0.0);
         this.currentModuleHeading = pf.createEphemeralProperty("CurrentModuleHeading", 0.0);
-        this.motorPosition = pf.createEphemeralProperty("CurrentMotorPosition", 0.0);
+        this.motorEncoderPosition = pf.createEphemeralProperty("MotorEncoderPosition", 0.0);
+        this.absoluteEncoderPosition = pf.createEphemeralProperty("AbsoluteEncoderPosition", 0.0);
         this.canCoderStatus = pf.createEphemeralProperty("CANCoderStatus", "unknown");
 
         if (electricalContract.isDriveReady()) {
             this.motorController = factory.createCANSparkMax(electricalContract.getSteeringNeo(swerveInstance), this.getPrefix(), "SteeringNeo");
+            setMotorControllerPositionPidParameters();
         }
         if (electricalContract.areCanCodersReady()) {
             this.encoder = factory.createAbsoluteEncoder(electricalContract.getSteeringEncoder(swerveInstance), this.getPrefix());
@@ -156,7 +162,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
             double currentSparkMaxPosition = getMotorControllerEncoderPosiitonInDegrees();
 
             if (isMotorControllerDriftTooHigh(currentCanCoderPosition, currentSparkMaxPosition, this.maxMotorEncoderDrift.get())) {
-                if (Math.abs(this.motorController.get()) > 0) {
+                if (Math.abs(this.motorController.getVelocity()) > 0) {
                     log.error("This should not be called when the motor is moving!");
                 } else {
                     log.warn("Motor controller encoder drift is too high, recalibrating!");
@@ -289,26 +295,28 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         }
     }
 
-    public void setMotorControllerPositionPidParameters(double p, double i, double d, double ff, double minOutput, double maxOutput) {
+    public void setMotorControllerPositionPidParameters() {
         if (this.contract.isDriveReady()) {
-            this.motorController.setP(p);
-            this.motorController.setI(i);
-            this.motorController.setD(d);
-            this.motorController.setFF(ff);
-            this.motorController.setOutputRange(minOutput, maxOutput);
+            this.motorController.setP(pidConfigSubsystem.getP());
+            this.motorController.setI(pidConfigSubsystem.getI());
+            this.motorController.setD(pidConfigSubsystem.getD());
+            this.motorController.setFF(pidConfigSubsystem.getFF());
+            this.motorController.setOutputRange(pidConfigSubsystem.getMinOutput(), pidConfigSubsystem.getMaxOutput());
+            this.motorController.setClosedLoopRampRate(pidConfigSubsystem.getClosedLoopRampRate());
+            this.motorController.setOpenLoopRampRate(pidConfigSubsystem.getOpenLoopRampRate());
         }
     }
 
     @Override
     public void periodic() {
-        currentModuleHeading.set(getCurrentValue());
-        canCoderStatus.set(this.encoder.getHealth().toString());
-
-        if (this.contract.isDriveReady()) {
-            this.motorPosition.set(this.motorController.getPosition());
-            
-            // Seems to cause a lot of lag.
-            //this.motorController.periodic();
+        if (contract.areCanCodersReady()) {
+            canCoderStatus.set(this.encoder.getHealth().toString());
+            absoluteEncoderPosition.set(getAbsoluteEncoderPositionInDegrees());
         }
+        if (contract.isDriveReady()) {
+            motorEncoderPosition.set(getMotorControllerEncoderPosiitonInDegrees());
+        }
+
+        currentModuleHeading.set(getCurrentValue());
     }
 }
