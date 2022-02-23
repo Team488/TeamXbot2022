@@ -1,0 +1,44 @@
+package competition.auto_programs;
+
+import com.google.inject.Inject;
+
+import competition.subsystems.collector.CollectorSubsystem;
+import competition.subsystems.collector.commands.IntakeCommand;
+import competition.subsystems.collector_deployment.CollectorDeploymentSubsystem;
+import competition.subsystems.collector_deployment.commands.DeployCommand;
+import competition.subsystems.collector_stage_2.CollectorStage2Subsystem;
+import competition.subsystems.drive.commands.SwerveToPointCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import xbot.common.command.DelayViaSupplierCommand;
+import xbot.common.math.XYPair;
+
+public class GoCollectComebackCommand extends SequentialCommandGroup {
+    @Inject
+    public GoCollectComebackCommand (
+        SwerveToPointCommand goThreeFeet, 
+        IntakeCommand collectBall, 
+        CollectorStage2Subsystem stageTwoCollector,
+        DeployCommand deployCommand,
+        SwerveToPointCommand goBackToStart
+        ) {
+            goThreeFeet.setTargetPosition(new XYPair(0, 36), 90);
+
+            ParallelRaceGroup goToBall = 
+                new ParallelRaceGroup(deployCommand, collectBall, stageTwoCollector.getForwardCommand(), goThreeFeet);
+
+            this.addCommands(goToBall);
+
+            DelayViaSupplierCommand delay = new DelayViaSupplierCommand(() -> 0.5);
+
+            ParallelRaceGroup collectorBall = 
+                new ParallelRaceGroup(deployCommand, collectBall, stageTwoCollector.getForwardCommand(), delay);
+
+            this.addCommands(collectorBall);
+
+            goBackToStart.setTargetPosition(new XYPair(0, 0), 90);
+            
+            this.addCommands(goBackToStart);
+    }
+}
