@@ -1,5 +1,7 @@
 package competition.subsystems.deploy_hood.commands;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
 import competition.BaseCompetitionTest;
@@ -9,6 +11,26 @@ public class HoodRetractCommandTest extends BaseCompetitionTest{
     @Test
     public void testingHoodRetractCommand(){
         HoodSubsystem hoodSubsystem = this.injector.getInstance(HoodSubsystem.class);
+        HoodRetractCommand hoodRetractCommand = this.injector.getInstance(HoodRetractCommand.class);
+
+        hoodSubsystem.deploy();
+        assertTrue("Starts deployed", hoodSubsystem.hoodDeploy.getIsForward());
+        hoodRetractCommand.initialize();
+        hoodRetractCommand.execute();
+        assertTrue("Retracts", hoodSubsystem.hoodDeploy.getIsReverse());
+
+    }
+
+    @Test
+    public void testingDoubleHoodRetractCommand(){
+        HoodSubsystem hoodSubsystem = this.injector.getInstance(HoodSubsystem.class);
+        HoodRetractCommand hoodRetractCommand = this.injector.getInstance(HoodRetractCommand.class);
+
+        hoodSubsystem.retract();
+        assertTrue("Starts deployed", hoodSubsystem.hoodDeploy.getIsReverse());
+        hoodRetractCommand.initialize();
+        hoodRetractCommand.execute();
+        assertTrue("Retracts", hoodSubsystem.hoodDeploy.getIsReverse());
 
     }
 }

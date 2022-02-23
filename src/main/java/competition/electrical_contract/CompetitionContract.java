@@ -239,7 +239,7 @@ public class CompetitionContract extends ElectricalContract {
     }
     
     public DeviceInfo getDeployHoodSoleniod2() {
-        return new DeviceInfo(8);
+        return new DeviceInfo(9);
     }
 
     @Override
