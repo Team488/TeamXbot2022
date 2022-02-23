@@ -23,6 +23,8 @@ public class SwerveToPointCommand extends BaseCommand {
     private Supplier<XYPair> targetPositionSupplier;
     private Supplier<Double> targetHeadingSupplier;
 
+    private boolean robotRelativeMotion = false;
+
     @Inject
     public SwerveToPointCommand(DriveSubsystem drive, PoseSubsystem pose, PropertyFactory pf, CommonLibFactory clf) {
         this.drive = drive;
@@ -37,6 +39,10 @@ public class SwerveToPointCommand extends BaseCommand {
     @Override
     public void initialize() {
         log.info("Initializing");
+
+        if (robotRelativeMotion) {
+            
+        }
     }
 
     public void setTargetPosition(XYPair targetPositionInInches, double heading) {
@@ -47,6 +53,14 @@ public class SwerveToPointCommand extends BaseCommand {
     public void setTargetSupplier(Supplier<XYPair> targetPositionSupplier, Supplier<Double> targetHeadingSupplier) {
         this.targetPositionSupplier = targetPositionSupplier;
         this.targetHeadingSupplier = targetHeadingSupplier;
+    }
+
+    public void setRobotRelativeMotion() {
+        robotRelativeMotion = true;
+    }
+
+    public void setFieldRelativeMotion() {
+        robotRelativeMotion = false;
     }
 
     @Override
