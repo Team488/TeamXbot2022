@@ -18,22 +18,25 @@ public class GoCollectComebackCommand extends SequentialCommandGroup {
     @Inject
     public GoCollectComebackCommand (
         SwerveToPointCommand goThreeFeet, 
-        IntakeCommand collectBall, 
-        CollectorStage2Subsystem stageTwoCollector,
-        DeployCommand deployCommand,
+        IntakeCommand collectBall1, 
+        CollectorStage2Subsystem stageTwoCollector1,
+        DeployCommand deployCommand1,
+        IntakeCommand collectBall2, 
+        CollectorStage2Subsystem stageTwoCollector2,
+        DeployCommand deployCommand2,
         SwerveToPointCommand goBackToStart
         ) {
             goThreeFeet.setTargetPosition(new XYPair(0, 36), 90);
 
             ParallelRaceGroup goToBall = 
-                new ParallelRaceGroup(deployCommand, collectBall, stageTwoCollector.getForwardCommand(), goThreeFeet);
+                new ParallelRaceGroup(deployCommand1, collectBall1, stageTwoCollector1.getForwardCommand(), goThreeFeet);
 
             this.addCommands(goToBall);
 
             DelayViaSupplierCommand delay = new DelayViaSupplierCommand(() -> 0.5);
 
             ParallelRaceGroup collectorBall = 
-                new ParallelRaceGroup(deployCommand, collectBall, stageTwoCollector.getForwardCommand(), delay);
+                new ParallelRaceGroup(deployCommand2, collectBall2, stageTwoCollector2.getForwardCommand(), delay);
 
             this.addCommands(collectorBall);
 
