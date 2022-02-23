@@ -258,4 +258,13 @@ public class CompetitionContract extends ElectricalContract {
     public DeviceInfo getConveyerMotor() {
         return new DeviceInfo(9);
     }
+
+    public DeviceInfo getDeployHoodSoleniod1() {
+        return new DeviceInfo(8);
+    }
+    
+    public DeviceInfo getDeployHoodSoleniod2() {
+        return new DeviceInfo(9);
+    }
+
 }

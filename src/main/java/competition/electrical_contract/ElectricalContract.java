@@ -64,6 +64,9 @@ public abstract class ElectricalContract {
     public abstract DeviceInfo getCollectorDeviceSoleniod1();
     public abstract DeviceInfo getCollectorDeviceSoleniod2();
 
+    public abstract DeviceInfo getDeployHoodSoleniod1();
+    public abstract DeviceInfo getDeployHoodSoleniod2();
+
     public abstract DeviceInfo getConveyerMotor();
 
     public abstract boolean isConveyerReady();
