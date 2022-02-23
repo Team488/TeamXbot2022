@@ -2,13 +2,10 @@ package competition.auto_programs;
 
 import com.google.inject.Inject;
 
-import competition.subsystems.collector.CollectorSubsystem;
 import competition.subsystems.collector.commands.IntakeCommand;
-import competition.subsystems.collector_deployment.CollectorDeploymentSubsystem;
 import competition.subsystems.collector_deployment.commands.DeployCommand;
 import competition.subsystems.collector_stage_2.CollectorStage2Subsystem;
 import competition.subsystems.drive.commands.SwerveToPointCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import xbot.common.command.DelayViaSupplierCommand;
