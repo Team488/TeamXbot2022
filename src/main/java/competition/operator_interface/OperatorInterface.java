@@ -3,6 +3,7 @@ package competition.operator_interface;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import xbot.common.controls.sensors.XJoystick;
 import xbot.common.controls.sensors.XXboxController;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.logging.RobotAssertionManager;
@@ -15,8 +16,9 @@ import xbot.common.properties.PropertyFactory;
  */
 @Singleton
 public class OperatorInterface {
-    public XXboxController driverGamepad;
-    public XXboxController operatorGamepad;
+    public final XXboxController driverGamepad;
+    public final XXboxController operatorGamepad;
+    public final XJoystick driverDialJoystick;
 
     final DoubleProperty driverDeadband;
     final DoubleProperty operatorDeadband;
@@ -25,6 +27,7 @@ public class OperatorInterface {
     public OperatorInterface(CommonLibFactory factory, RobotAssertionManager assertionManager, PropertyFactory pf) {
         driverGamepad = factory.createXboxController(0);
         operatorGamepad = factory.createXboxController(1);
+        driverDialJoystick = factory.createJoystick(2, 1);
 
         driverGamepad.setLeftInversion(false, true);
         driverGamepad.setRightInversion(true, true);

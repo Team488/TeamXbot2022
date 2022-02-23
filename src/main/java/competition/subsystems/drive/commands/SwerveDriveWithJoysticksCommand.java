@@ -127,18 +127,8 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
             // line up with our conventions. (Usually, a right turn is done by moving the joystick right. However, turning to the right
             // is a "negative" rotation, so the X axis is usually inverted to take that into account). 
             // By doing this inversion, the vector will better map onto a typical cartesian coordinate system.
-            XYPair headingVector = new XYPair(-oi.driverGamepad.getRightStickX(), oi.driverGamepad.getRightStickY());
 
-            double desiredHeading = 0;
-            
-            if (headingVector.getMagnitude() > minimumMagnitudeForAbsoluteHeading.get()) {
-                // If the magnitude is greater than the minimum magnitude, we can use the joystick to set the heading.
-                desiredHeading = headingVector.getAngle();
-                drive.setDesiredHeading(desiredHeading);
-            } else {
-                // If the joystick isn't deflected enough, we use the last known heading.
-                desiredHeading = drive.getDesiredHeading();
-            }
+            double desiredHeading = oi.driverDialJoystick.getRawAxis(2) * 360;
 
             // Now, finally, we ask the heading module to calculate the power.
             suggestedRotatePower = headingModule.calculateHeadingPower(desiredHeading);
