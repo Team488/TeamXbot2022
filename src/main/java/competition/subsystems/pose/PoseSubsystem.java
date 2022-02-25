@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.subsystems.pose.BasePoseSubsystem;
 
@@ -18,13 +19,22 @@ public class PoseSubsystem extends BasePoseSubsystem {
     
     final SwerveDriveOdometry swerveOdometry;
 
+    DoubleProperty leftStartPosX;
+    DoubleProperty leftStartPosY;
+
+    DoubleProperty midStartPosX;
+    DoubleProperty midStartPosY;
+
+    DoubleProperty rightStartPosX;
+    DoubleProperty rightStartPosY;
+
     @Inject
     public PoseSubsystem(CommonLibFactory clf, PropertyFactory propManager, DriveSubsystem drive) {
         super(clf, propManager);
         this.drive = drive;
 
-        // Remember: WPILib uses a different coordinate convention than our legacy code. Theirs:
-        //     0,+y. 90 degrees
+    /* Remember: WPILib uses a different coordinate convention than our legacy code. Theirs:
+          //   0,+y. 90 degrees
         //       ----------------------------
         //       |                          |
         // Driver|                          |
@@ -47,7 +57,7 @@ public class PoseSubsystem extends BasePoseSubsystem {
         // we can just ignore the difference. Any tool that looks at our position will be confused, since we will appear to be driving outside the field,
         // but it will work just fine for our own code.
         // That being said, at some point we should probably switch to the WPILib convention, since there are a number of path-planning tools and other
-        // utilities that expect the same conventions.
+         utilities that expect the same conventions. */
 
         swerveOdometry = new SwerveDriveOdometry(drive.getSwerveDriveKinematics(), new Rotation2d(), new Pose2d(0, 0, new Rotation2d()));
     }
@@ -65,6 +75,30 @@ public class PoseSubsystem extends BasePoseSubsystem {
             // Convert back to inches
             totalDistanceX.set(updatedPosition.getY() * PoseSubsystem.INCHES_IN_A_METER);
             totalDistanceY.set(-updatedPosition.getX() * PoseSubsystem.INCHES_IN_A_METER);
+    }
+
+    @Inject
+    public void setCurrentPositiontoLeft () {
+        this.leftStartPosX.get();
+        this.leftStartPosY.get();
+
+        setCurrentPosition(leftStartPosX.get(), leftStartPosY.get());
+    }
+
+    @Inject
+    public void setCurrentPositiontoMid () {
+        this.midStartPosX.get();
+        this.midStartPosY.get();
+
+        setCurrentPosition(midStartPosX.get(), midStartPosY.get());
+    }
+
+    @Inject
+    public void setCurrentPositiontoRight () {
+        this.rightStartPosX.get();
+        this.rightStartPosY.get();
+
+        setCurrentPosition(rightStartPosX.get(), rightStartPosY.get());
     }
 
     @Override
