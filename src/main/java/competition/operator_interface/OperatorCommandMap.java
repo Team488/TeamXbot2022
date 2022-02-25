@@ -33,9 +33,16 @@ import competition.subsystems.drive.commands.TurnLeft90DegreesCommand;
 import competition.subsystems.latch.commands.LatchArmCommand;
 import competition.subsystems.latch.commands.LatchReleaseCommand;
 import competition.subsystems.pose.PoseSubsystem;
+import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
+import competition.subsystems.shooterwheel.commands.ShooterWheelWaitForGoalCommand;
+import competition.subsystems.shooterwheel.commands.StopShooterWheelCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import xbot.common.command.BaseCommand;
 import xbot.common.command.DelayViaSupplierCommand;
 import xbot.common.command.NamedInstantCommand;
 import xbot.common.controls.sensors.ChordButton;
@@ -182,6 +189,18 @@ public class OperatorCommandMap {
         operatorInterface.driverGamepad.getifAvailable(7).whenPressed(setSteeringPidValues);
 
         setSteeringPidValues.includeOnSmartDashboard("Commit steering pid values");
+    }
+
+    @Inject
+    public void setShooterCommand ( OperatorInterface oi,
+        ShooterWheelSubsystem shooter,
+        StopShooterWheelCommand stopCommand
+    ){
+        InstantCommand increaseTrim = new NamedInstantCommand("ShooterIncreaseTrim100RPMInstantCommand", () -> shooter.changeTrimRPM(100));
+        InstantCommand decreaseTrim = new NamedInstantCommand("ShooterDecreaseTrim100RPMInstantCommand", () -> shooter.changeTrimRPM(-100));
+        SmartDashboard.putData("Trim Up", increaseTrim);
+        SmartDashboard.putData("Trim down", decreaseTrim);
+        stopCommand.includeOnSmartDashboard();
     }
 
     @Inject

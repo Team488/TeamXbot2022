@@ -5,7 +5,10 @@ import com.google.inject.Inject;
 import competition.subsystems.collector.commands.IntakeCommand;
 import competition.subsystems.collector_deployment.commands.DeployCommand;
 import competition.subsystems.collector_stage_2.CollectorStage2Subsystem;
+import competition.subsystems.deploy_hood.commands.HoodDeployCommand;
 import competition.subsystems.drive.commands.SwerveToPointCommand;
+import competition.subsystems.shooterwheel.commands.BangBangCommand;
+import competition.subsystems.shooterwheel.commands.ShooterWheelMaintainerCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import xbot.common.command.DelayViaSupplierCommand;
@@ -21,7 +24,9 @@ public class GoCollectComebackCommand extends SequentialCommandGroup {
         IntakeCommand collectBall2, 
         CollectorStage2Subsystem stageTwoCollector2,
         DeployCommand deployCommand2,
-        SwerveToPointCommand goBackToStart
+        SwerveToPointCommand goBackToStart,
+        HoodDeployCommand deployHood,
+        BangBangCommand startShooter
         ) {
             goThreeFeet.setTargetPosition(new XYPair(0, 36), 90);
 
