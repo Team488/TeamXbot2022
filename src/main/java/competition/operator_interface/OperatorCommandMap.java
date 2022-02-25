@@ -69,15 +69,15 @@ public class OperatorCommandMap {
         NamedInstantCommand resetPosition = new NamedInstantCommand("Reset Position",
                 () -> pose.setCurrentPosition(0, 0));
         ParallelCommandGroup resetPose = new ParallelCommandGroup(resetPosition, resetHeading);
-        operatorInterface.driverGamepad.getifAvailable(1).whenPressed(resetPose);
+        operatorInterface.driverGamepad.getifAvailable(XboxButton.A).whenPressed(resetPose);
     }
 
     @Inject
     public void setupDriveCommands(
             DebuggingSwerveWithJoysticksCommand swerveDebugging,
             GoToNextActiveSwerveModuleCommand goToNextActiveSwerveModule) {
-        operatorInterface.driverGamepad.getifAvailable(2).whenPressed(swerveDebugging);
-        operatorInterface.driverGamepad.getifAvailable(3).whenPressed(goToNextActiveSwerveModule);
+        operatorInterface.driverGamepad.getifAvailable(XboxButton.B).whenPressed(swerveDebugging);
+        operatorInterface.driverGamepad.getifAvailable(XboxButton.X).whenPressed(goToNextActiveSwerveModule);
 
     }
 
@@ -177,9 +177,9 @@ public class OperatorCommandMap {
                 maintainDriveRearRight,
                 swerveDriveWithJoysticks);
 
-        operatorInterface.driverGamepad.getifAvailable(5).whenPressed(calibrateSteering);
-        operatorInterface.driverGamepad.getifAvailable(6).whenPressed(swerveCommands);
-        operatorInterface.driverGamepad.getifAvailable(7).whenPressed(setSteeringPidValues);
+        operatorInterface.driverGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(calibrateSteering);
+        operatorInterface.driverGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(swerveCommands);
+        operatorInterface.driverGamepad.getifAvailable(XboxButton.Back).whenPressed(setSteeringPidValues);
 
         setSteeringPidValues.includeOnSmartDashboard("Commit steering pid values");
     }
@@ -203,8 +203,8 @@ public class OperatorCommandMap {
                 return angleTarget.get();
             }
         );
-        oi.driverGamepad.getifAvailable(8).whenPressed(turnleft90);
-        oi.driverGamepad.getifAvailable(4).whenPressed(swerveToPoint);
+        oi.driverGamepad.getifAvailable(XboxButton.Start).whenPressed(turnleft90);
+        oi.driverGamepad.getifAvailable(XboxButton.Y).whenPressed(swerveToPoint);
     }
 
     @Inject
