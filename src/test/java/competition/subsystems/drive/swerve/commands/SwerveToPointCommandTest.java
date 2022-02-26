@@ -36,8 +36,8 @@ public class SwerveToPointCommandTest extends BaseFullSwerveTest {
         pose.setCurrentPosition(100, 150);
         command.execute();
 
-        checkAllModuleAngle(-90);
-        checkAllModulesGoingForward(true);
+        checkAllModuleAngle(90);
+        checkAllModulesGoingForward(false);
     }
 
     @Test
