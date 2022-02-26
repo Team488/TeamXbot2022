@@ -2,10 +2,13 @@ package competition.subsystems.collector.commands;
 
 import static org.junit.Assert.assertEquals;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import org.junit.Test;
 
 import competition.BaseCompetitionTest;
 import competition.subsystems.collector.CollectorSubsystem;
+import xbot.common.controls.actuators.mock_adapters.MockCANTalon;
 
 public class EjectCommandTest extends BaseCompetitionTest{
     @Test
@@ -13,7 +16,7 @@ public class EjectCommandTest extends BaseCompetitionTest{
         CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
         EjectCommand ejectCommand = this.injector.getInstance(EjectCommand.class);
 
-        collectorSubsystem.collectorMotor.set(1);
+        collectorSubsystem.collectorMotor.set(ControlMode.PercentOutput, 1);
         checkCollectorPower(1);
         ejectCommand.initialize();
         ejectCommand.execute();
@@ -34,7 +37,8 @@ public class EjectCommandTest extends BaseCompetitionTest{
 
     public void checkCollectorPower(double power) {
         CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
+        MockCANTalon mockMotor = (MockCANTalon) collectorSubsystem.collectorMotor;
 
-        assertEquals(power, collectorSubsystem.collectorMotor.get(), 0.001);
+        assertEquals(power, mockMotor.getThrottlePercent(), 0.001);
     }
 }

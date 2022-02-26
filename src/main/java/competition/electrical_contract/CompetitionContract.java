@@ -3,6 +3,7 @@ package competition.electrical_contract;
 import competition.injection.arm.ArmInstance;
 import competition.injection.swerve.SwerveInstance;
 import competition.subsystems.pose.PoseSubsystem;
+import xbot.common.injection.electrical_contract.CANTalonInfo;
 import xbot.common.injection.electrical_contract.DeviceInfo;
 import xbot.common.math.XYPair;
 
@@ -61,13 +62,13 @@ public class CompetitionContract extends ElectricalContract {
                 return new DeviceInfo(31, false, simulationScalingValue);
 
             case "FrontRightDrive":
-                return new DeviceInfo(29, false, simulationScalingValue);
+                return new DeviceInfo(28, false, simulationScalingValue);
 
             case "RearLeftDrive":
-                return new DeviceInfo(39, false, simulationScalingValue);
+                return new DeviceInfo(38, false, simulationScalingValue);
 
             case "RearRightDrive":
-                return new DeviceInfo(21, false, simulationScalingValue);
+                return new DeviceInfo(20, false, simulationScalingValue);
 
             default:
                 return null;
@@ -83,13 +84,13 @@ public class CompetitionContract extends ElectricalContract {
                 return new DeviceInfo(30, false, simulationScalingValue);
 
             case "FrontRightDrive":
-                return new DeviceInfo(28, false, simulationScalingValue);
+                return new DeviceInfo(29, false, simulationScalingValue);
 
             case "RearLeftDrive":
-                return new DeviceInfo(38, false, simulationScalingValue);
+                return new DeviceInfo(39, false, simulationScalingValue);
 
             case "RearRightDrive":
-                return new DeviceInfo(20, false, simulationScalingValue);
+                return new DeviceInfo(21, false, simulationScalingValue);
 
             default:
                 return null;
@@ -236,12 +237,12 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     @Override
-    public DeviceInfo getCollectorMotor() {
-        return new DeviceInfo(7);
+    public CANTalonInfo getCollectorMotor() {
+        return new CANTalonInfo(7, false);
     }
 
-    public DeviceInfo getCollectorStage2Motor() {
-        return new DeviceInfo(8);
+    public CANTalonInfo getCollectorStage2Motor() {
+        return new CANTalonInfo(8, false);
     }
 
     @Override
@@ -255,8 +256,8 @@ public class CompetitionContract extends ElectricalContract {
         return new DeviceInfo(0);
     }
 
-    public DeviceInfo getConveyerMotor() {
-        return new DeviceInfo(9);
+    public CANTalonInfo getConveyerMotor() {
+        return new CANTalonInfo(9, false);
     }
 
     public DeviceInfo getDeployHoodSoleniod1() {
