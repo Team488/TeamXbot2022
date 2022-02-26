@@ -23,6 +23,9 @@ public class SwerveToPointCommand extends BaseCommand {
     private Supplier<XYPair> targetPositionSupplier;
     private Supplier<Double> targetHeadingSupplier;
 
+    private XYPair targetPosition;
+    private double targetHeading;
+
     private boolean robotRelativeMotion = false;
 
     @Inject
@@ -40,8 +43,19 @@ public class SwerveToPointCommand extends BaseCommand {
     public void initialize() {
         log.info("Initializing");
 
+        targetHeading = targetHeadingSupplier.get();
+        targetPosition = targetPositionSupplier.get();
+
         if (robotRelativeMotion) {
-            
+            // If we are using robot relative motion, we need to consider the target position
+            // as being relative to the robot's current position. So value of 0,-60 means
+            // "go backwards 60 inches" from the robot's perspective.
+            // If the robot was pointed at field 0 degrees (right) this would mean setting
+            // a field-relative target of -60, 0 (move the robot left 60 inches).
+            targetPosition.rotate(pose.getCurrentHeading().getDegrees() - PoseSubsystem.FACING_AWAY_FROM_DRIVERS);
+
+            // Then, move the target heading itself. 
+            targetHeading = pose.getCurrentHeading().getDegrees() - 90 + targetHeading;
         }
     }
 
@@ -66,7 +80,7 @@ public class SwerveToPointCommand extends BaseCommand {
     @Override
     public void execute() {
         // Get the difference between where we are, and where we want to be.
-        XYPair goalVector = targetPositionSupplier.get().clone().add(
+        XYPair goalVector = targetPosition.clone().add(
             pose.getCurrentFieldPose().getPoint().scale(-1)
         );
 
@@ -79,13 +93,13 @@ public class SwerveToPointCommand extends BaseCommand {
         XYPair intent = XYPair.fromPolar(goalVector.getAngle(), drivePower);
         directionToTarget.set(goalVector.getAngle());
 
-        double headingPower = headingModule.calculateHeadingPower(targetHeadingSupplier.get());
+        double headingPower = headingModule.calculateHeadingPower(targetHeading);
 
         drive.move(intent, headingPower);
     }
 
     @Override
     public boolean isFinished() {
-        return drive.getPositionalPid().isOnTarget();
+        return drive.getPositionalPid().isOnTarget() && headingModule.isOnTarget();
     }
 }
