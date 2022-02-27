@@ -6,13 +6,11 @@ The robot is driven using two XBox One controllers - one for the driver and one 
 
 ## Getting Started
 
-The robot starts up in a debug mode. To drive it around, you need to get into **swerve mode** by pressing the **right bumper** on the **driver gamepad**.
-
-Drive around with the **left / right joysticks**.
+Drive around with the **left / right joysticks** from the **driver gamepad**.
 
 In order to operate the **climber arms**, you need to calibrate it first. From the **operator gamepad**, enter **unsafe mode** with **X** and slowly use the **left / right joysticks** to bring the arms to their lowest position. Press **Y** to calibrate the arms, and then press **B** to enter maintainer mode.
 
-In order to unlatch the climber hooks, the **driver** must press **left / right triggers** and the **operator** must press the **back** button simultaneously. If you don't have two controllers, you can use **SmartDashboard** to unlatch the climber hooks.
+In order to unlatch the climber hooks, the **driver** must press **left / right triggers** and the **operator** must press the **back** button simultaneously. If you don't have two controllers, you can use **SmartDashboard** to unlatch the climber hooks. The latch will re-latch automatically.
 
 ## Driver Gamepad
 
@@ -46,7 +44,6 @@ In order to unlatch the climber hooks, the **driver** must press **left / right 
 | Pivot out | Right bumper |
 | Collector intake | Left trigger |
 | Collector eject | Right trigger |
-| Collector stop | Left stick press |
 | Unlatch | Back |
 | Manually move left arm | Left joystick Y |
 | Manually move right arm | Right joystick Y |
@@ -55,4 +52,5 @@ In order to unlatch the climber hooks, the **driver** must press **left / right 
 
 * Move arms to position
 * Apply steering pid values
-* Unlatch (without two person override)
+* Unlatch (without two person override, no timeout)
+* Latch
