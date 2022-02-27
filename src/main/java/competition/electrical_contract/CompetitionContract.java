@@ -68,7 +68,7 @@ public class CompetitionContract extends ElectricalContract {
                 return new DeviceInfo(38, false, simulationScalingValue);
 
             case "RearRightDrive":
-                return new DeviceInfo(20, false, simulationScalingValue);
+                return new DeviceInfo(21, false, simulationScalingValue);
 
             default:
                 return null;
@@ -90,7 +90,7 @@ public class CompetitionContract extends ElectricalContract {
                 return new DeviceInfo(39, false, simulationScalingValue);
 
             case "RearRightDrive":
-                return new DeviceInfo(21, false, simulationScalingValue);
+                return new DeviceInfo(20, false, simulationScalingValue);
 
             default:
                 return null;

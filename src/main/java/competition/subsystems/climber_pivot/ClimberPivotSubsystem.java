@@ -23,11 +23,11 @@ public class ClimberPivotSubsystem extends BaseSubsystem {
     }
 
     public void pivotIn() {
-        pivot.setReverse();
+        pivot.setForward();
     }
 
     public void pivotOut() {
-        pivot.setForward();
+        pivot.setReverse();
     }
 
     

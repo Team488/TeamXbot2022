@@ -24,10 +24,10 @@ public class LatchSubsystem extends BaseSubsystem {
     }
 
     public void arm(){
-        latch.setForward();
+        latch.setReverse();
     }
     public void release(){
-        latch.setReverse();
+        latch.setForward();
     }
 
 }

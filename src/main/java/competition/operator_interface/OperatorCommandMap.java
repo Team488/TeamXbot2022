@@ -87,8 +87,10 @@ public class OperatorCommandMap {
             MotorArmRetractCommand retractArmCommand,
             LatchArmCommand latchArm,
             LatchReleaseCommand latchRelease,
+            LatchReleaseCommand latchReleaseDashboardOnly,
             PivotInCommand pivotIn,
             PivotOutCommand pivotOut,
+            PivotOutCommand pivotOutAsPartOfLatchRelease,
             DualArmControllerCommandWithJoysticks dualArmWithJoysticksSafe,
             DualArmControllerCommandWithJoysticks dualArmWithJoysticksUnsafe,
             MotorArmSetZeroCommand calibrateBothArms,
@@ -126,7 +128,7 @@ public class OperatorCommandMap {
         // When releasing the latch, we want to wait just a moment (to start falling) before actually pushing the pivot arm out
         // to avoid slamming the climbing arms into the uprights.
         ParallelRaceGroup latchReleaseAndSmallWait = new ParallelRaceGroup(latchRelease, new DelayViaSupplierCommand(() -> pivotDelayTime.get()));
-        SequentialCommandGroup latchReleaseThenPivotOut = new SequentialCommandGroup(latchReleaseAndSmallWait, pivotOut);
+        SequentialCommandGroup latchReleaseThenPivotOut = new SequentialCommandGroup(latchReleaseAndSmallWait, pivotOutAsPartOfLatchRelease);
 
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.A).whenPressed(stopBothArms);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.B).whenPressed(maintainArms);
@@ -150,7 +152,7 @@ public class OperatorCommandMap {
         );
 
         totalNuclearLaunch.whenPressed(latchReleaseThenPivotOut);
-        latchRelease.includeOnSmartDashboard();
+        latchReleaseDashboardOnly.includeOnSmartDashboard();
     }
 
     @Inject
