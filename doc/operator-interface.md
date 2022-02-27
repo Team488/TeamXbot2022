@@ -44,8 +44,9 @@ In order to unlatch the climber hooks, the **driver** must press **left / right 
 | Calibrate arms | Y |
 | Pivot in | Left bumper |
 | Pivot out | Right bumper |
-| Free pawl | Left trigger |
-| Lock pawl | Right trigger |
+| Collector intake | Left trigger |
+| Collector eject | Right trigger |
+| Collector stop | Left stick press |
 | Unlatch | Back |
 | Manually move left arm | Left joystick Y |
 | Manually move right arm | Right joystick Y |
