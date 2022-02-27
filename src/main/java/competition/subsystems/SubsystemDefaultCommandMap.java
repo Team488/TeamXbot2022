@@ -17,6 +17,8 @@ import competition.subsystems.drive.commands.SwerveDriveWithJoysticksCommand;
 import competition.subsystems.drive.commands.SwerveSteeringMaintainerCommand;
 import competition.subsystems.drive.swerve.SwerveDriveSubsystem;
 import competition.subsystems.drive.swerve.SwerveSteeringSubsystem;
+import competition.subsystems.latch.LatchSubsystem;
+import competition.subsystems.latch.commands.LatchArmCommand;
 
 @Singleton
 public class SubsystemDefaultCommandMap {
@@ -81,6 +83,11 @@ public class SubsystemDefaultCommandMap {
             @RearRightDrive SwerveDriveSubsystem subsystem,
             @RearRightDrive SwerveDriveMaintainerCommand command) {
         subsystem.setDefaultCommand(command);
+    }
+
+    @Inject
+    public void setupLatchSubsystem(LatchSubsystem subsystem, LatchArmCommand latch) {
+        subsystem.setDefaultCommand(latch);
     }
 
     // For now, have the default state of the arms be stopped - that's pretty safe. Later,
