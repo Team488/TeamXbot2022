@@ -18,13 +18,13 @@ public class CollectorSubsystemTest extends BaseCompetitionTest{
         collectorSubsystem.collectorMotor.set(ControlMode.PercentOutput, 1);
         checkCollectorPower(1);
         collectorSubsystem.eject();
-        assertEquals(-1, mockMotor.getThrottlePercent(), 0.001);
+        assertEquals(-1, mockMotor.getMotorOutputPercent(), 0.001);
         collectorSubsystem.intake();
         checkCollectorPower(1);
         collectorSubsystem.stop();
         checkCollectorPower(0);
         collectorSubsystem.eject();
-        assertEquals(-1, mockMotor.getThrottlePercent(), 0.001);
+        assertEquals(-1, mockMotor.getMotorOutputPercent(), 0.001);
     }
 
     @Test
@@ -77,6 +77,6 @@ public class CollectorSubsystemTest extends BaseCompetitionTest{
         CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
         MockCANTalon mockMotor = (MockCANTalon) collectorSubsystem.collectorMotor;
 
-        assertEquals(power, mockMotor.getThrottlePercent(), 0.001);
+        assertEquals(power, mockMotor.getMotorOutputPercent(), 0.001);
     }
 }

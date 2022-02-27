@@ -32,7 +32,7 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     public boolean isIntakeReady() {
-        return false;
+        return true;
     }
 
     @Override
@@ -47,12 +47,12 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public boolean isConveyerReady() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCollectorStage2Ready() {
-        return false;
+        return true;
     }
 
     @Override
@@ -192,12 +192,12 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public DeviceInfo getPivotSolenoid() {
-        return new DeviceInfo(6);
+        return new DeviceInfo(6, true);
     }
 
     @Override
     public DeviceInfo getPivotSolenoid2() {
-        return new DeviceInfo(7);
+        return new DeviceInfo(7, true);
     }
 
     // Still temporary, we need to renumber the shooter motors
@@ -262,7 +262,7 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     public CANTalonInfo getConveyerMotor() {
-        return new CANTalonInfo(9, false);
+        return new CANTalonInfo(23, false);
     }
 
     public DeviceInfo getDeployHoodSoleniod1() {

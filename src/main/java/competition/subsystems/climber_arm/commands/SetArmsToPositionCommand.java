@@ -16,11 +16,6 @@ public class SetArmsToPositionCommand extends BaseSetpointCommand {
     final ClimberArmSubsystem leftArm;
     final ClimberArmSubsystem rightArm;
 
-    public final DoubleProperty positionFullyRetractedProperty;
-    public final DoubleProperty positionClearCurrentBarProperty;
-    public final DoubleProperty positionFullyExtendedProperty;
-    public final DoubleProperty positionEngageNextBarProperty;
-
     public enum TargetPosition {
         FullyRetracted,
         ClearCurrentBar,
@@ -35,26 +30,21 @@ public class SetArmsToPositionCommand extends BaseSetpointCommand {
         this.rightArm = rightArm;
 
         pf.setPrefix(this.getName());
-
-        positionFullyRetractedProperty = pf.createPersistentProperty("FullyRetractedPositionInches", 0.0);
-        positionClearCurrentBarProperty = pf.createPersistentProperty("ClearCurrentBarPositionInches", 6.0);
-        positionFullyExtendedProperty = pf.createPersistentProperty("FullyExtendedPositionInches", 24.5);
-        positionEngageNextBarProperty = pf.createPersistentProperty("EngageNextBarPositionInches", 22.5);
     }
 
     public SetArmsToPositionCommand setTargetPosition(TargetPosition targetPosition) {
         switch(targetPosition) {
             case FullyRetracted:
-                targetPositionProperty = positionFullyRetractedProperty;
+                targetPositionProperty = leftArm.positionFullyRetractedProperty;
                 break;
             case ClearCurrentBar:
-                targetPositionProperty = positionClearCurrentBarProperty;
+                targetPositionProperty = leftArm.positionClearCurrentBarProperty;
                 break;
             case FullyExtended:
-                targetPositionProperty = positionFullyExtendedProperty;
+                targetPositionProperty = leftArm.positionFullyExtendedProperty;
                 break;
             case EngageNextBar:
-                targetPositionProperty = positionEngageNextBarProperty;
+                targetPositionProperty = leftArm.positionEngageNextBarProperty;
                 break;
             default:
                 throw new RuntimeException("Unknown target position: " + targetPosition);

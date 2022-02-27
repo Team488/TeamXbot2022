@@ -18,6 +18,8 @@ public class PivotAccordingToArm extends BaseCommand {
         @LeftArm ClimberArmSubsystem leftArm) {
         this.pivot = pivot;
         this.leftArm = leftArm;
+
+        this.addRequirements(pivot);
     }
 
     @Override

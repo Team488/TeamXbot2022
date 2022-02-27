@@ -39,6 +39,6 @@ public class EjectCommandTest extends BaseCompetitionTest{
         CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
         MockCANTalon mockMotor = (MockCANTalon) collectorSubsystem.collectorMotor;
 
-        assertEquals(power, mockMotor.getThrottlePercent(), 0.001);
+        assertEquals(power, mockMotor.getMotorOutputPercent(), 0.001);
     }
 }

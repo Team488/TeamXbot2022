@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import competition.BaseCompetitionTest;
 import competition.subsystems.collector_deployment.CollectorDeploymentSubsystem;
-import competition.subsystems.collector_deployment.commands.RetractCommand;
 
 public class RetractCommandTest extends BaseCompetitionTest{
     @Test  

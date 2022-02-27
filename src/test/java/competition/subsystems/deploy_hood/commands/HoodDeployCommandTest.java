@@ -2,8 +2,6 @@ package competition.subsystems.deploy_hood.commands;
 
 import static org.junit.Assert.assertTrue;
 
-import javax.naming.InitialContext;
-
 import org.junit.Test;
 
 import competition.BaseCompetitionTest;

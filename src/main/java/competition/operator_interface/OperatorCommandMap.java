@@ -24,8 +24,8 @@ import competition.subsystems.climber_pivot.commands.PivotInCommand;
 import competition.subsystems.climber_pivot.commands.PivotOutCommand;
 import competition.subsystems.collector.commands.EjectCommand;
 import competition.subsystems.collector.commands.IntakeCommand;
-import competition.subsystems.collector.commands.StopCollectorCommand;
 import competition.subsystems.collector_stage_2.CollectorStage2Subsystem;
+import competition.subsystems.conveyer.ConveyerSubsystem;
 import competition.subsystems.drive.commands.CalibrateSteeringCommand;
 import competition.subsystems.drive.commands.DebuggingSwerveWithJoysticksCommand;
 import competition.subsystems.drive.commands.GoToNextActiveSwerveModuleCommand;
@@ -100,6 +100,7 @@ public class OperatorCommandMap {
             MotorArmSetZeroCommand calibrateBothArms,
             DualArmBalancerCommand dualArmBalancer,
             PivotAccordingToArm pivotAccordingToArm,
+            ConveyerSubsystem conveyer,
             @LeftArm ClimberArmMaintainerCommand leftArmMaintainer,
             @RightArm ClimberArmMaintainerCommand rightArmMaintainer,
             @LeftArm MotorArmStopCommand stopLeftArm,
@@ -206,9 +207,13 @@ public class OperatorCommandMap {
     }
 
     @Inject
-    public void setupCollectorCommands(IntakeCommand intake, EjectCommand eject) {
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftTrigger).whenHeld(intake);
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightTrigger).whenHeld(eject);  
+    public void setupCollectorCommands(IntakeCommand intake, EjectCommand eject, ConveyerSubsystem conveyer) {
+
+        ParallelCommandGroup groupIntake = new ParallelCommandGroup(intake, conveyer.getForwardCommand());
+        ParallelCommandGroup groupEject = new ParallelCommandGroup(eject, conveyer.getReverseCommand());
+
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftTrigger).whenHeld(groupIntake);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightTrigger).whenHeld(groupEject);  
     }
 
     @Inject
