@@ -3,6 +3,7 @@ package competition.subsystems.climber_arm;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
 import competition.electrical_contract.ElectricalContract;
@@ -61,7 +62,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         if (eContract.isClimberReady()) {
             armMotor = factory.createCANSparkMax(eContract.getClimberNeo(armInstance) , this.getPrefix(), "ArmMotor");
             armMotor.enableVoltageCompensation(12);
-
+            armMotor.setIdleMode(IdleMode.kBrake);
             armPawl = factory.createSolenoid(eContract.getClimberPawl(armInstance).channel);
         }
         
