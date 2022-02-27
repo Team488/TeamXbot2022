@@ -237,8 +237,13 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     @Override
-    public CANTalonInfo getCollectorMotor() {
-        return new CANTalonInfo(7, false);
+    public CANTalonInfo getCollectorMotor1() {
+        return new CANTalonInfo(35, false);
+    }
+
+    @Override
+    public CANTalonInfo getCollectorMotor2() {
+        return new CANTalonInfo(24, false);
     }
 
     public CANTalonInfo getCollectorStage2Motor() {

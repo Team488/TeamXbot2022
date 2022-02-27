@@ -14,12 +14,15 @@ import xbot.common.properties.PropertyFactory;
 @Singleton
 public class CollectorSubsystem extends BaseSubsystem{
     public final XCANTalon collectorMotor;
+    public final XCANTalon collectorMotor2;
     public DoubleProperty intakePower;
     public DoubleProperty ejectPower;
 
     @Inject
     public CollectorSubsystem(CommonLibFactory factory, PropertyFactory pf, ElectricalContract eContract){
-        collectorMotor = factory.createCANTalon(eContract.getCollectorMotor());
+        collectorMotor = factory.createCANTalon(eContract.getCollectorMotor1());
+        collectorMotor2 = factory.createCANTalon(eContract.getCollectorMotor2());
+
         pf.setPrefix(this);
         intakePower = pf.createPersistentProperty("intakePower", 1);
         ejectPower = pf.createPersistentProperty("ejectPower", -1);
@@ -27,6 +30,7 @@ public class CollectorSubsystem extends BaseSubsystem{
 
     private void setMotorPower(double power){
         collectorMotor.set(ControlMode.PercentOutput, power);
+        collectorMotor2.set(ControlMode.PercentOutput, power);
     }
 
     public void intake(){

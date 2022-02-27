@@ -27,7 +27,9 @@ public abstract class ElectricalContract {
 
     public abstract DeviceInfo getClimberNeo(ArmInstance armInstance);
 
-    public abstract CANTalonInfo getCollectorMotor();
+    public abstract CANTalonInfo getCollectorMotor1();
+
+    public abstract CANTalonInfo getCollectorMotor2();
 
     public abstract CANTalonInfo getCollectorStage2Motor();
 
