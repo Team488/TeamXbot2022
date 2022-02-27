@@ -20,6 +20,9 @@ import competition.subsystems.climber_arm.commands.MotorArmStopCommand;
 import competition.subsystems.climber_arm.commands.SetArmsToPositionCommand;
 import competition.subsystems.climber_pivot.commands.PivotInCommand;
 import competition.subsystems.climber_pivot.commands.PivotOutCommand;
+import competition.subsystems.collector.commands.EjectCommand;
+import competition.subsystems.collector.commands.IntakeCommand;
+import competition.subsystems.collector.commands.StopCommand;
 import competition.subsystems.collector_stage_2.CollectorStage2Subsystem;
 import competition.subsystems.drive.commands.CalibrateSteeringCommand;
 import competition.subsystems.drive.commands.DebuggingSwerveWithJoysticksCommand;
@@ -107,17 +110,6 @@ public class OperatorCommandMap {
         setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.EngageNextBar).includeOnSmartDashboard();
 
         ParallelCommandGroup stopBothArms = new ParallelCommandGroup(stopLeftArm, stopRightArm);
-
-        NamedInstantCommand freePawl = new NamedInstantCommand("FreePawlCommand", () -> {
-            leftArm.freePawl();
-            rightArm.freePawl();
-        });
-
-        NamedInstantCommand lockPawl = new NamedInstantCommand("LockPawlCommand", () -> {
-            leftArm.lockPawl();
-            rightArm.lockPawl();
-
-        });
         ParallelCommandGroup maintainArms = new ParallelCommandGroup(leftArmMaintainer, rightArmMaintainer);
 
         pf.setPrefix("OperatorCommandMap/");
@@ -134,9 +126,7 @@ public class OperatorCommandMap {
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.Y).whenPressed(calibrateBothArms);
         
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(pivotIn);
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(pivotOut);
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftTrigger).whenPressed(freePawl);
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightTrigger).whenPressed(lockPawl);    
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(pivotOut);  
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.Start).whenPressed(latchArm);
 
         ChordButton driverNuclearLaunch = clf.createChordButton(
@@ -205,6 +195,13 @@ public class OperatorCommandMap {
         );
         oi.driverGamepad.getifAvailable(XboxButton.Start).whenPressed(turnleft90);
         oi.driverGamepad.getifAvailable(XboxButton.Y).whenPressed(swerveToPoint);
+    }
+
+    @Inject
+    public void setupCollectorCommands(IntakeCommand intake, EjectCommand eject, StopCommand stopIntake) {
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftTrigger).whenPressed(intake);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightTrigger).whenPressed(eject);  
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftStick).whenPressed(stopIntake);  
     }
 
     @Inject
