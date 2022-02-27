@@ -12,6 +12,8 @@ import xbot.common.injection.wpi_factories.CommonLibFactory;
 public class LatchSubsystem extends BaseSubsystem {
     public XDoubleSolenoid latch;
 
+    private int numberOfUnlatches = 0;
+
     @Inject
     public LatchSubsystem(CommonLibFactory factory, ElectricalContract contract) {
         
@@ -28,6 +30,11 @@ public class LatchSubsystem extends BaseSubsystem {
     }
     public void release(){
         latch.setForward();
+        numberOfUnlatches++;
+    }
+
+    public int getUnlatchCount() {
+        return numberOfUnlatches;
     }
 
 }

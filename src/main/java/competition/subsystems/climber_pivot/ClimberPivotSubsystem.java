@@ -12,6 +12,8 @@ import xbot.common.injection.wpi_factories.CommonLibFactory;
 public class ClimberPivotSubsystem extends BaseSubsystem {
     public XDoubleSolenoid pivot;
 
+    private boolean automaticPivotingEnabled = false;
+
     @Inject
     public ClimberPivotSubsystem(CommonLibFactory factory, ElectricalContract contract) {
         if (contract.arePneumaticsReady()) {
@@ -28,6 +30,14 @@ public class ClimberPivotSubsystem extends BaseSubsystem {
 
     public void pivotOut() {
         pivot.setReverse();
+    }
+
+    public boolean isAllowedtoAutomaticallyPivot() {
+        return automaticPivotingEnabled;
+    }
+
+    public void setAutomaticPivotingEnabled(boolean enabled) {
+        automaticPivotingEnabled = enabled;
     }
 
     

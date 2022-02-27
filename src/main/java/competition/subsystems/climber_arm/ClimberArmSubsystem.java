@@ -35,6 +35,12 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     final String label;
     final ElectricalContract contract;
 
+    public final DoubleProperty positionFullyRetractedProperty;
+    public final DoubleProperty positionClearCurrentBarProperty;
+    public final DoubleProperty positionFullyExtendedProperty;
+    public final DoubleProperty positionEngageNextBarProperty;
+    public final DoubleProperty positionAutomaticPivotIn;
+
     private enum PidSlot {
         Position(0),
         Velocity(1);
@@ -71,6 +77,12 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         pawlDeadband = pf.createPersistentProperty("PawlDeadband", 0.02);
         armPowerFactor = pf.createPersistentProperty("PowerFactor", 1);
 
+        positionFullyRetractedProperty = pf.createPersistentProperty("FullyRetractedPositionInches", 0.0);
+        positionClearCurrentBarProperty = pf.createPersistentProperty("ClearCurrentBarPositionInches", 6.0);
+        positionFullyExtendedProperty = pf.createPersistentProperty("FullyExtendedPositionInches", 24.5);
+        positionEngageNextBarProperty = pf.createPersistentProperty("EngageNextBarPositionInches", 22.5);
+        positionAutomaticPivotIn = pf.createPersistentProperty("AutomaticPivotInInches", 23.0);
+
         // Unique properties
         pf.setPrefix(this);
         isCalibratedProp = pf.createEphemeralProperty("IsArmCalibrated", false);
@@ -95,6 +107,26 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     @Override
     public String getPrefix() {
         return super.getPrefix() + this.label + "/";
+    }
+
+    public double getFullyRectractedPosition() {
+        return positionFullyRetractedProperty.get();
+    }
+
+    public double getClearCurrentBarPosition() {
+        return positionClearCurrentBarProperty.get();
+    }
+
+    public double getFullyExtendedPosition() {
+        return positionFullyExtendedProperty.get();
+    }
+
+    public double getEngageNextBarPosition() {
+        return positionEngageNextBarProperty.get();
+    }
+
+    public double getAutomaticPivotInPosition() {
+        return positionAutomaticPivotIn.get();
     }
 
     private void setSoftLimitsEnabled(boolean enabled) {

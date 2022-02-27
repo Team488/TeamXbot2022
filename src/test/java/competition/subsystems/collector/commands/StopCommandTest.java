@@ -13,7 +13,7 @@ public class StopCommandTest extends BaseCollectorTest {
 
     @Test
     public void testingStopWhileIntaking() {
-        StopCommand stopCommand = injector.getInstance(StopCommand.class);
+        StopCollectorCommand stopCommand = injector.getInstance(StopCollectorCommand.class);
         CollectorSubsystem collectorSubsystem = injector.getInstance(CollectorSubsystem.class);
 
         collectorSubsystem.collectorMotor.set(ControlMode.PercentOutput, 1);
@@ -25,7 +25,7 @@ public class StopCommandTest extends BaseCollectorTest {
 
     @Test
     public void stopWhenStopped() {
-        StopCommand stopCommand = injector.getInstance(StopCommand.class);
+        StopCollectorCommand stopCommand = injector.getInstance(StopCollectorCommand.class);
         CollectorSubsystem collectorSubsystem = injector.getInstance(CollectorSubsystem.class);
 
         collectorSubsystem.collectorMotor.set(ControlMode.PercentOutput, 0);
