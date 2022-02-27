@@ -134,11 +134,12 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
 
             if (enabled) {
                 armMotor.setSoftLimit(SoftLimitDirection.kForward, (float)(safeArmExtendedNumber.get() / armInchesPerRotation.get()));
-                armMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)(safeArmRetractedNumber.get() / armInchesPerRotation.get()));
+                //armMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)(safeArmRetractedNumber.get() / armInchesPerRotation.get()));
             }
 
             armMotor.enableSoftLimit(SoftLimitDirection.kForward, enabled);
-            armMotor.enableSoftLimit(SoftLimitDirection.kReverse, enabled);
+            // Always allow to pull in for climbing
+            armMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
         }
     }
 

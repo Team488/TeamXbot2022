@@ -19,6 +19,7 @@ import competition.subsystems.climber_arm.commands.MotorArmRetractCommand;
 import competition.subsystems.climber_arm.commands.MotorArmSetZeroCommand;
 import competition.subsystems.climber_arm.commands.MotorArmStopCommand;
 import competition.subsystems.climber_arm.commands.SetArmsToPositionCommand;
+import competition.subsystems.climber_pivot.commands.PivotAccordingToArm;
 import competition.subsystems.climber_pivot.commands.PivotInCommand;
 import competition.subsystems.climber_pivot.commands.PivotOutCommand;
 import competition.subsystems.collector.commands.EjectCommand;
@@ -98,6 +99,7 @@ public class OperatorCommandMap {
             DualArmControllerCommandWithJoysticks dualArmWithJoysticksUnsafe,
             MotorArmSetZeroCommand calibrateBothArms,
             DualArmBalancerCommand dualArmBalancer,
+            PivotAccordingToArm pivotAccordingToArm,
             @LeftArm ClimberArmMaintainerCommand leftArmMaintainer,
             @RightArm ClimberArmMaintainerCommand rightArmMaintainer,
             @LeftArm MotorArmStopCommand stopLeftArm,
@@ -112,10 +114,10 @@ public class OperatorCommandMap {
         setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.FullyExtended).includeOnSmartDashboard();
         setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.EngageNextBar).includeOnSmartDashboard();
 
-        ParallelCommandGroup stopBothArms = new ParallelCommandGroup(stopLeftArm, stopRightArm);
+        //ParallelCommandGroup stopBothArms = new ParallelCommandGroup(stopLeftArm, stopRightArm);
         ParallelCommandGroup maintainArms = new ParallelCommandGroup(leftArmMaintainer, rightArmMaintainer);
 
-        dualArmBalancer.setSafe(false);
+        dualArmBalancer.setSafe(true);
 
         pf.setPrefix("OperatorCommandMap/");
         DoubleProperty latchOpenTime = pf.createPersistentProperty("Latch Open Time", 1);
@@ -145,6 +147,8 @@ public class OperatorCommandMap {
 
         latchReleaseDashboardOnly.includeOnSmartDashboard();
         latchArm.includeOnSmartDashboard();
+
+        operatorInterface.operatorGamepad.getPovIfAvailable(0).whenPressed(pivotAccordingToArm);
     }
 
     @Inject
