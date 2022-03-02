@@ -16,6 +16,7 @@ import xbot.common.subsystems.pose.BasePoseSubsystem;
 public class PoseSubsystem extends BasePoseSubsystem {
 
     private final DriveSubsystem drive;
+    private final DoubleProperty levelThresholdDegrees;
     
     final SwerveDriveOdometry swerveOdometry;
 
@@ -35,6 +36,7 @@ public class PoseSubsystem extends BasePoseSubsystem {
         DriveSubsystem drive) {
         super(clf, pf);
         this.drive = drive;
+        this.levelThresholdDegrees = propManager.createPersistentProperty("Levelling Threshold", 1);
 
         this.leftStartPosX = pf.createPersistentProperty("Starting Left Position X Value", 261);
         this.leftStartPosY = pf.createPersistentProperty("Starting Left Position Y Value", 200);
@@ -72,6 +74,10 @@ public class PoseSubsystem extends BasePoseSubsystem {
          utilities that expect the same conventions. */
 
         swerveOdometry = new SwerveDriveOdometry(drive.getSwerveDriveKinematics(), new Rotation2d(), new Pose2d(0, 0, new Rotation2d()));
+    }
+
+    public boolean isRobotLevel() {
+        return Math.abs(getRobotRoll()) < levelThresholdDegrees.get();
     }
 
     @Override

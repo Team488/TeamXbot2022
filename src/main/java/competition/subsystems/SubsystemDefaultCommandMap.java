@@ -11,12 +11,16 @@ import competition.injection.swerve.RearLeftDrive;
 import competition.injection.swerve.RearRightDrive;
 import competition.subsystems.climber_arm.ClimberArmSubsystem;
 import competition.subsystems.climber_arm.commands.MotorArmStopCommand;
+import competition.subsystems.collector.CollectorSubsystem;
+import competition.subsystems.collector.commands.StopCollectorCommand;
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.drive.commands.SwerveDriveMaintainerCommand;
 import competition.subsystems.drive.commands.SwerveDriveWithJoysticksCommand;
 import competition.subsystems.drive.commands.SwerveSteeringMaintainerCommand;
 import competition.subsystems.drive.swerve.SwerveDriveSubsystem;
 import competition.subsystems.drive.swerve.SwerveSteeringSubsystem;
+import competition.subsystems.latch.LatchSubsystem;
+import competition.subsystems.latch.commands.LatchArmCommand;
 
 @Singleton
 public class SubsystemDefaultCommandMap {
@@ -83,6 +87,11 @@ public class SubsystemDefaultCommandMap {
         subsystem.setDefaultCommand(command);
     }
 
+    @Inject
+    public void setupLatchSubsystem(LatchSubsystem subsystem, LatchArmCommand latch) {
+        subsystem.setDefaultCommand(latch);
+    }
+
     // For now, have the default state of the arms be stopped - that's pretty safe. Later,
     // once we have the PIDs tuned, we can move to using the maintainers.
     @Inject
@@ -93,5 +102,12 @@ public class SubsystemDefaultCommandMap {
         @RightArm MotorArmStopCommand rightArmStopCommand) {
         leftArm.setDefaultCommand(leftArmStopCommand);
         rightArm.setDefaultCommand(rightArmStopCommand);
+    }
+
+    @Inject
+    public void setupCollector(
+        CollectorSubsystem collector,
+        StopCollectorCommand stop) {
+        collector.setDefaultCommand(stop);
     }
 }

@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import competition.electrical_contract.ElectricalContract;
+import competition.subsystems.pose.PoseSubsystem;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import xbot.common.command.BaseSubsystem;
@@ -27,6 +28,8 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
 
     XDigitalOutput[] dioOutputs;
 
+    private final PoseSubsystem pose;
+
     private final StringProperty chosenState;
     private final StringProperty binaryString;
     private final BooleanProperty dio0Property;
@@ -39,7 +42,8 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
     public enum ArduinoStateMessage {
         RobotNotBooted(0),
         RobotDisabled(1),
-        RobotEnabled(2);
+        RobotEnabled(2),
+        RobotNotLevel(3);
 
         private int value;
 
@@ -53,7 +57,9 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
     }
     
     @Inject
-    public ArduinoCommunicationSubsystem(CommonLibFactory clf, ElectricalContract contract, PropertyFactory pf) {
+    public ArduinoCommunicationSubsystem(CommonLibFactory clf, ElectricalContract contract, PropertyFactory pf, PoseSubsystem pose) {
+        this.pose = pose;
+
         dio0 = clf.createDigitalOutput(contract.getArduinoDio0().channel);
         dio1 = clf.createDigitalOutput(contract.getArduinoDio1().channel);
         dio2 = clf.createDigitalOutput(contract.getArduinoDio2().channel);
@@ -96,7 +102,11 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
         if (!dsEnabled) {
             currentState = ArduinoStateMessage.RobotDisabled;
         } else if (dsEnabled) {
-            currentState = ArduinoStateMessage.RobotEnabled;
+            if (!pose.isRobotLevel()) {
+                currentState = ArduinoStateMessage.RobotNotLevel;
+            } else {
+                currentState = ArduinoStateMessage.RobotEnabled;
+            }
         }
 
         // Convert the state to a 4-bit binary string

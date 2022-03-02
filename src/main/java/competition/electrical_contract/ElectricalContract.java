@@ -2,6 +2,7 @@ package competition.electrical_contract;
 
 import competition.injection.arm.ArmInstance;
 import competition.injection.swerve.SwerveInstance;
+import xbot.common.injection.electrical_contract.CANTalonInfo;
 import xbot.common.injection.electrical_contract.DeviceInfo;
 import xbot.common.math.XYPair;
 
@@ -26,9 +27,11 @@ public abstract class ElectricalContract {
 
     public abstract DeviceInfo getClimberNeo(ArmInstance armInstance);
 
-    public abstract DeviceInfo getCollectorMotor();
+    public abstract CANTalonInfo getLeftCollectorMotor();
 
-    public abstract DeviceInfo getCollectorStage2Motor();
+    public abstract CANTalonInfo getRightCollectorMotor();
+
+    public abstract CANTalonInfo getCollectorStage2Motor();
 
     public abstract boolean isCollectorStage2Ready();
 
@@ -67,7 +70,7 @@ public abstract class ElectricalContract {
     public abstract DeviceInfo getDeployHoodSoleniod1();
     public abstract DeviceInfo getDeployHoodSoleniod2();
 
-    public abstract DeviceInfo getConveyerMotor();
+    public abstract CANTalonInfo getConveyerMotor();
 
     public abstract boolean isConveyerReady();
 }
