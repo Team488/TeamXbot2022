@@ -156,8 +156,6 @@ public class OperatorCommandMap {
         totalNuclearLaunch.whenPressed(latchReleaseAndSmallWait);
         latchReleaseDashboardOnly.includeOnSmartDashboard();
         latchArm.includeOnSmartDashboard();
-
-        operatorInterface.operatorGamepad.getPovIfAvailable(0).whenPressed(pivotAccordingToArm);
     }
 
     @Inject
