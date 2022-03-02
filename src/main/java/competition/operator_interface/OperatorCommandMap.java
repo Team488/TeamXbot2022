@@ -51,12 +51,15 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import xbot.common.command.DelayViaSupplierCommand;
 import xbot.common.command.NamedInstantCommand;
+import xbot.common.command.NamedRunCommand;
+import xbot.common.command.SmartDashboardCommandPutter;
 import xbot.common.controls.sensors.ChordButton;
 import xbot.common.controls.sensors.XXboxController.XboxButton;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.math.XYPair;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
+import xbot.common.properties.SmartDashboardTableWrapper;
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 
 /**
@@ -208,7 +211,7 @@ public class OperatorCommandMap {
         InstantCommand setSafe = new NamedInstantCommand("ShooterSafeSpeed", () -> shooter.setTargetRPM(TargetRPM.Safe));
         InstantCommand setNearShot = new NamedInstantCommand("ShooterNearShotSpeed", () -> shooter.setTargetRPM(TargetRPM.NearShot));
         InstantCommand setDistanceShot = new NamedInstantCommand("ShooterDistanceShotSpeed", () -> shooter.setTargetRPM(TargetRPM.DistanceShot));
-        InstantCommand setSafePowerPercent = new NamedInstantCommand("ShooterSafePowerPercent", () -> shooter.setSafePower());
+        NamedRunCommand setSafePowerPercent = new NamedRunCommand("ShooterSafePowerPercent", () -> shooter.setSafePower(), shooter);
 
         oi.shooterGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(decreaseTrim);
         oi.shooterGamepad.getifAvailable(XboxButton.RightTrigger).whenPressed(increaseTrim);
@@ -263,5 +266,18 @@ public class OperatorCommandMap {
     public void setupLaunchingCommands(HoodDeployCommand deployHood, HoodRetractCommand retractHood) {
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftStick).whenPressed(deployHood);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightStick).whenPressed(retractHood);
+    }
+
+
+    @Inject
+    public void setupDebuggingCommands(SmartDashboardTableWrapper dashboard,
+    SmartDashboardCommandPutter commandPutter) {
+        NamedInstantCommand setFastMode = 
+        new NamedInstantCommand("SetFastMode", () -> {dashboard.setFastMode(true);});
+        NamedInstantCommand setSlowMode =
+        new NamedInstantCommand("SetSlowMode", () -> {dashboard.setFastMode(false);});
+
+        SmartDashboard.putData(setFastMode);
+        SmartDashboard.putData(setSlowMode);
     }
 }

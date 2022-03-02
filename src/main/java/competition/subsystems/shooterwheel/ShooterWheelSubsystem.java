@@ -3,6 +3,7 @@ package competition.subsystems.shooterwheel;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.ExternalFollower;
 
 import competition.electrical_contract.ElectricalContract;
 import xbot.common.command.BaseSetpointSubsystem;
@@ -58,7 +59,7 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
             follower.follow(leader, true);
 
             this.leader.enableVoltageCompensation(12);
-
+            this.leader.follow(ExternalFollower.kFollowerDisabled, 0);
             leader.burnFlash();
             follower.burnFlash();
         }
@@ -151,8 +152,8 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
 
     public void periodic() {
         if (contract.isShooterReady()) {
-            leader.periodic();
-            follower.periodic();
+            //leader.periodic();
+            //follower.periodic();
             currentRpmProp.set(getCurrentRPM());
         }
     }

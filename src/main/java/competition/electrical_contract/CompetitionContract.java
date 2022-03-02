@@ -197,7 +197,7 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public DeviceInfo getShooterMotorLeader() {
-        return new DeviceInfo(32, true);
+        return new DeviceInfo(32, false);
     }
 
     @Override
@@ -254,8 +254,12 @@ public class CompetitionContract extends ElectricalContract {
         return new DeviceInfo(0);
     }
 
-    public CANTalonInfo getConveyerMotor() {
+    public CANTalonInfo getConveyerMotor1() {
         return new CANTalonInfo(23, false);
+    }
+
+    public CANTalonInfo getConveyerMotor2() {
+        return new CANTalonInfo(36, true);
     }
 
     public DeviceInfo getDeployHoodSoleniod1() {
