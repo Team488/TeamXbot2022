@@ -42,6 +42,11 @@ import competition.subsystems.drive.commands.TurnLeft90DegreesCommand;
 import competition.subsystems.latch.commands.LatchArmCommand;
 import competition.subsystems.latch.commands.LatchReleaseCommand;
 import competition.subsystems.pose.PoseSubsystem;
+import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
+import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
+import competition.subsystems.shooterwheel.commands.StopShooterWheelCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import xbot.common.command.DelayViaSupplierCommand;
@@ -187,6 +192,31 @@ public class OperatorCommandMap {
         operatorInterface.driverGamepad.getifAvailable(XboxButton.Back).whenPressed(setSteeringPidValues);
 
         setSteeringPidValues.includeOnSmartDashboard("Commit steering pid values");
+    }
+
+    @Inject
+    public void setShooterCommand ( OperatorInterface oi,
+        ShooterWheelSubsystem shooter,
+        StopShooterWheelCommand stopCommand
+    ){
+        InstantCommand increaseTrim = new NamedInstantCommand("ShooterIncreaseTrim100RPMInstantCommand", () -> shooter.changeTrimRPM(100));
+        InstantCommand decreaseTrim = new NamedInstantCommand("ShooterDecreaseTrim100RPMInstantCommand", () -> shooter.changeTrimRPM(-100));
+        SmartDashboard.putData("Trim Up", increaseTrim);
+        SmartDashboard.putData("Trim down", decreaseTrim);
+        stopCommand.includeOnSmartDashboard();
+
+        InstantCommand setSafe = new NamedInstantCommand("ShooterSafeSpeed", () -> shooter.setTargetRPM(TargetRPM.Safe));
+        InstantCommand setNearShot = new NamedInstantCommand("ShooterNearShotSpeed", () -> shooter.setTargetRPM(TargetRPM.NearShot));
+        InstantCommand setDistanceShot = new NamedInstantCommand("ShooterDistanceShotSpeed", () -> shooter.setTargetRPM(TargetRPM.DistanceShot));
+        InstantCommand setSafePowerPercent = new NamedInstantCommand("ShooterSafePowerPercent", () -> shooter.setSafePower());
+
+        oi.shooterGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(decreaseTrim);
+        oi.shooterGamepad.getifAvailable(XboxButton.RightTrigger).whenPressed(increaseTrim);
+
+        oi.shooterGamepad.getifAvailable(XboxButton.A).whenPressed(setNearShot).whenReleased(setSafe);
+        oi.shooterGamepad.getifAvailable(XboxButton.X).whenPressed(setDistanceShot).whenReleased(setSafe);
+        oi.shooterGamepad.getifAvailable(XboxButton.B).whenPressed(stopCommand);
+        oi.shooterGamepad.getifAvailable(XboxButton.Y).whileHeld(setSafePowerPercent);
     }
 
     @Inject

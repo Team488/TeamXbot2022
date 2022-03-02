@@ -18,9 +18,21 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
     private final DoubleProperty currentRpmProp;
     private final DoubleProperty rpmTrimProp;
 
+    private final DoubleProperty safeRpm;
+    private final DoubleProperty nearShotRpm;
+    private final DoubleProperty distanceShotRpm;
+
+    private final DoubleProperty safePower;
+
     public XCANSparkMax leader;
     private XCANSparkMax follower;
     ElectricalContract contract;
+
+    public enum TargetRPM {
+        Safe,
+        NearShot,
+        DistanceShot
+    }
 
     @Inject
     public ShooterWheelSubsystem(CommonLibFactory factory, PropertyFactory pf, ElectricalContract contract) {
@@ -31,6 +43,12 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
         targetRpmProp = pf.createEphemeralProperty("TargetRPM", 0);
         currentRpmProp = pf.createEphemeralProperty("CurrentRPM", 0);
         rpmTrimProp = pf.createEphemeralProperty("TrimRPM", 0);
+
+        safeRpm = pf.createPersistentProperty("SafeRpm", 500);
+        nearShotRpm = pf.createPersistentProperty("NearShotRpm", 750);
+        distanceShotRpm = pf.createPersistentProperty("DistanceShotRpm", 1000);
+
+        safePower = pf.createPersistentProperty("SafePower", 0.1);
 
         if (contract.isShooterReady()) {
             this.leader = factory.createCANSparkMax(contract.getShooterMotorLeader(), this.getPrefix(),
@@ -43,6 +61,23 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
 
             leader.burnFlash();
             follower.burnFlash();
+        }
+    }
+
+    public void setTargetRPM(TargetRPM target) {
+        switch (target) {
+            case Safe:
+                setTargetRPM(safeRpm.get());
+                break;
+            case NearShot:
+                setTargetRPM(nearShotRpm.get());
+                break;
+            case DistanceShot:
+                setTargetRPM(distanceShotRpm.get());
+                break;
+            default:
+                setTargetRPM(0);
+                break;
         }
     }
 
@@ -84,6 +119,10 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
         if (contract.isShooterReady()) {
             leader.setReference(speed, ControlType.kVelocity);
         }
+    }
+
+    public void setSafePower() {
+        setPower(safePower.get());
     }
 
     public void setPower(double power) {

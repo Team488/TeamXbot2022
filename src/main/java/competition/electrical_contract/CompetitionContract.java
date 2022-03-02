@@ -195,16 +195,14 @@ public class CompetitionContract extends ElectricalContract {
         return new DeviceInfo(7, true);
     }
 
-    // Still temporary, we need to renumber the shooter motors
     @Override
     public DeviceInfo getShooterMotorLeader() {
-        return new DeviceInfo(5, true);
+        return new DeviceInfo(32, true);
     }
 
-    // Still temporary, we need to renumber the shooter motors
     @Override
     public DeviceInfo getShooterMotorFollower() {
-        return new DeviceInfo(6, false);
+        return new DeviceInfo(27, false);
     }
 
     @Override
