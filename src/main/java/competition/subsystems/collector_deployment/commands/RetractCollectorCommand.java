@@ -5,11 +5,11 @@ import com.google.inject.Inject;
 import competition.subsystems.collector_deployment.CollectorDeploymentSubsystem;
 import xbot.common.command.BaseCommand;
 
-public class RetractCommand extends BaseCommand{
+public class RetractCollectorCommand extends BaseCommand{
     final CollectorDeploymentSubsystem deploy;
 
     @Inject
-    public RetractCommand(CollectorDeploymentSubsystem deploy){
+    public RetractCollectorCommand(CollectorDeploymentSubsystem deploy){
         this.deploy = deploy;
         addRequirements(deploy);
     }
