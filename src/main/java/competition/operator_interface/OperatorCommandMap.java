@@ -24,6 +24,8 @@ import competition.subsystems.climber_pivot.commands.PivotInCommand;
 import competition.subsystems.climber_pivot.commands.PivotOutCommand;
 import competition.subsystems.collector.commands.EjectCommand;
 import competition.subsystems.collector.commands.IntakeCommand;
+import competition.subsystems.collector_deployment.commands.DeployCollectorCommand;
+import competition.subsystems.collector_deployment.commands.RetractCollectorCommand;
 import competition.subsystems.collector_stage_2.CollectorStage2Subsystem;
 import competition.subsystems.conveyer.ConveyerSubsystem;
 import competition.subsystems.drive.commands.CalibrateSteeringCommand;
@@ -110,12 +112,17 @@ public class OperatorCommandMap {
             @RightArm ClimberArmSubsystem rightArm,
             CommonLibFactory clf,
             PropertyFactory pf) {
-        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.FullyRetracted).includeOnSmartDashboard();
-        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.ClearCurrentBar).includeOnSmartDashboard();
-        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.FullyExtended).includeOnSmartDashboard();
-        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.EngageNextBar).includeOnSmartDashboard();
+        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.FullyRetracted)
+                .includeOnSmartDashboard();
+        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.ClearCurrentBar)
+                .includeOnSmartDashboard();
+        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.FullyExtended)
+                .includeOnSmartDashboard();
+        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.EngageNextBar)
+                .includeOnSmartDashboard();
 
-        //ParallelCommandGroup stopBothArms = new ParallelCommandGroup(stopLeftArm, stopRightArm);
+        // ParallelCommandGroup stopBothArms = new ParallelCommandGroup(stopLeftArm,
+        // stopRightArm);
         ParallelCommandGroup maintainArms = new ParallelCommandGroup(leftArmMaintainer, rightArmMaintainer);
 
         dualArmBalancer.setSafe(true);
@@ -123,26 +130,26 @@ public class OperatorCommandMap {
         pf.setPrefix("OperatorCommandMap/");
         DoubleProperty latchOpenTime = pf.createPersistentProperty("Latch Open Time", 2);
 
-        // For normal operation, we want the latch to only be unlatched for a few seconds
-        ParallelRaceGroup latchReleaseAndSmallWait = new ParallelRaceGroup(latchRelease, new DelayViaSupplierCommand(() -> latchOpenTime.get()));
+        // For normal operation, we want the latch to only be unlatched for a few
+        // seconds
+        ParallelRaceGroup latchReleaseAndSmallWait = new ParallelRaceGroup(latchRelease,
+                new DelayViaSupplierCommand(() -> latchOpenTime.get()));
 
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.A).whenPressed(dualArmBalancer);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.B).whenPressed(maintainArms);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.X).whenPressed(dualArmWithJoysticksUnsafe);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.Y).whenPressed(calibrateBothArms);
-        
+
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(pivotIn);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(pivotOut);
 
         ChordButton driverNuclearLaunch = clf.createChordButton(
-            operatorInterface.driverGamepad.getifAvailable(XboxButton.LeftTrigger),
-            operatorInterface.driverGamepad.getifAvailable(XboxButton.RightTrigger)
-        );
+                operatorInterface.driverGamepad.getifAvailable(XboxButton.LeftTrigger),
+                operatorInterface.driverGamepad.getifAvailable(XboxButton.RightTrigger));
 
         ChordButton totalNuclearLaunch = clf.createChordButton(
-            driverNuclearLaunch,
-            operatorInterface.operatorGamepad.getifAvailable(XboxButton.Back)
-        );
+                driverNuclearLaunch,
+                operatorInterface.operatorGamepad.getifAvailable(XboxButton.Back));
 
         totalNuclearLaunch.whenPressed(latchReleaseAndSmallWait);
         latchReleaseDashboardOnly.includeOnSmartDashboard();
@@ -194,32 +201,31 @@ public class OperatorCommandMap {
         DoubleProperty angleTarget = pf.createEphemeralProperty("OI/SwerveToPointTargetAngle", 0);
 
         swerveToPoint.setTargetSupplier(
-            () -> {
-                return new XYPair(xTarget.get(), yTarget.get());
-            },
-            () -> {
-                return angleTarget.get();
-            }
-        );
+                () -> {
+                    return new XYPair(xTarget.get(), yTarget.get());
+                },
+                () -> {
+                    return angleTarget.get();
+                });
         oi.driverGamepad.getifAvailable(XboxButton.Start).whenPressed(turnleft90);
         oi.driverGamepad.getifAvailable(XboxButton.Y).whenPressed(swerveToPoint);
     }
 
     @Inject
-    public void setupCollectorCommands(IntakeCommand intake, EjectCommand eject, ConveyerSubsystem conveyer) {
+    public void setupCollectionCommands(IntakeCommand intake, EjectCommand eject, ConveyerSubsystem conveyer,
+            CollectorStage2Subsystem stageTwo, DeployCollectorCommand deployCollector, RetractCollectorCommand retractCollector) {
 
-        ParallelCommandGroup groupIntake = new ParallelCommandGroup(intake, conveyer.getForwardCommand());
-        ParallelCommandGroup groupEject = new ParallelCommandGroup(eject, conveyer.getReverseCommand());
+        ParallelCommandGroup groupIntake = new ParallelCommandGroup(intake, stageTwo.getForwardCommand());
+        ParallelCommandGroup groupEject = new ParallelCommandGroup(eject, stageTwo.getReverseCommand());
 
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftTrigger).whenHeld(groupIntake);
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightTrigger).whenHeld(groupEject);  
-    }
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightTrigger).whenHeld(groupEject);
 
-    @Inject
-    public void setupCollectorStage2Commands(CollectorStage2Subsystem subsystem) {
-        // TODO: Change these mappings, this is just an example to prove the concept of
-        // the SimpleMotorSubsystem
-        // operatorInterface.driverGamepad.getifAvailable(1).whenHeld(subsystem.getForwardCommand());
-        // operatorInterface.driverGamepad.getifAvailable(2).whenHeld(subsystem.getReverseCommand());
+        operatorInterface.operatorGamepad.getPovIfAvailable(0).whenHeld(conveyer.getForwardCommand());
+        operatorInterface.operatorGamepad.getPovIfAvailable(180).whenHeld(conveyer.getReverseCommand());
+
+        operatorInterface.operatorGamepad.getPovIfAvailable(90).whenPressed(deployCollector);
+        operatorInterface.operatorGamepad.getPovIfAvailable(270).whenPressed(retractCollector);
+
     }
 }
