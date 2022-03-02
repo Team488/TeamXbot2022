@@ -948,7 +948,7 @@
               "_title": "SmartDashboard/ClimberArmSubsystem/RightArm/TargetPosition"
             }
           },
-          "4,3": {
+          "3,3": {
             "size": [
               1,
               1
@@ -959,7 +959,7 @@
               "_title": "SmartDashboard/SetArmsToPositionCommand: FullyRetracted"
             }
           },
-          "5,3": {
+          "4,3": {
             "size": [
               1,
               1
@@ -970,7 +970,7 @@
               "_title": "SmartDashboard/SetArmsToPositionCommand: ClearCurrentBar"
             }
           },
-          "6,3": {
+          "5,3": {
             "size": [
               1,
               1
@@ -981,7 +981,7 @@
               "_title": "SmartDashboard/SetArmsToPositionCommand: EngageNextBar"
             }
           },
-          "7,3": {
+          "6,3": {
             "size": [
               1,
               1
@@ -990,50 +990,6 @@
               "_type": "Command",
               "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand: FullyExtended",
               "_title": "SmartDashboard/SetArmsToPositionCommand: FullyExtended"
-            }
-          },
-          "8,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand/FullyRetractedPositionInches",
-              "_title": "SmartDashboard/SetArmsToPositionCommand/FullyRetractedPositionInches"
-            }
-          },
-          "8,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand/ClearCurrentBarPositionInches",
-              "_title": "SmartDashboard/SetArmsToPositionCommand/ClearCurrentBarPositionInches"
-            }
-          },
-          "8,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand/EngageNextBarPositionInches",
-              "_title": "SmartDashboard/SetArmsToPositionCommand/EngageNextBarPositionInches"
-            }
-          },
-          "8,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand/FullyExtendedPositionInches",
-              "_title": "SmartDashboard/SetArmsToPositionCommand/FullyExtendedPositionInches"
             }
           },
           "3,0": {
@@ -1071,13 +1027,90 @@
           },
           "7,0": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
               "_type": "Command",
               "_source0": "network_table:///SmartDashboard/LatchReleaseCommand",
               "_title": "SmartDashboard/LatchReleaseCommand"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/OperatorInterface/Driver Deadband",
+              "_title": "SmartDashboard/OperatorInterface/Driver Deadband"
+            }
+          },
+          "5,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/OperatorInterface/Operator Deadband",
+              "_title": "SmartDashboard/OperatorInterface/Operator Deadband"
+            }
+          },
+          "7,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/FullyRetractedPositionInches",
+              "_title": "SmartDashboard/ClimberArmSubsystem/FullyRetractedPositionInches"
+            }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/ClearCurrentBarPositionInches",
+              "_title": "SmartDashboard/ClimberArmSubsystem/ClearCurrentBarPositionInches"
+            }
+          },
+          "7,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/EngageNextBarPositionInches",
+              "_title": "SmartDashboard/ClimberArmSubsystem/EngageNextBarPositionInches"
+            }
+          },
+          "8,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/AutomaticPivotInInches",
+              "_title": "SmartDashboard/ClimberArmSubsystem/AutomaticPivotInInches"
+            }
+          },
+          "7,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/FullyExtendedPositionInches",
+              "_title": "SmartDashboard/ClimberArmSubsystem/FullyExtendedPositionInches"
             }
           }
         }
@@ -1216,15 +1249,26 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "3,0": {
+          "5,1": {
             "size": [
-              7,
-              4
+              1,
+              1
             ],
             "content": {
-              "_type": "Network Table Tree",
-              "_source0": "network_table:///SmartDashboard/Scheduler",
-              "_title": "/SmartDashboard/Scheduler"
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Current pitch",
+              "_title": "SmartDashboard/PoseSubsystem/Current pitch"
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Current roll",
+              "_title": "SmartDashboard/PoseSubsystem/Current roll"
             }
           }
         }

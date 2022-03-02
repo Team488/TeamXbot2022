@@ -32,7 +32,7 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     public boolean isIntakeReady() {
-        return false;
+        return true;
     }
 
     @Override
@@ -47,12 +47,12 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public boolean isConveyerReady() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCollectorStage2Ready() {
-        return false;
+        return true;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class CompetitionContract extends ElectricalContract {
                 return new DeviceInfo(38, false, simulationScalingValue);
 
             case "RearRightDrive":
-                return new DeviceInfo(20, false, simulationScalingValue);
+                return new DeviceInfo(21, false, simulationScalingValue);
 
             default:
                 return null;
@@ -90,7 +90,7 @@ public class CompetitionContract extends ElectricalContract {
                 return new DeviceInfo(39, false, simulationScalingValue);
 
             case "RearRightDrive":
-                return new DeviceInfo(21, false, simulationScalingValue);
+                return new DeviceInfo(20, false, simulationScalingValue);
 
             default:
                 return null;
@@ -192,12 +192,12 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public DeviceInfo getPivotSolenoid() {
-        return new DeviceInfo(6);
+        return new DeviceInfo(6, true);
     }
 
     @Override
     public DeviceInfo getPivotSolenoid2() {
-        return new DeviceInfo(7);
+        return new DeviceInfo(7, true);
     }
 
     // Still temporary, we need to renumber the shooter motors
@@ -237,13 +237,13 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     @Override
-    public CANTalonInfo getCollectorMotor1() {
-        return new CANTalonInfo(35, false);
+    public CANTalonInfo getLeftCollectorMotor() {
+        return new CANTalonInfo(35, true);
     }
 
     @Override
-    public CANTalonInfo getCollectorMotor2() {
-        return new CANTalonInfo(24, false);
+    public CANTalonInfo getRightCollectorMotor() {
+        return new CANTalonInfo(24, true);
     }
 
     public CANTalonInfo getCollectorStage2Motor() {
@@ -262,7 +262,7 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     public CANTalonInfo getConveyerMotor() {
-        return new CANTalonInfo(9, false);
+        return new CANTalonInfo(23, false);
     }
 
     public DeviceInfo getDeployHoodSoleniod1() {

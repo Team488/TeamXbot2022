@@ -20,8 +20,8 @@ public class CollectorSubsystem extends BaseSubsystem{
 
     @Inject
     public CollectorSubsystem(CommonLibFactory factory, PropertyFactory pf, ElectricalContract eContract){
-        collectorMotor = factory.createCANTalon(eContract.getCollectorMotor1());
-        collectorMotor2 = factory.createCANTalon(eContract.getCollectorMotor2());
+        collectorMotor = factory.createCANTalon(eContract.getLeftCollectorMotor());
+        collectorMotor2 = factory.createCANTalon(eContract.getRightCollectorMotor());
 
         pf.setPrefix(this);
         intakePower = pf.createPersistentProperty("intakePower", 1);

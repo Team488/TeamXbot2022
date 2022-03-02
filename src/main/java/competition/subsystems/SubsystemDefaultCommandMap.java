@@ -11,6 +11,8 @@ import competition.injection.swerve.RearLeftDrive;
 import competition.injection.swerve.RearRightDrive;
 import competition.subsystems.climber_arm.ClimberArmSubsystem;
 import competition.subsystems.climber_arm.commands.MotorArmStopCommand;
+import competition.subsystems.collector.CollectorSubsystem;
+import competition.subsystems.collector.commands.StopCollectorCommand;
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.drive.commands.SwerveDriveMaintainerCommand;
 import competition.subsystems.drive.commands.SwerveDriveWithJoysticksCommand;
@@ -100,5 +102,12 @@ public class SubsystemDefaultCommandMap {
         @RightArm MotorArmStopCommand rightArmStopCommand) {
         leftArm.setDefaultCommand(leftArmStopCommand);
         rightArm.setDefaultCommand(rightArmStopCommand);
+    }
+
+    @Inject
+    public void setupCollector(
+        CollectorSubsystem collector,
+        StopCollectorCommand stop) {
+        collector.setDefaultCommand(stop);
     }
 }

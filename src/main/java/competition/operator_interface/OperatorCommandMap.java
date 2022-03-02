@@ -12,18 +12,20 @@ import competition.injection.swerve.RearLeftDrive;
 import competition.injection.swerve.RearRightDrive;
 import competition.subsystems.climber_arm.ClimberArmSubsystem;
 import competition.subsystems.climber_arm.commands.ClimberArmMaintainerCommand;
+import competition.subsystems.climber_arm.commands.DualArmBalancerCommand;
 import competition.subsystems.climber_arm.commands.DualArmControllerCommandWithJoysticks;
 import competition.subsystems.climber_arm.commands.MotorArmExtendCommand;
 import competition.subsystems.climber_arm.commands.MotorArmRetractCommand;
 import competition.subsystems.climber_arm.commands.MotorArmSetZeroCommand;
 import competition.subsystems.climber_arm.commands.MotorArmStopCommand;
 import competition.subsystems.climber_arm.commands.SetArmsToPositionCommand;
+import competition.subsystems.climber_pivot.commands.PivotAccordingToArm;
 import competition.subsystems.climber_pivot.commands.PivotInCommand;
 import competition.subsystems.climber_pivot.commands.PivotOutCommand;
 import competition.subsystems.collector.commands.EjectCommand;
 import competition.subsystems.collector.commands.IntakeCommand;
-import competition.subsystems.collector.commands.StopCommand;
 import competition.subsystems.collector_stage_2.CollectorStage2Subsystem;
+import competition.subsystems.conveyer.ConveyerSubsystem;
 import competition.subsystems.drive.commands.CalibrateSteeringCommand;
 import competition.subsystems.drive.commands.DebuggingSwerveWithJoysticksCommand;
 import competition.subsystems.drive.commands.GoToNextActiveSwerveModuleCommand;
@@ -89,11 +91,16 @@ public class OperatorCommandMap {
             MotorArmRetractCommand retractArmCommand,
             LatchArmCommand latchArm,
             LatchReleaseCommand latchRelease,
+            LatchReleaseCommand latchReleaseDashboardOnly,
             PivotInCommand pivotIn,
             PivotOutCommand pivotOut,
+            PivotOutCommand pivotOutAsPartOfLatchRelease,
             DualArmControllerCommandWithJoysticks dualArmWithJoysticksSafe,
             DualArmControllerCommandWithJoysticks dualArmWithJoysticksUnsafe,
             MotorArmSetZeroCommand calibrateBothArms,
+            DualArmBalancerCommand dualArmBalancer,
+            PivotAccordingToArm pivotAccordingToArm,
+            ConveyerSubsystem conveyer,
             @LeftArm ClimberArmMaintainerCommand leftArmMaintainer,
             @RightArm ClimberArmMaintainerCommand rightArmMaintainer,
             @LeftArm MotorArmStopCommand stopLeftArm,
@@ -108,8 +115,10 @@ public class OperatorCommandMap {
         setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.FullyExtended).includeOnSmartDashboard();
         setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.EngageNextBar).includeOnSmartDashboard();
 
-        ParallelCommandGroup stopBothArms = new ParallelCommandGroup(stopLeftArm, stopRightArm);
+        //ParallelCommandGroup stopBothArms = new ParallelCommandGroup(stopLeftArm, stopRightArm);
         ParallelCommandGroup maintainArms = new ParallelCommandGroup(leftArmMaintainer, rightArmMaintainer);
+
+        dualArmBalancer.setSafe(true);
 
         pf.setPrefix("OperatorCommandMap/");
         DoubleProperty latchOpenTime = pf.createPersistentProperty("Latch Open Time", 2);
@@ -117,7 +126,7 @@ public class OperatorCommandMap {
         // For normal operation, we want the latch to only be unlatched for a few seconds
         ParallelRaceGroup latchReleaseAndSmallWait = new ParallelRaceGroup(latchRelease, new DelayViaSupplierCommand(() -> latchOpenTime.get()));
 
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.A).whenPressed(stopBothArms);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.A).whenPressed(dualArmBalancer);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.B).whenPressed(maintainArms);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.X).whenPressed(dualArmWithJoysticksUnsafe);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.Y).whenPressed(calibrateBothArms);
@@ -136,8 +145,10 @@ public class OperatorCommandMap {
         );
 
         totalNuclearLaunch.whenPressed(latchReleaseAndSmallWait);
-        latchRelease.includeOnSmartDashboard();
+        latchReleaseDashboardOnly.includeOnSmartDashboard();
         latchArm.includeOnSmartDashboard();
+
+        operatorInterface.operatorGamepad.getPovIfAvailable(0).whenPressed(pivotAccordingToArm);
     }
 
     @Inject
@@ -195,10 +206,13 @@ public class OperatorCommandMap {
     }
 
     @Inject
-    public void setupCollectorCommands(IntakeCommand intake, EjectCommand eject, StopCommand stopIntake) {
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftTrigger).whenPressed(intake);
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightTrigger).whenPressed(eject);  
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftStick).whenPressed(stopIntake);  
+    public void setupCollectorCommands(IntakeCommand intake, EjectCommand eject, ConveyerSubsystem conveyer) {
+
+        ParallelCommandGroup groupIntake = new ParallelCommandGroup(intake, conveyer.getForwardCommand());
+        ParallelCommandGroup groupEject = new ParallelCommandGroup(eject, conveyer.getReverseCommand());
+
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftTrigger).whenHeld(groupIntake);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightTrigger).whenHeld(groupEject);  
     }
 
     @Inject

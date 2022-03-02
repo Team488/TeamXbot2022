@@ -126,11 +126,11 @@ public class ClimberArmMaintainerCommand extends BaseMaintainerCommand {
             case "LeftArm":
                 return MathUtils.deadband(
                     oi.operatorGamepad.getLeftStickY(),
-                    oi.getDriverGamepadTypicalDeadband());
+                    oi.getOperatorGamepadTypicalDeadband());
             case "RightArm":
                 return MathUtils.deadband(
                     oi.operatorGamepad.getRightStickY(),
-                    oi.getDriverGamepadTypicalDeadband());
+                    oi.getOperatorGamepadTypicalDeadband());
             default:
                 return 0;
         }
