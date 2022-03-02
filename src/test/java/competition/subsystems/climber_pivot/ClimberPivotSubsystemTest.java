@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import competition.BaseCompetitionTest;
+import xbot.common.controls.actuators.XDoubleSolenoid.DoubleSolenoidMode;
 
 
 public class ClimberPivotSubsystemTest extends BaseCompetitionTest {
@@ -12,7 +13,7 @@ public class ClimberPivotSubsystemTest extends BaseCompetitionTest {
     public void testingPivotIn(){
         ClimberPivotSubsystem climberPivotSubsystem = this.injector.getInstance(ClimberPivotSubsystem.class);
         
-        climberPivotSubsystem.pivot.setForward();
+        climberPivotSubsystem.pivot.setDoubleSolenoid(DoubleSolenoidMode.FORWARD);
         assertTrue("Latch starts pivoted out", climberPivotSubsystem.pivot.getIsForward());
         climberPivotSubsystem.pivotIn();
         assertTrue("Latch pivots in", climberPivotSubsystem.pivot.getIsReverse());
@@ -33,7 +34,7 @@ public class ClimberPivotSubsystemTest extends BaseCompetitionTest {
     public void testingPivotInandOut(){
         ClimberPivotSubsystem climberPivotSubsystem = this.injector.getInstance(ClimberPivotSubsystem.class);
         
-        climberPivotSubsystem.pivot.setForward();
+        climberPivotSubsystem.pivot.setDoubleSolenoid(DoubleSolenoidMode.FORWARD);
         assertTrue("Latch starts pivoted out", climberPivotSubsystem.pivot.getIsForward());
         climberPivotSubsystem.pivotIn();
         assertTrue("Latch starts pivoted in", climberPivotSubsystem.pivot.getIsReverse());

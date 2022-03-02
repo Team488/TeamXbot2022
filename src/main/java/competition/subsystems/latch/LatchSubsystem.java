@@ -6,6 +6,7 @@ import com.google.inject.Singleton;
 import competition.electrical_contract.ElectricalContract;
 import xbot.common.command.BaseSubsystem;
 import xbot.common.controls.actuators.XDoubleSolenoid;
+import xbot.common.controls.actuators.XDoubleSolenoid.DoubleSolenoidMode;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 
 @Singleton
@@ -26,10 +27,10 @@ public class LatchSubsystem extends BaseSubsystem {
     }
 
     public void arm(){
-        latch.setReverse();
+        latch.setDoubleSolenoid(DoubleSolenoidMode.FORWARD);
     }
     public void release(){
-        latch.setForward();
+        latch.setDoubleSolenoid(DoubleSolenoidMode.REVERSE);
         numberOfUnlatches++;
     }
 

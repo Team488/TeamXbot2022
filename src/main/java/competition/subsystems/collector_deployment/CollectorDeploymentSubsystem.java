@@ -6,6 +6,7 @@ import com.google.inject.Singleton;
 import competition.electrical_contract.ElectricalContract;
 import xbot.common.command.BaseSubsystem;
 import xbot.common.controls.actuators.XDoubleSolenoid;
+import xbot.common.controls.actuators.XDoubleSolenoid.DoubleSolenoidMode;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 
 @Singleton
@@ -23,11 +24,11 @@ public class CollectorDeploymentSubsystem extends BaseSubsystem{
     }
 
     public void deploy (){
-        deploy.setForward();
+        deploy.setDoubleSolenoid(DoubleSolenoidMode.FORWARD);
     }
 
     public void retract (){
-        deploy.setReverse();
+        deploy.setDoubleSolenoid(DoubleSolenoidMode.REVERSE);
     }
     
 }
