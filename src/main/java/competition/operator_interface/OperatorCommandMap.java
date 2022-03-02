@@ -121,7 +121,7 @@ public class OperatorCommandMap {
         dualArmBalancer.setSafe(true);
 
         pf.setPrefix("OperatorCommandMap/");
-        DoubleProperty latchOpenTime = pf.createPersistentProperty("Latch Open Time", 1);
+        DoubleProperty latchOpenTime = pf.createPersistentProperty("Latch Open Time", 2);
 
         // For normal operation, we want the latch to only be unlatched for a few seconds
         ParallelRaceGroup latchReleaseAndSmallWait = new ParallelRaceGroup(latchRelease, new DelayViaSupplierCommand(() -> latchOpenTime.get()));
@@ -144,8 +144,7 @@ public class OperatorCommandMap {
             operatorInterface.operatorGamepad.getifAvailable(XboxButton.Back)
         );
 
-        totalNuclearLaunch.whileHeld(latchReleaseAndSmallWait, false);
-
+        totalNuclearLaunch.whenPressed(latchReleaseAndSmallWait);
         latchReleaseDashboardOnly.includeOnSmartDashboard();
         latchArm.includeOnSmartDashboard();
 
