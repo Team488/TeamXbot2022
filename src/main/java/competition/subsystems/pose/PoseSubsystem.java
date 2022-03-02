@@ -19,19 +19,31 @@ public class PoseSubsystem extends BasePoseSubsystem {
     
     final SwerveDriveOdometry swerveOdometry;
 
-    DoubleProperty leftStartPosX;
-    DoubleProperty leftStartPosY;
+    final DoubleProperty leftStartPosX;
+    final DoubleProperty leftStartPosY;
 
-    DoubleProperty midStartPosX;
-    DoubleProperty midStartPosY;
+    final DoubleProperty midStartPosX;
+    final DoubleProperty midStartPosY;
 
-    DoubleProperty rightStartPosX;
-    DoubleProperty rightStartPosY;
+    final DoubleProperty rightStartPosX;
+    final DoubleProperty rightStartPosY;
 
     @Inject
-    public PoseSubsystem(CommonLibFactory clf, PropertyFactory propManager, DriveSubsystem drive) {
-        super(clf, propManager);
+    public PoseSubsystem(
+        CommonLibFactory clf, 
+        PropertyFactory pf, 
+        DriveSubsystem drive) {
+        super(clf, pf);
         this.drive = drive;
+
+        this.leftStartPosX = pf.createPersistentProperty("Starting Left Position X Value", 261);
+        this.leftStartPosY = pf.createPersistentProperty("Starting Left Position Y Value", 200);
+
+        this.midStartPosX = pf.createPersistentProperty("Starting Mid Position X Value", 287);
+        this.midStartPosY = pf.createPersistentProperty("Starting Mid Position Y Value", 110);
+
+        this.rightStartPosX = pf.createPersistentProperty("Starting Right Position X Value", 327);
+        this.rightStartPosY = pf.createPersistentProperty("Starting Right Position Y Value", 72);
 
     /* Remember: WPILib uses a different coordinate convention than our legacy code. Theirs:
           //   0,+y. 90 degrees
