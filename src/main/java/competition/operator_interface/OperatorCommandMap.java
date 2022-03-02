@@ -28,6 +28,8 @@ import competition.subsystems.collector_deployment.commands.DeployCollectorComma
 import competition.subsystems.collector_deployment.commands.RetractCollectorCommand;
 import competition.subsystems.collector_stage_2.CollectorStage2Subsystem;
 import competition.subsystems.conveyer.ConveyerSubsystem;
+import competition.subsystems.deploy_hood.commands.HoodDeployCommand;
+import competition.subsystems.deploy_hood.commands.HoodRetractCommand;
 import competition.subsystems.drive.commands.CalibrateSteeringCommand;
 import competition.subsystems.drive.commands.DebuggingSwerveWithJoysticksCommand;
 import competition.subsystems.drive.commands.GoToNextActiveSwerveModuleCommand;
@@ -227,5 +229,11 @@ public class OperatorCommandMap {
         operatorInterface.operatorGamepad.getPovIfAvailable(90).whenPressed(deployCollector);
         operatorInterface.operatorGamepad.getPovIfAvailable(270).whenPressed(retractCollector);
 
+    }
+
+    @Inject
+    public void setupLaunchingCommands(HoodDeployCommand deployHood, HoodRetractCommand retractHood) {
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftStick).whenPressed(deployHood);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightStick).whenPressed(retractHood);
     }
 }
