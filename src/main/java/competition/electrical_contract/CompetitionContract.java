@@ -28,7 +28,7 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public boolean isShooterReady() {
-        return false;
+        return true;
     }
 
     public boolean isIntakeReady() {
@@ -38,11 +38,6 @@ public class CompetitionContract extends ElectricalContract {
     @Override
     public boolean arePneumaticsReady() {
         return true;
-    }
-
-    @Override
-    public boolean isLauncherReady() {
-        return false;
     }
 
     @Override
