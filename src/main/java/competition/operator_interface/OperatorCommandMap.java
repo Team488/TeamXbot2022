@@ -188,8 +188,9 @@ public class OperatorCommandMap {
         stopCommand.includeOnSmartDashboard();
 
         InstantCommand setSafe = new NamedInstantCommand("ShooterSafeSpeed", () -> shooter.setTargetRPM(TargetRPM.Safe));
-        InstantCommand setNearShot = new NamedInstantCommand("ShooterSafeSpeed", () -> shooter.setTargetRPM(TargetRPM.NearShot));
-        InstantCommand setDistanceShot = new NamedInstantCommand("ShooterSafeSpeed", () -> shooter.setTargetRPM(TargetRPM.DistanceShot));
+        InstantCommand setNearShot = new NamedInstantCommand("ShooterNearShotSpeed", () -> shooter.setTargetRPM(TargetRPM.NearShot));
+        InstantCommand setDistanceShot = new NamedInstantCommand("ShooterDistanceShotSpeed", () -> shooter.setTargetRPM(TargetRPM.DistanceShot));
+        InstantCommand setSafePowerPercent = new NamedInstantCommand("ShooterSafePowerPercent", () -> shooter.setSafePower());
 
         oi.shooterGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(decreaseTrim);
         oi.shooterGamepad.getifAvailable(XboxButton.RightTrigger).whenPressed(increaseTrim);
@@ -197,6 +198,7 @@ public class OperatorCommandMap {
         oi.shooterGamepad.getifAvailable(XboxButton.A).whenPressed(setNearShot).whenReleased(setSafe);
         oi.shooterGamepad.getifAvailable(XboxButton.X).whenPressed(setDistanceShot).whenReleased(setSafe);
         oi.shooterGamepad.getifAvailable(XboxButton.B).whenPressed(stopCommand);
+        oi.shooterGamepad.getifAvailable(XboxButton.Y).whileHeld(setSafePowerPercent);
     }
 
     @Inject

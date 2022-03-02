@@ -56,6 +56,7 @@ In order to unlatch the climber hooks, the **driver** must press **left / right 
 | :-- | :-- |
 | Set near shot shooter speed | Hold A |
 | Set distance shot shooter speed | Hold X |
+| Set safe power-based control | Hold Y |
 | Stop shooter wheel | B |
 | Shooter speed trim up | Right Bumper |
 | Shooter speed trim down | Left Bumper |
