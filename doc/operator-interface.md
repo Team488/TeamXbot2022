@@ -48,6 +48,18 @@ In order to unlatch the climber hooks, the **driver** must press **left / right 
 | Manually move left arm | Left joystick Y |
 | Manually move right arm | Right joystick Y |
 
+## Shooter Gamepad
+
+**Gamepad ID:** 2
+
+| Command | Button |
+| :-- | :-- |
+| Set near shot shooter speed | Hold A |
+| Set distance shot shooter speed | Hold X |
+| Stop shooter wheel | B |
+| Shooter speed trim up | Right Bumper |
+| Shooter speed trim down | Left Bumper |
+
 ## SmartDashboard commands
 
 * Move arms to position

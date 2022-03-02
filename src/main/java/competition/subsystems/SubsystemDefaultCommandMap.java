@@ -19,6 +19,8 @@ import competition.subsystems.drive.swerve.SwerveDriveSubsystem;
 import competition.subsystems.drive.swerve.SwerveSteeringSubsystem;
 import competition.subsystems.latch.LatchSubsystem;
 import competition.subsystems.latch.commands.LatchArmCommand;
+import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
+import competition.subsystems.shooterwheel.commands.StopShooterWheelCommand;
 
 @Singleton
 public class SubsystemDefaultCommandMap {
@@ -100,5 +102,10 @@ public class SubsystemDefaultCommandMap {
         @RightArm MotorArmStopCommand rightArmStopCommand) {
         leftArm.setDefaultCommand(leftArmStopCommand);
         rightArm.setDefaultCommand(rightArmStopCommand);
+    }
+
+    @Inject
+    public void setupShooterWheelSubsystem(StopShooterWheelCommand stopShooter, ShooterWheelSubsystem shooter) {
+        shooter.setDefaultCommand(stopShooter);
     }
 }
