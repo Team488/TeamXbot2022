@@ -28,7 +28,7 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public boolean isShooterReady() {
-        return false;
+        return true;
     }
 
     public boolean isIntakeReady() {
@@ -38,11 +38,6 @@ public class CompetitionContract extends ElectricalContract {
     @Override
     public boolean arePneumaticsReady() {
         return true;
-    }
-
-    @Override
-    public boolean isLauncherReady() {
-        return false;
     }
 
     @Override
@@ -182,12 +177,12 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public DeviceInfo getLatchSolenoid() {
-        return new DeviceInfo(11);
+        return new DeviceInfo(12);
     }
 
     @Override
     public DeviceInfo getLatchSolenoid2() {
-        return new DeviceInfo(12);
+        return new DeviceInfo(11);
     }
 
     @Override
@@ -200,16 +195,14 @@ public class CompetitionContract extends ElectricalContract {
         return new DeviceInfo(7, true);
     }
 
-    // Still temporary, we need to renumber the shooter motors
     @Override
     public DeviceInfo getShooterMotorLeader() {
-        return new DeviceInfo(5, true);
+        return new DeviceInfo(32, false);
     }
 
-    // Still temporary, we need to renumber the shooter motors
     @Override
     public DeviceInfo getShooterMotorFollower() {
-        return new DeviceInfo(6, false);
+        return new DeviceInfo(27, false);
     }
 
     @Override
@@ -261,8 +254,12 @@ public class CompetitionContract extends ElectricalContract {
         return new DeviceInfo(0);
     }
 
-    public CANTalonInfo getConveyerMotor() {
+    public CANTalonInfo getConveyerMotor1() {
         return new CANTalonInfo(23, false);
+    }
+
+    public CANTalonInfo getConveyerMotor2() {
+        return new CANTalonInfo(36, true);
     }
 
     public DeviceInfo getDeployHoodSoleniod1() {
