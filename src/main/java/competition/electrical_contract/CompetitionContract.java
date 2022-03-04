@@ -177,12 +177,12 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public DeviceInfo getLatchSolenoid() {
-        return new DeviceInfo(11);
+        return new DeviceInfo(12);
     }
 
     @Override
     public DeviceInfo getLatchSolenoid2() {
-        return new DeviceInfo(12);
+        return new DeviceInfo(11);
     }
 
     @Override
