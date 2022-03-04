@@ -3,7 +3,7 @@ package competition.auto_programs;
 import com.google.inject.Inject;
 
 import competition.subsystems.collector.commands.IntakeCommand;
-import competition.subsystems.collector_deployment.commands.DeployCommand;
+import competition.subsystems.collector_deployment.commands.DeployCollectorCommand;
 import competition.subsystems.collector_stage_2.CollectorStage2Subsystem;
 import competition.subsystems.deploy_hood.commands.HoodDeployCommand;
 import competition.subsystems.drive.commands.SwerveToPointCommand;
@@ -19,10 +19,10 @@ public class GoCollectComebackCommand extends SequentialCommandGroup {
         SwerveToPointCommand goThreeFeet, 
         IntakeCommand collectBall1, 
         CollectorStage2Subsystem stageTwoCollector1,
-        DeployCommand deployCommand1,
+        DeployCollectorCommand deployCommand1,
         IntakeCommand collectBall2, 
         CollectorStage2Subsystem stageTwoCollector2,
-        DeployCommand deployCommand2,
+        DeployCollectorCommand deployCommand2,
         SwerveToPointCommand goBackToStart,
         HoodDeployCommand deployHood,
         BangBangCommand startShooter
