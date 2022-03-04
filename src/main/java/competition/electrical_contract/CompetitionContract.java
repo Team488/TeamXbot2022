@@ -136,16 +136,6 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     @Override
-    public DeviceInfo getPrimaryShooterNeo() {
-        return new DeviceInfo(32, false);
-    }
-
-    @Override
-    public DeviceInfo getSecondaryShooterNeo() {
-        return new DeviceInfo(34, false);
-    }
-
-    @Override
     public DeviceInfo getArduinoDio0() {
         return new DeviceInfo(0);
     }
@@ -197,12 +187,12 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public DeviceInfo getShooterMotorLeader() {
-        return new DeviceInfo(32, false);
+        return new DeviceInfo(32, true);
     }
 
     @Override
     public DeviceInfo getShooterMotorFollower() {
-        return new DeviceInfo(27, false);
+        return new DeviceInfo(27, true);
     }
 
     @Override
@@ -231,43 +221,38 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public CANTalonInfo getLeftCollectorMotor() {
-        return new CANTalonInfo(35, true);
+        return new CANTalonInfo(36, true);
     }
 
     @Override
     public CANTalonInfo getRightCollectorMotor() {
-        return new CANTalonInfo(24, true);
+        return new CANTalonInfo(23, true);
     }
 
     public CANTalonInfo getCollectorStage2Motor() {
-        return new CANTalonInfo(8, false);
-    }
-
-    @Override
-
-    public DeviceInfo getCollectorDeviceSoleniod2() {
-        return new DeviceInfo(1);
+        return new CANTalonInfo(35, false);
     }
 
     @Override
     public DeviceInfo getCollectorDeviceSoleniod1() {
+        return new DeviceInfo(1);
+    }
+
+    @Override
+    public DeviceInfo getCollectorDeviceSoleniod2() {
         return new DeviceInfo(0);
     }
 
-    public CANTalonInfo getConveyerMotor1() {
-        return new CANTalonInfo(23, false);
-    }
-
-    public CANTalonInfo getConveyerMotor2() {
-        return new CANTalonInfo(36, true);
+    public CANTalonInfo getConveyerMotor() {
+        return new CANTalonInfo(24, false);
     }
 
     public DeviceInfo getDeployHoodSoleniod1() {
-        return new DeviceInfo(8);
+        return new DeviceInfo(9);
     }
     
     public DeviceInfo getDeployHoodSoleniod2() {
-        return new DeviceInfo(9);
+        return new DeviceInfo(8);
     }
 
 }
