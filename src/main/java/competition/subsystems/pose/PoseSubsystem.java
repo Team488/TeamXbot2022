@@ -33,10 +33,11 @@ public class PoseSubsystem extends BasePoseSubsystem {
     public PoseSubsystem(
         CommonLibFactory clf, 
         PropertyFactory pf, 
-        DriveSubsystem drive) {
+        DriveSubsystem drive
+        ) {
         super(clf, pf);
         this.drive = drive;
-        this.levelThresholdDegrees = propManager.createPersistentProperty("Levelling Threshold", 1);
+        this.levelThresholdDegrees = pf.createPersistentProperty("Levelling Threshold", 1);
 
         this.leftStartPosX = pf.createPersistentProperty("Starting Left Position X Value", 261);
         this.leftStartPosY = pf.createPersistentProperty("Starting Left Position Y Value", 200);
