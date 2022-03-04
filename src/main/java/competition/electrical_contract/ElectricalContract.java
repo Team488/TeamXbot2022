@@ -58,10 +58,7 @@ public abstract class ElectricalContract {
     public abstract DeviceInfo getPivotSolenoid();
     public abstract DeviceInfo getPivotSolenoid2();
 
-    public abstract boolean isLauncherReady();
-
     public abstract DeviceInfo getShooterMotorLeader();
-
     public abstract DeviceInfo getShooterMotorFollower();
 
     public abstract DeviceInfo getCollectorDeviceSoleniod1();
@@ -70,7 +67,8 @@ public abstract class ElectricalContract {
     public abstract DeviceInfo getDeployHoodSoleniod1();
     public abstract DeviceInfo getDeployHoodSoleniod2();
 
-    public abstract CANTalonInfo getConveyerMotor();
+    public abstract CANTalonInfo getConveyerMotor1();
+    public abstract CANTalonInfo getConveyerMotor2();
 
     public abstract boolean isConveyerReady();
 }

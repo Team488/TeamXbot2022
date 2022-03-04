@@ -34,12 +34,7 @@ public class SimulationContract extends CompetitionContract {
     public boolean arePneumaticsReady() {
         return false;
     }
-
-    @Override
-    public boolean isLauncherReady() {
-        return false;
-    }
-
+    
     @Override
     public boolean isConveyerReady() {
         return false;

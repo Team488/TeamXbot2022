@@ -150,7 +150,7 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
                 oi.getDriverGamepadTypicalDeadband(),
                 (a) -> MathUtils.exponentAndRetainSign(a, (int) input_exponent.get()));
 
-            suggestedRotatePower = headingAssist.calculateHeadingPower(humanRotatePower);
+            suggestedRotatePower = humanRotatePower; //headingAssist.calculateHeadingPower(humanRotatePower);
         }
 
         // --------------------------------------------------

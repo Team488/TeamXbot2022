@@ -24,8 +24,12 @@ import competition.subsystems.climber_pivot.commands.PivotInCommand;
 import competition.subsystems.climber_pivot.commands.PivotOutCommand;
 import competition.subsystems.collector.commands.EjectCommand;
 import competition.subsystems.collector.commands.IntakeCommand;
+import competition.subsystems.collector_deployment.commands.DeployCollectorCommand;
+import competition.subsystems.collector_deployment.commands.RetractCollectorCommand;
 import competition.subsystems.collector_stage_2.CollectorStage2Subsystem;
 import competition.subsystems.conveyer.ConveyerSubsystem;
+import competition.subsystems.deploy_hood.commands.HoodDeployCommand;
+import competition.subsystems.deploy_hood.commands.HoodRetractCommand;
 import competition.subsystems.drive.commands.CalibrateSteeringCommand;
 import competition.subsystems.drive.commands.DebuggingSwerveWithJoysticksCommand;
 import competition.subsystems.drive.commands.GoToNextActiveSwerveModuleCommand;
@@ -38,16 +42,24 @@ import competition.subsystems.drive.commands.TurnLeft90DegreesCommand;
 import competition.subsystems.latch.commands.LatchArmCommand;
 import competition.subsystems.latch.commands.LatchReleaseCommand;
 import competition.subsystems.pose.PoseSubsystem;
+import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
+import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
+import competition.subsystems.shooterwheel.commands.StopShooterWheelCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import xbot.common.command.DelayViaSupplierCommand;
 import xbot.common.command.NamedInstantCommand;
+import xbot.common.command.NamedRunCommand;
+import xbot.common.command.SmartDashboardCommandPutter;
 import xbot.common.controls.sensors.ChordButton;
 import xbot.common.controls.sensors.XXboxController.XboxButton;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.math.XYPair;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
+import xbot.common.properties.SmartDashboardTableWrapper;
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 
 /**
@@ -110,12 +122,17 @@ public class OperatorCommandMap {
             @RightArm ClimberArmSubsystem rightArm,
             CommonLibFactory clf,
             PropertyFactory pf) {
-        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.FullyRetracted).includeOnSmartDashboard();
-        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.ClearCurrentBar).includeOnSmartDashboard();
-        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.FullyExtended).includeOnSmartDashboard();
-        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.EngageNextBar).includeOnSmartDashboard();
+        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.FullyRetracted)
+                .includeOnSmartDashboard();
+        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.ClearCurrentBar)
+                .includeOnSmartDashboard();
+        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.FullyExtended)
+                .includeOnSmartDashboard();
+        setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.EngageNextBar)
+                .includeOnSmartDashboard();
 
-        //ParallelCommandGroup stopBothArms = new ParallelCommandGroup(stopLeftArm, stopRightArm);
+        // ParallelCommandGroup stopBothArms = new ParallelCommandGroup(stopLeftArm,
+        // stopRightArm);
         ParallelCommandGroup maintainArms = new ParallelCommandGroup(leftArmMaintainer, rightArmMaintainer);
 
         dualArmBalancer.setSafe(true);
@@ -123,32 +140,30 @@ public class OperatorCommandMap {
         pf.setPrefix("OperatorCommandMap/");
         DoubleProperty latchOpenTime = pf.createPersistentProperty("Latch Open Time", 2);
 
-        // For normal operation, we want the latch to only be unlatched for a few seconds
-        ParallelRaceGroup latchReleaseAndSmallWait = new ParallelRaceGroup(latchRelease, new DelayViaSupplierCommand(() -> latchOpenTime.get()));
+        // For normal operation, we want the latch to only be unlatched for a few
+        // seconds
+        ParallelRaceGroup latchReleaseAndSmallWait = new ParallelRaceGroup(latchRelease,
+                new DelayViaSupplierCommand(() -> latchOpenTime.get()));
 
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.A).whenPressed(dualArmBalancer);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.B).whenPressed(maintainArms);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.X).whenPressed(dualArmWithJoysticksUnsafe);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.Y).whenPressed(calibrateBothArms);
-        
+
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(pivotIn);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(pivotOut);
 
         ChordButton driverNuclearLaunch = clf.createChordButton(
-            operatorInterface.driverGamepad.getifAvailable(XboxButton.LeftTrigger),
-            operatorInterface.driverGamepad.getifAvailable(XboxButton.RightTrigger)
-        );
+                operatorInterface.driverGamepad.getifAvailable(XboxButton.LeftTrigger),
+                operatorInterface.driverGamepad.getifAvailable(XboxButton.RightTrigger));
 
         ChordButton totalNuclearLaunch = clf.createChordButton(
-            driverNuclearLaunch,
-            operatorInterface.operatorGamepad.getifAvailable(XboxButton.Back)
-        );
+                driverNuclearLaunch,
+                operatorInterface.operatorGamepad.getifAvailable(XboxButton.Back));
 
         totalNuclearLaunch.whenPressed(latchReleaseAndSmallWait);
         latchReleaseDashboardOnly.includeOnSmartDashboard();
         latchArm.includeOnSmartDashboard();
-
-        operatorInterface.operatorGamepad.getPovIfAvailable(0).whenPressed(pivotAccordingToArm);
     }
 
     @Inject
@@ -183,6 +198,31 @@ public class OperatorCommandMap {
     }
 
     @Inject
+    public void setShooterCommand ( OperatorInterface oi,
+        ShooterWheelSubsystem shooter,
+        StopShooterWheelCommand stopCommand
+    ){
+        InstantCommand increaseTrim = new NamedInstantCommand("ShooterIncreaseTrim100RPMInstantCommand", () -> shooter.changeTrimRPM(100));
+        InstantCommand decreaseTrim = new NamedInstantCommand("ShooterDecreaseTrim100RPMInstantCommand", () -> shooter.changeTrimRPM(-100));
+        SmartDashboard.putData("Trim Up", increaseTrim);
+        SmartDashboard.putData("Trim down", decreaseTrim);
+        stopCommand.includeOnSmartDashboard();
+
+        InstantCommand setSafe = new NamedInstantCommand("ShooterSafeSpeed", () -> shooter.setTargetRPM(TargetRPM.Safe));
+        InstantCommand setNearShot = new NamedInstantCommand("ShooterNearShotSpeed", () -> shooter.setTargetRPM(TargetRPM.NearShot));
+        InstantCommand setDistanceShot = new NamedInstantCommand("ShooterDistanceShotSpeed", () -> shooter.setTargetRPM(TargetRPM.DistanceShot));
+        NamedRunCommand setSafePowerPercent = new NamedRunCommand("ShooterSafePowerPercent", () -> shooter.setSafePower(), shooter);
+
+        oi.shooterGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(decreaseTrim);
+        oi.shooterGamepad.getifAvailable(XboxButton.RightTrigger).whenPressed(increaseTrim);
+
+        oi.shooterGamepad.getifAvailable(XboxButton.A).whenPressed(setNearShot).whenReleased(setSafe);
+        oi.shooterGamepad.getifAvailable(XboxButton.X).whenPressed(setDistanceShot).whenReleased(setSafe);
+        oi.shooterGamepad.getifAvailable(XboxButton.B).whenPressed(stopCommand);
+        oi.shooterGamepad.getifAvailable(XboxButton.Y).whileHeld(setSafePowerPercent);
+    }
+
+    @Inject
     public void setupMobilityCommands(OperatorInterface oi,
             TurnLeft90DegreesCommand turnleft90,
             SwerveToPointCommand swerveToPoint,
@@ -194,32 +234,50 @@ public class OperatorCommandMap {
         DoubleProperty angleTarget = pf.createEphemeralProperty("OI/SwerveToPointTargetAngle", 0);
 
         swerveToPoint.setTargetSupplier(
-            () -> {
-                return new XYPair(xTarget.get(), yTarget.get());
-            },
-            () -> {
-                return angleTarget.get();
-            }
-        );
+                () -> {
+                    return new XYPair(xTarget.get(), yTarget.get());
+                },
+                () -> {
+                    return angleTarget.get();
+                });
         oi.driverGamepad.getifAvailable(XboxButton.Start).whenPressed(turnleft90);
         oi.driverGamepad.getifAvailable(XboxButton.Y).whenPressed(swerveToPoint);
     }
 
     @Inject
-    public void setupCollectorCommands(IntakeCommand intake, EjectCommand eject, ConveyerSubsystem conveyer) {
+    public void setupCollectionCommands(IntakeCommand intake, EjectCommand eject, ConveyerSubsystem conveyer,
+            CollectorStage2Subsystem stageTwo, DeployCollectorCommand deployCollector, RetractCollectorCommand retractCollector) {
 
-        ParallelCommandGroup groupIntake = new ParallelCommandGroup(intake, conveyer.getForwardCommand());
-        ParallelCommandGroup groupEject = new ParallelCommandGroup(eject, conveyer.getReverseCommand());
+        ParallelCommandGroup groupIntake = new ParallelCommandGroup(intake, stageTwo.getForwardCommand());
+        ParallelCommandGroup groupEject = new ParallelCommandGroup(eject, stageTwo.getReverseCommand());
 
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftTrigger).whenHeld(groupIntake);
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightTrigger).whenHeld(groupEject);  
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightTrigger).whenHeld(groupEject);
+
+        operatorInterface.operatorGamepad.getPovIfAvailable(0).whenHeld(conveyer.getForwardCommand());
+        operatorInterface.operatorGamepad.getPovIfAvailable(180).whenHeld(conveyer.getReverseCommand());
+
+        operatorInterface.operatorGamepad.getPovIfAvailable(90).whenPressed(deployCollector);
+        operatorInterface.operatorGamepad.getPovIfAvailable(270).whenPressed(retractCollector);
+
     }
 
     @Inject
-    public void setupCollectorStage2Commands(CollectorStage2Subsystem subsystem) {
-        // TODO: Change these mappings, this is just an example to prove the concept of
-        // the SimpleMotorSubsystem
-        // operatorInterface.driverGamepad.getifAvailable(1).whenHeld(subsystem.getForwardCommand());
-        // operatorInterface.driverGamepad.getifAvailable(2).whenHeld(subsystem.getReverseCommand());
+    public void setupLaunchingCommands(HoodDeployCommand deployHood, HoodRetractCommand retractHood) {
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftStick).whenPressed(deployHood);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightStick).whenPressed(retractHood);
+    }
+
+
+    @Inject
+    public void setupDebuggingCommands(SmartDashboardTableWrapper dashboard,
+    SmartDashboardCommandPutter commandPutter) {
+        NamedInstantCommand setFastMode = 
+        new NamedInstantCommand("SetFastMode", () -> {dashboard.setFastMode(true);});
+        NamedInstantCommand setSlowMode =
+        new NamedInstantCommand("SetSlowMode", () -> {dashboard.setFastMode(false);});
+
+        SmartDashboard.putData(setFastMode);
+        SmartDashboard.putData(setSlowMode);
     }
 }

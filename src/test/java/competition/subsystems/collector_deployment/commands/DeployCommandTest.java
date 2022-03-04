@@ -11,7 +11,7 @@ public class DeployCommandTest extends BaseCompetitionTest{
     @Test  
     public void testingDeployCommand(){
         CollectorDeploymentSubsystem collectorDeploymentSubsystem = this.injector.getInstance(CollectorDeploymentSubsystem.class);
-        DeployCommand deployCommand = this.injector.getInstance(DeployCommand.class);
+        DeployCollectorCommand deployCommand = this.injector.getInstance(DeployCollectorCommand.class);
 
         collectorDeploymentSubsystem.deploy.setReverse();;
         assertTrue("Collector retracts", collectorDeploymentSubsystem.deploy.getIsReverse());
@@ -23,7 +23,7 @@ public class DeployCommandTest extends BaseCompetitionTest{
     @Test  
     public void testingDoubleDeployCommand(){
         CollectorDeploymentSubsystem collectorDeploymentSubsystem = this.injector.getInstance(CollectorDeploymentSubsystem.class);
-        DeployCommand deployCommand = this.injector.getInstance(DeployCommand.class);
+        DeployCollectorCommand deployCommand = this.injector.getInstance(DeployCollectorCommand.class);
 
         collectorDeploymentSubsystem.deploy.setForward();
         assertTrue("Collector Starts Deployed", collectorDeploymentSubsystem.deploy.getIsForward());
