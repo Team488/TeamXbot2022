@@ -12,8 +12,7 @@ import xbot.common.subsystems.simplemotor.SimpleMotorSubsystem;
 
 @Singleton
 public class ConveyerSubsystem extends SimpleMotorSubsystem {
-    public final XCANTalon motor1;
-    public final XCANTalon motor2;
+    public final XCANTalon motor;
     public final boolean isReady;
 
     @Inject
@@ -21,19 +20,16 @@ public class ConveyerSubsystem extends SimpleMotorSubsystem {
         super("ConveyerSubsystem", pf);
         this.isReady = eContract.isConveyerReady();
         if(isReady) {
-            motor1 = clf.createCANTalon(eContract.getConveyerMotor1());
-            motor2 = clf.createCANTalon(eContract.getConveyerMotor2());
+            motor = clf.createCANTalon(eContract.getConveyerMotor());
         } else {
-            motor1 = null;
-            motor2 = null;
+            motor = null;
         }
     }
 
     @Override
     public void setPower(double power) {
         if(isReady) {
-            motor1.set(ControlMode.PercentOutput, power);
-            motor2.set(ControlMode.PercentOutput, power);
+            motor.set(ControlMode.PercentOutput, power);
         }
     }
     

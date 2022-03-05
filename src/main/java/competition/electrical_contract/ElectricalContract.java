@@ -39,10 +39,6 @@ public abstract class ElectricalContract {
 
     public abstract boolean isShooterReady();
 
-    public abstract DeviceInfo getPrimaryShooterNeo();
-
-    public abstract DeviceInfo getSecondaryShooterNeo();
-
     public abstract DeviceInfo getArduinoDio0();
     public abstract DeviceInfo getArduinoDio1();
     public abstract DeviceInfo getArduinoDio2();
@@ -67,8 +63,7 @@ public abstract class ElectricalContract {
     public abstract DeviceInfo getDeployHoodSoleniod1();
     public abstract DeviceInfo getDeployHoodSoleniod2();
 
-    public abstract CANTalonInfo getConveyerMotor1();
-    public abstract CANTalonInfo getConveyerMotor2();
+    public abstract CANTalonInfo getConveyerMotor();
 
     public abstract boolean isConveyerReady();
 }

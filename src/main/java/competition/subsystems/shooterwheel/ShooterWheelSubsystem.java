@@ -152,7 +152,7 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
 
     public void periodic() {
         if (contract.isShooterReady()) {
-            //leader.periodic();
+            leader.periodic();
             //follower.periodic();
             currentRpmProp.set(getCurrentRPM());
         }
