@@ -20,14 +20,36 @@ public class PoseSubsystem extends BasePoseSubsystem {
     
     final SwerveDriveOdometry swerveOdometry;
 
-    @Inject
-    public PoseSubsystem(CommonLibFactory clf, PropertyFactory propManager, DriveSubsystem drive) {
-        super(clf, propManager);
-        this.drive = drive;
-        this.levelThresholdDegrees = propManager.createPersistentProperty("Levelling Threshold", 1);
+    final DoubleProperty leftStartPosX;
+    final DoubleProperty leftStartPosY;
 
-        // Remember: WPILib uses a different coordinate convention than our legacy code. Theirs:
-        //     0,+y. 90 degrees
+    final DoubleProperty midStartPosX;
+    final DoubleProperty midStartPosY;
+
+    final DoubleProperty rightStartPosX;
+    final DoubleProperty rightStartPosY;
+
+    @Inject
+    public PoseSubsystem(
+        CommonLibFactory clf, 
+        PropertyFactory pf, 
+        DriveSubsystem drive
+        ) {
+        super(clf, pf);
+        this.drive = drive;
+        this.levelThresholdDegrees = pf.createPersistentProperty("Levelling Threshold", 1);
+
+        this.leftStartPosX = pf.createPersistentProperty("Starting Left Position X Value", 261);
+        this.leftStartPosY = pf.createPersistentProperty("Starting Left Position Y Value", 200);
+
+        this.midStartPosX = pf.createPersistentProperty("Starting Mid Position X Value", 287);
+        this.midStartPosY = pf.createPersistentProperty("Starting Mid Position Y Value", 110);
+
+        this.rightStartPosX = pf.createPersistentProperty("Starting Right Position X Value", 327);
+        this.rightStartPosY = pf.createPersistentProperty("Starting Right Position Y Value", 72);
+
+    /* Remember: WPILib uses a different coordinate convention than our legacy code. Theirs:
+          //   0,+y. 90 degrees
         //       ----------------------------
         //       |                          |
         // Driver|                          |
@@ -50,7 +72,7 @@ public class PoseSubsystem extends BasePoseSubsystem {
         // we can just ignore the difference. Any tool that looks at our position will be confused, since we will appear to be driving outside the field,
         // but it will work just fine for our own code.
         // That being said, at some point we should probably switch to the WPILib convention, since there are a number of path-planning tools and other
-        // utilities that expect the same conventions.
+         utilities that expect the same conventions. */
 
         swerveOdometry = new SwerveDriveOdometry(drive.getSwerveDriveKinematics(), new Rotation2d(), new Pose2d(0, 0, new Rotation2d()));
     }
@@ -72,6 +94,30 @@ public class PoseSubsystem extends BasePoseSubsystem {
             // Convert back to inches
             totalDistanceX.set(updatedPosition.getY() * PoseSubsystem.INCHES_IN_A_METER);
             totalDistanceY.set(-updatedPosition.getX() * PoseSubsystem.INCHES_IN_A_METER);
+    }
+
+    @Inject
+    public void setCurrentPositiontoLeft () {
+        this.leftStartPosX.get();
+        this.leftStartPosY.get();
+
+        setCurrentPosition(leftStartPosX.get(), leftStartPosY.get());
+    }
+
+    @Inject
+    public void setCurrentPositiontoMid () {
+        this.midStartPosX.get();
+        this.midStartPosY.get();
+
+        setCurrentPosition(midStartPosX.get(), midStartPosY.get());
+    }
+
+    @Inject
+    public void setCurrentPositiontoRight () {
+        this.rightStartPosX.get();
+        this.rightStartPosY.get();
+
+        setCurrentPosition(rightStartPosX.get(), rightStartPosY.get());
     }
 
     @Override
