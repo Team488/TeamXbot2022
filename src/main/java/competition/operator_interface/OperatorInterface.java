@@ -16,15 +16,10 @@ import xbot.common.properties.PropertyFactory;
  */
 @Singleton
 public class OperatorInterface {
-<<<<<<< HEAD
     public final XXboxController driverGamepad;
     public final XXboxController operatorGamepad;
     public final XJoystick driverDialJoystick;
-=======
-    public XXboxController driverGamepad;
-    public XXboxController operatorGamepad;
-    public XXboxController shooterGamepad;
->>>>>>> main
+    public final XXboxController shooterGamepad;
 
     final DoubleProperty driverDeadband;
     final DoubleProperty operatorDeadband;
@@ -33,11 +28,8 @@ public class OperatorInterface {
     public OperatorInterface(CommonLibFactory factory, RobotAssertionManager assertionManager, PropertyFactory pf) {
         driverGamepad = factory.createXboxController(0);
         operatorGamepad = factory.createXboxController(1);
-<<<<<<< HEAD
         driverDialJoystick = factory.createJoystick(2, 1);
-=======
-        shooterGamepad = factory.createXboxController(2);
->>>>>>> main
+        shooterGamepad = factory.createXboxController(3);
 
         driverGamepad.setLeftInversion(false, true);
         driverGamepad.setRightInversion(true, true);
