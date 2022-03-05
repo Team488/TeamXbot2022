@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.subsystems.pose.BasePoseSubsystem;
 
@@ -15,6 +16,7 @@ import xbot.common.subsystems.pose.BasePoseSubsystem;
 public class PoseSubsystem extends BasePoseSubsystem {
 
     private final DriveSubsystem drive;
+    private final DoubleProperty levelThresholdDegrees;
     
     final SwerveDriveOdometry swerveOdometry;
 
@@ -22,6 +24,7 @@ public class PoseSubsystem extends BasePoseSubsystem {
     public PoseSubsystem(CommonLibFactory clf, PropertyFactory propManager, DriveSubsystem drive) {
         super(clf, propManager);
         this.drive = drive;
+        this.levelThresholdDegrees = propManager.createPersistentProperty("Levelling Threshold", 1);
 
         // Remember: WPILib uses a different coordinate convention than our legacy code. Theirs:
         //     0,+y. 90 degrees
@@ -50,6 +53,10 @@ public class PoseSubsystem extends BasePoseSubsystem {
         // utilities that expect the same conventions.
 
         swerveOdometry = new SwerveDriveOdometry(drive.getSwerveDriveKinematics(), new Rotation2d(), new Pose2d(0, 0, new Rotation2d()));
+    }
+
+    public boolean isRobotLevel() {
+        return Math.abs(getRobotRoll()) < levelThresholdDegrees.get();
     }
 
     @Override

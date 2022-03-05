@@ -1,0 +1,34 @@
+{
+  "NetworkTables": {
+    "SmartDashboard": {
+      "Scheduler": {
+        "open": true
+      },
+      "open": true
+    },
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/LiveWindow/CollectorStage2Subsystem/CollectorStage2": "Subsystem",
+      "/LiveWindow/SwerveDriveSubsystem": "Subsystem",
+      "/LiveWindow/Ungrouped/DigitalOutput[0]": "Digital Output",
+      "/LiveWindow/Ungrouped/DigitalOutput[1]": "Digital Output",
+      "/LiveWindow/Ungrouped/DigitalOutput[2]": "Digital Output",
+      "/LiveWindow/Ungrouped/DigitalOutput[3]": "Digital Output",
+      "/LiveWindow/Ungrouped/DigitalOutput[4]": "Digital Output",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/navX-Sensor[4]": "Gyro",
+      "/SmartDashboard/Commit steering pid values": "Command",
+      "/SmartDashboard/LatchArmCommand": "Command",
+      "/SmartDashboard/LatchReleaseCommand": "Command",
+      "/SmartDashboard/Scheduler": "Scheduler",
+      "/SmartDashboard/SetArmsToPositionCommand: ClearCurrentBar": "Command",
+      "/SmartDashboard/SetArmsToPositionCommand: EngageNextBar": "Command",
+      "/SmartDashboard/SetArmsToPositionCommand: FullyExtended": "Command",
+      "/SmartDashboard/SetArmsToPositionCommand: FullyRetracted": "Command"
+    }
+  },
+  "NetworkTables Settings": {
+    "mode": "Client",
+    "serverTeam": "488"
+  }
+}

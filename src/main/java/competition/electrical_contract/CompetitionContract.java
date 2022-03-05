@@ -3,6 +3,7 @@ package competition.electrical_contract;
 import competition.injection.arm.ArmInstance;
 import competition.injection.swerve.SwerveInstance;
 import competition.subsystems.pose.PoseSubsystem;
+import xbot.common.injection.electrical_contract.CANTalonInfo;
 import xbot.common.injection.electrical_contract.DeviceInfo;
 import xbot.common.math.XYPair;
 
@@ -27,11 +28,11 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public boolean isShooterReady() {
-        return false;
+        return true;
     }
 
     public boolean isIntakeReady() {
-        return false;
+        return true;
     }
 
     @Override
@@ -40,18 +41,13 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     @Override
-    public boolean isLauncherReady() {
-        return false;
-    }
-
-    @Override
     public boolean isConveyerReady() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCollectorStage2Ready() {
-        return false;
+        return true;
     }
 
     @Override
@@ -61,10 +57,10 @@ public class CompetitionContract extends ElectricalContract {
                 return new DeviceInfo(31, false, simulationScalingValue);
 
             case "FrontRightDrive":
-                return new DeviceInfo(29, false, simulationScalingValue);
+                return new DeviceInfo(28, false, simulationScalingValue);
 
             case "RearLeftDrive":
-                return new DeviceInfo(39, false, simulationScalingValue);
+                return new DeviceInfo(38, false, simulationScalingValue);
 
             case "RearRightDrive":
                 return new DeviceInfo(21, false, simulationScalingValue);
@@ -83,10 +79,10 @@ public class CompetitionContract extends ElectricalContract {
                 return new DeviceInfo(30, false, simulationScalingValue);
 
             case "FrontRightDrive":
-                return new DeviceInfo(28, false, simulationScalingValue);
+                return new DeviceInfo(29, false, simulationScalingValue);
 
             case "RearLeftDrive":
-                return new DeviceInfo(38, false, simulationScalingValue);
+                return new DeviceInfo(39, false, simulationScalingValue);
 
             case "RearRightDrive":
                 return new DeviceInfo(20, false, simulationScalingValue);
@@ -140,16 +136,6 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     @Override
-    public DeviceInfo getPrimaryShooterNeo() {
-        return new DeviceInfo(32, false);
-    }
-
-    @Override
-    public DeviceInfo getSecondaryShooterNeo() {
-        return new DeviceInfo(34, false);
-    }
-
-    @Override
     public DeviceInfo getArduinoDio0() {
         return new DeviceInfo(0);
     }
@@ -181,34 +167,32 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public DeviceInfo getLatchSolenoid() {
-        return new DeviceInfo(11);
-    }
-
-    @Override
-    public DeviceInfo getLatchSolenoid2() {
         return new DeviceInfo(12);
     }
 
     @Override
+    public DeviceInfo getLatchSolenoid2() {
+        return new DeviceInfo(11);
+    }
+
+    @Override
     public DeviceInfo getPivotSolenoid() {
-        return new DeviceInfo(6);
+        return new DeviceInfo(6, true);
     }
 
     @Override
     public DeviceInfo getPivotSolenoid2() {
-        return new DeviceInfo(7);
+        return new DeviceInfo(7, true);
     }
 
-    // Still temporary, we need to renumber the shooter motors
     @Override
     public DeviceInfo getShooterMotorLeader() {
-        return new DeviceInfo(5, true);
+        return new DeviceInfo(32, true);
     }
 
-    // Still temporary, we need to renumber the shooter motors
     @Override
     public DeviceInfo getShooterMotorFollower() {
-        return new DeviceInfo(6, false);
+        return new DeviceInfo(27, true);
     }
 
     @Override
@@ -236,26 +220,39 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     @Override
-    public DeviceInfo getCollectorMotor() {
-        return new DeviceInfo(7);
-    }
-
-    public DeviceInfo getCollectorStage2Motor() {
-        return new DeviceInfo(8);
+    public CANTalonInfo getLeftCollectorMotor() {
+        return new CANTalonInfo(36, true);
     }
 
     @Override
+    public CANTalonInfo getRightCollectorMotor() {
+        return new CANTalonInfo(23, true);
+    }
 
-    public DeviceInfo getCollectorDeviceSoleniod2() {
-        return new DeviceInfo(1);
+    public CANTalonInfo getCollectorStage2Motor() {
+        return new CANTalonInfo(35, false);
     }
 
     @Override
     public DeviceInfo getCollectorDeviceSoleniod1() {
+        return new DeviceInfo(1);
+    }
+
+    @Override
+    public DeviceInfo getCollectorDeviceSoleniod2() {
         return new DeviceInfo(0);
     }
 
-    public DeviceInfo getConveyerMotor() {
+    public CANTalonInfo getConveyerMotor() {
+        return new CANTalonInfo(24, false);
+    }
+
+    public DeviceInfo getDeployHoodSoleniod1() {
         return new DeviceInfo(9);
     }
+    
+    public DeviceInfo getDeployHoodSoleniod2() {
+        return new DeviceInfo(8);
+    }
+
 }

@@ -2,32 +2,36 @@ package competition.subsystems.collector;
 
 import static org.junit.Assert.assertEquals;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import org.junit.Test;
 
 import competition.BaseCompetitionTest;
+import xbot.common.controls.actuators.mock_adapters.MockCANTalon;
 
 public class CollectorSubsystemTest extends BaseCompetitionTest{
     @Test
     public void testingBasicCollectorSubsystem (){
         CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
+        MockCANTalon mockMotor = (MockCANTalon) collectorSubsystem.collectorMotor;
 
-        collectorSubsystem.collectorMotor.set(1);
+        collectorSubsystem.collectorMotor.set(ControlMode.PercentOutput, 1);
         checkCollectorPower(1);
         collectorSubsystem.eject();
-        assertEquals(-1, collectorSubsystem.collectorMotor.get(), 0.001);
+        assertEquals(-1, mockMotor.getMotorOutputPercent(), 0.001);
         collectorSubsystem.intake();
         checkCollectorPower(1);
         collectorSubsystem.stop();
         checkCollectorPower(0);
         collectorSubsystem.eject();
-        assertEquals(-1, collectorSubsystem.collectorMotor.get(), 0.001);
+        assertEquals(-1, mockMotor.getMotorOutputPercent(), 0.001);
     }
 
     @Test
     public void testingEject (){
         CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
 
-        collectorSubsystem.collectorMotor.set(1);
+        collectorSubsystem.collectorMotor.set(ControlMode.PercentOutput, 1);
         checkCollectorPower(1);
         collectorSubsystem.eject();
         checkCollectorPower(-1);
@@ -41,7 +45,7 @@ public class CollectorSubsystemTest extends BaseCompetitionTest{
     public void testingIntake (){
         CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
 
-        collectorSubsystem.collectorMotor.set(-1);
+        collectorSubsystem.collectorMotor.set(ControlMode.PercentOutput, -1);
         checkCollectorPower(-1);
         collectorSubsystem.intake();
         checkCollectorPower(1);
@@ -71,7 +75,8 @@ public class CollectorSubsystemTest extends BaseCompetitionTest{
 
     public void checkCollectorPower(double power) {
         CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
+        MockCANTalon mockMotor = (MockCANTalon) collectorSubsystem.collectorMotor;
 
-        assertEquals(power, collectorSubsystem.collectorMotor.get(), 0.001);
+        assertEquals(power, mockMotor.getMotorOutputPercent(), 0.001);
     }
 }

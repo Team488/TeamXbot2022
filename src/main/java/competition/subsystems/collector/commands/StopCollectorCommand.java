@@ -5,10 +5,10 @@ import com.google.inject.Inject;
 import competition.subsystems.collector.CollectorSubsystem;
 import xbot.common.command.BaseCommand;
 
-public class StopCommand extends BaseCommand{
+public class StopCollectorCommand extends BaseCommand{
     final CollectorSubsystem collector;
     @Inject
-    public StopCommand (CollectorSubsystem collector){
+    public StopCollectorCommand (CollectorSubsystem collector){
         this.collector = collector;
         addRequirements(collector);
     }

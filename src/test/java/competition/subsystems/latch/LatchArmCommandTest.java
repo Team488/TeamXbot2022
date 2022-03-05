@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import competition.BaseCompetitionTest;
 import competition.subsystems.latch.commands.LatchArmCommand;
+import xbot.common.controls.actuators.XDoubleSolenoid.DoubleSolenoidMode;
 
 public class LatchArmCommandTest extends BaseCompetitionTest{
     @Test
@@ -14,11 +15,11 @@ public class LatchArmCommandTest extends BaseCompetitionTest{
         LatchSubsystem latchSubsystem = this.injector.getInstance(LatchSubsystem.class);
 
         
-        latchSubsystem.latch.setReverse();
-        assertTrue("Latch starts released", latchSubsystem.latch.getIsReverse());
+        latchSubsystem.latch.setDoubleSolenoid(DoubleSolenoidMode.REVERSE);
+        assertTrue("Latch starts released", latchSubsystem.latch.getDoubleSolenoidMode() == DoubleSolenoidMode.REVERSE);
         latchArmCommand.initialize();
         latchArmCommand.execute();
-        assertTrue("Latch is now armed", latchSubsystem.latch.getIsForward());
+        assertTrue("Latch is now armed", latchSubsystem.latch.getDoubleSolenoidMode() == DoubleSolenoidMode.FORWARD);
 
 
     }
