@@ -1239,7 +1239,7 @@
       }
     },
     {
-      "title": "Tab 8",
+      "title": "Collection",
       "autoPopulate": false,
       "autoPopulatePrefix": "",
       "widgetPane": {
@@ -1249,6 +1249,61 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
+          "3,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/CollectorSubsystem/ejectPower",
+              "_title": "Collector Out"
+            }
+          },
+          "3,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/CollectorSubsystem/intakePower",
+              "_title": "Collector In"
+            }
+          },
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/CollectorStage2/Forward Power",
+              "_title": "Stage2 In"
+            }
+          },
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/CollectorStage2/Reverse Power",
+              "_title": "Stage2 Out"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ConveyerSubsystem/Forward Power",
+              "_title": "Conveyor In"
+            }
+          },
           "5,1": {
             "size": [
               1,
@@ -1256,19 +1311,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Current pitch",
-              "_title": "SmartDashboard/PoseSubsystem/Current pitch"
-            }
-          },
-          "6,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Current roll",
-              "_title": "SmartDashboard/PoseSubsystem/Current roll"
+              "_source0": "network_table:///SmartDashboard/ConveyerSubsystem/Reverse Power",
+              "_title": "Conveyor Out"
             }
           }
         }
@@ -1276,9 +1320,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -7.199999809265137,
-    "y": -7.199999809265137,
-    "width": 1550.4000244140625,
-    "height": 830.4000244140625
+    "x": 0.800000011920929,
+    "y": 0.800000011920929,
+    "width": 1534.4000244140625,
+    "height": 814.4000244140625
   }
 }
