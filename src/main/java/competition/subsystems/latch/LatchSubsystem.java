@@ -14,10 +14,11 @@ public class LatchSubsystem extends BaseSubsystem {
     public XDoubleSolenoid latch;
 
     private int numberOfUnlatches = 0;
+    final ElectricalContract contract;
 
     @Inject
     public LatchSubsystem(CommonLibFactory factory, ElectricalContract contract) {
-        
+        this.contract = contract;
         if (contract.arePneumaticsReady()) {
             latch = factory.createDoubleSolenoid(
                 factory.createSolenoid(contract.getLatchSolenoid().channel), 
@@ -27,10 +28,14 @@ public class LatchSubsystem extends BaseSubsystem {
     }
 
     public void arm(){
-        latch.setDoubleSolenoid(DoubleSolenoidMode.FORWARD);
+        if (contract.arePneumaticsReady()) {
+            latch.setDoubleSolenoid(DoubleSolenoidMode.FORWARD);
+        }
     }
     public void release(){
-        latch.setDoubleSolenoid(DoubleSolenoidMode.REVERSE);
+        if (contract.arePneumaticsReady()) {
+            latch.setDoubleSolenoid(DoubleSolenoidMode.REVERSE);
+        }
         numberOfUnlatches++;
     }
 
