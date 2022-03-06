@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 
 import org.apache.log4j.Logger;
 
-import competition.subsystems.conveyer.ConveyerSubsystem;
+import competition.subsystems.conveyer.ConveyorSubsystem;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -15,7 +15,7 @@ public class ShutdownShootingCommand extends SequentialCommandGroup {
     private static Logger log = Logger.getLogger(ShutdownShootingCommand.class);
 
     @Inject
-    public ShutdownShootingCommand(ConveyerSubsystem conveyor, ShooterWheelSubsystem wheel) {
+    public ShutdownShootingCommand(ConveyorSubsystem conveyor, ShooterWheelSubsystem wheel) {
         DelayViaSupplierCommand waitCommand = new DelayViaSupplierCommand(() -> 1.0);
 
         // Stop the conveyor immediately, while the shooter wheel is still running.

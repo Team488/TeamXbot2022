@@ -11,12 +11,12 @@ import xbot.common.properties.PropertyFactory;
 import xbot.common.subsystems.simplemotor.SimpleMotorSubsystem;
 
 @Singleton
-public class ConveyerSubsystem extends SimpleMotorSubsystem {
+public class ConveyorSubsystem extends SimpleMotorSubsystem {
     public final XCANTalon motor;
     public final boolean isReady;
 
     @Inject
-    public ConveyerSubsystem(PropertyFactory pf, CommonLibFactory clf, ElectricalContract eContract) {
+    public ConveyorSubsystem(PropertyFactory pf, CommonLibFactory clf, ElectricalContract eContract) {
         super("ConveyerSubsystem", pf);
         this.isReady = eContract.isConveyerReady();
         if(isReady) {
