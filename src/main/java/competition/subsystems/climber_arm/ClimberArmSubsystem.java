@@ -3,8 +3,10 @@ package competition.subsystems.climber_arm;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.FaultID;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
+import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
 import competition.electrical_contract.ElectricalContract;
 import competition.injection.arm.ArmInstance;
@@ -102,7 +104,31 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
             }
         });
 
+        setupStatusFrames();
+
         this.register();
+    }
+    
+    /**
+     * Set up status frame intervals to reduce unnecessary CAN activity.
+     */
+    private void setupStatusFrames() {
+        if (this.contract.isClimberReady()) {
+            // We need to re-set frame intervals after a device reset.
+            if (this.armMotor.getStickyFault(FaultID.kHasReset)) {
+                log.info("Setting status frame periods.");
+
+                // See https://docs.revrobotics.com/sparkmax/operating-modes/control-interfaces#periodic-status-frames
+                // for description of the different status frames. kStatus2 is the only frame with data needed for software PID.
+
+                this.armMotor.getInternalSparkMax().setPeriodicFramePeriod(PeriodicFrame.kStatus0, 500 /* default 10 */);
+                this.armMotor.getInternalSparkMax().setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20 /* default 20 */);
+                this.armMotor.getInternalSparkMax().setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20 /* default 20 */);
+                this.armMotor.getInternalSparkMax().setPeriodicFramePeriod(PeriodicFrame.kStatus3, 500 /* default 50 */);
+                
+                this.armMotor.clearFaults();
+            }
+        }
     }
 
     @Override
@@ -278,5 +304,6 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     @Override
     public void periodic() {
         this.armMotorPositionProp.set(getPosition());
+        setupStatusFrames();
     }
 }
