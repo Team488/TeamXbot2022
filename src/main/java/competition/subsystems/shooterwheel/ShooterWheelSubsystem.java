@@ -4,6 +4,8 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.ExternalFollower;
+import com.revrobotics.CANSparkMax.FaultID;
+import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
 import competition.electrical_contract.ElectricalContract;
 import xbot.common.command.BaseSetpointSubsystem;
@@ -62,6 +64,43 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
             this.leader.follow(ExternalFollower.kFollowerDisabled, 0);
             leader.burnFlash();
             follower.burnFlash();
+
+            setupStatusFrames();
+        }
+    }
+
+    /**
+     * Set up status frame intervals to reduce unnecessary CAN activity.
+     */
+    private void setupStatusFrames() {
+        if (this.contract.isDriveReady()) {
+            // We need to re-set frame intervals after a device reset.
+            if (this.leader.getStickyFault(FaultID.kHasReset)) {
+                log.info("Setting status frame periods for leader.");
+
+                // See https://docs.revrobotics.com/sparkmax/operating-modes/control-interfaces#periodic-status-frames
+                // for description of the different status frames. kStatus0 is used to pass output to follower, so it
+                // needs to be relatively frequent.
+
+                this.leader.getInternalSparkMax().setPeriodicFramePeriod(PeriodicFrame.kStatus0, 10 /* default 10 */);
+                this.leader.getInternalSparkMax().setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20 /* default 20 */);
+                this.leader.getInternalSparkMax().setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20 /* default 20 */);
+                this.leader.getInternalSparkMax().setPeriodicFramePeriod(PeriodicFrame.kStatus3, 500 /* default 50 */);
+                
+                this.leader.clearFaults();
+            }
+
+            if (this.follower.getStickyFault(FaultID.kHasReset)) {
+                log.info("Setting status frame periods for follower.");
+
+                // The follower does not need to publish as frequently as the leader.
+                this.follower.getInternalSparkMax().setPeriodicFramePeriod(PeriodicFrame.kStatus0, 500 /* default 10 */);
+                this.follower.getInternalSparkMax().setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20 /* default 20 */);
+                this.follower.getInternalSparkMax().setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20 /* default 20 */);
+                this.follower.getInternalSparkMax().setPeriodicFramePeriod(PeriodicFrame.kStatus3, 500 /* default 50 */);
+                
+                this.follower.clearFaults();
+            }
         }
     }
 
@@ -155,6 +194,7 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
             leader.periodic();
             //follower.periodic();
             currentRpmProp.set(getCurrentRPM());
+            setupStatusFrames();
         }
     }
 
