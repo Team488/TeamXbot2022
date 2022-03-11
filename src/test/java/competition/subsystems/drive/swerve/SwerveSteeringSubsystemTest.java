@@ -14,14 +14,14 @@ import competition.electrical_conract.TestElectricalContract;
 import competition.electrical_contract.ElectricalContract;
 import competition.subsystems.drive.DriveSubsystem;
 import xbot.common.controls.actuators.mock_adapters.MockCANSparkMax;
-import xbot.common.controls.sensors.mock_adapters.MockAbsoluteEncoder;
+import xbot.common.controls.sensors.mock_adapters.MockCANCoder;
 
 public class SwerveSteeringSubsystemTest extends BaseCompetitionTest {
     
     private TestElectricalContract contract;
     private SwerveSteeringSubsystem subsystem;
     private MockCANSparkMax motorController;
-    private MockAbsoluteEncoder absoluteEncoder;
+    private MockCANCoder absoluteEncoder;
 
     @Override
     public void setUp() {
@@ -31,7 +31,7 @@ public class SwerveSteeringSubsystemTest extends BaseCompetitionTest {
             .getFrontLeftSwerveModuleSubsystem()
             .getSteeringSubsystem();
         this.motorController = (MockCANSparkMax)subsystem.getSparkMax();
-        this.absoluteEncoder = (MockAbsoluteEncoder)subsystem.getEncoder();
+        this.absoluteEncoder = (MockCANCoder)subsystem.getEncoder();
     }
 
     @Test
@@ -55,7 +55,7 @@ public class SwerveSteeringSubsystemTest extends BaseCompetitionTest {
 
         assertEquals("The SparkMAX position should not impact our reported position since XAbsoluteEncoder is available", 0, position, 0.001);
 
-        ((MockAbsoluteEncoder)subsystem.getEncoder()).setAbsolutePosition(10);
+        ((MockCANCoder)subsystem.getEncoder()).setAbsolutePosition(10);
         position = subsystem.getBestEncoderPositionInDegrees();
 
         assertEquals("The new encoder value should be reflected", 10, position, 0.001);
