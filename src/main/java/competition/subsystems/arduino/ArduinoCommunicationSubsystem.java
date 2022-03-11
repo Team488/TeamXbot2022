@@ -28,10 +28,12 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
 
     XDigitalOutput[] dioOutputs;
 
+    private int loopCounter;
+    private final int loopMod = 5;
+
     private final PoseSubsystem pose;
 
     private final StringProperty chosenState;
-    private final StringProperty binaryString;
     private final BooleanProperty dio0Property;
     private final BooleanProperty dio1Property;
     private final BooleanProperty dio2Property;
@@ -68,10 +70,10 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
         analogOutput = clf.createPWM(contract.getArduinoAnalogOutput().channel);
 
         dioOutputs = new XDigitalOutput[] { dio3, dio2, dio1, dio0 };
+        loopCounter = 0;
 
         pf.setPrefix(this);
         chosenState = pf.createEphemeralProperty("ArduinoState", "Nothing Yet Set");
-        binaryString = pf.createEphemeralProperty("ArduinoBinaryString", "Nothing Yet Set");
         dio0Property = pf.createEphemeralProperty("DIO0", false);
         dio1Property = pf.createEphemeralProperty("DIO1", false);
         dio2Property = pf.createEphemeralProperty("DIO2", false);
@@ -81,15 +83,16 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
 
         this.register();
     }
-
-    public static String toBinary(int x, int digits) {
-        return String.format("%" + digits + "s", Integer.toBinaryString(x)).replaceAll(" ", "0");
-    }
  
     int counter = 0;
 
     @Override
     public void periodic() {
+        // We don't need to run this every cycle.
+        if (this.loopCounter++ % loopMod != 0) {
+            return;
+        }
+
         boolean dsEnabled = DriverStation.isEnabled();
         boolean isRedAlliance = DriverStation.getAlliance() == Alliance.Red;
 
@@ -109,17 +112,14 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
             }
         }
 
-        // Convert the state to a 4-bit binary string
-        String stateBinary = toBinary(currentState.getValue(), 4);
-
-        // Go through the 4-bit string and set the appropriate dio
-        // The a value of 3 would show as 0011.
+        // Go through the bits of the state and set the appropriate dio
         // We start at the right and work our way left, so we start at
         // index 3 (picking up that leftmost 1). The dioOutputs array is ordered
         // such that the element at index 3 is dio0 to match how the arduino currently
         // parses the binary data.
+        int stateValue = currentState.getValue();
         for (int i = 3; i >=0; i--) {
-            dioOutputs[i].set(stateBinary.charAt(i) == '1');
+            dioOutputs[3 - i].set((stateValue & (1 << i)) != 0);
         }
 
         // Sweep through PWM values for now.
@@ -127,7 +127,6 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
         counter++;
 
         chosenState.set(currentState.toString());
-        binaryString.set(stateBinary);
         dio0Property.set(dio0.get());
         dio1Property.set(dio1.get());
         dio2Property.set(dio2.get());

@@ -2,6 +2,8 @@ package competition.subsystems.drive.swerve;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.revrobotics.CANSparkMax.FaultID;
+import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
 import org.apache.log4j.Logger;
 
@@ -53,6 +55,31 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
         if (electricalContract.isDriveReady()) {
             this.motorController = factory.createCANSparkMax(electricalContract.getDriveNeo(swerveInstance), this.getPrefix(), "DriveNeo");
             setMotorControllerPositionPidParameters();
+            setupStatusFrames();
+        }
+
+        this.register();
+    }
+
+    /**
+     * Set up status frame intervals to reduce unnecessary CAN activity.
+     */
+    private void setupStatusFrames() {
+        if (this.contract.isDriveReady()) {
+            // We need to re-set frame intervals after a device reset.
+            if (this.motorController.getStickyFault(FaultID.kHasReset)) {
+                log.info("Setting status frame periods.");
+
+                // See https://docs.revrobotics.com/sparkmax/operating-modes/control-interfaces#periodic-status-frames
+                // for description of the different status frames. kStatus2 is the only frame with data needed for software PID.
+
+                this.motorController.getInternalSparkMax().setPeriodicFramePeriod(PeriodicFrame.kStatus0, 500 /* default 10 */);
+                this.motorController.getInternalSparkMax().setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20 /* default 20 */);
+                this.motorController.getInternalSparkMax().setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20 /* default 20 */);
+                this.motorController.getInternalSparkMax().setPeriodicFramePeriod(PeriodicFrame.kStatus3, 500 /* default 50 */);
+                
+                this.motorController.clearFaults();
+            }
         }
     }
 
@@ -135,6 +162,7 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
     public void periodic() {
         if (contract.isDriveReady()) {
             currentVelocity.set(this.getCurrentValue());
+            setupStatusFrames();
         }
     }
 }

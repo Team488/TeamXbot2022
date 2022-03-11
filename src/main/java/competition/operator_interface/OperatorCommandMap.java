@@ -30,7 +30,7 @@ import competition.subsystems.collector.commands.IntakeCommand;
 import competition.subsystems.collector_deployment.commands.DeployCollectorCommand;
 import competition.subsystems.collector_deployment.commands.RetractCollectorCommand;
 import competition.subsystems.collector_stage_2.CollectorStage2Subsystem;
-import competition.subsystems.conveyer.ConveyerSubsystem;
+import competition.subsystems.conveyer.ConveyorSubsystem;
 import competition.subsystems.deploy_hood.commands.HoodDeployCommand;
 import competition.subsystems.deploy_hood.commands.HoodRetractCommand;
 import competition.subsystems.drive.commands.CalibrateSteeringCommand;
@@ -116,7 +116,7 @@ public class OperatorCommandMap {
             MotorArmSetZeroCommand calibrateBothArms,
             DualArmBalancerCommand dualArmBalancer,
             PivotAccordingToArm pivotAccordingToArm,
-            ConveyerSubsystem conveyer,
+            ConveyorSubsystem conveyer,
             @LeftArm ClimberArmMaintainerCommand leftArmMaintainer,
             @RightArm ClimberArmMaintainerCommand rightArmMaintainer,
             @LeftArm MotorArmStopCommand stopLeftArm,
@@ -249,7 +249,7 @@ public class OperatorCommandMap {
     }
 
     @Inject
-    public void setupCollectionCommands(IntakeCommand intake, EjectCommand eject, ConveyerSubsystem conveyer,
+    public void setupCollectionCommands(IntakeCommand intake, EjectCommand eject, ConveyorSubsystem conveyer,
             CollectorStage2Subsystem stageTwo, DeployCollectorCommand deployCollector, RetractCollectorCommand retractCollector) {
 
         ParallelCommandGroup groupIntake = new ParallelCommandGroup(intake, stageTwo.getForwardCommand());
