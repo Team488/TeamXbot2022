@@ -2,12 +2,10 @@ package competition.auto_programs;
 
 import com.google.inject.Inject;
 
-import org.ejml.simple.ConvertToImaginaryException;
-
 import competition.subsystems.collector.commands.IntakeCommand;
 import competition.subsystems.collector_deployment.commands.DeployCollectorCommand;
 import competition.subsystems.collector_stage_2.CollectorStage2Subsystem;
-import competition.subsystems.conveyer.ConveyerSubsystem;
+import competition.subsystems.conveyer.ConveyorSubsystem;
 import competition.subsystems.drive.commands.SwerveToPointCommand;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
@@ -30,7 +28,7 @@ public class GoCollectComebackCommand extends SequentialCommandGroup {
         DeployCollectorCommand deployCommand2,
         SwerveToPointCommand goBackToStart,
         ShooterWheelSubsystem shooter,
-        ConveyerSubsystem conveyer
+        ConveyorSubsystem conveyer
         ) {
             goThreeFeet.setTargetPosition(new XYPair(0, 36), 90);
             goThreeFeet.setRobotRelativeMotion();

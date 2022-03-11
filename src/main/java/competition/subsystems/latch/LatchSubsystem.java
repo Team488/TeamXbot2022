@@ -12,8 +12,6 @@ import xbot.common.injection.wpi_factories.CommonLibFactory;
 @Singleton
 public class LatchSubsystem extends BaseSubsystem {
     public XDoubleSolenoid latch;
-
-    private final ElectricalContract contract;
     private int numberOfUnlatches = 0;
     final ElectricalContract contract;
 
