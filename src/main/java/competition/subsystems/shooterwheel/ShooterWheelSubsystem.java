@@ -24,6 +24,7 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
     private final DoubleProperty safeRpm;
     private final DoubleProperty nearShotRpm;
     private final DoubleProperty distanceShotRpm;
+    private final DoubleProperty hotDogRpm;
 
     private final DoubleProperty safePower;
 
@@ -34,7 +35,8 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
     public enum TargetRPM {
         Safe,
         NearShot,
-        DistanceShot
+        DistanceShot,
+        HotDogRoller
     }
 
     @Inject
@@ -50,6 +52,7 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
         safeRpm = pf.createPersistentProperty("SafeRpm", 500);
         nearShotRpm = pf.createPersistentProperty("NearShotRpm", 750);
         distanceShotRpm = pf.createPersistentProperty("DistanceShotRpm", 1000);
+        hotDogRpm = pf.createPersistentProperty("HotDogRpm", -200);
 
         safePower = pf.createPersistentProperty("SafePower", 0.1);
 
@@ -114,6 +117,9 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
                 break;
             case DistanceShot:
                 setTargetRPM(distanceShotRpm.get());
+                break;
+            case HotDogRoller:
+                setTargetRPM(hotDogRpm.get());
                 break;
             default:
                 setTargetRPM(0);

@@ -4,6 +4,9 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
+import competition.auto_programs.DoNothingCommand;
+import competition.auto_programs.DriveFiveFeetCommand;
+import competition.auto_programs.GoCollectComebackCommand;
 import competition.injection.arm.LeftArm;
 import competition.injection.arm.RightArm;
 import competition.injection.swerve.FrontLeftDrive;
@@ -60,6 +63,7 @@ import xbot.common.math.XYPair;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.properties.SmartDashboardTableWrapper;
+import xbot.common.subsystems.autonomous.SetAutonomousCommand;
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 
 /**
@@ -279,5 +283,25 @@ public class OperatorCommandMap {
 
         SmartDashboard.putData(setFastMode);
         SmartDashboard.putData(setSlowMode);
+    }
+
+    @Inject
+    public void setupAutonomousCommands(
+        DoNothingCommand doNothing,
+        DriveFiveFeetCommand driveFiveFeet,
+        GoCollectComebackCommand goCollectComeback,
+        Provider<SetAutonomousCommand> setAutoCommandProvider)
+    {
+        SetAutonomousCommand setDoNothing = setAutoCommandProvider.get();
+        setDoNothing.setAutoCommand(doNothing);
+        SetAutonomousCommand setDriveFiveFeet = setAutoCommandProvider.get();
+        setDriveFiveFeet.setAutoCommand(driveFiveFeet);
+        SetAutonomousCommand setGoCollectComeback = setAutoCommandProvider.get();
+        setGoCollectComeback.setAutoCommand(goCollectComeback);
+
+        setDoNothing.includeOnSmartDashboard("AutoPrograms/DoNothing");
+        setDriveFiveFeet.includeOnSmartDashboard("AutoPrograms/DriveFiveFeet");
+        setGoCollectComeback.includeOnSmartDashboard("AutoPrograms/GoCollectComeback");
+
     }
 }

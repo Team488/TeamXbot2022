@@ -18,19 +18,28 @@ public class CollectorSubsystem extends BaseSubsystem{
     public DoubleProperty intakePower;
     public DoubleProperty ejectPower;
 
+    final ElectricalContract contract;
+
     @Inject
     public CollectorSubsystem(CommonLibFactory factory, PropertyFactory pf, ElectricalContract eContract){
-        collectorMotor = factory.createCANTalon(eContract.getLeftCollectorMotor());
-        collectorMotor2 = factory.createCANTalon(eContract.getRightCollectorMotor());
-
+        this.contract = eContract;
+        if (eContract.isIntakeReady()) {
+            collectorMotor = factory.createCANTalon(eContract.getLeftCollectorMotor());
+            collectorMotor2 = factory.createCANTalon(eContract.getRightCollectorMotor());
+        } else {
+            collectorMotor = null;
+            collectorMotor2 = null;
+        }
         pf.setPrefix(this);
         intakePower = pf.createPersistentProperty("intakePower", 1);
         ejectPower = pf.createPersistentProperty("ejectPower", -1);
     }
 
     private void setMotorPower(double power){
-        collectorMotor.set(ControlMode.PercentOutput, power);
-        collectorMotor2.set(ControlMode.PercentOutput, power);
+        if (contract.isIntakeReady()){
+            collectorMotor.set(ControlMode.PercentOutput, power);
+            collectorMotor2.set(ControlMode.PercentOutput, power);
+        }
     }
 
     public void intake(){
