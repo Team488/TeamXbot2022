@@ -10,6 +10,7 @@ public class DriveFiveFeetCommand extends SequentialCommandGroup{
     @Inject
     public DriveFiveFeetCommand (SwerveToPointCommand goFiveFeet) {
         goFiveFeet.setTargetPosition(new XYPair(0, 60), 90);
+        goFiveFeet.setRobotRelativeMotion();
         this.addCommands(goFiveFeet);
     }
 }
