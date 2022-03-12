@@ -47,7 +47,7 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public boolean isCollectorStage2Ready() {
-        return true;
+        return false;
     }
 
     @Override

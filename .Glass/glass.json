@@ -1,0 +1,56 @@
+{
+  "NetworkTables": {
+    "SmartDashboard": {
+      "ClimberArmSubsystem": {
+        "LeftArm": {
+          "open": true
+        },
+        "open": true
+      },
+      "open": true
+    },
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/AutoPrograms/DoNothing": "Command",
+      "/SmartDashboard/AutoPrograms/DriveFiveFeet": "Command",
+      "/SmartDashboard/AutoPrograms/GoCollectComeback": "Command",
+      "/SmartDashboard/Commit steering pid values": "Command",
+      "/SmartDashboard/LatchArmCommand": "Command",
+      "/SmartDashboard/LatchReleaseCommand": "Command",
+      "/SmartDashboard/Scheduler": "Scheduler",
+      "/SmartDashboard/SetArmsToPositionCommand: ClearCurrentBar": "Command",
+      "/SmartDashboard/SetArmsToPositionCommand: EngageNextBar": "Command",
+      "/SmartDashboard/SetArmsToPositionCommand: FullyExtended": "Command",
+      "/SmartDashboard/SetArmsToPositionCommand: FullyRetracted": "Command",
+      "/SmartDashboard/SetFastMode": "Command",
+      "/SmartDashboard/SetSlowMode": "Command",
+      "/SmartDashboard/StopShooterWheelCommand": "Command",
+      "/SmartDashboard/Trim Up": "Command",
+      "/SmartDashboard/Trim down": "Command"
+    }
+  },
+  "NetworkTables Settings": {
+    "mode": "Client",
+    "serverTeam": "488"
+  },
+  "Plots": {
+    "Plot <0>": {
+      "plots": [
+        {
+          "height": 332,
+          "series": [
+            {
+              "color": [
+                0.2980392277240753,
+                0.44705885648727417,
+                0.6901960968971252,
+                1.0
+              ],
+              "id": "NT:/SmartDashboard/ClimberArmSubsystem/LeftArm/ArmInstantVelocity"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

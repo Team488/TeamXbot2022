@@ -867,7 +867,7 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "4,1": {
+          "3,1": {
             "size": [
               1,
               1
@@ -878,7 +878,7 @@
               "_title": "/SmartDashboard/ClimberArmSubsystem/LeftArm/ArmMotorPosition"
             }
           },
-          "4,0": {
+          "3,0": {
             "size": [
               1,
               1
@@ -891,7 +891,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "6,1": {
+          "5,1": {
             "size": [
               1,
               1
@@ -902,7 +902,7 @@
               "_title": "/SmartDashboard/ClimberArmSubsystem/RightArm/ArmMotorPosition"
             }
           },
-          "6,0": {
+          "5,0": {
             "size": [
               1,
               1
@@ -959,105 +959,6 @@
               "_title": "/SmartDashboard/ClimberArmSubsystem/PowerFactor"
             }
           },
-          "4,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/TargetPosition",
-              "_title": "SmartDashboard/ClimberArmSubsystem/LeftArm/TargetPosition"
-            }
-          },
-          "6,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/TargetPosition",
-              "_title": "SmartDashboard/ClimberArmSubsystem/RightArm/TargetPosition"
-            }
-          },
-          "3,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand: FullyRetracted",
-              "_title": "SmartDashboard/SetArmsToPositionCommand: FullyRetracted"
-            }
-          },
-          "4,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand: ClearCurrentBar",
-              "_title": "SmartDashboard/SetArmsToPositionCommand: ClearCurrentBar"
-            }
-          },
-          "5,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand: EngageNextBar",
-              "_title": "SmartDashboard/SetArmsToPositionCommand: EngageNextBar"
-            }
-          },
-          "6,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand: FullyExtended",
-              "_title": "SmartDashboard/SetArmsToPositionCommand: FullyExtended"
-            }
-          },
-          "3,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/ClimberArmMaintainerCommand/PositionPID/P",
-              "_title": "SmartDashboard/ClimberArmMaintainerCommand/PositionPID/P"
-            }
-          },
-          "3,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/ClimberArmMaintainerCommand/PositionPID/I",
-              "_title": "SmartDashboard/ClimberArmMaintainerCommand/PositionPID/I"
-            }
-          },
-          "3,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/ClimberArmMaintainerCommand/PositionPID/D",
-              "_title": "SmartDashboard/ClimberArmMaintainerCommand/PositionPID/D"
-            }
-          },
           "7,0": {
             "size": [
               2,
@@ -1069,70 +970,48 @@
               "_title": "SmartDashboard/LatchReleaseCommand"
             }
           },
-          "5,0": {
+          "3,3": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/OperatorInterface/Driver Deadband",
-              "_title": "SmartDashboard/OperatorInterface/Driver Deadband"
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/StallDetector/CurrentTimeWindow",
+              "_title": "SmartDashboard/ClimberArmSubsystem/StallDetector/CurrentTimeWindow"
             }
           },
-          "5,1": {
+          "4,3": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/OperatorInterface/Operator Deadband",
-              "_title": "SmartDashboard/OperatorInterface/Operator Deadband"
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/StallDetector/CurrentLimit",
+              "_title": "SmartDashboard/ClimberArmSubsystem/StallDetector/CurrentLimit"
             }
           },
-          "7,1": {
+          "5,3": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/FullyRetractedPositionInches",
-              "_title": "SmartDashboard/ClimberArmSubsystem/FullyRetractedPositionInches"
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/StallDetector/NoMotionTimeWindow",
+              "_title": "SmartDashboard/ClimberArmSubsystem/StallDetector/NoMotionTimeWindow"
             }
           },
-          "8,1": {
+          "6,3": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/ClearCurrentBarPositionInches",
-              "_title": "SmartDashboard/ClimberArmSubsystem/ClearCurrentBarPositionInches"
-            }
-          },
-          "7,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/EngageNextBarPositionInches",
-              "_title": "SmartDashboard/ClimberArmSubsystem/EngageNextBarPositionInches"
-            }
-          },
-          "8,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/AutomaticPivotInInches",
-              "_title": "SmartDashboard/ClimberArmSubsystem/AutomaticPivotInInches"
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/StallDetector/TryingHardVoltagePercentThreshold",
+              "_title": "SmartDashboard/ClimberArmSubsystem/StallDetector/TryingHardVoltagePercentThreshold"
             }
           },
           "7,3": {
@@ -1142,8 +1021,107 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/FullyExtendedPositionInches",
-              "_title": "SmartDashboard/ClimberArmSubsystem/FullyExtendedPositionInches"
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/StallDetector/LittleMotionThreshold",
+              "_title": "SmartDashboard/ClimberArmSubsystem/StallDetector/LittleMotionThreshold"
+            }
+          },
+          "8,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/StallDetector/StallCoolDown",
+              "_title": "SmartDashboard/ClimberArmSubsystem/StallDetector/StallCoolDown"
+            }
+          },
+          "3,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/ArmInstantVelocity",
+              "_title": "SmartDashboard/ClimberArmSubsystem/LeftArm/ArmInstantVelocity"
+            }
+          },
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/ArmStallState",
+              "_title": "SmartDashboard/ClimberArmSubsystem/LeftArm/ArmStallState"
+            }
+          },
+          "5,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/ArmInstantVelocity",
+              "_title": "SmartDashboard/ClimberArmSubsystem/RightArm/ArmInstantVelocity"
+            }
+          },
+          "6,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/ArmStallState",
+              "_title": "SmartDashboard/ClimberArmSubsystem/RightArm/ArmStallState"
+            }
+          },
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/ArmMotor/Voltage",
+              "_title": "SmartDashboard/ClimberArmSubsystem/LeftArm/ArmMotor/Voltage"
+            }
+          },
+          "4,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/ArmMotor/Current",
+              "_title": "SmartDashboard/ClimberArmSubsystem/LeftArm/ArmMotor/Current"
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/ArmMotor/Voltage",
+              "_title": "SmartDashboard/ClimberArmSubsystem/RightArm/ArmMotor/Voltage"
+            }
+          },
+          "6,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/ArmMotor/Current",
+              "_title": "SmartDashboard/ClimberArmSubsystem/RightArm/ArmMotor/Current"
             }
           }
         }

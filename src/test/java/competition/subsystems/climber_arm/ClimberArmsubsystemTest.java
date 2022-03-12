@@ -83,9 +83,9 @@ public class ClimberArmsubsystemTest extends BaseClimberArmTest {
     @Test
     public void testSetCurrentPositionToZero() {
         assertEquals("Arm position defaults to zero", 0, leftArm.getPosition(), 0.001);
-        assertFalse("Arm should start uncalibrated", leftArm.isCalibrated());
+        assertTrue("Arm should start calibrated", leftArm.isCalibrated());
         leftArm.armMotor.setPosition(10);
-        assertFalse("Arm should still be uncalibrated after motor position changes", leftArm.isCalibrated());
+        assertTrue("Arm should still be calibrated after motor position changes", leftArm.isCalibrated());
         assertEquals("Arm position should be the motor position", 10, leftArm.getPosition(), 0.001);
         leftArm.setCurrentPositionToZero();
         assertTrue("Arm should be calibrated after zeroing", leftArm.isCalibrated());
