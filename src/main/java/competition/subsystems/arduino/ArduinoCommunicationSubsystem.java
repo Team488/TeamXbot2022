@@ -45,7 +45,7 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
         RobotNotBooted(0),
         RobotDisabled(1),
         RobotEnabled(2),
-        RobotNotLevel(3);
+        RobotNotLevel(4);
 
         private int value;
 
