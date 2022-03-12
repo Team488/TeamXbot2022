@@ -246,10 +246,10 @@ public class OperatorCommandMap {
 
     @Inject
     public void setupCollectionCommands(IntakeCommand intake, EjectCommand eject, ConveyorSubsystem conveyer,
-            CollectorStage2Subsystem stageTwo, DeployCollectorCommand deployCollector, RetractCollectorCommand retractCollector) {
+            CollectorStage2Subsystem stageTwo, Provider<DeployCollectorCommand> deployCollector, RetractCollectorCommand retractCollector) {
 
-        ParallelCommandGroup groupIntake = new ParallelCommandGroup(intake, stageTwo.getForwardCommand(), deployCollector, conveyer.getForwardCommand());
-        ParallelCommandGroup groupEject = new ParallelCommandGroup(eject, stageTwo.getReverseCommand(), conveyer.getReverseCommand(), deployCollector);
+        ParallelCommandGroup groupIntake = new ParallelCommandGroup(intake, stageTwo.getForwardCommand(), deployCollector.get(), conveyer.getForwardCommand());
+        ParallelCommandGroup groupEject = new ParallelCommandGroup(eject, stageTwo.getReverseCommand(), conveyer.getReverseCommand(), deployCollector.get());
 
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightTrigger).whenHeld(groupIntake);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftTrigger).whenHeld(groupEject);
