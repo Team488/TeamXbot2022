@@ -9,7 +9,7 @@ import competition.BaseCompetitionTest;
 import competition.operator_interface.OperatorInterface;
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.pose.PoseSubsystem;
-import xbot.common.controls.sensors.mock_adapters.MockAbsoluteEncoder;
+import xbot.common.controls.sensors.mock_adapters.MockCANCoder;
 
 @Ignore
 public abstract class BaseFullSwerveTest extends BaseCompetitionTest{
@@ -31,10 +31,10 @@ public abstract class BaseFullSwerveTest extends BaseCompetitionTest{
     }
 
     protected void setAllSteeringModuleAngles(double angle) {
-        ((MockAbsoluteEncoder)(drive.getFrontLeftSwerveModuleSubsystem().getSteeringSubsystem().getEncoder())).setAbsolutePosition(angle);
-        ((MockAbsoluteEncoder)(drive.getFrontRightSwerveModuleSubsystem().getSteeringSubsystem().getEncoder())).setAbsolutePosition(angle);
-        ((MockAbsoluteEncoder)(drive.getRearLeftSwerveModuleSubsystem().getSteeringSubsystem().getEncoder())).setAbsolutePosition(angle);
-        ((MockAbsoluteEncoder)(drive.getRearRightSwerveModuleSubsystem().getSteeringSubsystem().getEncoder())).setAbsolutePosition(angle);
+        ((MockCANCoder)(drive.getFrontLeftSwerveModuleSubsystem().getSteeringSubsystem().getEncoder())).setAbsolutePosition(angle);
+        ((MockCANCoder)(drive.getFrontRightSwerveModuleSubsystem().getSteeringSubsystem().getEncoder())).setAbsolutePosition(angle);
+        ((MockCANCoder)(drive.getRearLeftSwerveModuleSubsystem().getSteeringSubsystem().getEncoder())).setAbsolutePosition(angle);
+        ((MockCANCoder)(drive.getRearRightSwerveModuleSubsystem().getSteeringSubsystem().getEncoder())).setAbsolutePosition(angle);
     }
 
     protected void checkAllModuleAngle(double angle) {
