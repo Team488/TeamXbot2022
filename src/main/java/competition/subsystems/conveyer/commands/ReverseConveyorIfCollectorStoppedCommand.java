@@ -1,5 +1,7 @@
 package competition.subsystems.conveyer.commands;
 
+import com.google.inject.Inject;
+
 import competition.subsystems.conveyer.ConveyorSubsystem;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
 import xbot.common.command.BaseCommand;
@@ -11,9 +13,11 @@ public class ReverseConveyorIfCollectorStoppedCommand extends BaseCommand {
 
     private boolean skipCommand = false;
 
+    @Inject
     public ReverseConveyorIfCollectorStoppedCommand(ShooterWheelSubsystem shooter, ConveyorSubsystem conveyor) {
         this.shooter = shooter;
         this.conveyor = conveyor;
+        this.addRequirements(conveyor);
     }
 
     @Override
