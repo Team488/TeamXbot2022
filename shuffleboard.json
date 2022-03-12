@@ -255,6 +255,39 @@
               "_source0": "network_table:///SmartDashboard/SwerveDriveWithJoysticksCommand/Turn Power Factor",
               "_title": "/SmartDashboard/SwerveDriveWithJoysticksCommand/Turn Power Factor"
             }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/OperatorInterface/Driver Deadband",
+              "_title": "SmartDashboard/OperatorInterface/Driver Deadband"
+            }
+          },
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/SwerveDriveWithJoysticksCommand/Absolute Orientation Mode",
+              "_title": "SmartDashboard/SwerveDriveWithJoysticksCommand/Absolute Orientation Mode"
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveDriveWithJoysticksCommand/Min Magnitude For Absolute Heading",
+              "_title": "SmartDashboard/SwerveDriveWithJoysticksCommand/Min Magnitude For Absolute Heading"
+            }
           }
         }
       }
@@ -1257,7 +1290,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/CollectorSubsystem/ejectPower",
-              "_title": "Collector Out"
+              "_title": "SmartDashboard/CollectorSubsystem/ejectPower"
             }
           },
           "3,0": {
@@ -1268,7 +1301,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/CollectorSubsystem/intakePower",
-              "_title": "Collector In"
+              "_title": "SmartDashboard/CollectorSubsystem/intakePower"
             }
           },
           "4,0": {
@@ -1279,7 +1312,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/CollectorStage2/Forward Power",
-              "_title": "Stage2 In"
+              "_title": "SmartDashboard/CollectorStage2/Forward Power"
             }
           },
           "4,1": {
@@ -1290,7 +1323,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/CollectorStage2/Reverse Power",
-              "_title": "Stage2 Out"
+              "_title": "SmartDashboard/CollectorStage2/Reverse Power"
             }
           },
           "5,0": {
@@ -1301,7 +1334,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/ConveyerSubsystem/Forward Power",
-              "_title": "Conveyor In"
+              "_title": "SmartDashboard/ConveyerSubsystem/Forward Power"
             }
           },
           "5,1": {
@@ -1312,7 +1345,189 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/ConveyerSubsystem/Reverse Power",
-              "_title": "Conveyor Out"
+              "_title": "SmartDashboard/ConveyerSubsystem/Reverse Power"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Shooting",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/CurrentRPM",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/CurrentRPM"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/SafePower",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/SafePower"
+            }
+          },
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/TrimRPM",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/TrimRPM"
+            }
+          },
+          "4,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/ShooterMaster/kP",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/ShooterMaster/kP"
+            }
+          },
+          "5,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/ShooterMaster/kI",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/ShooterMaster/kI"
+            }
+          },
+          "6,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/ShooterMaster/kD",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/ShooterMaster/kD"
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/TargetRPM",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/TargetRPM"
+            }
+          },
+          "6,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/SafeRpm",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/SafeRpm"
+            }
+          },
+          "7,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/NearShotRpm",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/NearShotRpm"
+            }
+          },
+          "8,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/DistanceShotRpm",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/DistanceShotRpm"
+            }
+          },
+          "9,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/HotDogRpm",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/HotDogRpm"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Autonomous",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "3,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/AutoPrograms/DoNothing",
+              "_title": "SmartDashboard/AutoPrograms/DoNothing"
+            }
+          },
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/AutoPrograms/DriveFiveFeet",
+              "_title": "SmartDashboard/AutoPrograms/DriveFiveFeet"
+            }
+          },
+          "5,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/AutoPrograms/GoCollectComeback",
+              "_title": "SmartDashboard/AutoPrograms/GoCollectComeback"
             }
           }
         }
@@ -1320,9 +1535,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 0.800000011920929,
-    "y": 0.800000011920929,
-    "width": 1534.4000244140625,
-    "height": 814.4000244140625
+    "x": -7.199999809265137,
+    "y": -7.199999809265137,
+    "width": 1550.4000244140625,
+    "height": 830.4000244140625
   }
 }

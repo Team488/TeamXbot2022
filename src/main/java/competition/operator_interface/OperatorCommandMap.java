@@ -6,6 +6,7 @@ import com.google.inject.Singleton;
 
 import competition.auto_programs.DoNothingCommand;
 import competition.auto_programs.DriveFiveFeetCommand;
+import competition.auto_programs.GoCollectComebackCommand;
 import competition.injection.arm.LeftArm;
 import competition.injection.arm.RightArm;
 import competition.injection.swerve.FrontLeftDrive;
@@ -286,15 +287,21 @@ public class OperatorCommandMap {
 
     @Inject
     public void setupAutonomousCommands(
-        SetAutonomousCommand setDoNothing,
         DoNothingCommand doNothing,
-        SetAutonomousCommand setDriveFiveFeet,
-        DriveFiveFeetCommand driveFiveFeet
-    ) {
+        DriveFiveFeetCommand driveFiveFeet,
+        GoCollectComebackCommand goCollectComeback,
+        Provider<SetAutonomousCommand> setAutoCommandProvider)
+    {
+        SetAutonomousCommand setDoNothing = setAutoCommandProvider.get();
         setDoNothing.setAutoCommand(doNothing);
-        setDoNothing.includeOnSmartDashboard("Auto/Do nothing");
-
+        SetAutonomousCommand setDriveFiveFeet = setAutoCommandProvider.get();
         setDriveFiveFeet.setAutoCommand(driveFiveFeet);
-        setDriveFiveFeet.includeOnSmartDashboard("Auto/Drive five feet");
+        SetAutonomousCommand setGoCollectComeback = setAutoCommandProvider.get();
+        setGoCollectComeback.setAutoCommand(goCollectComeback);
+
+        setDoNothing.includeOnSmartDashboard("AutoPrograms/DoNothing");
+        setDriveFiveFeet.includeOnSmartDashboard("AutoPrograms/DriveFiveFeet");
+        setGoCollectComeback.includeOnSmartDashboard("AutoPrograms/GoCollectComeback");
+
     }
 }
