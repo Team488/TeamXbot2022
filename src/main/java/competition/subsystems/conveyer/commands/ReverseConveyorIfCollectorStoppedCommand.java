@@ -17,7 +17,7 @@ public class ReverseConveyorIfCollectorStoppedCommand extends BaseCommand {
     public ReverseConveyorIfCollectorStoppedCommand(ShooterWheelSubsystem shooter, ConveyorSubsystem conveyor) {
         this.shooter = shooter;
         this.conveyor = conveyor;
-        this.addRequirements(conveyor);
+        this.addRequirements(this.conveyor);
     }
 
     @Override
