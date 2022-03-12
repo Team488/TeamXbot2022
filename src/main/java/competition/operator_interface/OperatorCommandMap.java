@@ -154,10 +154,10 @@ public class OperatorCommandMap {
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.A).whenPressed(dualArmBalancer);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.B).whenPressed(maintainArms);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.X).whenPressed(dualArmWithJoysticksUnsafe);
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.Y).whenPressed(calibrateBothArms);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.Back).whenPressed(calibrateBothArms);
 
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(pivotIn);
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(pivotOut);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(pivotIn);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(pivotOut);
 
         ChordButton driverNuclearLaunch = clf.createChordButton(
                 operatorInterface.driverGamepad.getifAvailable(XboxButton.LeftTrigger),
@@ -165,7 +165,7 @@ public class OperatorCommandMap {
 
         ChordButton totalNuclearLaunch = clf.createChordButton(
                 driverNuclearLaunch,
-                operatorInterface.operatorGamepad.getifAvailable(XboxButton.Back));
+                operatorInterface.operatorGamepad.getifAvailable(XboxButton.Start));
 
         totalNuclearLaunch.whenPressed(latchReleaseAndSmallWait);
         latchReleaseDashboardOnly.includeOnSmartDashboard();
@@ -227,10 +227,11 @@ public class OperatorCommandMap {
         oi.shooterGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(decreaseTrim);
         oi.shooterGamepad.getifAvailable(XboxButton.RightTrigger).whenPressed(increaseTrim);
 
+        oi.shooterGamepad.getifAvailable(XboxButton.Y).whenHeld(fireFarCommand);
+        oi.shooterGamepad.getifAvailable(XboxButton.B).whenHeld(fireCloseCommand);
+
         oi.shooterGamepad.getifAvailable(XboxButton.A).whenPressed(setNearShot).whenReleased(setSafe);
         oi.shooterGamepad.getifAvailable(XboxButton.X).whenPressed(setDistanceShot).whenReleased(setSafe);
-        oi.shooterGamepad.getifAvailable(XboxButton.B).whenPressed(stopCommand);
-        oi.shooterGamepad.getifAvailable(XboxButton.Y).whileHeld(setSafePowerPercent);
     }
 
     @Inject
@@ -257,18 +258,13 @@ public class OperatorCommandMap {
 
     @Inject
     public void setupCollectionCommands(IntakeCommand intake, EjectCommand eject, ConveyorSubsystem conveyer,
-            CollectorStage2Subsystem stageTwo, DeployCollectorCommand deployCollector, RetractCollectorCommand retractCollector) {
+            CollectorStage2Subsystem stageTwo, Provider<DeployCollectorCommand> deployCollector, RetractCollectorCommand retractCollector) {
 
-        ParallelCommandGroup groupIntake = new ParallelCommandGroup(intake, stageTwo.getForwardCommand());
-        ParallelCommandGroup groupEject = new ParallelCommandGroup(eject, stageTwo.getReverseCommand());
+        ParallelCommandGroup groupIntake = new ParallelCommandGroup(intake, stageTwo.getForwardCommand(), deployCollector.get(), conveyer.getForwardCommand());
+        ParallelCommandGroup groupEject = new ParallelCommandGroup(eject, stageTwo.getReverseCommand(), conveyer.getReverseCommand(), deployCollector.get());
 
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftTrigger).whenHeld(groupIntake);
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightTrigger).whenHeld(groupEject);
-
-        operatorInterface.operatorGamepad.getPovIfAvailable(0).whenHeld(conveyer.getForwardCommand());
-        operatorInterface.operatorGamepad.getPovIfAvailable(180).whenHeld(conveyer.getReverseCommand());
-
-        operatorInterface.operatorGamepad.getPovIfAvailable(90).whenPressed(deployCollector);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightTrigger).whenHeld(groupIntake);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftTrigger).whenHeld(groupEject);
         operatorInterface.operatorGamepad.getPovIfAvailable(270).whenPressed(retractCollector);
 
     }
