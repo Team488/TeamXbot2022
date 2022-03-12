@@ -20,7 +20,7 @@ public class MotorArmSetZeroCommandTest extends BaseClimberArmTest {
     public void testSetZero() {
         leftArm.armMotor.setPosition(10);
 
-        assertFalse("Subsystem should be uncalibrated", leftArm.isCalibrated());
+        assertTrue("Subsystem should be calibrated", leftArm.isCalibrated());
         assertEquals("Subsystem position should match motor position", 10, leftArm.getPosition(), 0.001);
 
         command.initialize();
