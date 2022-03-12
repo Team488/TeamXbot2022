@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
+import competition.commandgroups.FireCommand;
 import competition.injection.arm.LeftArm;
 import competition.injection.arm.RightArm;
 import competition.injection.swerve.FrontLeftDrive;
@@ -200,8 +201,13 @@ public class OperatorCommandMap {
     @Inject
     public void setShooterCommand ( OperatorInterface oi,
         ShooterWheelSubsystem shooter,
-        StopShooterWheelCommand stopCommand
+        StopShooterWheelCommand stopCommand,
+        FireCommand fireCloseCommand,
+        FireCommand fireFarCommand
     ){
+        fireCloseCommand.setTargetRPM(TargetRPM.NearShot);
+        fireFarCommand.setTargetRPM(TargetRPM.DistanceShot);
+
         InstantCommand increaseTrim = new NamedInstantCommand("ShooterIncreaseTrim100RPMInstantCommand", () -> shooter.changeTrimRPM(100));
         InstantCommand decreaseTrim = new NamedInstantCommand("ShooterDecreaseTrim100RPMInstantCommand", () -> shooter.changeTrimRPM(-100));
         SmartDashboard.putData("Trim Up", increaseTrim);

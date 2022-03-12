@@ -23,7 +23,7 @@ public class PrepareToFireCommand extends SequentialCommandGroup {
     private final DoubleProperty waitTimeProp;
     private final ShooterWheelSubsystem wheel;
     private Supplier<Double> externalWaitSupplier;
-    private Supplier<Double> externalTargetSupplier;
+    private Supplier<TargetRPM> externalTargetSupplier;
 
     private static Logger log = Logger.getLogger(PrepareToFireCommand.class);
 
@@ -54,8 +54,8 @@ public class PrepareToFireCommand extends SequentialCommandGroup {
         super.initialize();
     }
 
-    public void setTargetRPM(Supplier<Double> externalTargetSupplier) {
-        this.externalTargetSupplier = externalTargetSupplier;
+    public void setTargetRPM(TargetRPM target) {
+        this.externalTargetSupplier = () -> target;
     }
 
     public void applyTargetRPM() {
