@@ -4,6 +4,8 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
+import competition.auto_programs.DoNothingCommand;
+import competition.auto_programs.DriveFiveFeetCommand;
 import competition.injection.arm.LeftArm;
 import competition.injection.arm.RightArm;
 import competition.injection.swerve.FrontLeftDrive;
@@ -60,6 +62,7 @@ import xbot.common.math.XYPair;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.properties.SmartDashboardTableWrapper;
+import xbot.common.subsystems.autonomous.SetAutonomousCommand;
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 
 /**
@@ -279,5 +282,19 @@ public class OperatorCommandMap {
 
         SmartDashboard.putData(setFastMode);
         SmartDashboard.putData(setSlowMode);
+    }
+
+    @Inject
+    public void setupAutonomousCommands(
+        SetAutonomousCommand setDoNothing,
+        DoNothingCommand doNothing,
+        SetAutonomousCommand setDriveFiveFeet,
+        DriveFiveFeetCommand driveFiveFeet
+    ) {
+        setDoNothing.setAutoCommand(doNothing);
+        setDoNothing.includeOnSmartDashboard("Auto/Do nothing");
+
+        setDriveFiveFeet.setAutoCommand(driveFiveFeet);
+        setDriveFiveFeet.includeOnSmartDashboard("Auto/Drive five feet");
     }
 }

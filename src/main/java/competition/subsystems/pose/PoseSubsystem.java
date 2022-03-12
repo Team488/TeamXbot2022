@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.math.XYPair;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.subsystems.pose.BasePoseSubsystem;
@@ -22,12 +23,21 @@ public class PoseSubsystem extends BasePoseSubsystem {
 
     final DoubleProperty leftStartPosX;
     final DoubleProperty leftStartPosY;
+    final DoubleProperty leftHeading;
 
     final DoubleProperty midStartPosX;
     final DoubleProperty midStartPosY;
+    final DoubleProperty midHeading;
 
     final DoubleProperty rightStartPosX;
     final DoubleProperty rightStartPosY;
+    final DoubleProperty rightHeading;
+
+    public enum StartingPosition {
+        Left,
+        Middle,
+        Right
+    }
 
     @Inject
     public PoseSubsystem(
@@ -41,12 +51,15 @@ public class PoseSubsystem extends BasePoseSubsystem {
 
         this.leftStartPosX = pf.createPersistentProperty("Starting Left Position X Value", 261);
         this.leftStartPosY = pf.createPersistentProperty("Starting Left Position Y Value", 200);
+        this.leftHeading = pf.createPersistentProperty("Starting Left Heading", 239);
 
         this.midStartPosX = pf.createPersistentProperty("Starting Mid Position X Value", 287);
         this.midStartPosY = pf.createPersistentProperty("Starting Mid Position Y Value", 110);
+        this.midHeading = pf.createPersistentProperty("Starting Mid Heading", -65);
 
         this.rightStartPosX = pf.createPersistentProperty("Starting Right Position X Value", 327);
         this.rightStartPosY = pf.createPersistentProperty("Starting Right Position Y Value", 72);
+        this.rightHeading = pf.createPersistentProperty("Starting Right Heading", -8);
 
     /* Remember: WPILib uses a different coordinate convention than our legacy code. Theirs:
           //   0,+y. 90 degrees
@@ -96,28 +109,32 @@ public class PoseSubsystem extends BasePoseSubsystem {
             totalDistanceY.set(-updatedPosition.getX() * PoseSubsystem.INCHES_IN_A_METER);
     }
 
-    @Inject
-    public void setCurrentPositiontoLeft () {
-        this.leftStartPosX.get();
-        this.leftStartPosY.get();
-
-        setCurrentPosition(leftStartPosX.get(), leftStartPosY.get());
+    public XYPair getStartingPosition(StartingPosition position) {
+        switch (position) {
+            case Left:
+                return new XYPair(leftStartPosX.get(), leftStartPosY.get());
+            case Middle:
+                return new XYPair(midStartPosX.get(), midStartPosY.get());
+            case Right:
+                return new XYPair(rightStartPosX.get(), rightStartPosY.get());
+            default:
+                log.warn("Invalid starting position, returning zero position.");
+                return new XYPair(0, 0);
+        }
     }
 
-    @Inject
-    public void setCurrentPositiontoMid () {
-        this.midStartPosX.get();
-        this.midStartPosY.get();
-
-        setCurrentPosition(midStartPosX.get(), midStartPosY.get());
-    }
-
-    @Inject
-    public void setCurrentPositiontoRight () {
-        this.rightStartPosX.get();
-        this.rightStartPosY.get();
-
-        setCurrentPosition(rightStartPosX.get(), rightStartPosY.get());
+    public Rotation2d getStartingHeading(StartingPosition position) {
+        switch (position) {
+            case Left:
+                return Rotation2d.fromDegrees(leftHeading.get());
+            case Middle:
+                return Rotation2d.fromDegrees(midHeading.get());
+            case Right:
+                return Rotation2d.fromDegrees(rightHeading.get());
+            default:
+                log.warn("Invalid starting position, returning 90 degrees.");
+                return Rotation2d.fromDegrees(90);
+        }
     }
 
     @Override
