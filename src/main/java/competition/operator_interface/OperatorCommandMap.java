@@ -299,6 +299,8 @@ public class OperatorCommandMap {
         SetAutonomousCommand setGoCollectComeback = setAutoCommandProvider.get();
         setGoCollectComeback.setAutoCommand(goCollectComeback);
 
+
+
         setDoNothing.includeOnSmartDashboard("AutoPrograms/DoNothing");
         setDriveFiveFeet.includeOnSmartDashboard("AutoPrograms/DriveFiveFeet");
         setGoCollectComeback.includeOnSmartDashboard("AutoPrograms/GoCollectComeback");

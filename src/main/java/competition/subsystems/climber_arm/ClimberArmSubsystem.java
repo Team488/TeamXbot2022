@@ -15,11 +15,14 @@ import xbot.common.controls.actuators.XCANSparkMax;
 import xbot.common.controls.actuators.XSolenoid;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.logic.Latch;
+import xbot.common.logic.StallDetector;
 import xbot.common.logic.Latch.EdgeType;
+import xbot.common.logic.StallDetector.StallState;
 import xbot.common.math.MathUtils;
 import xbot.common.properties.BooleanProperty;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
+import xbot.common.properties.StringProperty;
 
 @Singleton
 public class ClimberArmSubsystem extends BaseSetpointSubsystem {
@@ -44,6 +47,13 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     public final DoubleProperty positionEngageNextBarProperty;
     public final DoubleProperty positionAutomaticPivotIn;
 
+    final DoubleProperty armInstantVelocity;
+    final StringProperty armStallState;
+
+    StallDetector armStallDetector;
+    double lastArmPosition;
+    double directVelocity;
+
     private enum PidSlot {
         Position(0),
         Velocity(1);
@@ -61,14 +71,13 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
 
     @Inject
     public ClimberArmSubsystem(ArmInstance armInstance, CommonLibFactory factory, PropertyFactory pf, ElectricalContract eContract){
+        label = armInstance.getLabel();
         if (eContract.isClimberReady()) {
             armMotor = factory.createCANSparkMax(eContract.getClimberNeo(armInstance) , this.getPrefix(), "ArmMotor");
             armMotor.enableVoltageCompensation(12);
             armMotor.setIdleMode(IdleMode.kBrake);
             armPawl = factory.createSolenoid(eContract.getClimberPawl(armInstance).channel);
         }
-        
-        label = armInstance.getLabel();
         this.contract = eContract;
         
         // Shared properties
@@ -86,11 +95,15 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         positionEngageNextBarProperty = pf.createPersistentProperty("EngageNextBarPositionInches", 22.5);
         positionAutomaticPivotIn = pf.createPersistentProperty("AutomaticPivotInInches", 23.0);
 
+        armStallDetector = factory.createStallDetector(super.getPrefix());
+
         // Unique properties
         pf.setPrefix(this);
-        isCalibratedProp = pf.createEphemeralProperty("IsArmCalibrated", false);
+        isCalibratedProp = pf.createEphemeralProperty("IsArmCalibrated", true);
         armMotorPositionProp = pf.createEphemeralProperty("ArmMotorPosition", 0.0);
         armPositionTarget = pf.createEphemeralProperty("TargetPosition", 0);
+        armInstantVelocity = pf.createEphemeralProperty("ArmInstantVelocity", 0);
+        armStallState = pf.createEphemeralProperty("ArmStallState", "NotYetRun");
 
 
         safetyLatch = new Latch(true, EdgeType.Both, edge -> {
@@ -208,6 +221,24 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
                 power = MathUtils.constrainDouble(power, 0, 1);
             }
         }
+
+        // Prevent ourself from stalling!
+        if (power < 0) {
+            // If we are in stall cooldown, no point doing anything.
+            if (armStallDetector.wasStalledRecently()) {
+                power = 0;
+            }
+
+            // Feed the stall detector and check behavior
+            StallState stallState = armStallDetector.getIsStalled(armMotor.getOutputCurrent(), power, directVelocity);
+            armStallState.set(stallState.toString());
+            if (stallState == StallState.STALLED || stallState == StallState.WAS_STALLED_RECENTLY) {
+                power = 0;
+            }
+        } else {
+            // No need to stall protect while extending
+            armStallState.set("GoingUp"); 
+        }
         
         if (contract.isClimberReady()) {
             armMotor.set(power);
@@ -304,6 +335,13 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     @Override
     public void periodic() {
         this.armMotorPositionProp.set(getPosition());
+        armMotor.periodic();
         setupStatusFrames();
+
+        double currentPosition = getPosition();
+        directVelocity = currentPosition - lastArmPosition;
+        lastArmPosition = currentPosition;
+
+        armInstantVelocity.set(directVelocity);;
     }
 }
