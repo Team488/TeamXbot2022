@@ -1,5 +1,6 @@
 package competition.subsystems.drive.swerve;
 
+import com.ctre.phoenix.sensors.CANCoderStatusFrame;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.revrobotics.REVLibError;
@@ -14,7 +15,7 @@ import competition.injection.swerve.SwerveInstance;
 import edu.wpi.first.math.MathUtil;
 import xbot.common.command.BaseSetpointSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
-import xbot.common.controls.sensors.XAbsoluteEncoder;
+import xbot.common.controls.sensors.XCANCoder;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.math.MathUtils;
 import xbot.common.math.PIDFactory;
@@ -46,7 +47,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     private final DoubleProperty maxMotorEncoderDrift;
 
     private XCANSparkMax motorController;
-    private XAbsoluteEncoder encoder;
+    private XCANCoder encoder;
 
     private boolean calibrated = false;
     private boolean canCoderUnavailable = false;
@@ -80,10 +81,9 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         if (electricalContract.isDriveReady()) {
             this.motorController = factory.createCANSparkMax(electricalContract.getSteeringNeo(swerveInstance), this.getPrefix(), "SteeringNeo");
             setMotorControllerPositionPidParameters();
-            setupStatusFrames();
         }
         if (electricalContract.areCanCodersReady()) {
-            this.encoder = factory.createAbsoluteEncoder(electricalContract.getSteeringEncoder(swerveInstance), this.getPrefix());
+            this.encoder = factory.createCANCoder(electricalContract.getSteeringEncoder(swerveInstance), this.getPrefix());
             // Since the CANCoders start with absolute knowledge from the start, that means this system
             // is always calibrated.
             calibrated = true;
@@ -92,6 +92,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
                 canCoderUnavailable = true;
             }
         }
+        setupStatusFrames();
 
         this.register();
     }
@@ -115,6 +116,10 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
                 
                 this.motorController.clearFaults();
             }
+        }
+
+        if (this.contract.areCanCodersReady() && this.encoder.hasResetOccurred()) {
+            this.encoder.setStatusFramePeriod(CANCoderStatusFrame.VbatAndFaults, 100);
         }
     }
 
@@ -211,7 +216,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         return this.motorController;
     }
 
-    public XAbsoluteEncoder getEncoder() {
+    public XCANCoder getEncoder() {
         return this.encoder;
     }
 
