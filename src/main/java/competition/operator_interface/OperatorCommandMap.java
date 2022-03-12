@@ -46,6 +46,7 @@ import competition.subsystems.drive.commands.TurnLeft90DegreesCommand;
 import competition.subsystems.latch.commands.LatchArmCommand;
 import competition.subsystems.latch.commands.LatchReleaseCommand;
 import competition.subsystems.pose.PoseSubsystem;
+import competition.subsystems.pose.PoseSubsystem.StartingPosition;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
 import competition.subsystems.shooterwheel.commands.StopShooterWheelCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -293,10 +294,12 @@ public class OperatorCommandMap {
 
     @Inject
     public void setupAutonomousCommands(
+        PoseSubsystem pose,
         DoNothingCommand doNothing,
         DriveFiveFeetCommand driveFiveFeet,
         GoCollectComebackCommand goCollectComeback,
-        Provider<SetAutonomousCommand> setAutoCommandProvider)
+        Provider<SetAutonomousCommand> setAutoCommandProvider,
+        Provider<SetRobotHeadingCommand> setHeadingCommandProvider)
     {
         SetAutonomousCommand setDoNothing = setAutoCommandProvider.get();
         setDoNothing.setAutoCommand(doNothing);
@@ -309,5 +312,15 @@ public class OperatorCommandMap {
         setDriveFiveFeet.includeOnSmartDashboard("AutoPrograms/DriveFiveFeet");
         setGoCollectComeback.includeOnSmartDashboard("AutoPrograms/GoCollectComeback");
 
+        SetRobotHeadingCommand setHeadingForLeftStart = setHeadingCommandProvider.get();
+        setHeadingForLeftStart.setHeadingToApply(pose.getStartingHeading(StartingPosition.Left).getDegrees());
+        SetRobotHeadingCommand setHeadingForMidStart = setHeadingCommandProvider.get();
+        setHeadingForMidStart.setHeadingToApply(pose.getStartingHeading(StartingPosition.Middle).getDegrees());
+        SetRobotHeadingCommand setHeadingForRightStart = setHeadingCommandProvider.get();
+        setHeadingForRightStart.setHeadingToApply(pose.getStartingHeading(StartingPosition.Right).getDegrees());
+
+        setHeadingForLeftStart.includeOnSmartDashboard("Start/Left");
+        setHeadingForMidStart.includeOnSmartDashboard("Start/Middle");
+        setHeadingForRightStart.includeOnSmartDashboard("Start/Right");
     }
 }
