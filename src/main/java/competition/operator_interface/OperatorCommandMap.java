@@ -226,6 +226,9 @@ public class OperatorCommandMap {
         oi.shooterGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(decreaseTrim);
         oi.shooterGamepad.getifAvailable(XboxButton.RightTrigger).whenPressed(increaseTrim);
 
+        oi.shooterGamepad.getifAvailable(XboxButton.Y).whenHeld(fireFarCommand);
+        oi.shooterGamepad.getifAvailable(XboxButton.B).whenHeld(fireCloseCommand);
+
         oi.shooterGamepad.getifAvailable(XboxButton.A).whenPressed(setNearShot).whenReleased(setSafe);
         oi.shooterGamepad.getifAvailable(XboxButton.X).whenPressed(setDistanceShot).whenReleased(setSafe);
         oi.shooterGamepad.getifAvailable(XboxButton.B).whenPressed(stopCommand);
