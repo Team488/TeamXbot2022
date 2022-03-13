@@ -1,6 +1,7 @@
 package competition.subsystems.conveyer;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -21,6 +22,7 @@ public class ConveyorSubsystem extends SimpleMotorSubsystem {
         this.isReady = eContract.isConveyerReady();
         if(isReady) {
             motor = clf.createCANTalon(eContract.getConveyerMotor());
+            motor.setNeutralMode(NeutralMode.Brake);
         } else {
             motor = null;
         }
