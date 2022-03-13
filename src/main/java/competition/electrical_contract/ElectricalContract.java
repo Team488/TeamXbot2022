@@ -35,8 +35,6 @@ public abstract class ElectricalContract {
 
     public abstract CANTalonInfo getLeftCollectorMotor();
 
-    public abstract CANTalonInfo getRightCollectorMotor();
-
     public abstract CANTalonInfo getCollectorStage2Motor();
 
     public abstract boolean isCollectorStage2Ready();
