@@ -13,6 +13,7 @@ import competition.subsystems.climber_arm.ClimberArmSubsystem;
 import competition.subsystems.climber_arm.commands.MotorArmStopCommand;
 import competition.subsystems.collector.CollectorSubsystem;
 import competition.subsystems.collector.commands.StopCollectorCommand;
+import competition.subsystems.compressor.CompressorMonitorCommand;
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.drive.commands.SwerveDriveMaintainerCommand;
 import competition.subsystems.drive.commands.SwerveDriveWithJoysticksCommand;
@@ -23,6 +24,7 @@ import competition.subsystems.latch.LatchSubsystem;
 import competition.subsystems.latch.commands.LatchArmCommand;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
 import competition.subsystems.shooterwheel.commands.ShooterWheelMaintainerCommand;
+import xbot.common.subsystems.compressor.CompressorSubsystem;
 
 @Singleton
 public class SubsystemDefaultCommandMap {
@@ -116,5 +118,10 @@ public class SubsystemDefaultCommandMap {
     @Inject
     public void setupShooterWheelSubsystem(ShooterWheelMaintainerCommand shooterMaintainer, ShooterWheelSubsystem shooter) {
         shooter.setDefaultCommand(shooterMaintainer);
+    }
+
+    @Inject
+    public void setupCompressorSubsystem(CompressorSubsystem compressor, CompressorMonitorCommand command) {
+        compressor.setDefaultCommand(command);
     }
 }

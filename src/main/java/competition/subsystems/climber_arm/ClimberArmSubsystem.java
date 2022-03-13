@@ -281,6 +281,10 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         setMotorPower(power, isSafe);
     }
 
+    public double getPower() {
+        return armMotor.get();
+    }
+
     public void setPositionReference(double positionInInches) {
         // Since we can no longer be sure what the motor is doing, release the pawl just in case
         freePawl();
