@@ -154,13 +154,22 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
             if (headingVector.getMagnitude() > minimumMagnitudeForAbsoluteHeading.get()) {
                 // If the magnitude is greater than the minimum magnitude, we can use the joystick to set the heading.
                 desiredHeading = headingVector.getAngle();
-                drive.setDesiredHeading(desiredHeading);
+                
+                if (pose.getHeadingResetRecently()) {
+                    drive.setDesiredHeading(pose.getCurrentHeading().getDegrees());
+                } else {
+                    drive.setDesiredHeading(desiredHeading);
+                }
                 suggestedRotatePower = headingModule.calculateHeadingPower(desiredHeading);
                 decider.reset();
             } else {
                 // If the joystick isn't deflected enough, we use the last known heading or human input.
                 HumanVsMachineMode recommendedMode = decider.getRecommendedMode(humanRotatePowerFromTriggers);
 
+                if (pose.getHeadingResetRecently()) {
+                    drive.setDesiredHeading(pose.getCurrentHeading().getDegrees());
+                }
+                
                 switch (recommendedMode) {
                     case Coast:
                         suggestedRotatePower = 0;

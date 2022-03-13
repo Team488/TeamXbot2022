@@ -38,6 +38,7 @@ public class SwerveDriveWithJoysticksCommandTest extends BaseFullSwerveTest {
     public void testAbsoluteHeading() {
         ((MockXboxControllerAdapter)oi.driverGamepad).setLeftStick(new XYPair(0, 0));
         ((MockXboxControllerAdapter)oi.driverGamepad).setRightStick(new XYPair(0, 1));
+        timer.advanceTimeInSecondsBy(100);
         command.setAbsoluteHeadingMode(true);
 
         // at this point, a command of 0,1 should be interpreted as a goal of 90 degrees - meaning no motion,
