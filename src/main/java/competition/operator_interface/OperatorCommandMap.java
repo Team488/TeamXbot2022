@@ -100,8 +100,8 @@ public class OperatorCommandMap {
     public void setupDriveCommands(
             DebuggingSwerveWithJoysticksCommand swerveDebugging,
             GoToNextActiveSwerveModuleCommand goToNextActiveSwerveModule) {
-        operatorInterface.driverGamepad.getifAvailable(XboxButton.B).whenPressed(swerveDebugging);
-        operatorInterface.driverGamepad.getifAvailable(XboxButton.X).whenPressed(goToNextActiveSwerveModule);
+        //operatorInterface.driverGamepad.getifAvailable(XboxButton.B).whenPressed(swerveDebugging);
+        //operatorInterface.driverGamepad.getifAvailable(XboxButton.X).whenPressed(goToNextActiveSwerveModule);
 
     }
 
@@ -197,9 +197,9 @@ public class OperatorCommandMap {
                 maintainDriveRearRight,
                 swerveDriveWithJoysticks);
 
-        operatorInterface.driverGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(calibrateSteering);
-        operatorInterface.driverGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(swerveCommands);
-        operatorInterface.driverGamepad.getifAvailable(XboxButton.Back).whenPressed(setSteeringPidValues);
+        //operatorInterface.driverGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(calibrateSteering);
+        //operatorInterface.driverGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(swerveCommands);
+        //operatorInterface.driverGamepad.getifAvailable(XboxButton.Back).whenPressed(setSteeringPidValues);
 
         setSteeringPidValues.includeOnSmartDashboard("Commit steering pid values");
     }
@@ -225,14 +225,14 @@ public class OperatorCommandMap {
         InstantCommand setDistanceShot = new NamedInstantCommand("ShooterDistanceShotSpeed", () -> shooter.setTargetRPM(TargetRPM.DistanceShot));
         NamedRunCommand setSafePowerPercent = new NamedRunCommand("ShooterSafePowerPercent", () -> shooter.setSafePower(), shooter);
 
-        oi.shooterGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(decreaseTrim);
-        oi.shooterGamepad.getifAvailable(XboxButton.RightTrigger).whenPressed(increaseTrim);
+        //oi.shooterGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(decreaseTrim);
+        //oi.shooterGamepad.getifAvailable(XboxButton.RightTrigger).whenPressed(increaseTrim);
 
         oi.operatorGamepad.getifAvailable(XboxButton.Y).whenHeld(fireFarCommand);
         oi.operatorGamepad.getifAvailable(XboxButton.B).whenHeld(fireCloseCommand);
 
-        oi.shooterGamepad.getifAvailable(XboxButton.A).whenPressed(setNearShot).whenReleased(setSafe);
-        oi.shooterGamepad.getifAvailable(XboxButton.X).whenPressed(setDistanceShot).whenReleased(setSafe);
+        //oi.shooterGamepad.getifAvailable(XboxButton.A).whenPressed(setNearShot).whenReleased(setSafe);
+        //oi.shooterGamepad.getifAvailable(XboxButton.X).whenPressed(setDistanceShot).whenReleased(setSafe);
     }
 
     @Inject
@@ -253,8 +253,8 @@ public class OperatorCommandMap {
                 () -> {
                     return angleTarget.get();
                 });
-        oi.driverGamepad.getifAvailable(XboxButton.Start).whenPressed(turnleft90);
-        oi.driverGamepad.getifAvailable(XboxButton.Y).whenPressed(swerveToPoint);
+        //oi.driverGamepad.getifAvailable(XboxButton.Start).whenPressed(turnleft90);
+        //oi.driverGamepad.getifAvailable(XboxButton.Y).whenPressed(swerveToPoint);
     }
 
     @Inject

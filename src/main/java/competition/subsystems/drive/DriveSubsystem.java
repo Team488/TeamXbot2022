@@ -125,6 +125,31 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         return null;
     }
 
+    public void fieldOrientedDrive(
+        XYPair translation, 
+        double rotation, 
+        double currentHeading,
+        XYPair centerOfRotation) {
+        // rotate the translation vector into the robot coordinate frame
+        XYPair fieldRelativeVector = translation.clone();
+        
+        // 90 degrees is the defined "forward" direction for a driver
+        fieldRelativeVector.rotate(90 - currentHeading);
+        
+        // send the rotated vector to be driven
+        move(fieldRelativeVector, rotation, centerOfRotation);
+    }
+
+    boolean collectorOrientedRotationActive;
+
+    public boolean isCollectorRotationActive() {
+        return collectorOrientedRotationActive;
+    }
+
+    public void setCollectorRotationActive(boolean isActive) {
+        collectorOrientedRotationActive = isActive;
+    }
+
     /**
      * Set the target movement speed and rotation, rotating around the center of the robot.
      * @param translate The translation velocity.

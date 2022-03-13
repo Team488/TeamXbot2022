@@ -7,7 +7,9 @@ import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.pose.PoseSubsystem;
 import xbot.common.command.BaseCommand;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.logic.HumanVsMachineDecider;
 import xbot.common.logic.Latch;
+import xbot.common.logic.HumanVsMachineDecider.HumanVsMachineMode;
 import xbot.common.logic.Latch.EdgeType;
 import xbot.common.math.MathUtils;
 import xbot.common.math.XYPair;
@@ -30,10 +32,10 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
     final DoubleProperty drivePowerFactor;
     final DoubleProperty turnPowerFactor;
     final BooleanProperty absoluteOrientationMode;
-    final HeadingAssistModule headingAssist;
     final HeadingModule headingModule;
     final Latch absoluteOrientationLatch;
     final DoubleProperty minimumMagnitudeForAbsoluteHeading;
+    final HumanVsMachineDecider decider;
 
     @Inject
     public SwerveDriveWithJoysticksCommand(DriveSubsystem drive, PoseSubsystem pose, OperatorInterface oi,
@@ -47,9 +49,8 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
         this.turnPowerFactor = pf.createPersistentProperty("Turn Power Factor", 0.5);
         this.absoluteOrientationMode = pf.createPersistentProperty("Absolute Orientation Mode", false);
         this.minimumMagnitudeForAbsoluteHeading = pf.createPersistentProperty("Min Magnitude For Absolute Heading", 0.75);
-
+        this.decider = clf.createHumanVsMachineDecider(this.getPrefix());
         this.headingModule = clf.createHeadingModule(drive.getRotateToHeadingPid());
-        this.headingAssist = clf.createHeadingAssistModule(clf.createHeadingModule(drive.getRotateToHeadingPid()), this.getPrefix());
 
         // Set up a latch to trigger whenever we change the rotational mode. In either case,
         // there's some PIDs that will need to be reset, or goals that need updating.
@@ -72,13 +73,12 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
     @Override
     public void initialize() {
         log.info("Initializing");
-
+        decider.reset();
         resetBeforeStartingAbsoluteOrientation();
         resetBeforeStartingRelativeOrientation();
     }
 
     private void resetBeforeStartingAbsoluteOrientation() {
-        headingAssist.reset();
         // Set our desired heading to the current heading to avoid a surprising
         // change of heading during reset.
         drive.setDesiredHeading(pose.getCurrentHeading().getDegrees());
@@ -116,6 +116,26 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
         // --------------------------------------------------
 
         double suggestedRotatePower = 0;
+
+        double humanRotatePowerFromStick = MathUtils.deadband(
+                oi.driverGamepad.getRightStickX(),
+                oi.getDriverGamepadTypicalDeadband(),
+                (a) -> MathUtils.exponentAndRetainSign(a, (int) input_exponent.get()));
+
+        double humanRotatePowerFromLeftTrigger = MathUtils.deadband(
+                oi.driverGamepad.getLeftTrigger(),
+                oi.getDriverGamepadTypicalDeadband(),
+                (a) -> MathUtils.exponentAndRetainSign(a, (int) input_exponent.get()));
+
+        double humanRotatePowerFromRightTrigger = MathUtils.deadband(
+                oi.driverGamepad.getRightTrigger(),
+                oi.getDriverGamepadTypicalDeadband(),
+                (a) -> MathUtils.exponentAndRetainSign(a, (int) input_exponent.get()));
+
+        double humanRotatePower = MathUtils.constrainDoubleToRobotScale(
+            humanRotatePowerFromStick + humanRotatePowerFromLeftTrigger - humanRotatePowerFromRightTrigger);
+
+        double humanRotatePowerFromTriggers = humanRotatePowerFromLeftTrigger - humanRotatePowerFromRightTrigger;
                 
         if (absoluteOrientationMode.get()) {
             // If we are using absolute orientation, we first need get the desired heading from the right joystick.
@@ -135,22 +155,35 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
                 // If the magnitude is greater than the minimum magnitude, we can use the joystick to set the heading.
                 desiredHeading = headingVector.getAngle();
                 drive.setDesiredHeading(desiredHeading);
+                suggestedRotatePower = headingModule.calculateHeadingPower(desiredHeading);
+                decider.reset();
             } else {
-                // If the joystick isn't deflected enough, we use the last known heading.
-                desiredHeading = drive.getDesiredHeading();
+                // If the joystick isn't deflected enough, we use the last known heading or human input.
+                HumanVsMachineMode recommendedMode = decider.getRecommendedMode(humanRotatePowerFromTriggers);
+
+                switch (recommendedMode) {
+                    case Coast:
+                        suggestedRotatePower = 0;
+                        break;
+                    case HumanControl:
+                        suggestedRotatePower = humanRotatePowerFromTriggers;
+                        break;
+                    case InitializeMachineControl:
+                        drive.setDesiredHeading(pose.getCurrentHeading().getDegrees());
+                        suggestedRotatePower = 0;
+                        break;
+                    case MachineControl:
+                        desiredHeading = drive.getDesiredHeading();
+                        suggestedRotatePower = headingModule.calculateHeadingPower(desiredHeading);
+                        break;
+                    default:
+                        suggestedRotatePower = 0;
+                        break;
+                }
             }
-
-            // Now, finally, we ask the heading module to calculate the power.
-            suggestedRotatePower = headingModule.calculateHeadingPower(desiredHeading);
-
         } else {
             // If we are in the typical "rotate using joystick to turn" mode, use the Heading Assist module to get the suggested power.
-            double humanRotatePower = MathUtils.deadband(
-                oi.driverGamepad.getRightStickX(),
-                oi.getDriverGamepadTypicalDeadband(),
-                (a) -> MathUtils.exponentAndRetainSign(a, (int) input_exponent.get()));
-
-            suggestedRotatePower = humanRotatePower; //headingAssist.calculateHeadingPower(humanRotatePower);
+            suggestedRotatePower = humanRotatePower;
         }
 
         // --------------------------------------------------
