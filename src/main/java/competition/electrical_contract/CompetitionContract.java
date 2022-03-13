@@ -51,6 +51,18 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     @Override
+    public boolean areClimberLimitSensorsReady(ArmInstance armInstance) {
+        switch (armInstance.getLabel()) {
+            case "LeftArm":
+                return true;
+            case "RightArm":
+                return false;
+            default:
+                return false;
+        }
+    }
+
+    @Override
     public DeviceInfo getDriveNeo(SwerveInstance swerveInstance) {
         switch (swerveInstance.getLabel()) {
             case "FrontLeftDrive":
@@ -208,6 +220,30 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     @Override
+    public DeviceInfo getClimberLowerLimitSensor(ArmInstance armInstance) {
+        switch (armInstance.getLabel()) {
+            case "LeftArm":
+                return new DeviceInfo(8);
+            case "RightArm":
+                return new DeviceInfo(7);
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public DeviceInfo getClimberUpperLimitSensor(ArmInstance armInstance) {
+        switch (armInstance.getLabel()) {
+            case "LeftArm":
+                return new DeviceInfo(6);
+            case "RightArm":
+                return new DeviceInfo(9);
+            default:
+                return null;
+        }
+    }
+
+    @Override
     public DeviceInfo getClimberPawl(ArmInstance armInstance) {
         switch (armInstance.getLabel()) {
             case "LeftArm":
@@ -244,7 +280,7 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     public CANTalonInfo getConveyerMotor() {
-        return new CANTalonInfo(24, false);
+        return new CANTalonInfo(24, true);
     }
 
     public DeviceInfo getDeployHoodSoleniod1() {

@@ -6,10 +6,12 @@ import com.google.inject.Inject;
 
 import org.apache.log4j.Logger;
 
-import competition.subsystems.conveyer.commands.ReverseConveyorIfCollectorStoppedCommand;
+import competition.subsystems.conveyer.ConveyorSubsystem;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import xbot.common.command.DelayViaSupplierCommand;
 import xbot.common.command.NamedInstantCommand;
@@ -29,23 +31,26 @@ public class PrepareToFireCommand extends SequentialCommandGroup {
 
     @Inject
     PrepareToFireCommand(ShooterWheelSubsystem wheel,
-            ReverseConveyorIfCollectorStoppedCommand reverseConveyorCommand, PropertyFactory pf) {
+            ConveyorSubsystem conveyor, PropertyFactory pf) {
         pf.setPrefix(this.getName());
         conveyorReverseTimeProp = pf.createPersistentProperty("Conveyor Reverse Time", 0.2);
         waitTimeProp = pf.createPersistentProperty("Max Wait Time", 5);
         this.wheel = wheel;
-
+     
         // We will need to reverse the conveyor for a litle bit before spinning up the shooter to make sure
         // nothing is touching the wheel
+        var setHotDog = new RunCommand(() -> wheel.setTargetRPM(TargetRPM.HotDogRoller), wheel.getSetpointLock());
         var reverseConveyor = new ParallelRaceGroup(
-            reverseConveyorCommand,
+            setHotDog,
+            conveyor.getReverseCommand(),
             new DelayViaSupplierCommand(() -> conveyorReverseTimeProp.get())
         );
 
         var setTargetRPM = new NamedInstantCommand("ApplyShooterTargetRPM", () -> applyTargetRPM(), wheel.getSetpointLock());
         var waitForReadiness = new SimpleWaitForMaintainerCommand(wheel, getWaitTime());
+        var stopConveyor = new InstantCommand(() -> conveyor.stop(), conveyor);
 
-        addCommands(reverseConveyor, setTargetRPM, waitForReadiness);
+        addCommands(reverseConveyor, stopConveyor, setTargetRPM, waitForReadiness);
     }
 
     @Override

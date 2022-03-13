@@ -53,10 +53,14 @@ public class SwerveToPointCommand extends BaseCommand {
             // If the robot was pointed at field 0 degrees (right) this would mean setting
             // a field-relative target of -60, 0 (move the robot left 60 inches).
             targetPosition.rotate(pose.getCurrentHeading().getDegrees() - PoseSubsystem.FACING_AWAY_FROM_DRIVERS);
+            
+            targetPosition = pose.getCurrentFieldPose().getPoint().clone().add(targetPosition);
 
             // Then, move the target heading itself. 
             targetHeading = pose.getCurrentHeading().getDegrees() - 90 + targetHeading;
         }
+
+        log.info(String.format("Swerve to point targets: (%f, %f), %f", targetPosition.x, targetPosition.y, targetHeading));
     }
 
     public void setTargetPosition(XYPair targetPositionInInches, double heading) {
@@ -95,7 +99,7 @@ public class SwerveToPointCommand extends BaseCommand {
 
         double headingPower = headingModule.calculateHeadingPower(targetHeading);
 
-        drive.move(intent, headingPower);
+        drive.fieldOrientedDrive(intent, headingPower, pose.getCurrentHeading().getDegrees(), false);
     }
 
     @Override

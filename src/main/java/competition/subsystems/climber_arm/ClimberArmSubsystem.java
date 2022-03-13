@@ -13,6 +13,7 @@ import competition.injection.arm.ArmInstance;
 import xbot.common.command.BaseSetpointSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
 import xbot.common.controls.actuators.XSolenoid;
+import xbot.common.controls.sensors.XDigitalInput;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.logic.Latch;
 import xbot.common.logic.StallDetector;
@@ -54,6 +55,14 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     double lastArmPosition;
     double directVelocity;
 
+    public XDigitalInput lowerLimitSwitch;
+    public XDigitalInput upperLimitSwitch;
+
+    public final BooleanProperty upperLimitSwitchState;
+    public final BooleanProperty lowerLimitSwitchState;
+
+    ArmInstance armInstance;
+
     private enum PidSlot {
         Position(0),
         Velocity(1);
@@ -72,12 +81,19 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     @Inject
     public ClimberArmSubsystem(ArmInstance armInstance, CommonLibFactory factory, PropertyFactory pf, ElectricalContract eContract){
         label = armInstance.getLabel();
+        this.armInstance = armInstance;
         if (eContract.isClimberReady()) {
             armMotor = factory.createCANSparkMax(eContract.getClimberNeo(armInstance) , this.getPrefix(), "ArmMotor");
             armMotor.enableVoltageCompensation(12);
             armMotor.setIdleMode(IdleMode.kBrake);
             armPawl = factory.createSolenoid(eContract.getClimberPawl(armInstance).channel);
         }
+
+        if (eContract.areClimberLimitSensorsReady(armInstance)) {
+            lowerLimitSwitch = factory.createDigitalInput(eContract.getClimberLowerLimitSensor(armInstance).channel);
+            upperLimitSwitch = factory.createDigitalInput(eContract.getClimberUpperLimitSensor(armInstance).channel);
+        }
+
         this.contract = eContract;
         
         // Shared properties
@@ -104,6 +120,8 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         armPositionTarget = pf.createEphemeralProperty("TargetPosition", 0);
         armInstantVelocity = pf.createEphemeralProperty("ArmInstantVelocity", 0);
         armStallState = pf.createEphemeralProperty("ArmStallState", "NotYetRun");
+        upperLimitSwitchState = pf.createEphemeralProperty("UpperLimitSwitchState", false);
+        lowerLimitSwitchState = pf.createEphemeralProperty("LowerLimitSwitchState", false);
 
 
         safetyLatch = new Latch(true, EdgeType.Both, edge -> {
@@ -213,11 +231,11 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         }
 
         if (isSafe) {
-            if (isArmOverExtended()) {
+            if (isArmOverExtended()/* Add upper limit here when needed */) {
                 power = MathUtils.constrainDouble(power, -1, 0);
 
             } 
-            if (isArmOverRetracted()) {
+            if (isArmOverRetracted() || isAtLowerLimitSwitch()) {
                 power = MathUtils.constrainDouble(power, 0, 1);
             }
         }
@@ -335,6 +353,21 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         return 0;
     }
 
+    public boolean isAtLowerLimitSwitch() {
+        // For now, assume that the swtich is hooked into RoboRIO dio
+        if (contract.areClimberLimitSensorsReady(armInstance)) {
+            return lowerLimitSwitch.get();
+        }
+        return false;
+    }
+
+    public boolean isAtUpperLimitSwitch() {
+        // For now, assume that the swtich is hooked into RoboRIO dio
+        if (contract.areClimberLimitSensorsReady(armInstance)) {
+            return upperLimitSwitch.get();
+        }
+        return false;
+    }
 
     @Override
     public void periodic() {
@@ -347,5 +380,10 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         lastArmPosition = currentPosition;
 
         armInstantVelocity.set(directVelocity);;
+
+        if (contract.areClimberLimitSensorsReady(armInstance)) {
+            upperLimitSwitchState.set(upperLimitSwitch.get());
+            lowerLimitSwitchState.set(lowerLimitSwitch.get());
+        }
     }
 }

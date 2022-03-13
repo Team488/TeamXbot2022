@@ -2,6 +2,7 @@ package competition.subsystems;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 
 import competition.injection.arm.LeftArm;
 import competition.injection.arm.RightArm;
@@ -118,6 +119,10 @@ public class SubsystemDefaultCommandMap {
     @Inject
     public void setupShooterWheelSubsystem(ShooterWheelMaintainerCommand shooterMaintainer, ShooterWheelSubsystem shooter) {
         shooter.setDefaultCommand(shooterMaintainer);
+
+        shooter.getSetpointLock().setDefaultCommand(
+            new RunCommand(() -> {shooter.setTargetRPM(0.0);}, shooter.getSetpointLock())
+        );
     }
 
     @Inject

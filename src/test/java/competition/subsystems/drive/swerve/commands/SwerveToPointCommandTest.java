@@ -70,7 +70,7 @@ public class SwerveToPointCommandTest extends BaseFullSwerveTest {
         command.initialize();
         command.execute();
 
-        checkAllModulesGoingForward(true);
+        checkAllModulesGoingForward(false);
 
         command.setTargetPosition(new XYPair(0,0), 0);
         setAllSteeringModuleAngles(90);
@@ -79,6 +79,24 @@ public class SwerveToPointCommandTest extends BaseFullSwerveTest {
         command.execute();
 
         checkRobotTurning(false);
+    }
+
+    @Test
+    public void autonomousTest() {
+
+        pose.setCurrentPosition(0, -12);
+        pose.setCurrentHeading(90);
+        setAllSteeringModuleAngles(90);
+
+        command.setRobotRelativeMotion();
+        command.setTargetPosition(new XYPair(0, -60), -90);
+
+        command.initialize();
+        command.execute();
+
+        pose.setCurrentPosition(-30,-40);
+
+        command.execute();
     }
 
 }
