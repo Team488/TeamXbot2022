@@ -593,6 +593,17 @@
               "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearRightDrive/CurrentVelocity",
               "_title": "SmartDashboard/SwerveDriveSubsystem/RearRightDrive/CurrentVelocity"
             }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveToPointCommand/Direction to target",
+              "_title": "SmartDashboard/SwerveToPointCommand/Direction to target"
+            }
           }
         }
       }
@@ -1540,7 +1551,7 @@
         "tiles": {
           "3,0": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -1551,7 +1562,7 @@
           },
           "3,1": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -1562,13 +1573,24 @@
           },
           "3,2": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
               "_type": "Command",
               "_source0": "network_table:///SmartDashboard/AutoPrograms/GoCollectComeback",
               "_title": "SmartDashboard/AutoPrograms/GoCollectComeback"
+            }
+          },
+          "3,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/AutoPrograms/ShootCollectShoot",
+              "_title": "SmartDashboard/AutoPrograms/ShootCollectShoot"
             }
           }
         }
