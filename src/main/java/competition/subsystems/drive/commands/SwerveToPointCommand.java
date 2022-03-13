@@ -99,7 +99,7 @@ public class SwerveToPointCommand extends BaseCommand {
 
         double headingPower = headingModule.calculateHeadingPower(targetHeading);
 
-        drive.move(intent, headingPower);
+        drive.fieldOrientedDrive(intent, headingPower, pose.getCurrentHeading().getDegrees(), false);
     }
 
     @Override
