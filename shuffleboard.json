@@ -1534,6 +1534,56 @@
               "_source0": "network_table:///SmartDashboard/PrepareToFireCommand/Conveyor Reverse Time",
               "_title": "SmartDashboard/PrepareToFireCommand/Conveyor Reverse Time"
             }
+          },
+          "7,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Error Within Tolerance",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Error Within Tolerance",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Error Is Time Stable",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Error Is Time Stable",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Subsystem Ready",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Subsystem Ready",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "5,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Error Tolerance",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Error Tolerance"
+            }
           }
         }
       }
@@ -1591,6 +1641,17 @@
               "_type": "Command",
               "_source0": "network_table:///SmartDashboard/AutoPrograms/ShootCollectShoot",
               "_title": "SmartDashboard/AutoPrograms/ShootCollectShoot"
+            }
+          },
+          "4,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Current autonomous command name",
+              "_title": "SmartDashboard/Current autonomous command name"
             }
           }
         }
