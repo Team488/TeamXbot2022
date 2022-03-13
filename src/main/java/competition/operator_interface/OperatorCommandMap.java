@@ -48,6 +48,7 @@ import competition.subsystems.latch.commands.LatchReleaseCommand;
 import competition.subsystems.pose.PoseSubsystem;
 import competition.subsystems.pose.PoseSubsystem.StartingPosition;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
+import competition.subsystems.shooterwheel.commands.ShooterWheelSetPassPowerCommand;
 import competition.subsystems.shooterwheel.commands.StopShooterWheelCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
@@ -258,9 +259,9 @@ public class OperatorCommandMap {
 
     @Inject
     public void setupCollectionCommands(IntakeCommand intake, EjectCommand eject, ConveyorSubsystem conveyer,
-            CollectorStage2Subsystem stageTwo, Provider<DeployCollectorCommand> deployCollector, RetractCollectorCommand retractCollector) {
-
-        ParallelCommandGroup groupIntake = new ParallelCommandGroup(intake, stageTwo.getForwardCommand(), deployCollector.get(), conveyer.getForwardCommand());
+            CollectorStage2Subsystem stageTwo, Provider<DeployCollectorCommand> deployCollector, RetractCollectorCommand retractCollector, ShooterWheelSubsystem shooter) {
+        InstantCommand setHotDog = new NamedInstantCommand("HotDogSpeed", () -> shooter.setTargetRPM(TargetRPM.HotDogRoller));
+        ParallelCommandGroup groupIntake = new ParallelCommandGroup(intake, stageTwo.getForwardCommand(), deployCollector.get(), conveyer.getForwardCommand(), setHotDog);
         ParallelCommandGroup groupEject = new ParallelCommandGroup(eject, stageTwo.getReverseCommand(), conveyer.getReverseCommand(), deployCollector.get());
 
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightTrigger).whenHeld(groupIntake);
