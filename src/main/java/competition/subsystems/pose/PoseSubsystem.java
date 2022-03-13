@@ -8,6 +8,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.math.FieldPose;
+import xbot.common.math.WrappedRotation2d;
 import xbot.common.math.XYPair;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
@@ -163,8 +165,11 @@ public class PoseSubsystem extends BasePoseSubsystem {
         }
     }
 
-    @Override
-    public void setCurrentPosition(double newXPosition, double newYPosition) {
+    public FieldPose getStartingPose(StartingPosition position) {
+        return new FieldPose(getStartingPosition(position), getStartingHeading(position));
+    }
+
+    public void setCurrentPosition(double newXPosition, double newYPosition, WrappedRotation2d heading) {
         super.setCurrentPosition(newXPosition, newYPosition);
         swerveOdometry.resetPosition(
             new Pose2d(
@@ -172,6 +177,16 @@ public class PoseSubsystem extends BasePoseSubsystem {
                 newYPosition / PoseSubsystem.INCHES_IN_A_METER, 
                 this.getCurrentHeading()),
             this.getCurrentHeading());
+    }
+
+    @Override
+    public void setCurrentPosition(double newXPosition, double newYPosition) {
+        setCurrentPosition(newXPosition, newYPosition, this.getCurrentHeading());
+    }
+
+    public void setCurrentPose(FieldPose newPose) {
+        setCurrentPosition(newPose.getPoint().x, newPose.getPoint().y, newPose.getHeading());
+        this.setCurrentHeading(newPose.getHeading().getDegrees());
     }
 
     @Override

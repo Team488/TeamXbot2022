@@ -350,21 +350,27 @@ public class OperatorCommandMap {
         setShootCollectShoot.includeOnSmartDashboard("AutoPrograms/ShootCollectShoot");
         setShootThenEscape.includeOnSmartDashboard("AutoPrograms/ShootThenEscape");
 
-        SetRobotHeadingCommand setHeadingForLeftStart = setHeadingCommandProvider.get();
-        setHeadingForLeftStart.setHeadingToApply(pose.getStartingHeading(StartingPosition.Left).getDegrees());
-        SetRobotHeadingCommand setHeadingForMidStart = setHeadingCommandProvider.get();
-        setHeadingForMidStart.setHeadingToApply(pose.getStartingHeading(StartingPosition.Middle).getDegrees());
-        SetRobotHeadingCommand setHeadingForRightStart = setHeadingCommandProvider.get();
-        setHeadingForRightStart.setHeadingToApply(pose.getStartingHeading(StartingPosition.Right).getDegrees());
-        SetRobotHeadingCommand setHeadingForLeftHubStart = setHeadingCommandProvider.get();
-        setHeadingForRightStart.setHeadingToApply(pose.getStartingHeading(StartingPosition.LeftHub).getDegrees());
-        SetRobotHeadingCommand setHeadingForRightHubStart = setHeadingCommandProvider.get();
-        setHeadingForRightStart.setHeadingToApply(pose.getStartingHeading(StartingPosition.RightHub).getDegrees());
+        operatorInterface.autoGamepad.getPovIfAvailable(0).whenPressed(setDoNothing);
+        operatorInterface.autoGamepad.getPovIfAvailable(90).whenPressed(setDriveFiveFeet);
+        operatorInterface.autoGamepad.getPovIfAvailable(180).whenPressed(shootCollectShoot);
+        operatorInterface.autoGamepad.getPovIfAvailable(270).whenPressed(shootThenEscape);
 
-        setHeadingForLeftStart.includeOnSmartDashboard("Start/Left");
-        setHeadingForMidStart.includeOnSmartDashboard("Start/Middle");
-        setHeadingForRightStart.includeOnSmartDashboard("Start/Right");
-        setHeadingForLeftHubStart.includeOnSmartDashboard("Start/LeftHub");
-        setHeadingForRightHubStart.includeOnSmartDashboard("Start/RightHub");
+        var setPoseforLeftStart = 
+            new InstantCommand(() -> pose.setCurrentPose(pose.getStartingPose(StartingPosition.Left)));
+        var setPoseForMiddleStart = 
+            new InstantCommand(() -> pose.setCurrentPose(pose.getStartingPose(StartingPosition.Middle)));
+        var setPoseForRightStart =
+            new InstantCommand(() -> pose.setCurrentPose(pose.getStartingPose(StartingPosition.Right)));
+        var setPoseForLeftHubStart =
+            new InstantCommand(() -> pose.setCurrentPose(pose.getStartingPose(StartingPosition.LeftHub)));
+        var setPoseForRightHubStart =
+            new InstantCommand(() -> pose.setCurrentPose(pose.getStartingPose(StartingPosition.RightHub)));
+
+
+        SmartDashboard.putData("Start/Left", setPoseforLeftStart);
+        SmartDashboard.putData("Start/Middle", setPoseForMiddleStart);
+        SmartDashboard.putData("Start/Right", setPoseForRightStart);
+        SmartDashboard.putData("Start/LeftHub", setPoseForLeftHubStart);
+        SmartDashboard.putData("Start/RightHub", setPoseForRightHubStart);
     }
 }
