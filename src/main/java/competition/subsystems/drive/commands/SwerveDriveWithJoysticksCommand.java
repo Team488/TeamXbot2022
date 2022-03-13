@@ -124,12 +124,12 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
 
         double humanRotatePowerFromLeftTrigger = MathUtils.deadband(
                 oi.driverGamepad.getLeftTrigger(),
-                oi.getDriverGamepadTypicalDeadband(),
+                0.5,
                 (a) -> MathUtils.exponentAndRetainSign(a, (int) input_exponent.get()));
 
         double humanRotatePowerFromRightTrigger = MathUtils.deadband(
                 oi.driverGamepad.getRightTrigger(),
-                oi.getDriverGamepadTypicalDeadband(),
+                0.5,
                 (a) -> MathUtils.exponentAndRetainSign(a, (int) input_exponent.get()));
 
         double humanRotatePower = MathUtils.constrainDoubleToRobotScale(
@@ -195,8 +195,14 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
             translationIntent.scale(1/translationIntent.getMagnitude());
         }
 
+        // Scale the power down if we are in one or more precision modes
+        translationIntent.scale(drive.isPrecisionTranslationActive() ? 0.5 : 1);
+        suggestedRotatePower = drive.isPrecisionRotationActive() ? suggestedRotatePower * 0.5 : suggestedRotatePower;
+
         // Scale the power down if requested (typically used when novices are controlling the robot)
         translationIntent = translationIntent.scale(drivePowerFactor.get());
-        drive.fieldOrientedDrive(translationIntent, suggestedRotatePower * turnPowerFactor.get(), pose.getCurrentHeading().getDegrees(), false);
+        suggestedRotatePower *= turnPowerFactor.get();
+
+        drive.fieldOrientedDrive(translationIntent, suggestedRotatePower, pose.getCurrentHeading().getDegrees(), false);
     }
 }

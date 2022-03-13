@@ -150,6 +150,25 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         collectorOrientedRotationActive = isActive;
     }
 
+    boolean precisionTranslationActive;
+    boolean precisionRotationActive;
+
+    public boolean isPrecisionTranslationActive() {
+        return precisionTranslationActive;
+    }
+
+    public void setPrecisionTranslationActive(boolean isActive) {
+        precisionTranslationActive = isActive;
+    }
+
+    public boolean isPrecisionRotationActive() {
+        return precisionRotationActive;
+    }
+
+    public void setPrecisionRotationActive(boolean isActive) {
+        precisionRotationActive = isActive;
+    }
+
     /**
      * Set the target movement speed and rotation, rotating around the center of the robot.
      * @param translate The translation velocity.

@@ -35,6 +35,7 @@ import competition.subsystems.collector_stage_2.CollectorStage2Subsystem;
 import competition.subsystems.conveyer.ConveyorSubsystem;
 import competition.subsystems.deploy_hood.commands.HoodDeployCommand;
 import competition.subsystems.deploy_hood.commands.HoodRetractCommand;
+import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.drive.commands.CalibrateSteeringCommand;
 import competition.subsystems.drive.commands.DebuggingSwerveWithJoysticksCommand;
 import competition.subsystems.drive.commands.GoToNextActiveSwerveModuleCommand;
@@ -56,6 +57,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import xbot.common.command.DelayViaSupplierCommand;
 import xbot.common.command.NamedInstantCommand;
 import xbot.common.command.NamedRunCommand;
@@ -93,7 +95,7 @@ public class OperatorCommandMap {
         NamedInstantCommand resetPosition = new NamedInstantCommand("Reset Position",
                 () -> pose.setCurrentPosition(0, 0));
         ParallelCommandGroup resetPose = new ParallelCommandGroup(resetPosition, resetHeading);
-        operatorInterface.driverGamepad.getifAvailable(XboxButton.A).whenPressed(resetPose);
+        operatorInterface.driverGamepad.getifAvailable(XboxButton.LeftTrigger).whenPressed(resetPose);
     }
 
     @Inject
@@ -161,8 +163,8 @@ public class OperatorCommandMap {
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(pivotOut);
 
         ChordButton driverNuclearLaunch = clf.createChordButton(
-                operatorInterface.driverGamepad.getifAvailable(XboxButton.LeftTrigger),
-                operatorInterface.driverGamepad.getifAvailable(XboxButton.RightTrigger));
+                operatorInterface.driverGamepad.getifAvailable(XboxButton.Start),
+                operatorInterface.driverGamepad.getifAvailable(XboxButton.Back));
 
         ChordButton totalNuclearLaunch = clf.createChordButton(
                 driverNuclearLaunch,
@@ -239,6 +241,7 @@ public class OperatorCommandMap {
     public void setupMobilityCommands(OperatorInterface oi,
             TurnLeft90DegreesCommand turnleft90,
             SwerveToPointCommand swerveToPoint,
+            DriveSubsystem drive,
             PropertyFactory pf) {
 
         pf.setPrefix("OperatorCommandMap/");
@@ -255,6 +258,18 @@ public class OperatorCommandMap {
                 });
         //oi.driverGamepad.getifAvailable(XboxButton.Start).whenPressed(turnleft90);
         //oi.driverGamepad.getifAvailable(XboxButton.Y).whenPressed(swerveToPoint);
+
+        // Precision Commands
+        StartEndCommand activatePrecisionDrive = new StartEndCommand(
+            () -> drive.setPrecisionTranslationActive(true),
+            () -> drive.setPrecisionTranslationActive(false));
+
+        StartEndCommand activatePrecisionRotation = new StartEndCommand(
+            () -> drive.setPrecisionRotationActive(true),
+            () -> drive.setPrecisionRotationActive(false));
+
+        oi.driverGamepad.getifAvailable(XboxButton.X).whileHeld(activatePrecisionDrive);
+        oi.driverGamepad.getifAvailable(XboxButton.Y).whileHeld(activatePrecisionRotation);
     }
 
     @Inject
