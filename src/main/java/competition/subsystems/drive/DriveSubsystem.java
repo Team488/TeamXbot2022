@@ -146,7 +146,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         return collectorOrientedRotationActive;
     }
 
-    public void setCollectorRotationActive(boolean isActive) {
+    public void setCollectorOrientedTurningActive(boolean isActive) {
         collectorOrientedRotationActive = isActive;
     }
 

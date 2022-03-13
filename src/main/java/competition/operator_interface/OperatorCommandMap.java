@@ -95,7 +95,7 @@ public class OperatorCommandMap {
         NamedInstantCommand resetPosition = new NamedInstantCommand("Reset Position",
                 () -> pose.setCurrentPosition(0, 0));
         ParallelCommandGroup resetPose = new ParallelCommandGroup(resetPosition, resetHeading);
-        operatorInterface.driverGamepad.getifAvailable(XboxButton.LeftTrigger).whenPressed(resetPose);
+        operatorInterface.driverGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(resetPose);
     }
 
     @Inject
@@ -268,8 +268,13 @@ public class OperatorCommandMap {
             () -> drive.setPrecisionRotationActive(true),
             () -> drive.setPrecisionRotationActive(false));
 
+        StartEndCommand activateCollectorOrientedTurning = new StartEndCommand(
+            () -> drive.setCollectorOrientedTurningActive(true),
+            () -> drive.setCollectorOrientedTurningActive(false));
+
         oi.driverGamepad.getifAvailable(XboxButton.X).whileHeld(activatePrecisionDrive);
         oi.driverGamepad.getifAvailable(XboxButton.Y).whileHeld(activatePrecisionRotation);
+        oi.driverGamepad.getifAvailable(XboxButton.RightBumper).whileHeld(activateCollectorOrientedTurning);
     }
 
     @Inject
@@ -287,7 +292,12 @@ public class OperatorCommandMap {
 
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightTrigger).whenHeld(groupIntake);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftTrigger).whenHeld(groupEject);
+        
+        operatorInterface.operatorGamepad.getPovIfAvailable(0).whenPressed(retractCollector);
+        operatorInterface.operatorGamepad.getPovIfAvailable(90).whenPressed(retractCollector);
+        operatorInterface.operatorGamepad.getPovIfAvailable(180).whenPressed(retractCollector);
         operatorInterface.operatorGamepad.getPovIfAvailable(270).whenPressed(retractCollector);
+
 
     }
 

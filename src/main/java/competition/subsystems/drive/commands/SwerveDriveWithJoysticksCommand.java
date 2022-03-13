@@ -124,12 +124,12 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
 
         double humanRotatePowerFromLeftTrigger = MathUtils.deadband(
                 oi.driverGamepad.getLeftTrigger(),
-                0.5,
+                0.05,
                 (a) -> MathUtils.exponentAndRetainSign(a, (int) input_exponent.get()));
 
         double humanRotatePowerFromRightTrigger = MathUtils.deadband(
                 oi.driverGamepad.getRightTrigger(),
-                0.5,
+                0.05,
                 (a) -> MathUtils.exponentAndRetainSign(a, (int) input_exponent.get()));
 
         double humanRotatePower = MathUtils.constrainDoubleToRobotScale(
@@ -197,12 +197,18 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
 
         // Scale the power down if we are in one or more precision modes
         translationIntent.scale(drive.isPrecisionTranslationActive() ? 0.5 : 1);
-        suggestedRotatePower = drive.isPrecisionRotationActive() ? suggestedRotatePower * 0.5 : suggestedRotatePower;
+        suggestedRotatePower = drive.isPrecisionRotationActive() ? suggestedRotatePower * 0.25 : suggestedRotatePower;
 
         // Scale the power down if requested (typically used when novices are controlling the robot)
         translationIntent = translationIntent.scale(drivePowerFactor.get());
         suggestedRotatePower *= turnPowerFactor.get();
 
-        drive.fieldOrientedDrive(translationIntent, suggestedRotatePower, pose.getCurrentHeading().getDegrees(), false);
+        // Check if we need a different center of rotation
+        XYPair centerOfRotation = new XYPair(0,0);
+        if (drive.isCollectorRotationActive()) {
+            centerOfRotation = new XYPair(0, 36);
+        }
+
+        drive.fieldOrientedDrive(translationIntent, suggestedRotatePower, pose.getCurrentHeading().getDegrees(), new XYPair());
     }
 }

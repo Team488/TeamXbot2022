@@ -260,11 +260,6 @@ public class CompetitionContract extends ElectricalContract {
         return new CANTalonInfo(36, true);
     }
 
-    @Override
-    public CANTalonInfo getRightCollectorMotor() {
-        return new CANTalonInfo(23, true);
-    }
-
     public CANTalonInfo getCollectorStage2Motor() {
         return new CANTalonInfo(35, true);
     }
