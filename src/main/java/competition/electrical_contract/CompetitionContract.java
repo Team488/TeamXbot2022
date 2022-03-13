@@ -51,8 +51,15 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     @Override
-    public boolean areClimberLimitSensorsReady() {
-        return false;
+    public boolean areClimberLimitSensorsReady(ArmInstance armInstance) {
+        switch (armInstance.getLabel()) {
+            case "LeftArm":
+                return true;
+            case "RightArm":
+                return false;
+            default:
+                return false;
+        }
     }
 
     @Override
@@ -216,7 +223,7 @@ public class CompetitionContract extends ElectricalContract {
     public DeviceInfo getClimberLowerLimitSensor(ArmInstance armInstance) {
         switch (armInstance.getLabel()) {
             case "LeftArm":
-                return new DeviceInfo(6);
+                return new DeviceInfo(8);
             case "RightArm":
                 return new DeviceInfo(7);
             default:
@@ -228,7 +235,7 @@ public class CompetitionContract extends ElectricalContract {
     public DeviceInfo getClimberUpperLimitSensor(ArmInstance armInstance) {
         switch (armInstance.getLabel()) {
             case "LeftArm":
-                return new DeviceInfo(8);
+                return new DeviceInfo(6);
             case "RightArm":
                 return new DeviceInfo(9);
             default:

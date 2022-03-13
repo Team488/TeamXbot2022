@@ -61,6 +61,8 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     public final BooleanProperty upperLimitSwitchState;
     public final BooleanProperty lowerLimitSwitchState;
 
+    ArmInstance armInstance;
+
     private enum PidSlot {
         Position(0),
         Velocity(1);
@@ -79,6 +81,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     @Inject
     public ClimberArmSubsystem(ArmInstance armInstance, CommonLibFactory factory, PropertyFactory pf, ElectricalContract eContract){
         label = armInstance.getLabel();
+        this.armInstance = armInstance;
         if (eContract.isClimberReady()) {
             armMotor = factory.createCANSparkMax(eContract.getClimberNeo(armInstance) , this.getPrefix(), "ArmMotor");
             armMotor.enableVoltageCompensation(12);
@@ -86,7 +89,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
             armPawl = factory.createSolenoid(eContract.getClimberPawl(armInstance).channel);
         }
 
-        if (eContract.areClimberLimitSensorsReady()) {
+        if (eContract.areClimberLimitSensorsReady(armInstance)) {
             lowerLimitSwitch = factory.createDigitalInput(eContract.getClimberLowerLimitSensor(armInstance).channel);
             upperLimitSwitch = factory.createDigitalInput(eContract.getClimberUpperLimitSensor(armInstance).channel);
         }
@@ -348,7 +351,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
 
     public boolean isAtLowerLimitSwitch() {
         // For now, assume that the swtich is hooked into RoboRIO dio
-        if (contract.areClimberLimitSensorsReady()) {
+        if (contract.areClimberLimitSensorsReady(armInstance)) {
             return lowerLimitSwitch.get();
         }
         return false;
@@ -356,7 +359,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
 
     public boolean isAtUpperLimitSwitch() {
         // For now, assume that the swtich is hooked into RoboRIO dio
-        if (contract.areClimberLimitSensorsReady()) {
+        if (contract.areClimberLimitSensorsReady(armInstance)) {
             return upperLimitSwitch.get();
         }
         return false;
@@ -374,7 +377,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
 
         armInstantVelocity.set(directVelocity);;
 
-        if (contract.areClimberLimitSensorsReady()) {
+        if (contract.areClimberLimitSensorsReady(armInstance)) {
             upperLimitSwitchState.set(upperLimitSwitch.get());
             lowerLimitSwitchState.set(lowerLimitSwitch.get());
         }
