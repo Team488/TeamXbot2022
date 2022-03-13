@@ -326,9 +326,15 @@ public class OperatorCommandMap {
         setHeadingForMidStart.setHeadingToApply(pose.getStartingHeading(StartingPosition.Middle).getDegrees());
         SetRobotHeadingCommand setHeadingForRightStart = setHeadingCommandProvider.get();
         setHeadingForRightStart.setHeadingToApply(pose.getStartingHeading(StartingPosition.Right).getDegrees());
+        SetRobotHeadingCommand setHeadingForLeftHubStart = setHeadingCommandProvider.get();
+        setHeadingForRightStart.setHeadingToApply(pose.getStartingHeading(StartingPosition.LeftHub).getDegrees());
+        SetRobotHeadingCommand setHeadingForRightHubStart = setHeadingCommandProvider.get();
+        setHeadingForRightStart.setHeadingToApply(pose.getStartingHeading(StartingPosition.RightHub).getDegrees());
 
         setHeadingForLeftStart.includeOnSmartDashboard("Start/Left");
         setHeadingForMidStart.includeOnSmartDashboard("Start/Middle");
         setHeadingForRightStart.includeOnSmartDashboard("Start/Right");
+        setHeadingForLeftHubStart.includeOnSmartDashboard("Start/LeftHub");
+        setHeadingForRightHubStart.includeOnSmartDashboard("Start/RightHub");
     }
 }
