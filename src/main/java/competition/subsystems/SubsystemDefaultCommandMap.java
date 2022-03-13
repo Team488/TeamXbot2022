@@ -15,6 +15,8 @@ import competition.subsystems.climber_arm.commands.MotorArmStopCommand;
 import competition.subsystems.collector.CollectorSubsystem;
 import competition.subsystems.collector.commands.StopCollectorCommand;
 import competition.subsystems.compressor.CompressorMonitorCommand;
+import competition.subsystems.collector_deployment.CollectorDeploymentSubsystem;
+import competition.subsystems.collector_deployment.commands.RetractCollectorAfterDelayCommand;
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.drive.commands.SwerveDriveMaintainerCommand;
 import competition.subsystems.drive.commands.SwerveDriveWithJoysticksCommand;
@@ -128,5 +130,12 @@ public class SubsystemDefaultCommandMap {
     @Inject
     public void setupCompressorSubsystem(CompressorSubsystem compressor, CompressorMonitorCommand command) {
         compressor.setDefaultCommand(command);
+    }
+
+    @Inject
+    public void setupCollectorDeployment(
+        CollectorDeploymentSubsystem collectorDeploy, 
+        RetractCollectorAfterDelayCommand retractAfterDelay) {
+        collectorDeploy.setDefaultCommand(retractAfterDelay);
     }
 }

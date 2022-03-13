@@ -35,6 +35,7 @@ import competition.subsystems.collector_stage_2.CollectorStage2Subsystem;
 import competition.subsystems.conveyer.ConveyorSubsystem;
 import competition.subsystems.deploy_hood.commands.HoodDeployCommand;
 import competition.subsystems.deploy_hood.commands.HoodRetractCommand;
+import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.drive.commands.CalibrateSteeringCommand;
 import competition.subsystems.drive.commands.DebuggingSwerveWithJoysticksCommand;
 import competition.subsystems.drive.commands.GoToNextActiveSwerveModuleCommand;
@@ -56,6 +57,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import xbot.common.command.DelayViaSupplierCommand;
 import xbot.common.command.NamedInstantCommand;
 import xbot.common.command.NamedRunCommand;
@@ -93,15 +95,15 @@ public class OperatorCommandMap {
         NamedInstantCommand resetPosition = new NamedInstantCommand("Reset Position",
                 () -> pose.setCurrentPosition(0, 0));
         ParallelCommandGroup resetPose = new ParallelCommandGroup(resetPosition, resetHeading);
-        operatorInterface.driverGamepad.getifAvailable(XboxButton.A).whenPressed(resetPose);
+        operatorInterface.driverGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(resetPose);
     }
 
     @Inject
     public void setupDriveCommands(
             DebuggingSwerveWithJoysticksCommand swerveDebugging,
             GoToNextActiveSwerveModuleCommand goToNextActiveSwerveModule) {
-        operatorInterface.driverGamepad.getifAvailable(XboxButton.B).whenPressed(swerveDebugging);
-        operatorInterface.driverGamepad.getifAvailable(XboxButton.X).whenPressed(goToNextActiveSwerveModule);
+        //operatorInterface.driverGamepad.getifAvailable(XboxButton.B).whenPressed(swerveDebugging);
+        //operatorInterface.driverGamepad.getifAvailable(XboxButton.X).whenPressed(goToNextActiveSwerveModule);
 
     }
 
@@ -161,8 +163,8 @@ public class OperatorCommandMap {
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(pivotOut);
 
         ChordButton driverNuclearLaunch = clf.createChordButton(
-                operatorInterface.driverGamepad.getifAvailable(XboxButton.LeftTrigger),
-                operatorInterface.driverGamepad.getifAvailable(XboxButton.RightTrigger));
+                operatorInterface.driverGamepad.getifAvailable(XboxButton.Start),
+                operatorInterface.driverGamepad.getifAvailable(XboxButton.Back));
 
         ChordButton totalNuclearLaunch = clf.createChordButton(
                 driverNuclearLaunch,
@@ -197,9 +199,9 @@ public class OperatorCommandMap {
                 maintainDriveRearRight,
                 swerveDriveWithJoysticks);
 
-        operatorInterface.driverGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(calibrateSteering);
-        operatorInterface.driverGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(swerveCommands);
-        operatorInterface.driverGamepad.getifAvailable(XboxButton.Back).whenPressed(setSteeringPidValues);
+        //operatorInterface.driverGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(calibrateSteering);
+        //operatorInterface.driverGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(swerveCommands);
+        //operatorInterface.driverGamepad.getifAvailable(XboxButton.Back).whenPressed(setSteeringPidValues);
 
         setSteeringPidValues.includeOnSmartDashboard("Commit steering pid values");
     }
@@ -225,20 +227,21 @@ public class OperatorCommandMap {
         InstantCommand setDistanceShot = new NamedInstantCommand("ShooterDistanceShotSpeed", () -> shooter.setTargetRPM(TargetRPM.DistanceShot));
         NamedRunCommand setSafePowerPercent = new NamedRunCommand("ShooterSafePowerPercent", () -> shooter.setSafePower(), shooter);
 
-        oi.shooterGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(decreaseTrim);
-        oi.shooterGamepad.getifAvailable(XboxButton.RightTrigger).whenPressed(increaseTrim);
+        //oi.shooterGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(decreaseTrim);
+        //oi.shooterGamepad.getifAvailable(XboxButton.RightTrigger).whenPressed(increaseTrim);
 
         oi.operatorGamepad.getifAvailable(XboxButton.Y).whenHeld(fireFarCommand);
         oi.operatorGamepad.getifAvailable(XboxButton.B).whenHeld(fireCloseCommand);
 
-        oi.shooterGamepad.getifAvailable(XboxButton.A).whenPressed(setNearShot).whenReleased(setSafe);
-        oi.shooterGamepad.getifAvailable(XboxButton.X).whenPressed(setDistanceShot).whenReleased(setSafe);
+        //oi.shooterGamepad.getifAvailable(XboxButton.A).whenPressed(setNearShot).whenReleased(setSafe);
+        //oi.shooterGamepad.getifAvailable(XboxButton.X).whenPressed(setDistanceShot).whenReleased(setSafe);
     }
 
     @Inject
     public void setupMobilityCommands(OperatorInterface oi,
             TurnLeft90DegreesCommand turnleft90,
             SwerveToPointCommand swerveToPoint,
+            DriveSubsystem drive,
             PropertyFactory pf) {
 
         pf.setPrefix("OperatorCommandMap/");
@@ -253,8 +256,25 @@ public class OperatorCommandMap {
                 () -> {
                     return angleTarget.get();
                 });
-        oi.driverGamepad.getifAvailable(XboxButton.Start).whenPressed(turnleft90);
-        oi.driverGamepad.getifAvailable(XboxButton.Y).whenPressed(swerveToPoint);
+        //oi.driverGamepad.getifAvailable(XboxButton.Start).whenPressed(turnleft90);
+        //oi.driverGamepad.getifAvailable(XboxButton.Y).whenPressed(swerveToPoint);
+
+        // Precision Commands
+        StartEndCommand activatePrecisionDrive = new StartEndCommand(
+            () -> drive.setPrecisionTranslationActive(true),
+            () -> drive.setPrecisionTranslationActive(false));
+
+        StartEndCommand activatePrecisionRotation = new StartEndCommand(
+            () -> drive.setPrecisionRotationActive(true),
+            () -> drive.setPrecisionRotationActive(false));
+
+        StartEndCommand activateCollectorOrientedTurning = new StartEndCommand(
+            () -> drive.setCollectorOrientedTurningActive(true),
+            () -> drive.setCollectorOrientedTurningActive(false));
+
+        oi.driverGamepad.getifAvailable(XboxButton.X).whileHeld(activatePrecisionDrive);
+        oi.driverGamepad.getifAvailable(XboxButton.Y).whileHeld(activatePrecisionRotation);
+        oi.driverGamepad.getifAvailable(XboxButton.RightBumper).whileHeld(activateCollectorOrientedTurning);
     }
 
     @Inject
@@ -272,7 +292,12 @@ public class OperatorCommandMap {
 
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightTrigger).whenHeld(groupIntake);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftTrigger).whenHeld(groupEject);
+        
+        operatorInterface.operatorGamepad.getPovIfAvailable(0).whenPressed(retractCollector);
+        operatorInterface.operatorGamepad.getPovIfAvailable(90).whenPressed(retractCollector);
+        operatorInterface.operatorGamepad.getPovIfAvailable(180).whenPressed(retractCollector);
         operatorInterface.operatorGamepad.getPovIfAvailable(270).whenPressed(retractCollector);
+
 
     }
 
@@ -326,9 +351,15 @@ public class OperatorCommandMap {
         setHeadingForMidStart.setHeadingToApply(pose.getStartingHeading(StartingPosition.Middle).getDegrees());
         SetRobotHeadingCommand setHeadingForRightStart = setHeadingCommandProvider.get();
         setHeadingForRightStart.setHeadingToApply(pose.getStartingHeading(StartingPosition.Right).getDegrees());
+        SetRobotHeadingCommand setHeadingForLeftHubStart = setHeadingCommandProvider.get();
+        setHeadingForRightStart.setHeadingToApply(pose.getStartingHeading(StartingPosition.LeftHub).getDegrees());
+        SetRobotHeadingCommand setHeadingForRightHubStart = setHeadingCommandProvider.get();
+        setHeadingForRightStart.setHeadingToApply(pose.getStartingHeading(StartingPosition.RightHub).getDegrees());
 
         setHeadingForLeftStart.includeOnSmartDashboard("Start/Left");
         setHeadingForMidStart.includeOnSmartDashboard("Start/Middle");
         setHeadingForRightStart.includeOnSmartDashboard("Start/Right");
+        setHeadingForLeftHubStart.includeOnSmartDashboard("Start/LeftHub");
+        setHeadingForRightHubStart.includeOnSmartDashboard("Start/RightHub");
     }
 }

@@ -133,9 +133,4 @@ public class SimulationContract extends CompetitionContract {
     public CANTalonInfo getLeftCollectorMotor() {
         return new CANTalonInfo(30);
     }
-
-    @Override
-    public CANTalonInfo getRightCollectorMotor() {
-        return new CANTalonInfo(31);
-    }
 }
