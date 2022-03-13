@@ -70,7 +70,7 @@ public class SwerveToPointCommandTest extends BaseFullSwerveTest {
         command.initialize();
         command.execute();
 
-        checkAllModulesGoingForward(true);
+        checkAllModulesGoingForward(false);
 
         command.setTargetPosition(new XYPair(0,0), 0);
         setAllSteeringModuleAngles(90);
