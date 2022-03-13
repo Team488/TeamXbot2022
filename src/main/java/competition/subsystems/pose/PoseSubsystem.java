@@ -59,25 +59,25 @@ public class PoseSubsystem extends BasePoseSubsystem {
         this.drive = drive;
         this.levelThresholdDegrees = pf.createPersistentProperty("Levelling Threshold", 1);
 
-        this.leftStartPosX = pf.createPersistentProperty("Starting Left Position X Value", 261);
-        this.leftStartPosY = pf.createPersistentProperty("Starting Left Position Y Value", 200);
-        this.leftHeading = pf.createPersistentProperty("Starting Left Heading", 239);
+        this.leftStartPosX = pf.createPersistentProperty("Starting Left Position X Value", 241);
+        this.leftStartPosY = pf.createPersistentProperty("Starting Left Position Y Value", 206);
+        this.leftHeading = pf.createPersistentProperty("Starting Left Heading", 226);
 
-        this.midStartPosX = pf.createPersistentProperty("Starting Mid Position X Value", 287);
-        this.midStartPosY = pf.createPersistentProperty("Starting Mid Position Y Value", 110);
+        this.midStartPosX = pf.createPersistentProperty("Starting Mid Position X Value", 262);
+        this.midStartPosY = pf.createPersistentProperty("Starting Mid Position Y Value", 105);
         this.midHeading = pf.createPersistentProperty("Starting Mid Heading", -65);
 
-        this.rightStartPosX = pf.createPersistentProperty("Starting Right Position X Value", 327);
-        this.rightStartPosY = pf.createPersistentProperty("Starting Right Position Y Value", 72);
+        this.rightStartPosX = pf.createPersistentProperty("Starting Right Position X Value", 301);
+        this.rightStartPosY = pf.createPersistentProperty("Starting Right Position Y Value", 71);
         this.rightHeading = pf.createPersistentProperty("Starting Right Heading", -8);
 
-        this.leftHubStartPosX = pf.createPersistentProperty("Starting Right Position X Value", 191.0);
-        this.leftHubStartPosY = pf.createPersistentProperty("Starting Right Position Y Value", 280.2);
+        this.leftHubStartPosX = pf.createPersistentProperty("Starting Right Position X Value", 181);
+        this.leftHubStartPosY = pf.createPersistentProperty("Starting Right Position Y Value", 276);
         this.leftHubHeading = pf.createPersistentProperty("Starting Right Heading", 248);
         
-        this.rightHubStartPosX = pf.createPersistentProperty("Starting Right Position X Value", 110.5);
-        this.rightHubStartPosY = pf.createPersistentProperty("Starting Right Position Y Value", 317.5);
-        this.rightHubHeading = pf.createPersistentProperty("Starting Right Heading", -20.9);
+        this.rightHubStartPosX = pf.createPersistentProperty("Starting Right Position X Value", 113);
+        this.rightHubStartPosY = pf.createPersistentProperty("Starting Right Position Y Value", 304);
+        this.rightHubHeading = pf.createPersistentProperty("Starting Right Heading", -21);
 
     /* Remember: WPILib uses a different coordinate convention than our legacy code. Theirs:
           //   0,+y. 90 degrees

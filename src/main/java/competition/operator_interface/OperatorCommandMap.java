@@ -8,6 +8,7 @@ import competition.auto_programs.DoNothingCommand;
 import competition.auto_programs.DriveFiveFeetCommand;
 import competition.auto_programs.GoCollectComebackCommand;
 import competition.auto_programs.ShootCollectShootCommand;
+import competition.auto_programs.ShootThenEscapeCommand;
 import competition.commandgroups.FireCommand;
 import competition.injection.arm.LeftArm;
 import competition.injection.arm.RightArm;
@@ -327,6 +328,7 @@ public class OperatorCommandMap {
         DriveFiveFeetCommand driveFiveFeet,
         GoCollectComebackCommand goCollectComeback,
         ShootCollectShootCommand shootCollectShoot,
+        ShootThenEscapeCommand shootThenEscape,
         Provider<SetAutonomousCommand> setAutoCommandProvider,
         Provider<SetRobotHeadingCommand> setHeadingCommandProvider)
     {
@@ -338,12 +340,15 @@ public class OperatorCommandMap {
         setGoCollectComeback.setAutoCommand(goCollectComeback);
         SetAutonomousCommand setShootCollectShoot = setAutoCommandProvider.get();
         setShootCollectShoot.setAutoCommand(shootCollectShoot);
+        SetAutonomousCommand setShootThenEscape = setAutoCommandProvider.get();
+        setShootThenEscape.setAutoCommand(shootThenEscape);
 
 
         setDoNothing.includeOnSmartDashboard("AutoPrograms/DoNothing");
         setDriveFiveFeet.includeOnSmartDashboard("AutoPrograms/DriveFiveFeet");
         setGoCollectComeback.includeOnSmartDashboard("AutoPrograms/GoCollectComeback");
         setShootCollectShoot.includeOnSmartDashboard("AutoPrograms/ShootCollectShoot");
+        setShootThenEscape.includeOnSmartDashboard("AutoPrograms/ShootThenEscape");
 
         SetRobotHeadingCommand setHeadingForLeftStart = setHeadingCommandProvider.get();
         setHeadingForLeftStart.setHeadingToApply(pose.getStartingHeading(StartingPosition.Left).getDegrees());
