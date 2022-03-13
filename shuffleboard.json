@@ -593,6 +593,17 @@
               "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearRightDrive/CurrentVelocity",
               "_title": "SmartDashboard/SwerveDriveSubsystem/RearRightDrive/CurrentVelocity"
             }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveToPointCommand/Direction to target",
+              "_title": "SmartDashboard/SwerveToPointCommand/Direction to target"
+            }
           }
         }
       }
@@ -1123,6 +1134,58 @@
               "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/ArmMotor/Current",
               "_title": "SmartDashboard/ClimberArmSubsystem/RightArm/ArmMotor/Current"
             }
+          },
+          "7,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/UpperLimitSwitchState",
+              "_title": "SmartDashboard/ClimberArmSubsystem/LeftArm/UpperLimitSwitchState",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "7,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/LowerLimitSwitchState",
+              "_title": "SmartDashboard/ClimberArmSubsystem/LeftArm/LowerLimitSwitchState",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/UpperLimitSwitchState",
+              "_title": "SmartDashboard/ClimberArmSubsystem/RightArm/UpperLimitSwitchState",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "8,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/LowerLimitSwitchState",
+              "_title": "SmartDashboard/ClimberArmSubsystem/RightArm/LowerLimitSwitchState",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
           }
         }
       }
@@ -1461,15 +1524,15 @@
               "_title": "SmartDashboard/ShooterWheelSubsystem/HotDogRpm"
             }
           },
-          "8,1": {
+          "9,1": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///Preferences/PrepareToFireCommand/Conveyor Reverse Time",
-              "_title": "Preferences/PrepareToFireCommand/Conveyor Reverse Time"
+              "_source0": "network_table:///SmartDashboard/PrepareToFireCommand/Conveyor Reverse Time",
+              "_title": "SmartDashboard/PrepareToFireCommand/Conveyor Reverse Time"
             }
           }
         }
@@ -1486,7 +1549,7 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "3,1": {
+          "3,0": {
             "size": [
               1,
               1
@@ -1497,7 +1560,7 @@
               "_title": "SmartDashboard/AutoPrograms/DoNothing"
             }
           },
-          "4,1": {
+          "3,1": {
             "size": [
               1,
               1
@@ -1508,7 +1571,7 @@
               "_title": "SmartDashboard/AutoPrograms/DriveFiveFeet"
             }
           },
-          "5,1": {
+          "3,2": {
             "size": [
               1,
               1
@@ -1517,6 +1580,17 @@
               "_type": "Command",
               "_source0": "network_table:///SmartDashboard/AutoPrograms/GoCollectComeback",
               "_title": "SmartDashboard/AutoPrograms/GoCollectComeback"
+            }
+          },
+          "3,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/AutoPrograms/ShootCollectShoot",
+              "_title": "SmartDashboard/AutoPrograms/ShootCollectShoot"
             }
           }
         }
