@@ -27,6 +27,12 @@ public abstract class ElectricalContract {
 
     public abstract DeviceInfo getClimberNeo(ArmInstance armInstance);
 
+    public abstract DeviceInfo getClimberLowerLimitSensor(ArmInstance armInstance);
+
+    public abstract DeviceInfo getClimberUpperLimitSensor(ArmInstance armInstance);
+
+    public abstract boolean areClimberLimitSensorsReady();
+
     public abstract CANTalonInfo getLeftCollectorMotor();
 
     public abstract CANTalonInfo getRightCollectorMotor();

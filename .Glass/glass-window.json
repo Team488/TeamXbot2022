@@ -2,12 +2,12 @@
   "MainWindow": {
     "GLOBAL": {
       "height": "960",
-      "maximized": "1",
+      "maximized": "0",
       "style": "0",
       "userScale": "2",
-      "width": "1280",
-      "xpos": "0",
-      "ypos": "29"
+      "width": "1771",
+      "xpos": "77",
+      "ypos": "662"
     }
   },
   "Window": {
@@ -28,7 +28,7 @@
     },
     "###Plot <1>": {
       "Collapsed": "0",
-      "Pos": "917,431",
+      "Pos": "985,65",
       "Size": "700,400"
     },
     "Debug##Default": {

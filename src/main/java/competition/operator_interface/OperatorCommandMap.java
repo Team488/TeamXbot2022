@@ -4,10 +4,10 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
-import competition.commandgroups.FireCommand;
 import competition.auto_programs.DoNothingCommand;
 import competition.auto_programs.DriveFiveFeetCommand;
 import competition.auto_programs.GoCollectComebackCommand;
+import competition.commandgroups.FireCommand;
 import competition.injection.arm.LeftArm;
 import competition.injection.arm.RightArm;
 import competition.injection.swerve.FrontLeftDrive;
@@ -48,12 +48,13 @@ import competition.subsystems.latch.commands.LatchReleaseCommand;
 import competition.subsystems.pose.PoseSubsystem;
 import competition.subsystems.pose.PoseSubsystem.StartingPosition;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
+import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
 import competition.subsystems.shooterwheel.commands.StopShooterWheelCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import xbot.common.command.DelayViaSupplierCommand;
 import xbot.common.command.NamedInstantCommand;
 import xbot.common.command.NamedRunCommand;
@@ -152,7 +153,6 @@ public class OperatorCommandMap {
                 new DelayViaSupplierCommand(() -> latchOpenTime.get()));
 
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.A).whenPressed(dualArmBalancer);
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.B).whenPressed(maintainArms);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.X).whenPressed(dualArmWithJoysticksUnsafe);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.Back).whenPressed(calibrateBothArms);
 
@@ -227,8 +227,8 @@ public class OperatorCommandMap {
         oi.shooterGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(decreaseTrim);
         oi.shooterGamepad.getifAvailable(XboxButton.RightTrigger).whenPressed(increaseTrim);
 
-        oi.shooterGamepad.getifAvailable(XboxButton.Y).whenHeld(fireFarCommand);
-        oi.shooterGamepad.getifAvailable(XboxButton.B).whenHeld(fireCloseCommand);
+        oi.operatorGamepad.getifAvailable(XboxButton.Y).whenHeld(fireFarCommand);
+        oi.operatorGamepad.getifAvailable(XboxButton.B).whenHeld(fireCloseCommand);
 
         oi.shooterGamepad.getifAvailable(XboxButton.A).whenPressed(setNearShot).whenReleased(setSafe);
         oi.shooterGamepad.getifAvailable(XboxButton.X).whenPressed(setDistanceShot).whenReleased(setSafe);
@@ -258,10 +258,16 @@ public class OperatorCommandMap {
 
     @Inject
     public void setupCollectionCommands(IntakeCommand intake, EjectCommand eject, ConveyorSubsystem conveyer,
-            CollectorStage2Subsystem stageTwo, Provider<DeployCollectorCommand> deployCollector, RetractCollectorCommand retractCollector) {
+            CollectorStage2Subsystem stageTwo, Provider<DeployCollectorCommand> deployCollector, RetractCollectorCommand retractCollector,
+            ShooterWheelSubsystem wheel) {
 
-        ParallelCommandGroup groupIntake = new ParallelCommandGroup(intake, stageTwo.getForwardCommand(), deployCollector.get(), conveyer.getForwardCommand());
-        ParallelCommandGroup groupEject = new ParallelCommandGroup(eject, stageTwo.getReverseCommand(), conveyer.getReverseCommand(), deployCollector.get());
+        var setHotDogIntake = new RunCommand(() -> wheel.setTargetRPM(TargetRPM.HotDogRoller), wheel.getSetpointLock());
+        var setHotDogEject = new RunCommand(() -> wheel.setTargetRPM(TargetRPM.HotDogRoller), wheel.getSetpointLock());
+
+        ParallelCommandGroup groupIntake = new ParallelCommandGroup(
+            setHotDogIntake, intake, stageTwo.getForwardCommand(), deployCollector.get(), conveyer.getForwardCommand());
+        ParallelCommandGroup groupEject = new ParallelCommandGroup(
+            setHotDogEject, eject, stageTwo.getReverseCommand(), conveyer.getReverseCommand(), deployCollector.get());
 
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightTrigger).whenHeld(groupIntake);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftTrigger).whenHeld(groupEject);

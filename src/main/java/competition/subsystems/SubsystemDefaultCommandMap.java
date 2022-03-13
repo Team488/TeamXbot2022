@@ -23,6 +23,7 @@ import competition.subsystems.latch.LatchSubsystem;
 import competition.subsystems.latch.commands.LatchArmCommand;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
 import competition.subsystems.shooterwheel.commands.ShooterWheelMaintainerCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 
 @Singleton
 public class SubsystemDefaultCommandMap {
@@ -116,5 +117,9 @@ public class SubsystemDefaultCommandMap {
     @Inject
     public void setupShooterWheelSubsystem(ShooterWheelMaintainerCommand shooterMaintainer, ShooterWheelSubsystem shooter) {
         shooter.setDefaultCommand(shooterMaintainer);
+
+        shooter.getSetpointLock().setDefaultCommand(
+            new RunCommand(() -> {shooter.setTargetRPM(0.0);}, shooter.getSetpointLock())
+        );
     }
 }
