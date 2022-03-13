@@ -33,10 +33,20 @@ public class PoseSubsystem extends BasePoseSubsystem {
     final DoubleProperty rightStartPosY;
     final DoubleProperty rightHeading;
 
+    final DoubleProperty leftHubStartPosX;
+    final DoubleProperty leftHubStartPosY;
+    final DoubleProperty leftHubHeading;
+
+    final DoubleProperty rightHubStartPosX;
+    final DoubleProperty rightHubStartPosY;
+    final DoubleProperty rightHubHeading;
+
     public enum StartingPosition {
         Left,
         Middle,
-        Right
+        Right,
+        LeftHub,
+        RightHub
     }
 
     @Inject
@@ -60,6 +70,14 @@ public class PoseSubsystem extends BasePoseSubsystem {
         this.rightStartPosX = pf.createPersistentProperty("Starting Right Position X Value", 327);
         this.rightStartPosY = pf.createPersistentProperty("Starting Right Position Y Value", 72);
         this.rightHeading = pf.createPersistentProperty("Starting Right Heading", -8);
+
+        this.leftHubStartPosX = pf.createPersistentProperty("Starting Right Position X Value", 191.0);
+        this.leftHubStartPosY = pf.createPersistentProperty("Starting Right Position Y Value", 280.2);
+        this.leftHubHeading = pf.createPersistentProperty("Starting Right Heading", 248);
+        
+        this.rightHubStartPosX = pf.createPersistentProperty("Starting Right Position X Value", 110.5);
+        this.rightHubStartPosY = pf.createPersistentProperty("Starting Right Position Y Value", 317.5);
+        this.rightHubHeading = pf.createPersistentProperty("Starting Right Heading", -20.9);
 
     /* Remember: WPILib uses a different coordinate convention than our legacy code. Theirs:
           //   0,+y. 90 degrees
@@ -117,6 +135,10 @@ public class PoseSubsystem extends BasePoseSubsystem {
                 return new XYPair(midStartPosX.get(), midStartPosY.get());
             case Right:
                 return new XYPair(rightStartPosX.get(), rightStartPosY.get());
+            case LeftHub:
+                return new XYPair(leftHubStartPosX.get(), leftHubStartPosY.get());
+            case RightHub:
+                return new XYPair(rightHubStartPosX.get(), rightHubStartPosY.get());
             default:
                 log.warn("Invalid starting position, returning zero position.");
                 return new XYPair(0, 0);
@@ -131,6 +153,10 @@ public class PoseSubsystem extends BasePoseSubsystem {
                 return Rotation2d.fromDegrees(midHeading.get());
             case Right:
                 return Rotation2d.fromDegrees(rightHeading.get());
+            case LeftHub:
+                return Rotation2d.fromDegrees(leftHubHeading.get());
+            case RightHub:
+                return Rotation2d.fromDegrees(rightHubHeading.get());
             default:
                 log.warn("Invalid starting position, returning 90 degrees.");
                 return Rotation2d.fromDegrees(90);
