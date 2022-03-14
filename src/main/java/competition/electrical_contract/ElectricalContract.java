@@ -39,8 +39,6 @@ public abstract class ElectricalContract {
 
     public abstract boolean isCollectorStage2Ready();
 
-    public abstract DeviceInfo getClimberPawl(ArmInstance armInstance);
-
     public abstract boolean isShooterReady();
 
     public abstract DeviceInfo getArduinoDio0();

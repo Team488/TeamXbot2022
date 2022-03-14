@@ -1,7 +1,6 @@
 package competition.subsystems.climber_arm.commands;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import com.google.inject.Key;
 
@@ -38,9 +37,5 @@ public class BaseClimberArmTest extends BaseCompetitionTest {
 
     protected boolean isLeftArmPowerLargerThanRightArmPower() {
         return leftArm.armMotor.get() > rightArm.armMotor.get();
-    }
-
-    protected void checkIsPawlFree(boolean isFree) {
-        assertTrue("Expected pawl disengagement to be " + isFree, isFree == leftArm.armPawl.getAdjusted());
     }
 }
