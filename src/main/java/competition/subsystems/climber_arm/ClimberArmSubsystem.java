@@ -12,12 +12,11 @@ import competition.electrical_contract.ElectricalContract;
 import competition.injection.arm.ArmInstance;
 import xbot.common.command.BaseSetpointSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
-import xbot.common.controls.actuators.XSolenoid;
 import xbot.common.controls.sensors.XDigitalInput;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.logic.Latch;
-import xbot.common.logic.StallDetector;
 import xbot.common.logic.Latch.EdgeType;
+import xbot.common.logic.StallDetector;
 import xbot.common.logic.StallDetector.StallState;
 import xbot.common.math.MathUtils;
 import xbot.common.properties.BooleanProperty;
@@ -28,7 +27,6 @@ import xbot.common.properties.StringProperty;
 @Singleton
 public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     public XCANSparkMax armMotor;
-    public XSolenoid armPawl;
     public double armMotorPosition;
     public final DoubleProperty safeArmExtendedNumber;
     public final DoubleProperty safeArmRetractedNumber;
@@ -36,7 +34,6 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     private final BooleanProperty isCalibratedProp;
     private final DoubleProperty armPositionTarget;
     private final DoubleProperty armInchesPerRotation;
-    private final DoubleProperty pawlDeadband;
     private final DoubleProperty armPowerFactor;
     private final Latch safetyLatch;
     final String label;
@@ -86,7 +83,6 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
             armMotor = factory.createCANSparkMax(eContract.getClimberNeo(armInstance) , this.getPrefix(), "ArmMotor");
             armMotor.enableVoltageCompensation(12);
             armMotor.setIdleMode(IdleMode.kBrake);
-            armPawl = factory.createSolenoid(eContract.getClimberPawl(armInstance).channel);
         }
 
         if (eContract.areClimberLimitSensorsReady(armInstance)) {
@@ -102,7 +98,6 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         safeArmRetractedNumber = pf.createPersistentProperty("safelyRetractable", -10);
         // Assume this is shared - if not, we'll split it out.
         armInchesPerRotation = pf.createPersistentProperty("ArmInchesPerRotation", 1.0);
-        pawlDeadband = pf.createPersistentProperty("PawlDeadband", 0.02);
         armPowerFactor = pf.createPersistentProperty("PowerFactor", 1);
 
         positionFullyRetractedProperty = pf.createPersistentProperty("FullyRetractedPositionInches", 0.0);
@@ -201,34 +196,11 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         }
     }
 
-    private void setPawl(boolean disengaged) {
-        if (contract.isClimberReady()) {
-            armPawl.setOn(disengaged);
-        }
-    }
-
-    public void lockPawl() {
-        setPawl(false);
-    }
-
-    public void freePawl() {
-        setPawl(true);
-    }
-
-
     private void setMotorPower(double power, boolean isSafe) {
 
         safetyLatch.setValue(isSafe);
 
         power *= MathUtils.constrainDoubleToRobotScale(armPowerFactor.get());
-
-        // To a first approximation, whenever the device is moving, the pawl should be disengaged.
-        // If there is any hint of power, the pawl should be disengaged.
-
-        // We will not optimistically re-engage the pawl - that will only be done via manual action.
-        if (Math.abs(power) > pawlDeadband.get()) {
-            freePawl();
-        }
 
         if (isSafe) {
             if (isArmOverExtended()/* Add upper limit here when needed */) {
@@ -265,7 +237,6 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
 
     public void stop(){
         setMotorPower(0, true);
-        lockPawl();
     }
 
     @Override
@@ -299,10 +270,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         setMotorPower(power, isSafe);
     }
 
-    public void setPositionReference(double positionInInches) {
-        // Since we can no longer be sure what the motor is doing, release the pawl just in case
-        freePawl();
-        
+    public void setPositionReference(double positionInInches) {        
         // Convert from inches to rotations (the native unit of the controller)
         if (contract.isClimberReady()) {
             armMotor.setReference(positionInInches / armInchesPerRotation.get(), ControlType.kPosition, PidSlot.Position.getSlot());
@@ -311,9 +279,6 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     }
 
     public void setVelocityReference(double velocityInInchesPerSecond) {
-        // Since we can no longer be sure what the motor is doing, release the pawl just in case
-        freePawl();
-
         // Convert from inches to rotations/sec (the native unit of the controller)
         if (contract.isClimberReady()) {
             armMotor.setReference(velocityInInchesPerSecond / armInchesPerRotation.get(), ControlType.kVelocity, PidSlot.Velocity.getSlot());
