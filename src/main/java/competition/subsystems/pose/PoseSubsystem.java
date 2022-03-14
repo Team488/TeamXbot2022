@@ -8,6 +8,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.math.FieldPose;
+import xbot.common.math.WrappedRotation2d;
 import xbot.common.math.XYPair;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
@@ -59,25 +61,25 @@ public class PoseSubsystem extends BasePoseSubsystem {
         this.drive = drive;
         this.levelThresholdDegrees = pf.createPersistentProperty("Levelling Threshold", 1);
 
-        this.leftStartPosX = pf.createPersistentProperty("Starting Left Position X Value", 261);
-        this.leftStartPosY = pf.createPersistentProperty("Starting Left Position Y Value", 200);
-        this.leftHeading = pf.createPersistentProperty("Starting Left Heading", 239);
+        this.leftStartPosX = pf.createPersistentProperty("Starting Left Position X Value", 241);
+        this.leftStartPosY = pf.createPersistentProperty("Starting Left Position Y Value", 206);
+        this.leftHeading = pf.createPersistentProperty("Starting Left Heading", 226);
 
-        this.midStartPosX = pf.createPersistentProperty("Starting Mid Position X Value", 287);
-        this.midStartPosY = pf.createPersistentProperty("Starting Mid Position Y Value", 110);
+        this.midStartPosX = pf.createPersistentProperty("Starting Mid Position X Value", 262);
+        this.midStartPosY = pf.createPersistentProperty("Starting Mid Position Y Value", 105);
         this.midHeading = pf.createPersistentProperty("Starting Mid Heading", -65);
 
-        this.rightStartPosX = pf.createPersistentProperty("Starting Right Position X Value", 327);
-        this.rightStartPosY = pf.createPersistentProperty("Starting Right Position Y Value", 72);
+        this.rightStartPosX = pf.createPersistentProperty("Starting Right Position X Value", 301);
+        this.rightStartPosY = pf.createPersistentProperty("Starting Right Position Y Value", 71);
         this.rightHeading = pf.createPersistentProperty("Starting Right Heading", -8);
 
-        this.leftHubStartPosX = pf.createPersistentProperty("Starting Right Position X Value", 191.0);
-        this.leftHubStartPosY = pf.createPersistentProperty("Starting Right Position Y Value", 280.2);
-        this.leftHubHeading = pf.createPersistentProperty("Starting Right Heading", 248);
+        this.leftHubStartPosX = pf.createPersistentProperty("Starting LeftHub X Value", 181);
+        this.leftHubStartPosY = pf.createPersistentProperty("Starting LeftHub Y Value", 276);
+        this.leftHubHeading = pf.createPersistentProperty("Starting LeftHub Heading", 248);
         
-        this.rightHubStartPosX = pf.createPersistentProperty("Starting Right Position X Value", 110.5);
-        this.rightHubStartPosY = pf.createPersistentProperty("Starting Right Position Y Value", 317.5);
-        this.rightHubHeading = pf.createPersistentProperty("Starting Right Heading", -20.9);
+        this.rightHubStartPosX = pf.createPersistentProperty("Starting RightHub X Value", 113);
+        this.rightHubStartPosY = pf.createPersistentProperty("Starting RightHub Y Value", 304);
+        this.rightHubHeading = pf.createPersistentProperty("Starting RightHub Heading", -21);
 
     /* Remember: WPILib uses a different coordinate convention than our legacy code. Theirs:
           //   0,+y. 90 degrees
@@ -163,8 +165,11 @@ public class PoseSubsystem extends BasePoseSubsystem {
         }
     }
 
-    @Override
-    public void setCurrentPosition(double newXPosition, double newYPosition) {
+    public FieldPose getStartingPose(StartingPosition position) {
+        return new FieldPose(getStartingPosition(position), getStartingHeading(position));
+    }
+
+    public void setCurrentPosition(double newXPosition, double newYPosition, WrappedRotation2d heading) {
         super.setCurrentPosition(newXPosition, newYPosition);
         swerveOdometry.resetPosition(
             new Pose2d(
@@ -172,6 +177,16 @@ public class PoseSubsystem extends BasePoseSubsystem {
                 newYPosition / PoseSubsystem.INCHES_IN_A_METER, 
                 this.getCurrentHeading()),
             this.getCurrentHeading());
+    }
+
+    @Override
+    public void setCurrentPosition(double newXPosition, double newYPosition) {
+        setCurrentPosition(newXPosition, newYPosition, this.getCurrentHeading());
+    }
+
+    public void setCurrentPose(FieldPose newPose) {
+        setCurrentPosition(newPose.getPoint().x, newPose.getPoint().y, newPose.getHeading());
+        this.setCurrentHeading(newPose.getHeading().getDegrees());
     }
 
     @Override

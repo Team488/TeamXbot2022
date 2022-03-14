@@ -1534,6 +1534,56 @@
               "_source0": "network_table:///SmartDashboard/PrepareToFireCommand/Conveyor Reverse Time",
               "_title": "SmartDashboard/PrepareToFireCommand/Conveyor Reverse Time"
             }
+          },
+          "7,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Error Within Tolerance",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Error Within Tolerance",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Error Is Time Stable",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Error Is Time Stable",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Subsystem Ready",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Subsystem Ready",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "5,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Error Tolerance",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Error Tolerance"
+            }
           }
         }
       }
@@ -1571,7 +1621,7 @@
               "_title": "SmartDashboard/AutoPrograms/DriveFiveFeet"
             }
           },
-          "3,2": {
+          "4,1": {
             "size": [
               1,
               1
@@ -1582,7 +1632,7 @@
               "_title": "SmartDashboard/AutoPrograms/GoCollectComeback"
             }
           },
-          "3,3": {
+          "5,1": {
             "size": [
               1,
               1
@@ -1591,6 +1641,215 @@
               "_type": "Command",
               "_source0": "network_table:///SmartDashboard/AutoPrograms/ShootCollectShoot",
               "_title": "SmartDashboard/AutoPrograms/ShootCollectShoot"
+            }
+          },
+          "4,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Current autonomous command name",
+              "_title": "SmartDashboard/Current autonomous command name"
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/CurrentHeading",
+              "_title": "SmartDashboard/PoseSubsystem/CurrentHeading"
+            }
+          },
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Total distance X",
+              "_title": "SmartDashboard/PoseSubsystem/Total distance X"
+            }
+          },
+          "9,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Total distance Y",
+              "_title": "SmartDashboard/PoseSubsystem/Total distance Y"
+            }
+          },
+          "7,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Left Heading",
+              "_title": "SmartDashboard/PoseSubsystem/Starting Left Heading"
+            }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Left Position X Value",
+              "_title": "SmartDashboard/PoseSubsystem/Starting Left Position X Value"
+            }
+          },
+          "9,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Left Position Y Value",
+              "_title": "SmartDashboard/PoseSubsystem/Starting Left Position Y Value"
+            }
+          },
+          "7,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Mid Heading",
+              "_title": "SmartDashboard/PoseSubsystem/Starting Mid Heading"
+            }
+          },
+          "8,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Mid Position X Value",
+              "_title": "SmartDashboard/PoseSubsystem/Starting Mid Position X Value"
+            }
+          },
+          "9,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Mid Position Y Value",
+              "_title": "SmartDashboard/PoseSubsystem/Starting Mid Position Y Value"
+            }
+          },
+          "7,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Right Heading",
+              "_title": "SmartDashboard/PoseSubsystem/Starting Right Heading"
+            }
+          },
+          "8,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Right Position X Value",
+              "_title": "SmartDashboard/PoseSubsystem/Starting Right Position X Value"
+            }
+          },
+          "9,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Right Position Y Value",
+              "_title": "SmartDashboard/PoseSubsystem/Starting Right Position Y Value"
+            }
+          },
+          "3,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting LeftHub Heading",
+              "_title": "SmartDashboard/PoseSubsystem/Starting LeftHub Heading"
+            }
+          },
+          "4,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting LeftHub X Value",
+              "_title": "SmartDashboard/PoseSubsystem/Starting LeftHub X Value"
+            }
+          },
+          "5,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting LeftHub Y Value",
+              "_title": "SmartDashboard/PoseSubsystem/Starting LeftHub Y Value"
+            }
+          },
+          "3,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting RightHub Heading",
+              "_title": "SmartDashboard/PoseSubsystem/Starting RightHub Heading"
+            }
+          },
+          "4,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting RightHub X Value",
+              "_title": "SmartDashboard/PoseSubsystem/Starting RightHub X Value"
+            }
+          },
+          "5,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting RightHub Y Value",
+              "_title": "SmartDashboard/PoseSubsystem/Starting RightHub Y Value"
             }
           }
         }
