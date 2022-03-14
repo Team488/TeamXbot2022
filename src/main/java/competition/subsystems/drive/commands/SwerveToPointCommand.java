@@ -44,7 +44,7 @@ public class SwerveToPointCommand extends BaseCommand {
         log.info("Initializing");
 
         targetHeading = targetHeadingSupplier.get();
-        targetPosition = targetPositionSupplier.get();
+        targetPosition = targetPositionSupplier.get().clone();
 
         if (robotRelativeMotion) {
             // If we are using robot relative motion, we need to consider the target position
@@ -61,6 +61,14 @@ public class SwerveToPointCommand extends BaseCommand {
         }
 
         log.info(String.format("Swerve to point targets: (%f, %f), %f", targetPosition.x, targetPosition.y, targetHeading));
+    }
+
+    public XYPair getActiveTargetPosition() {
+        return targetPosition;
+    }
+
+    public double getActiveHeading() {
+        return targetHeading;
     }
 
     public void setTargetPosition(XYPair targetPositionInInches, double heading) {
