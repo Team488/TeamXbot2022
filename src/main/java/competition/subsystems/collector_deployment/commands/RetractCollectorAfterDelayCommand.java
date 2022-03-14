@@ -2,7 +2,6 @@ package competition.subsystems.collector_deployment.commands;
 
 import com.google.inject.Inject;
 
-import competition.subsystems.collector.CollectorSubsystem;
 import competition.subsystems.collector_deployment.CollectorDeploymentSubsystem;
 import xbot.common.command.BaseCommand;
 import xbot.common.controls.sensors.XTimer;

@@ -12,10 +12,6 @@ import competition.auto_programs.ShootThenEscapeCommand;
 import competition.commandgroups.FireCommand;
 import competition.injection.arm.LeftArm;
 import competition.injection.arm.RightArm;
-import competition.injection.swerve.FrontLeftDrive;
-import competition.injection.swerve.FrontRightDrive;
-import competition.injection.swerve.RearLeftDrive;
-import competition.injection.swerve.RearRightDrive;
 import competition.subsystems.climber_arm.ClimberArmSubsystem;
 import competition.subsystems.climber_arm.commands.ClimberArmMaintainerCommand;
 import competition.subsystems.climber_arm.commands.DualArmBalancerCommand;
@@ -37,20 +33,16 @@ import competition.subsystems.conveyer.ConveyorSubsystem;
 import competition.subsystems.deploy_hood.commands.HoodDeployCommand;
 import competition.subsystems.deploy_hood.commands.HoodRetractCommand;
 import competition.subsystems.drive.DriveSubsystem;
-import competition.subsystems.drive.commands.CalibrateSteeringCommand;
 import competition.subsystems.drive.commands.DebuggingSwerveWithJoysticksCommand;
 import competition.subsystems.drive.commands.GoToNextActiveSwerveModuleCommand;
 import competition.subsystems.drive.commands.SetSwerveMotorControllerPidParametersCommand;
-import competition.subsystems.drive.commands.SwerveDriveMaintainerCommand;
-import competition.subsystems.drive.commands.SwerveDriveWithJoysticksCommand;
-import competition.subsystems.drive.commands.SwerveSteeringMaintainerCommand;
 import competition.subsystems.drive.commands.SwerveToPointCommand;
 import competition.subsystems.drive.commands.TurnLeft90DegreesCommand;
 import competition.subsystems.latch.commands.LatchArmCommand;
 import competition.subsystems.latch.commands.LatchReleaseCommand;
 import competition.subsystems.pose.PoseSubsystem;
-import competition.subsystems.pose.SetPoseCommand;
 import competition.subsystems.pose.PoseSubsystem.StartingPosition;
+import competition.subsystems.pose.SetPoseCommand;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
 import competition.subsystems.shooterwheel.commands.StopShooterWheelCommand;
@@ -62,7 +54,6 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import xbot.common.command.DelayViaSupplierCommand;
 import xbot.common.command.NamedInstantCommand;
-import xbot.common.command.NamedRunCommand;
 import xbot.common.command.SmartDashboardCommandPutter;
 import xbot.common.controls.sensors.ChordButton;
 import xbot.common.controls.sensors.XXboxController.XboxButton;
@@ -105,9 +96,6 @@ public class OperatorCommandMap {
     public void setupDriveCommands(
             DebuggingSwerveWithJoysticksCommand swerveDebugging,
             GoToNextActiveSwerveModuleCommand goToNextActiveSwerveModule) {
-        //operatorInterface.driverGamepad.getifAvailable(XboxButton.B).whenPressed(swerveDebugging);
-        //operatorInterface.driverGamepad.getifAvailable(XboxButton.X).whenPressed(goToNextActiveSwerveModule);
-
     }
 
     @Inject
@@ -144,10 +132,6 @@ public class OperatorCommandMap {
         setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.EngageNextBar)
                 .includeOnSmartDashboard();
 
-        // ParallelCommandGroup stopBothArms = new ParallelCommandGroup(stopLeftArm,
-        // stopRightArm);
-        ParallelCommandGroup maintainArms = new ParallelCommandGroup(leftArmMaintainer, rightArmMaintainer);
-
         dualArmBalancer.setSafe(true);
 
         pf.setPrefix("OperatorCommandMap/");
@@ -179,33 +163,7 @@ public class OperatorCommandMap {
     }
 
     @Inject
-    public void setupGeneralSwerveCommands(
-            @FrontLeftDrive SwerveSteeringMaintainerCommand maintainSteeringFrontLeft,
-            @FrontLeftDrive SwerveDriveMaintainerCommand maintainDriveFrontLeft,
-            @FrontRightDrive SwerveSteeringMaintainerCommand maintainSteeringFrontRight,
-            @FrontRightDrive SwerveDriveMaintainerCommand maintainDriveFrontRight,
-            @RearLeftDrive SwerveSteeringMaintainerCommand maintainSteeringRearLeft,
-            @RearLeftDrive SwerveDriveMaintainerCommand maintainDriveRearLeft,
-            @RearRightDrive SwerveSteeringMaintainerCommand maintainSteeringRearRight,
-            @RearRightDrive SwerveDriveMaintainerCommand maintainDriveRearRight,
-            SwerveDriveWithJoysticksCommand swerveDriveWithJoysticks,
-            CalibrateSteeringCommand calibrateSteering,
-            SetSwerveMotorControllerPidParametersCommand setSteeringPidValues) {
-        ParallelCommandGroup swerveCommands = new ParallelCommandGroup(
-                maintainSteeringFrontLeft,
-                maintainDriveFrontLeft,
-                maintainSteeringFrontRight,
-                maintainDriveFrontRight,
-                maintainSteeringRearLeft,
-                maintainDriveRearLeft,
-                maintainSteeringRearRight,
-                maintainDriveRearRight,
-                swerveDriveWithJoysticks);
-
-        //operatorInterface.driverGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(calibrateSteering);
-        //operatorInterface.driverGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(swerveCommands);
-        //operatorInterface.driverGamepad.getifAvailable(XboxButton.Back).whenPressed(setSteeringPidValues);
-
+    public void setupGeneralSwerveCommands(SetSwerveMotorControllerPidParametersCommand setSteeringPidValues) {
         setSteeringPidValues.includeOnSmartDashboard("Commit steering pid values");
     }
 
@@ -225,19 +183,8 @@ public class OperatorCommandMap {
         SmartDashboard.putData("Trim down", decreaseTrim);
         stopCommand.includeOnSmartDashboard();
 
-        InstantCommand setSafe = new NamedInstantCommand("ShooterSafeSpeed", () -> shooter.setTargetRPM(TargetRPM.Safe));
-        InstantCommand setNearShot = new NamedInstantCommand("ShooterNearShotSpeed", () -> shooter.setTargetRPM(TargetRPM.NearShot));
-        InstantCommand setDistanceShot = new NamedInstantCommand("ShooterDistanceShotSpeed", () -> shooter.setTargetRPM(TargetRPM.DistanceShot));
-        NamedRunCommand setSafePowerPercent = new NamedRunCommand("ShooterSafePowerPercent", () -> shooter.setSafePower(), shooter);
-
-        //oi.shooterGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(decreaseTrim);
-        //oi.shooterGamepad.getifAvailable(XboxButton.RightTrigger).whenPressed(increaseTrim);
-
         oi.operatorGamepad.getifAvailable(XboxButton.Y).whenHeld(fireFarCommand);
         oi.operatorGamepad.getifAvailable(XboxButton.B).whenHeld(fireCloseCommand);
-
-        //oi.shooterGamepad.getifAvailable(XboxButton.A).whenPressed(setNearShot).whenReleased(setSafe);
-        //oi.shooterGamepad.getifAvailable(XboxButton.X).whenPressed(setDistanceShot).whenReleased(setSafe);
     }
 
     @Inject
@@ -259,8 +206,6 @@ public class OperatorCommandMap {
                 () -> {
                     return angleTarget.get();
                 });
-        //oi.driverGamepad.getifAvailable(XboxButton.Start).whenPressed(turnleft90);
-        //oi.driverGamepad.getifAvailable(XboxButton.Y).whenPressed(swerveToPoint);
 
         // Precision Commands
         StartEndCommand activatePrecisionDrive = new StartEndCommand(

@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import competition.subsystems.drive.commands.SwerveToPointCommand;
-import xbot.common.math.ContiguousDouble;
 import xbot.common.math.WrappedRotation2d;
 import xbot.common.math.XYPair;
 
