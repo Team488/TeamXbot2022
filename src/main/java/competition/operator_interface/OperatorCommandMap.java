@@ -49,6 +49,7 @@ import competition.subsystems.drive.commands.TurnLeft90DegreesCommand;
 import competition.subsystems.latch.commands.LatchArmCommand;
 import competition.subsystems.latch.commands.LatchReleaseCommand;
 import competition.subsystems.pose.PoseSubsystem;
+import competition.subsystems.pose.SetPoseCommand;
 import competition.subsystems.pose.PoseSubsystem.StartingPosition;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
@@ -66,6 +67,7 @@ import xbot.common.command.SmartDashboardCommandPutter;
 import xbot.common.controls.sensors.ChordButton;
 import xbot.common.controls.sensors.XXboxController.XboxButton;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.math.FieldPose;
 import xbot.common.math.XYPair;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
@@ -330,7 +332,8 @@ public class OperatorCommandMap {
         ShootCollectShootCommand shootCollectShoot,
         ShootThenEscapeCommand shootThenEscape,
         Provider<SetAutonomousCommand> setAutoCommandProvider,
-        Provider<SetRobotHeadingCommand> setHeadingCommandProvider)
+        Provider<SetRobotHeadingCommand> setHeadingCommandProvider,
+        Provider<SetPoseCommand> setPoseCommandProvider)
     {
         SetAutonomousCommand setDoNothing = setAutoCommandProvider.get();
         setDoNothing.setAutoCommand(doNothing);
@@ -352,25 +355,33 @@ public class OperatorCommandMap {
 
         operatorInterface.autoGamepad.getPovIfAvailable(0).whenPressed(setDoNothing);
         operatorInterface.autoGamepad.getPovIfAvailable(90).whenPressed(setDriveFiveFeet);
-        operatorInterface.autoGamepad.getPovIfAvailable(180).whenPressed(shootCollectShoot);
-        operatorInterface.autoGamepad.getPovIfAvailable(270).whenPressed(shootThenEscape);
+        operatorInterface.autoGamepad.getPovIfAvailable(180).whenPressed(setShootCollectShoot);
+        operatorInterface.autoGamepad.getPovIfAvailable(270).whenPressed(setShootThenEscape);
 
-        var setPoseforLeftStart = 
-            new InstantCommand(() -> pose.setCurrentPose(pose.getStartingPose(StartingPosition.Left)));
-        var setPoseForMiddleStart = 
-            new InstantCommand(() -> pose.setCurrentPose(pose.getStartingPose(StartingPosition.Middle)));
-        var setPoseForRightStart =
-            new InstantCommand(() -> pose.setCurrentPose(pose.getStartingPose(StartingPosition.Right)));
-        var setPoseForLeftHubStart =
-            new InstantCommand(() -> pose.setCurrentPose(pose.getStartingPose(StartingPosition.LeftHub)));
-        var setPoseForRightHubStart =
-            new InstantCommand(() -> pose.setCurrentPose(pose.getStartingPose(StartingPosition.RightHub)));
+        SetPoseCommand setPoseForLeftStart = setPoseCommandProvider.get();
+        setPoseForLeftStart.setPose(pose.getStartingPose(StartingPosition.Left));
+        SetPoseCommand setPoseForMiddleStart = setPoseCommandProvider.get();
+        setPoseForMiddleStart.setPose(pose.getStartingPose(StartingPosition.Middle));
+        SetPoseCommand setPoseForRightStart = setPoseCommandProvider.get();
+        setPoseForRightStart.setPose(pose.getStartingPose(StartingPosition.Right));
+        SetPoseCommand setPoseForLeftHub = setPoseCommandProvider.get();
+        setPoseForLeftHub.setPose(pose.getStartingPose(StartingPosition.LeftHub));
+        SetPoseCommand setPoseForRightHub = setPoseCommandProvider.get();
+        setPoseForRightHub.setPose(pose.getStartingPose(StartingPosition.RightHub));
+        SetPoseCommand setPoseforNeutral = setPoseCommandProvider.get();
+        setPoseforNeutral.setPose(new FieldPose(0,0,90));
 
+        operatorInterface.autoGamepad.getifAvailable(XboxButton.X).whenPressed(setPoseForLeftStart);
+        operatorInterface.autoGamepad.getifAvailable(XboxButton.Y).whenPressed(setPoseForMiddleStart);
+        operatorInterface.autoGamepad.getifAvailable(XboxButton.B).whenPressed(setPoseForRightStart);
+        operatorInterface.autoGamepad.getifAvailable(XboxButton.A).whenPressed(setPoseforNeutral);
+        operatorInterface.autoGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(setPoseForLeftHub);
+        operatorInterface.autoGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(setPoseForRightHub);
 
-        SmartDashboard.putData("Start/Left", setPoseforLeftStart);
+        SmartDashboard.putData("Start/Left", setPoseForLeftStart);
         SmartDashboard.putData("Start/Middle", setPoseForMiddleStart);
         SmartDashboard.putData("Start/Right", setPoseForRightStart);
-        SmartDashboard.putData("Start/LeftHub", setPoseForLeftHubStart);
-        SmartDashboard.putData("Start/RightHub", setPoseForRightHubStart);
+        SmartDashboard.putData("Start/LeftHub", setPoseForLeftHub);
+        SmartDashboard.putData("Start/RightHub", setPoseForRightHub);
     }
 }

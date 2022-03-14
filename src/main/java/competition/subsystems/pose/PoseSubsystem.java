@@ -73,13 +73,13 @@ public class PoseSubsystem extends BasePoseSubsystem {
         this.rightStartPosY = pf.createPersistentProperty("Starting Right Position Y Value", 71);
         this.rightHeading = pf.createPersistentProperty("Starting Right Heading", -8);
 
-        this.leftHubStartPosX = pf.createPersistentProperty("Starting Right Position X Value", 181);
-        this.leftHubStartPosY = pf.createPersistentProperty("Starting Right Position Y Value", 276);
-        this.leftHubHeading = pf.createPersistentProperty("Starting Right Heading", 248);
+        this.leftHubStartPosX = pf.createPersistentProperty("Starting LeftHub X Value", 181);
+        this.leftHubStartPosY = pf.createPersistentProperty("Starting LeftHub Y Value", 276);
+        this.leftHubHeading = pf.createPersistentProperty("Starting LeftHub Heading", 248);
         
-        this.rightHubStartPosX = pf.createPersistentProperty("Starting Right Position X Value", 113);
-        this.rightHubStartPosY = pf.createPersistentProperty("Starting Right Position Y Value", 304);
-        this.rightHubHeading = pf.createPersistentProperty("Starting Right Heading", -21);
+        this.rightHubStartPosX = pf.createPersistentProperty("Starting RightHub X Value", 113);
+        this.rightHubStartPosY = pf.createPersistentProperty("Starting RightHub Y Value", 304);
+        this.rightHubHeading = pf.createPersistentProperty("Starting RightHub Heading", -21);
 
     /* Remember: WPILib uses a different coordinate convention than our legacy code. Theirs:
           //   0,+y. 90 degrees
