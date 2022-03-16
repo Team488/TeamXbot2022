@@ -56,7 +56,7 @@ public class CompetitionContract extends ElectricalContract {
             case "LeftArm":
                 return true;
             case "RightArm":
-                return false;
+                return true;
             default:
                 return false;
         }
@@ -223,9 +223,9 @@ public class CompetitionContract extends ElectricalContract {
     public DeviceInfo getClimberLowerLimitSensor(ArmInstance armInstance) {
         switch (armInstance.getLabel()) {
             case "LeftArm":
-                return new DeviceInfo(8);
-            case "RightArm":
                 return new DeviceInfo(7);
+            case "RightArm":
+                return new DeviceInfo(9);
             default:
                 return null;
         }
@@ -237,7 +237,7 @@ public class CompetitionContract extends ElectricalContract {
             case "LeftArm":
                 return new DeviceInfo(6);
             case "RightArm":
-                return new DeviceInfo(9);
+                return new DeviceInfo(8);
             default:
                 return null;
         }
@@ -263,7 +263,7 @@ public class CompetitionContract extends ElectricalContract {
     }
 
     public CANTalonInfo getConveyerMotor() {
-        return new CANTalonInfo(24, true);
+        return new CANTalonInfo(24, false);
     }
 
     public DeviceInfo getDeployHoodSoleniod1() {
