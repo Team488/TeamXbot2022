@@ -174,7 +174,7 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
                         suggestedRotatePower = 0;
                         break;
                     case HumanControl:
-                        suggestedRotatePower = humanRotatePowerFromTriggers;
+                        suggestedRotatePower = scaleHumanRotationInput(humanRotatePowerFromTriggers);
                         break;
                     case InitializeMachineControl:
                         drive.setDesiredHeading(pose.getCurrentHeading().getDegrees());
@@ -191,7 +191,7 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
             }
         } else {
             // If we are in the typical "rotate using joystick to turn" mode, use the Heading Assist module to get the suggested power.
-            suggestedRotatePower = humanRotatePower;
+            suggestedRotatePower = scaleHumanRotationInput(humanRotatePower);
         }
 
         // --------------------------------------------------
@@ -204,8 +204,8 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
         }
 
         // Scale the power down if we are in one or more precision modes
+        // Rotation is scaled when deciding on human vs machine inputs
         translationIntent.scale(drive.isPrecisionTranslationActive() ? 0.5 : 1);
-        suggestedRotatePower = drive.isPrecisionRotationActive() ? suggestedRotatePower * 0.25 : suggestedRotatePower;
 
         // Scale the power down if requested (typically used when novices are controlling the robot)
         translationIntent = translationIntent.scale(drivePowerFactor.get());
@@ -218,5 +218,9 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
         }
 
         drive.fieldOrientedDrive(translationIntent, suggestedRotatePower, pose.getCurrentHeading().getDegrees(), centerOfRotation);
+    }
+
+    private double scaleHumanRotationInput(double humanInputPower) {
+        return humanInputPower * (drive.isPrecisionRotationActive() ? 0.25 : 1.0);
     }
 }
