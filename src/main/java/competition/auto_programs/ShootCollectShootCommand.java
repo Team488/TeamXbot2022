@@ -48,22 +48,30 @@ public class ShootCollectShootCommand extends SequentialCommandGroup {
         // stop the shooter to conserve a little bit of power
         SwerveToPointCommand smallReverse = swerveProvider.get();
         smallReverse.setRobotRelativeMotion();
-        smallReverse.setTargetPosition(new XYPair(0, -12), 90);
+        smallReverse.setTargetPosition(new XYPair(0, -24), 90);
         addCommands(new ParallelCommandGroup(smallReverse, stopShooterProvider.get()));
 
-        // Turn around and move towards the target cargo while collecting
+        // Turn around to face towards the cargo
+        SwerveToPointCommand turnAround = swerveProvider.get();
+        turnAround.setRobotRelativeMotion();
+        turnAround.setTargetPosition(new XYPair(), -90);
+        addCommands(turnAround);
+
+        // Move towards the target cargo while collecting
         SwerveToPointCommand goToBall = swerveProvider.get();
         goToBall.setRobotRelativeMotion();
-        goToBall.setTargetPosition(new XYPair(0, -60), -90);
+        goToBall.setTargetPosition(new XYPair(0, -48), 90);
         DelayViaSupplierCommand collectTimeout = new DelayViaSupplierCommand(() -> 3.0);
         addCommands(new ParallelDeadlineGroup(collectTimeout, goToBall, collectCommand));
 
-        // Point towards the hub again and get close enough to shoot,
-        // while retracting the collector to a safe position
+        // Retract the collector to a safe position
+        addCommands(new ParallelDeadlineGroup(new DelayViaSupplierCommand(() -> 0.1), retractCollector, stopCollector));
+
+        // Point towards the hub again and get close enough to shoot
         SwerveToPointCommand getToShootingPosition = swerveProvider.get();
         getToShootingPosition.setRobotRelativeMotion();
-        getToShootingPosition.setTargetPosition(new XYPair(0, -60), -90);
-        addCommands(new ParallelRaceGroup(getToShootingPosition, stopCollector, retractCollector));
+        getToShootingPosition.setTargetPosition(new XYPair(0, -72), -90);
+        addCommands(getToShootingPosition);
 
         // Fire the second shot
         FireCommand secondShot = fireProvider.get();
