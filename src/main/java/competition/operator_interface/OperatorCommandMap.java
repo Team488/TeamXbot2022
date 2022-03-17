@@ -149,11 +149,6 @@ public class OperatorCommandMap {
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(pivotIn);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(pivotOut);
         
-        /*
-        ChordButton driverNuclearLaunch = clf.createChordButton(
-                operatorInterface.driverGamepad.getifAvailable(XboxButton.Start),
-                operatorInterface.driverGamepad.getifAvailable(XboxButton.Back));*/
-
         ChordButton totalNuclearLaunch = clf.createChordButton(
                 operatorInterface.driverGamepad.getifAvailable(XboxButton.Start),
                 operatorInterface.operatorGamepad.getifAvailable(XboxButton.Start));
