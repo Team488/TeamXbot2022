@@ -34,6 +34,7 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
     final HeadingModule headingModule;
     final Latch absoluteOrientationLatch;
     final DoubleProperty minimumMagnitudeForAbsoluteHeading;
+    final DoubleProperty triggerOnlyPowerScaling;
     final HumanVsMachineDecider decider;
 
     @Inject
@@ -50,6 +51,7 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
         this.minimumMagnitudeForAbsoluteHeading = pf.createPersistentProperty("Min Magnitude For Absolute Heading", 0.75);
         this.decider = clf.createHumanVsMachineDecider(this.getPrefix());
         this.headingModule = clf.createHeadingModule(drive.getRotateToHeadingPid());
+        this.triggerOnlyPowerScaling = pf.createPersistentProperty("TriggerOnlyPowerScaling", 0.5);
 
         // Set up a latch to trigger whenever we change the rotational mode. In either case,
         // there's some PIDs that will need to be reset, or goals that need updating.
@@ -135,6 +137,10 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
             humanRotatePowerFromStick + humanRotatePowerFromLeftTrigger - humanRotatePowerFromRightTrigger);
 
         double humanRotatePowerFromTriggers = humanRotatePowerFromLeftTrigger - humanRotatePowerFromRightTrigger;
+        
+        // Michael wants the triggers to be more precise pretty much all the time, so adding a trigger-only
+        // power reduction
+        humanRotatePowerFromTriggers *= triggerOnlyPowerScaling.get();
                 
         if (absoluteOrientationMode.get()) {
             // If we are using absolute orientation, we first need get the desired heading from the right joystick.

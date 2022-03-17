@@ -203,7 +203,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         power *= MathUtils.constrainDoubleToRobotScale(armPowerFactor.get());
 
         if (isSafe) {
-            if (isArmOverExtended()/* Add upper limit here when needed */) {
+            if (isArmOverExtended() || isAtUpperLimitSwitch()) {
                 power = MathUtils.constrainDouble(power, -1, 0);
 
             } 
