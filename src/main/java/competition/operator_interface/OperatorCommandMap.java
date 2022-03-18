@@ -31,8 +31,6 @@ import competition.subsystems.collector_deployment.commands.DeployCollectorComma
 import competition.subsystems.collector_deployment.commands.RetractCollectorCommand;
 import competition.subsystems.collector_stage_2.CollectorStage2Subsystem;
 import competition.subsystems.conveyer.ConveyorSubsystem;
-import competition.subsystems.deploy_hood.commands.HoodDeployCommand;
-import competition.subsystems.deploy_hood.commands.HoodRetractCommand;
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.drive.commands.DebuggingSwerveWithJoysticksCommand;
 import competition.subsystems.drive.commands.GoToNextActiveSwerveModuleCommand;
@@ -215,10 +213,6 @@ public class OperatorCommandMap {
         StartEndCommand activatePrecisionRotation = new StartEndCommand(
                 () -> drive.setPrecisionRotationActive(true),
                 () -> drive.setPrecisionRotationActive(false));
-
-        StartEndCommand activateCollectorOrientedTurning = new StartEndCommand(
-                () -> drive.setCollectorOrientedTurningActive(true),
-                () -> drive.setCollectorOrientedTurningActive(false));
 
         oi.driverGamepad.getifAvailable(XboxButton.LeftBumper).whileHeld(activatePrecisionDrive);
         oi.driverGamepad.getifAvailable(XboxButton.RightBumper).whileHeld(activatePrecisionRotation);

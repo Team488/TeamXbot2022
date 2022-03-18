@@ -50,8 +50,8 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
         rpmTrimProp = pf.createEphemeralProperty("TrimRPM", 0);
 
         safeRpm = pf.createPersistentProperty("SafeRpm", 500);
-        nearShotRpm = pf.createPersistentProperty("NearShotRpm", 750);
-        distanceShotRpm = pf.createPersistentProperty("DistanceShotRpm", 1000);
+        nearShotRpm = pf.createPersistentProperty("NearShotRpm", 1250);
+        distanceShotRpm = pf.createPersistentProperty("DistanceShotRpm", 2000);
         hotDogRpm = pf.createPersistentProperty("HotDogRpm", -200);
 
         safePower = pf.createPersistentProperty("SafePower", 0.1);
@@ -257,5 +257,15 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
 
     private boolean shooterMovingSome() {
         return getCurrentRPM() > 500;
+    }
+    
+    private boolean isInFullPowerMode;
+
+    public void setFullPowerMode(boolean enabled) {
+        isInFullPowerMode = enabled;
+    }
+
+    public boolean isInFullPowerMode() {
+        return isInFullPowerMode;
     }
 }

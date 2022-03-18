@@ -5,7 +5,7 @@ import com.google.inject.Provider;
 
 import competition.commandgroups.FireCommand;
 import competition.commandgroups.FullCollectCommand;
-import competition.commandgroups.ShutdownShootingCommand;
+import competition.commandgroups.ShutdownShootingCommandThatEnds;
 import competition.subsystems.collector.commands.StopCollectorCommand;
 import competition.subsystems.collector_deployment.commands.RetractCollectorCommand;
 import competition.subsystems.drive.commands.SwerveToPointCommand;
@@ -22,7 +22,7 @@ public class ShootThenEscapeCommand extends SequentialCommandGroup {
     public ShootThenEscapeCommand (
         Provider<FireCommand> fireProvider,
         Provider<SwerveToPointCommand> swerveProvider,
-        Provider<ShutdownShootingCommand> stopShooterProvider,
+        Provider<ShutdownShootingCommandThatEnds> stopShooterProvider,
         FullCollectCommand collectCommand,
         StopCollectorCommand stopCollector,
         RetractCollectorCommand retractCollector

@@ -10,6 +10,16 @@ import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
+/**
+ * Deploys the collector, runs the collector and conveyor in "intake" mode,
+ * and sets the shooter wheel to "HotDog" mode to keep the cargo from escaping.
+ * Will not end on its own.
+ * Requires:
+ * - Collector.
+ * - CollectorDeployment.
+ * - Conveyor.
+ * - ShooterWheel.SetpointLock.
+ */
 public class FullCollectCommand extends ParallelCommandGroup {
     
     @Inject
