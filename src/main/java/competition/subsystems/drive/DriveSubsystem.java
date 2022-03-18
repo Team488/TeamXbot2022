@@ -169,6 +169,16 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         precisionRotationActive = isActive;
     }
 
+    private boolean rotateToCargoActive = false;
+
+    public boolean isRotateToCargoActive() {
+        return rotateToCargoActive;
+    }
+
+    public void setRotateToCargoActive(boolean isActive) {
+        rotateToCargoActive = isActive;
+    }
+
     /**
      * Set the target movement speed and rotation, rotating around the center of the robot.
      * @param translate The translation velocity.

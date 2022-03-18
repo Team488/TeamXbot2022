@@ -7,6 +7,8 @@ import com.google.inject.Inject;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import xbot.common.command.BaseSubsystem;
@@ -19,70 +21,53 @@ import xbot.common.properties.StringProperty;
 public class VisionSubsystem extends BaseSubsystem {
 
     final StringProperty dataFromOffboardVision;
-    final LoggingLatch parsingErrorLatch;
     final RobotAssertionManager assertionManager;
 
     private boolean isGettingData;
     private Alliance cargoAlliance;
     private double cargoBearing;
 
+    NetworkTable visionTable;
+
     @Inject
     public VisionSubsystem(PropertyFactory pf, RobotAssertionManager assertionManager) {
-
         this.assertionManager = assertionManager;
         pf.setPrefix(this);
         dataFromOffboardVision = pf.createEphemeralProperty("DataFromOffboardVision", "");
-        parsingErrorLatch = new LoggingLatch(
-            this.getName(), 
-            "Couldn't parse JSON from offboard vision",
-            EdgeType.RisingEdge);
         this.register();
+
+        NetworkTableInstance.getDefault().getTable("Vision");
     }
 
-    /*
-     * Vision Data Format:
-     * An array of "Cargo" objects, each of which has a color and a bearing
-     */
+    public double getBearingtoCargo() {
+        Alliance currentAlliance = DriverStation.getAlliance();
 
-    private void parseVisionData(String data) {
-
-        if (data == null || data.isBlank()) {
-            // We're not getting any data - skip all processing
-            return;
-        }
-
-        try {
-            JSONObject formattedData = new JSONObject(data);
-
-            JSONArray cargoArray = formattedData.getJSONArray("Cargo");
-            // For now, take the first element.
-            JSONObject firstCargo = cargoArray.getJSONObject(0);
-            cargoAlliance = firstCargo.getString("Alliance").equals("Red") ? Alliance.Red : Alliance.Blue;
-            cargoBearing = firstCargo.getDouble("Bearing");
-            parsingErrorLatch.checkValue(false);
-            isGettingData = true;
-        } catch (Exception e) {
-            // Only throw exceptions when testing
-            assertionManager.throwException("Problems parsing vision data", e);
-            // Only log once instead of filling the log with errors
-            parsingErrorLatch.checkValue(true);
-            return;
-        }
-    }
-
-    public double getBearingToBestTarget() {
-        
-        if (cargoAlliance == DriverStation.getAlliance()) {
-            return cargoBearing;
-        }
-        else
-        {
+        if (getFixAcquired(currentAlliance)) {
+            return getYawToTarget(currentAlliance);
+        } else {
             return 0;
         }
     }
 
-    @Override
-    public void periodic() {
-        parseVisionData(dataFromOffboardVision.get());
+    public boolean getFixAcquired(Alliance color) {
+        boolean fixAcquired = false;
+        if (color == Alliance.Red) {
+            fixAcquired = visionTable.getEntry("fixAcquiredRed").getBoolean(false);
+        } else if (color == Alliance.Blue) {
+            fixAcquired = visionTable.getEntry("fixAcquiredBlue").getBoolean(false);
+        }
+
+        return fixAcquired;
+    }
+
+    private double getYawToTarget(Alliance color) {
+        double yawToTarget = 0;
+        if (color == Alliance.Red) {
+            yawToTarget = visionTable.getEntry("yawToTargetRed").getDouble(0);
+        } else if (color == Alliance.Blue) {
+            yawToTarget = visionTable.getEntry("yawToTargetBlue").getDouble(0);
+        }
+
+        return yawToTarget;
     }
 }
