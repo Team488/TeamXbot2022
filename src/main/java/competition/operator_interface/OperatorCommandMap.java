@@ -250,13 +250,7 @@ public class OperatorCommandMap {
         operatorInterface.driverGamepad.getifAvailable(XboxButton.B).whenPressed(retractCollector);
 
     }
-
-    @Inject
-    public void setupLaunchingCommands(HoodDeployCommand deployHood, HoodRetractCommand retractHood) {
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftStick).whenPressed(deployHood);
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightStick).whenPressed(retractHood);
-    }
-
+    
     @Inject
     public void setupDebuggingCommands(SmartDashboardTableWrapper dashboard,
             SmartDashboardCommandPutter commandPutter) {
