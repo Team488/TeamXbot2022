@@ -35,7 +35,7 @@ public class OperatorInterface {
         operatorGamepad.setRightInversion(true, true);
 
         pf.setPrefix("OperatorInterface");
-        driverDeadband = pf.createPersistentProperty("Driver Deadband", 0.15);
+        driverDeadband = pf.createPersistentProperty("Driver Deadband", 0.1);
         operatorDeadband = pf.createPersistentProperty("Operator Deadband", 0.20);
     }
 

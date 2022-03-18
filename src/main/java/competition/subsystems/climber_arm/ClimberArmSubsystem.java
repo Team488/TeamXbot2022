@@ -94,17 +94,17 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         
         // Shared properties
         pf.setPrefix(super.getPrefix());
-        safeArmExtendedNumber = pf.createPersistentProperty("safelyExtendable", 10);
-        safeArmRetractedNumber = pf.createPersistentProperty("safelyRetractable", -10);
+        safeArmExtendedNumber = pf.createPersistentProperty("safelyExtendable", 24.5);
+        safeArmRetractedNumber = pf.createPersistentProperty("safelyRetractable", -5);
         // Assume this is shared - if not, we'll split it out.
-        armInchesPerRotation = pf.createPersistentProperty("ArmInchesPerRotation", 1.0);
+        armInchesPerRotation = pf.createPersistentProperty("ArmInchesPerRotation", 0.10767);
         armPowerFactor = pf.createPersistentProperty("PowerFactor", 1);
 
         positionFullyRetractedProperty = pf.createPersistentProperty("FullyRetractedPositionInches", 0.0);
         positionClearCurrentBarProperty = pf.createPersistentProperty("ClearCurrentBarPositionInches", 6.0);
         positionFullyExtendedProperty = pf.createPersistentProperty("FullyExtendedPositionInches", 24.5);
         positionEngageNextBarProperty = pf.createPersistentProperty("EngageNextBarPositionInches", 22.5);
-        positionAutomaticPivotIn = pf.createPersistentProperty("AutomaticPivotInInches", 23.0);
+        positionAutomaticPivotIn = pf.createPersistentProperty("AutomaticPivotInInches", 24);
 
         armStallDetector = factory.createStallDetector(super.getPrefix());
 

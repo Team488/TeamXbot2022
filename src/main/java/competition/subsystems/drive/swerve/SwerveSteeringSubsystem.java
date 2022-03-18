@@ -60,10 +60,10 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
 
         // Create properties shared among all instances
         pf.setPrefix(super.getPrefix());
-        this.pid = pidf.createPIDManager(super.getPrefix() + "PID", 0.1, 0.0, 0.0, -1.0, 1.0);
+        this.pid = pidf.createPIDManager(super.getPrefix() + "PID", 0.2, 0.0, 0.005, -1.0, 1.0);
         this.powerScale = pf.createPersistentProperty("PowerScaleFactor", 5);
         this.degreesPerMotorRotation = pf.createPersistentProperty("DegreesPerMotorRotation", 28.1502912);
-        this.useMotorControllerPid = pf.createPersistentProperty("UseMotorControllerPID", false);
+        this.useMotorControllerPid = pf.createPersistentProperty("UseMotorControllerPID", true);
         this.maxMotorEncoderDrift = pf.createPersistentProperty("MaxEncoderDriftDegrees", 1.0);
 
         // Create properties that are unique to each instance
