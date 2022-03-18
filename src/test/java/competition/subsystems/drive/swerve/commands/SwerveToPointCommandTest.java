@@ -4,24 +4,18 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import competition.BaseCompetitionTest;
-import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.drive.commands.SwerveToPointCommand;
-import competition.subsystems.pose.PoseSubsystem;
+import xbot.common.math.WrappedRotation2d;
 import xbot.common.math.XYPair;
 
-public class SwerveToPointCommandTest extends BaseCompetitionTest {
+public class SwerveToPointCommandTest extends BaseFullSwerveTest {
     
     SwerveToPointCommand command;
-    DriveSubsystem drive;
-    PoseSubsystem pose;
 
     @Override
     public void setUp() {
         super.setUp();
         command = injector.getInstance(SwerveToPointCommand.class);
-        drive = injector.getInstance(DriveSubsystem.class);
-        pose = injector.getInstance(PoseSubsystem.class);
     }
 
     @Test
@@ -33,33 +27,103 @@ public class SwerveToPointCommandTest extends BaseCompetitionTest {
         command.initialize();
         command.execute();
 
-        testAllModuleAngle(45);
-        testAllModulesGoingForward(true);
+        checkAllModuleAngle(45);
+        checkAllModulesGoingForward(true);
 
         pose.setCurrentPosition(100, 0);
         command.execute();
 
-        testAllModuleAngle(90);
-        testAllModulesGoingForward(true);
+        checkAllModuleAngle(90);
+        checkAllModulesGoingForward(true);
 
         pose.setCurrentPosition(100, 150);
         command.execute();
 
-        testAllModuleAngle(-90);
-        testAllModulesGoingForward(true);
+        checkAllModuleAngle(90);
+        checkAllModulesGoingForward(false);
     }
 
-    private void testAllModuleAngle(double angle) {
-        assertEquals(angle, drive.getFrontLeftSwerveModuleSubsystem().getTargetState().angle.getDegrees(), 0.001);
-        assertEquals(angle, drive.getFrontRightSwerveModuleSubsystem().getTargetState().angle.getDegrees(), 0.001);
-        assertEquals(angle, drive.getRearLeftSwerveModuleSubsystem().getTargetState().angle.getDegrees(), 0.001);
-        assertEquals(angle, drive.getRearRightSwerveModuleSubsystem().getTargetState().angle.getDegrees(), 0.001);
+    @Test
+    public void robotSimpleRelativeMotionTest() {
+        command.setRobotRelativeMotion();
+        command.setTargetPosition(new XYPair(0, 60), 90);
+
+        command.initialize();
+        command.execute();
+
+        checkAllModulesGoingForward(true);
+
+        command.setTargetPosition(new XYPair(0,0), 0);
+
+        command.initialize();
+        command.execute();
+
+        checkRobotTurning(false);
     }
 
-    private void testAllModulesGoingForward(boolean forward) {
-        assertEquals(forward, drive.getFrontLeftSwerveModuleSubsystem().getTargetState().speedMetersPerSecond > 0);
-        assertEquals(forward, drive.getFrontRightSwerveModuleSubsystem().getTargetState().speedMetersPerSecond > 0);
-        assertEquals(forward, drive.getRearLeftSwerveModuleSubsystem().getTargetState().speedMetersPerSecond > 0);
-        assertEquals(forward, drive.getRearRightSwerveModuleSubsystem().getTargetState().speedMetersPerSecond > 0);
+    @Test
+    public void robotOffsetRelativeMotionTest() {
+
+        pose.setCurrentHeading(-45); 
+        setAllSteeringModuleAngles(-45);
+
+        command.setRobotRelativeMotion();
+        command.setTargetPosition(new XYPair(0, 60), 90);
+
+        command.initialize();
+        command.execute();
+
+        checkAllModulesGoingForward(false);
+
+        command.setTargetPosition(new XYPair(0,0), 0);
+        setAllSteeringModuleAngles(90);
+
+        command.initialize();
+        command.execute();
+
+        checkRobotTurning(false);
     }
+
+    @Test
+    public void autonomousTest() {
+
+        pose.setCurrentPosition(0, -12);
+        pose.setCurrentHeading(90);
+        setAllSteeringModuleAngles(90);
+
+        command.setRobotRelativeMotion();
+        command.setTargetPosition(new XYPair(0, -60), -90);
+
+        command.initialize();
+        command.execute();
+
+        pose.setCurrentPosition(-30,-40);
+
+        command.execute();
+    }
+
+    @Test
+    public void multipleInitTest() {
+        pose.setCurrentPosition(0, 0);
+        pose.setCurrentHeading(-90);
+        setAllSteeringModuleAngles(90);
+
+        command.setRobotRelativeMotion();
+        command.setTargetPosition(new XYPair(0, -60), -90);
+
+        command.initialize();
+        command.execute();
+
+        assertEquals(0, command.getActiveTargetPosition().x, 0.01);
+        assertEquals(60, command.getActiveTargetPosition().y, 0.01);
+        assertEquals(90, WrappedRotation2d.fromDegrees(command.getActiveHeading()).getDegrees(), 0.01);
+
+        command.initialize();
+        command.execute();
+
+        assertEquals(0, command.getActiveTargetPosition().x, 0.01);
+        assertEquals(60, command.getActiveTargetPosition().y, 0.01);
+        assertEquals(90, WrappedRotation2d.fromDegrees(command.getActiveHeading()).getDegrees(), 0.01);
+    }
+
 }

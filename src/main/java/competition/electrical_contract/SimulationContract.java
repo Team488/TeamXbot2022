@@ -1,6 +1,7 @@
 package competition.electrical_contract;
 
 import competition.injection.swerve.SwerveInstance;
+import xbot.common.injection.electrical_contract.CANTalonInfo;
 import xbot.common.injection.electrical_contract.DeviceInfo;
 import xbot.common.math.XYPair;
 
@@ -34,12 +35,7 @@ public class SimulationContract extends CompetitionContract {
     public boolean arePneumaticsReady() {
         return false;
     }
-
-    @Override
-    public boolean isLauncherReady() {
-        return false;
-    }
-
+    
     @Override
     public boolean isConveyerReady() {
         return false;
@@ -131,5 +127,10 @@ public class SimulationContract extends CompetitionContract {
             default:
                 return new XYPair(0, 0);
         }
+    }
+
+    @Override
+    public CANTalonInfo getLeftCollectorMotor() {
+        return new CANTalonInfo(30);
     }
 }

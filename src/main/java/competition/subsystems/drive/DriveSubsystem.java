@@ -98,7 +98,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         // Probably not a huge priority, Since as soon as we move once the robot remembers the last commanded direction.
         lastCommandedDirection = new XYPair(0, 90);
 
-        positionalPidManager = factory.createPIDManager(this.getPrefix() + "PositionPID", 1.0/90, 0, 0);
+        positionalPidManager = factory.createPIDManager(this.getPrefix() + "PositionPID", 0.011111, 0, 0, 0.6, -0.6);
         headingPidManager = factory.createPIDManager(this.getPrefix() + "HeadingPID", 1.0/36, 0, 0);
     }
 
@@ -123,6 +123,50 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     @Override
     public PIDManager getRotateDecayPid() {
         return null;
+    }
+
+    public void fieldOrientedDrive(
+        XYPair translation, 
+        double rotation, 
+        double currentHeading,
+        XYPair centerOfRotation) {
+        // rotate the translation vector into the robot coordinate frame
+        XYPair fieldRelativeVector = translation.clone();
+        
+        // 90 degrees is the defined "forward" direction for a driver
+        fieldRelativeVector.rotate(90 - currentHeading);
+        
+        // send the rotated vector to be driven
+        move(fieldRelativeVector, rotation, centerOfRotation);
+    }
+
+    boolean collectorOrientedRotationActive;
+
+    public boolean isCollectorRotationActive() {
+        return collectorOrientedRotationActive;
+    }
+
+    public void setCollectorOrientedTurningActive(boolean isActive) {
+        collectorOrientedRotationActive = isActive;
+    }
+
+    boolean precisionTranslationActive;
+    boolean precisionRotationActive;
+
+    public boolean isPrecisionTranslationActive() {
+        return precisionTranslationActive;
+    }
+
+    public void setPrecisionTranslationActive(boolean isActive) {
+        precisionTranslationActive = isActive;
+    }
+
+    public boolean isPrecisionRotationActive() {
+        return precisionRotationActive;
+    }
+
+    public void setPrecisionRotationActive(boolean isActive) {
+        precisionRotationActive = isActive;
     }
 
     /**

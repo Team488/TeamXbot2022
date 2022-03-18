@@ -27,4 +27,9 @@ public class StopShooterWheelCommand extends BaseCommand{
     public void execute(){
         wheel.stop();
     }
+
+    @Override
+    public boolean isFinished() {
+        return true;
+    }
 }

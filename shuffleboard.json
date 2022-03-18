@@ -255,6 +255,39 @@
               "_source0": "network_table:///SmartDashboard/SwerveDriveWithJoysticksCommand/Turn Power Factor",
               "_title": "/SmartDashboard/SwerveDriveWithJoysticksCommand/Turn Power Factor"
             }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/OperatorInterface/Driver Deadband",
+              "_title": "SmartDashboard/OperatorInterface/Driver Deadband"
+            }
+          },
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/SwerveDriveWithJoysticksCommand/Absolute Orientation Mode",
+              "_title": "SmartDashboard/SwerveDriveWithJoysticksCommand/Absolute Orientation Mode"
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveDriveWithJoysticksCommand/Min Magnitude For Absolute Heading",
+              "_title": "SmartDashboard/SwerveDriveWithJoysticksCommand/Min Magnitude For Absolute Heading"
+            }
           }
         }
       }
@@ -560,6 +593,17 @@
               "_source0": "network_table:///SmartDashboard/SwerveDriveSubsystem/RearRightDrive/CurrentVelocity",
               "_title": "SmartDashboard/SwerveDriveSubsystem/RearRightDrive/CurrentVelocity"
             }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SwerveToPointCommand/Direction to target",
+              "_title": "SmartDashboard/SwerveToPointCommand/Direction to target"
+            }
           }
         }
       }
@@ -834,7 +878,7 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "4,1": {
+          "3,1": {
             "size": [
               1,
               1
@@ -845,7 +889,7 @@
               "_title": "/SmartDashboard/ClimberArmSubsystem/LeftArm/ArmMotorPosition"
             }
           },
-          "4,0": {
+          "3,0": {
             "size": [
               1,
               1
@@ -858,7 +902,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "6,1": {
+          "5,1": {
             "size": [
               1,
               1
@@ -869,7 +913,7 @@
               "_title": "/SmartDashboard/ClimberArmSubsystem/RightArm/ArmMotorPosition"
             }
           },
-          "6,0": {
+          "5,0": {
             "size": [
               1,
               1
@@ -926,26 +970,26 @@
               "_title": "/SmartDashboard/ClimberArmSubsystem/PowerFactor"
             }
           },
-          "4,2": {
+          "7,0": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/TargetPosition",
-              "_title": "SmartDashboard/ClimberArmSubsystem/LeftArm/TargetPosition"
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/LatchReleaseCommand",
+              "_title": "SmartDashboard/LatchReleaseCommand"
             }
           },
-          "6,2": {
+          "3,3": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/TargetPosition",
-              "_title": "SmartDashboard/ClimberArmSubsystem/RightArm/TargetPosition"
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/StallDetector/CurrentTimeWindow",
+              "_title": "SmartDashboard/ClimberArmSubsystem/StallDetector/CurrentTimeWindow"
             }
           },
           "4,3": {
@@ -954,9 +998,9 @@
               1
             ],
             "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand: FullyRetracted",
-              "_title": "SmartDashboard/SetArmsToPositionCommand: FullyRetracted"
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/StallDetector/CurrentLimit",
+              "_title": "SmartDashboard/ClimberArmSubsystem/StallDetector/CurrentLimit"
             }
           },
           "5,3": {
@@ -965,9 +1009,9 @@
               1
             ],
             "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand: ClearCurrentBar",
-              "_title": "SmartDashboard/SetArmsToPositionCommand: ClearCurrentBar"
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/StallDetector/NoMotionTimeWindow",
+              "_title": "SmartDashboard/ClimberArmSubsystem/StallDetector/NoMotionTimeWindow"
             }
           },
           "6,3": {
@@ -976,9 +1020,9 @@
               1
             ],
             "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand: EngageNextBar",
-              "_title": "SmartDashboard/SetArmsToPositionCommand: EngageNextBar"
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/StallDetector/TryingHardVoltagePercentThreshold",
+              "_title": "SmartDashboard/ClimberArmSubsystem/StallDetector/TryingHardVoltagePercentThreshold"
             }
           },
           "7,3": {
@@ -987,42 +1031,9 @@
               1
             ],
             "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand: FullyExtended",
-              "_title": "SmartDashboard/SetArmsToPositionCommand: FullyExtended"
-            }
-          },
-          "8,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand/FullyRetractedPositionInches",
-              "_title": "SmartDashboard/SetArmsToPositionCommand/FullyRetractedPositionInches"
-            }
-          },
-          "8,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand/ClearCurrentBarPositionInches",
-              "_title": "SmartDashboard/SetArmsToPositionCommand/ClearCurrentBarPositionInches"
-            }
-          },
-          "8,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand/EngageNextBarPositionInches",
-              "_title": "SmartDashboard/SetArmsToPositionCommand/EngageNextBarPositionInches"
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/StallDetector/LittleMotionThreshold",
+              "_title": "SmartDashboard/ClimberArmSubsystem/StallDetector/LittleMotionThreshold"
             }
           },
           "8,3": {
@@ -1032,30 +1043,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/SetArmsToPositionCommand/FullyExtendedPositionInches",
-              "_title": "SmartDashboard/SetArmsToPositionCommand/FullyExtendedPositionInches"
-            }
-          },
-          "3,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/ClimberArmMaintainerCommand/PositionPID/P",
-              "_title": "SmartDashboard/ClimberArmMaintainerCommand/PositionPID/P"
-            }
-          },
-          "3,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/ClimberArmMaintainerCommand/PositionPID/I",
-              "_title": "SmartDashboard/ClimberArmMaintainerCommand/PositionPID/I"
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/StallDetector/StallCoolDown",
+              "_title": "SmartDashboard/ClimberArmSubsystem/StallDetector/StallCoolDown"
             }
           },
           "3,2": {
@@ -1065,19 +1054,137 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/ClimberArmMaintainerCommand/PositionPID/D",
-              "_title": "SmartDashboard/ClimberArmMaintainerCommand/PositionPID/D"
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/ArmInstantVelocity",
+              "_title": "SmartDashboard/ClimberArmSubsystem/LeftArm/ArmInstantVelocity"
             }
           },
-          "7,0": {
+          "4,0": {
             "size": [
               1,
               1
             ],
             "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/LatchReleaseCommand",
-              "_title": "SmartDashboard/LatchReleaseCommand"
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/ArmStallState",
+              "_title": "SmartDashboard/ClimberArmSubsystem/LeftArm/ArmStallState"
+            }
+          },
+          "5,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/ArmInstantVelocity",
+              "_title": "SmartDashboard/ClimberArmSubsystem/RightArm/ArmInstantVelocity"
+            }
+          },
+          "6,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/ArmStallState",
+              "_title": "SmartDashboard/ClimberArmSubsystem/RightArm/ArmStallState"
+            }
+          },
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/ArmMotor/Voltage",
+              "_title": "SmartDashboard/ClimberArmSubsystem/LeftArm/ArmMotor/Voltage"
+            }
+          },
+          "4,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/ArmMotor/Current",
+              "_title": "SmartDashboard/ClimberArmSubsystem/LeftArm/ArmMotor/Current"
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/ArmMotor/Voltage",
+              "_title": "SmartDashboard/ClimberArmSubsystem/RightArm/ArmMotor/Voltage"
+            }
+          },
+          "6,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/ArmMotor/Current",
+              "_title": "SmartDashboard/ClimberArmSubsystem/RightArm/ArmMotor/Current"
+            }
+          },
+          "7,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/UpperLimitSwitchState",
+              "_title": "LeftUpper",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "7,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/LowerLimitSwitchState",
+              "_title": "Left Lower",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/UpperLimitSwitchState",
+              "_title": "Right Upper",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "8,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/LowerLimitSwitchState",
+              "_title": "Right Lower",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
             }
           }
         }
@@ -1206,7 +1313,294 @@
       }
     },
     {
-      "title": "Tab 8",
+      "title": "Collection",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "3,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/CollectorSubsystem/ejectPower",
+              "_title": "SmartDashboard/CollectorSubsystem/ejectPower"
+            }
+          },
+          "3,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/CollectorSubsystem/intakePower",
+              "_title": "SmartDashboard/CollectorSubsystem/intakePower"
+            }
+          },
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/CollectorStage2/Forward Power",
+              "_title": "SmartDashboard/CollectorStage2/Forward Power"
+            }
+          },
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/CollectorStage2/Reverse Power",
+              "_title": "SmartDashboard/CollectorStage2/Reverse Power"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ConveyerSubsystem/Forward Power",
+              "_title": "SmartDashboard/ConveyerSubsystem/Forward Power"
+            }
+          },
+          "5,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ConveyerSubsystem/Reverse Power",
+              "_title": "SmartDashboard/ConveyerSubsystem/Reverse Power"
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PrepareToFireCommand/Conveyor Reverse Time",
+              "_title": "/SmartDashboard/PrepareToFireCommand/Conveyor Reverse Time"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Shooting",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/CurrentRPM",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/CurrentRPM"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/SafePower",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/SafePower"
+            }
+          },
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/TrimRPM",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/TrimRPM"
+            }
+          },
+          "4,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/ShooterMaster/kP",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/ShooterMaster/kP"
+            }
+          },
+          "5,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/ShooterMaster/kI",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/ShooterMaster/kI"
+            }
+          },
+          "6,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/ShooterMaster/kD",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/ShooterMaster/kD"
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/TargetRPM",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/TargetRPM"
+            }
+          },
+          "6,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/SafeRpm",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/SafeRpm"
+            }
+          },
+          "7,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/NearShotRpm",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/NearShotRpm"
+            }
+          },
+          "8,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/DistanceShotRpm",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/DistanceShotRpm"
+            }
+          },
+          "9,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/HotDogRpm",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/HotDogRpm"
+            }
+          },
+          "9,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PrepareToFireCommand/Conveyor Reverse Time",
+              "_title": "SmartDashboard/PrepareToFireCommand/Conveyor Reverse Time"
+            }
+          },
+          "7,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Error Within Tolerance",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Error Within Tolerance",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Error Is Time Stable",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Error Is Time Stable",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Subsystem Ready",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Subsystem Ready",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "5,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Error Tolerance",
+              "_title": "SmartDashboard/ShooterWheelSubsystem/ShooterWheelMaintainerCommand/Error Tolerance"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Autonomous",
       "autoPopulate": false,
       "autoPopulatePrefix": "",
       "widgetPane": {
@@ -1218,13 +1612,255 @@
         "tiles": {
           "3,0": {
             "size": [
-              7,
-              4
+              1,
+              1
             ],
             "content": {
-              "_type": "Network Table Tree",
-              "_source0": "network_table:///SmartDashboard/Scheduler",
-              "_title": "/SmartDashboard/Scheduler"
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/AutoPrograms/DoNothing",
+              "_title": "SmartDashboard/AutoPrograms/DoNothing"
+            }
+          },
+          "3,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/AutoPrograms/DriveFiveFeet",
+              "_title": "SmartDashboard/AutoPrograms/DriveFiveFeet"
+            }
+          },
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/AutoPrograms/GoCollectComeback",
+              "_title": "SmartDashboard/AutoPrograms/GoCollectComeback"
+            }
+          },
+          "5,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/AutoPrograms/ShootCollectShoot",
+              "_title": "SmartDashboard/AutoPrograms/ShootCollectShoot"
+            }
+          },
+          "4,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Current autonomous command name",
+              "_title": "SmartDashboard/Current autonomous command name"
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/CurrentHeading",
+              "_title": "SmartDashboard/PoseSubsystem/CurrentHeading"
+            }
+          },
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Total distance X",
+              "_title": "SmartDashboard/PoseSubsystem/Total distance X"
+            }
+          },
+          "9,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Total distance Y",
+              "_title": "SmartDashboard/PoseSubsystem/Total distance Y"
+            }
+          },
+          "7,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Left Heading",
+              "_title": "SmartDashboard/PoseSubsystem/Starting Left Heading"
+            }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Left Position X Value",
+              "_title": "SmartDashboard/PoseSubsystem/Starting Left Position X Value"
+            }
+          },
+          "9,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Left Position Y Value",
+              "_title": "SmartDashboard/PoseSubsystem/Starting Left Position Y Value"
+            }
+          },
+          "7,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Mid Heading",
+              "_title": "SmartDashboard/PoseSubsystem/Starting Mid Heading"
+            }
+          },
+          "8,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Mid Position X Value",
+              "_title": "SmartDashboard/PoseSubsystem/Starting Mid Position X Value"
+            }
+          },
+          "9,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Mid Position Y Value",
+              "_title": "SmartDashboard/PoseSubsystem/Starting Mid Position Y Value"
+            }
+          },
+          "7,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Right Heading",
+              "_title": "SmartDashboard/PoseSubsystem/Starting Right Heading"
+            }
+          },
+          "8,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Right Position X Value",
+              "_title": "SmartDashboard/PoseSubsystem/Starting Right Position X Value"
+            }
+          },
+          "9,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Right Position Y Value",
+              "_title": "SmartDashboard/PoseSubsystem/Starting Right Position Y Value"
+            }
+          },
+          "3,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting LeftHub Heading",
+              "_title": "SmartDashboard/PoseSubsystem/Starting LeftHub Heading"
+            }
+          },
+          "4,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting LeftHub X Value",
+              "_title": "SmartDashboard/PoseSubsystem/Starting LeftHub X Value"
+            }
+          },
+          "5,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting LeftHub Y Value",
+              "_title": "SmartDashboard/PoseSubsystem/Starting LeftHub Y Value"
+            }
+          },
+          "3,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting RightHub Heading",
+              "_title": "SmartDashboard/PoseSubsystem/Starting RightHub Heading"
+            }
+          },
+          "4,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting RightHub X Value",
+              "_title": "SmartDashboard/PoseSubsystem/Starting RightHub X Value"
+            }
+          },
+          "5,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting RightHub Y Value",
+              "_title": "SmartDashboard/PoseSubsystem/Starting RightHub Y Value"
             }
           }
         }
@@ -1232,9 +1868,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -7.199999809265137,
-    "y": -7.199999809265137,
-    "width": 1550.4000244140625,
-    "height": 830.4000244140625
+    "x": 0.800000011920929,
+    "y": 0.800000011920929,
+    "width": 1534.4000244140625,
+    "height": 814.4000244140625
   }
 }

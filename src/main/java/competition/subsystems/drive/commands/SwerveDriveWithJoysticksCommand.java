@@ -7,6 +7,8 @@ import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.pose.PoseSubsystem;
 import xbot.common.command.BaseCommand;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.logic.HumanVsMachineDecider;
+import xbot.common.logic.HumanVsMachineDecider.HumanVsMachineMode;
 import xbot.common.logic.Latch;
 import xbot.common.logic.Latch.EdgeType;
 import xbot.common.math.MathUtils;
@@ -14,7 +16,6 @@ import xbot.common.math.XYPair;
 import xbot.common.properties.BooleanProperty;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
-import xbot.common.subsystems.drive.control_logic.HeadingAssistModule;
 import xbot.common.subsystems.drive.control_logic.HeadingModule;
 
 /**
@@ -30,10 +31,11 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
     final DoubleProperty drivePowerFactor;
     final DoubleProperty turnPowerFactor;
     final BooleanProperty absoluteOrientationMode;
-    final HeadingAssistModule headingAssist;
     final HeadingModule headingModule;
     final Latch absoluteOrientationLatch;
     final DoubleProperty minimumMagnitudeForAbsoluteHeading;
+    final DoubleProperty triggerOnlyPowerScaling;
+    final HumanVsMachineDecider decider;
 
     @Inject
     public SwerveDriveWithJoysticksCommand(DriveSubsystem drive, PoseSubsystem pose, OperatorInterface oi,
@@ -47,9 +49,9 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
         this.turnPowerFactor = pf.createPersistentProperty("Turn Power Factor", 0.5);
         this.absoluteOrientationMode = pf.createPersistentProperty("Absolute Orientation Mode", false);
         this.minimumMagnitudeForAbsoluteHeading = pf.createPersistentProperty("Min Magnitude For Absolute Heading", 0.75);
-
+        this.decider = clf.createHumanVsMachineDecider(this.getPrefix());
         this.headingModule = clf.createHeadingModule(drive.getRotateToHeadingPid());
-        this.headingAssist = clf.createHeadingAssistModule(clf.createHeadingModule(drive.getRotateToHeadingPid()), this.getPrefix());
+        this.triggerOnlyPowerScaling = pf.createPersistentProperty("TriggerOnlyPowerScaling", 0.5);
 
         // Set up a latch to trigger whenever we change the rotational mode. In either case,
         // there's some PIDs that will need to be reset, or goals that need updating.
@@ -72,13 +74,12 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
     @Override
     public void initialize() {
         log.info("Initializing");
-
+        decider.reset();
         resetBeforeStartingAbsoluteOrientation();
         resetBeforeStartingRelativeOrientation();
     }
 
     private void resetBeforeStartingAbsoluteOrientation() {
-        headingAssist.reset();
         // Set our desired heading to the current heading to avoid a surprising
         // change of heading during reset.
         drive.setDesiredHeading(pose.getCurrentHeading().getDegrees());
@@ -116,6 +117,30 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
         // --------------------------------------------------
 
         double suggestedRotatePower = 0;
+
+        double humanRotatePowerFromStick = MathUtils.deadband(
+                oi.driverGamepad.getRightStickX(),
+                oi.getDriverGamepadTypicalDeadband(),
+                (a) -> MathUtils.exponentAndRetainSign(a, (int) input_exponent.get()));
+
+        double humanRotatePowerFromLeftTrigger = MathUtils.deadband(
+                oi.driverGamepad.getLeftTrigger(),
+                0.05,
+                (a) -> MathUtils.exponentAndRetainSign(a, (int) input_exponent.get()));
+
+        double humanRotatePowerFromRightTrigger = MathUtils.deadband(
+                oi.driverGamepad.getRightTrigger(),
+                0.05,
+                (a) -> MathUtils.exponentAndRetainSign(a, (int) input_exponent.get()));
+
+        double humanRotatePower = MathUtils.constrainDoubleToRobotScale(
+            humanRotatePowerFromStick + humanRotatePowerFromLeftTrigger - humanRotatePowerFromRightTrigger);
+
+        double humanRotatePowerFromTriggers = humanRotatePowerFromLeftTrigger - humanRotatePowerFromRightTrigger;
+        
+        // Michael wants the triggers to be more precise pretty much all the time, so adding a trigger-only
+        // power reduction
+        humanRotatePowerFromTriggers *= triggerOnlyPowerScaling.get();
                 
         if (absoluteOrientationMode.get()) {
             // If we are using absolute orientation, we first need get the desired heading from the right joystick.
@@ -134,23 +159,45 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
             if (headingVector.getMagnitude() > minimumMagnitudeForAbsoluteHeading.get()) {
                 // If the magnitude is greater than the minimum magnitude, we can use the joystick to set the heading.
                 desiredHeading = headingVector.getAngle();
-                drive.setDesiredHeading(desiredHeading);
+                
+                if (pose.getHeadingResetRecently()) {
+                    drive.setDesiredHeading(pose.getCurrentHeading().getDegrees());
+                } else {
+                    drive.setDesiredHeading(desiredHeading);
+                }
+                suggestedRotatePower = headingModule.calculateHeadingPower(desiredHeading);
+                decider.reset();
             } else {
-                // If the joystick isn't deflected enough, we use the last known heading.
-                desiredHeading = drive.getDesiredHeading();
+                // If the joystick isn't deflected enough, we use the last known heading or human input.
+                HumanVsMachineMode recommendedMode = decider.getRecommendedMode(humanRotatePowerFromTriggers);
+
+                if (pose.getHeadingResetRecently()) {
+                    drive.setDesiredHeading(pose.getCurrentHeading().getDegrees());
+                }
+                
+                switch (recommendedMode) {
+                    case Coast:
+                        suggestedRotatePower = 0;
+                        break;
+                    case HumanControl:
+                        suggestedRotatePower = scaleHumanRotationInput(humanRotatePowerFromTriggers);
+                        break;
+                    case InitializeMachineControl:
+                        drive.setDesiredHeading(pose.getCurrentHeading().getDegrees());
+                        suggestedRotatePower = 0;
+                        break;
+                    case MachineControl:
+                        desiredHeading = drive.getDesiredHeading();
+                        suggestedRotatePower = headingModule.calculateHeadingPower(desiredHeading);
+                        break;
+                    default:
+                        suggestedRotatePower = 0;
+                        break;
+                }
             }
-
-            // Now, finally, we ask the heading module to calculate the power.
-            suggestedRotatePower = headingModule.calculateHeadingPower(desiredHeading);
-
         } else {
             // If we are in the typical "rotate using joystick to turn" mode, use the Heading Assist module to get the suggested power.
-            double humanRotatePower = MathUtils.deadband(
-                oi.driverGamepad.getRightStickX(),
-                oi.getDriverGamepadTypicalDeadband(),
-                (a) -> MathUtils.exponentAndRetainSign(a, (int) input_exponent.get()));
-
-            suggestedRotatePower = headingAssist.calculateHeadingPower(humanRotatePower);
+            suggestedRotatePower = scaleHumanRotationInput(humanRotatePower);
         }
 
         // --------------------------------------------------
@@ -162,8 +209,24 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
             translationIntent.scale(1/translationIntent.getMagnitude());
         }
 
+        // Scale the power down if we are in one or more precision modes
+        // Rotation is scaled when deciding on human vs machine inputs
+        translationIntent.scale(drive.isPrecisionTranslationActive() ? 0.5 : 1);
+
         // Scale the power down if requested (typically used when novices are controlling the robot)
         translationIntent = translationIntent.scale(drivePowerFactor.get());
-        drive.fieldOrientedDrive(translationIntent, suggestedRotatePower * turnPowerFactor.get(), pose.getCurrentHeading().getDegrees(), false);
+        suggestedRotatePower *= turnPowerFactor.get();
+
+        // Check if we need a different center of rotation
+        XYPair centerOfRotation = new XYPair(0,0);
+        if (drive.isCollectorRotationActive()) {
+            centerOfRotation = new XYPair(0, 36);
+        }
+
+        drive.fieldOrientedDrive(translationIntent, suggestedRotatePower, pose.getCurrentHeading().getDegrees(), centerOfRotation);
+    }
+
+    private double scaleHumanRotationInput(double humanInputPower) {
+        return humanInputPower * (drive.isPrecisionRotationActive() ? 0.25 : 1.0);
     }
 }

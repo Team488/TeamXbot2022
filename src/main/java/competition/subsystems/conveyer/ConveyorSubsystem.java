@@ -1,25 +1,29 @@
 package competition.subsystems.conveyer;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import competition.electrical_contract.ElectricalContract;
-import xbot.common.controls.actuators.XCANSparkMax;
+import xbot.common.controls.actuators.XCANTalon;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.subsystems.simplemotor.SimpleMotorSubsystem;
 
 @Singleton
-public class ConveyerSubsystem extends SimpleMotorSubsystem {
-    public final XCANSparkMax motor;
+public class ConveyorSubsystem extends SimpleMotorSubsystem {
+    public final XCANTalon motor;
     public final boolean isReady;
 
     @Inject
-    public ConveyerSubsystem(PropertyFactory pf, CommonLibFactory clf, ElectricalContract eContract) {
+    public ConveyorSubsystem(PropertyFactory pf, CommonLibFactory clf, ElectricalContract eContract) {
         super("ConveyerSubsystem", pf);
         this.isReady = eContract.isConveyerReady();
         if(isReady) {
-            motor = clf.createCANSparkMax(eContract.getConveyerMotor(), this.getPrefix(), "Conveyer Motor");
+            motor = clf.createCANTalon(eContract.getConveyerMotor());
+            motor.setNeutralMode(NeutralMode.Brake);
+            motor.configOpenloopRamp(0.1, 100);
         } else {
             motor = null;
         }
@@ -28,7 +32,7 @@ public class ConveyerSubsystem extends SimpleMotorSubsystem {
     @Override
     public void setPower(double power) {
         if(isReady) {
-            motor.set(power);
+            motor.set(ControlMode.PercentOutput, power);
         }
     }
     

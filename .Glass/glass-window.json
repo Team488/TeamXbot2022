@@ -1,0 +1,40 @@
+{
+  "MainWindow": {
+    "GLOBAL": {
+      "height": "991",
+      "maximized": "1",
+      "style": "0",
+      "userScale": "2",
+      "width": "1920",
+      "xpos": "0",
+      "ypos": "29"
+    }
+  },
+  "Window": {
+    "###NetworkTables": {
+      "Collapsed": "0",
+      "Pos": "35,203",
+      "Size": "849,733"
+    },
+    "###NetworkTables Settings": {
+      "Collapsed": "0",
+      "Pos": "37,37",
+      "Size": "307,86"
+    },
+    "###Plot <0>": {
+      "Collapsed": "0",
+      "Pos": "911,22",
+      "Size": "1017,422"
+    },
+    "###Plot <1>": {
+      "Collapsed": "0",
+      "Pos": "918,436",
+      "Size": "700,400"
+    },
+    "Debug##Default": {
+      "Collapsed": "0",
+      "Pos": "60,60",
+      "Size": "400,400"
+    }
+  }
+}

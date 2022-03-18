@@ -46,7 +46,7 @@ public class ClimberArmMaintainerCommand extends BaseMaintainerCommand {
         waitForMotorStallCalibrationTime = pf.createPersistentProperty("Motor Stall Calibration Time", 0.25);
         calibrationValidator = new TimeStableValidator(() -> waitForMotorStallCalibrationTime.get());
         attemptAutomaticCalibration = pf.createPersistentProperty("Attempt Automatic Calibration", false);
-        positionPid = clf.createPIDManager(getName() + "/" + "PositionPID", 0.33, 0, 0);
+        positionPid = clf.createPIDManager(getName() + "/" + "PositionPID", 0.66, 0.1, 0);
 
         // Properties that are unique to each arm
         pf.setPrefix(getName() + "/" + armLabel);
@@ -126,11 +126,11 @@ public class ClimberArmMaintainerCommand extends BaseMaintainerCommand {
             case "LeftArm":
                 return MathUtils.deadband(
                     oi.operatorGamepad.getLeftStickY(),
-                    oi.getDriverGamepadTypicalDeadband());
+                    oi.getOperatorGamepadTypicalDeadband());
             case "RightArm":
                 return MathUtils.deadband(
                     oi.operatorGamepad.getRightStickY(),
-                    oi.getDriverGamepadTypicalDeadband());
+                    oi.getOperatorGamepadTypicalDeadband());
             default:
                 return 0;
         }

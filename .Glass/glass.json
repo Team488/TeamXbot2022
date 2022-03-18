@@ -1,0 +1,154 @@
+{
+  "NetworkTables": {
+    "SmartDashboard": {
+      "ClimberArmSubsystem": {
+        "LeftArm": {
+          "ArmMotor": {
+            "open": true
+          },
+          "open": true
+        }
+      },
+      "SwerveDriveSubsystem": {
+        "FrontLeftDrive": {
+          "DriveNeo": {
+            "open": true
+          }
+        },
+        "FrontRightDrive": {
+          "DriveNeo": {
+            "open": true
+          }
+        },
+        "RearLeftDrive": {
+          "DriveNeo": {
+            "open": true
+          }
+        },
+        "RearRightDrive": {
+          "DriveNeo": {
+            "open": true
+          }
+        },
+        "open": true
+      },
+      "open": true
+    },
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/LiveWindow/CollectorStage2Subsystem/CollectorStage2": "Subsystem",
+      "/LiveWindow/ConveyorSubsystem/ConveyerSubsystem": "Subsystem",
+      "/LiveWindow/LatchSubsystem": "Subsystem",
+      "/LiveWindow/Ungrouped/DigitalInput[6]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[8]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalOutput[0]": "Digital Output",
+      "/LiveWindow/Ungrouped/DigitalOutput[1]": "Digital Output",
+      "/LiveWindow/Ungrouped/DigitalOutput[2]": "Digital Output",
+      "/LiveWindow/Ungrouped/DigitalOutput[3]": "Digital Output",
+      "/LiveWindow/Ungrouped/DigitalOutput[4]": "Digital Output",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/navX-Sensor[4]": "Gyro",
+      "/SmartDashboard/AutoPrograms/DoNothing": "Command",
+      "/SmartDashboard/AutoPrograms/DriveFiveFeet": "Command",
+      "/SmartDashboard/AutoPrograms/GoCollectComeback": "Command",
+      "/SmartDashboard/AutoPrograms/ShootCollectShoot": "Command",
+      "/SmartDashboard/Commit steering pid values": "Command",
+      "/SmartDashboard/LatchArmCommand": "Command",
+      "/SmartDashboard/LatchReleaseCommand": "Command",
+      "/SmartDashboard/Scheduler": "Scheduler",
+      "/SmartDashboard/SetArmsToPositionCommand: ClearCurrentBar": "Command",
+      "/SmartDashboard/SetArmsToPositionCommand: EngageNextBar": "Command",
+      "/SmartDashboard/SetArmsToPositionCommand: FullyExtended": "Command",
+      "/SmartDashboard/SetArmsToPositionCommand: FullyRetracted": "Command",
+      "/SmartDashboard/SetFastMode": "Command",
+      "/SmartDashboard/SetSlowMode": "Command",
+      "/SmartDashboard/Start/Left": "Command",
+      "/SmartDashboard/Start/Middle": "Command",
+      "/SmartDashboard/Start/Right": "Command",
+      "/SmartDashboard/StopShooterWheelCommand": "Command",
+      "/SmartDashboard/Trim Up": "Command",
+      "/SmartDashboard/Trim down": "Command"
+    }
+  },
+  "NetworkTables Settings": {
+    "mode": "Client",
+    "serverTeam": "488"
+  },
+  "Plots": {
+    "Plot <0>": {
+      "plots": [
+        {
+          "height": 354,
+          "series": [
+            {
+              "color": [
+                0.2980392277240753,
+                0.44705885648727417,
+                0.6901960968971252,
+                1.0
+              ],
+              "id": "NT:/SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/DriveNeo/Current"
+            },
+            {
+              "color": [
+                0.8666667342185974,
+                0.5176470875740051,
+                0.32156863808631897,
+                1.0
+              ],
+              "id": "NT:/SmartDashboard/SwerveDriveSubsystem/FrontRightDrive/DriveNeo/Current"
+            },
+            {
+              "color": [
+                0.3333333432674408,
+                0.658823549747467,
+                0.4078431725502014,
+                1.0
+              ],
+              "id": "NT:/SmartDashboard/SwerveDriveSubsystem/RearLeftDrive/DriveNeo/Current"
+            },
+            {
+              "color": [
+                0.7686275243759155,
+                0.30588236451148987,
+                0.32156863808631897,
+                1.0
+              ],
+              "id": "NT:/SmartDashboard/SwerveDriveSubsystem/RearRightDrive/DriveNeo/Current"
+            }
+          ]
+        }
+      ],
+      "window": {
+        "name": "Drive Current"
+      }
+    },
+    "Plot <1>": {
+      "plots": [
+        {
+          "height": 332,
+          "series": [
+            {
+              "color": [
+                0.2980392277240753,
+                0.44705885648727417,
+                0.6901960968971252,
+                1.0
+              ],
+              "id": "NT:/SmartDashboard/ClimberArmSubsystem/LeftArm/ArmMotor/Current"
+            },
+            {
+              "color": [
+                0.8666667342185974,
+                0.5176470875740051,
+                0.32156863808631897,
+                1.0
+              ],
+              "id": "NT:/SmartDashboard/SwerveDriveSubsystem/FrontLeftDrive/DriveNeo/Current"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

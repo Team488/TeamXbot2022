@@ -1,7 +1,6 @@
 package competition.subsystems.climber_arm.commands;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -20,8 +19,8 @@ public class MotorArmSetZeroCommandTest extends BaseClimberArmTest {
     public void testSetZero() {
         leftArm.armMotor.setPosition(10);
 
-        assertFalse("Subsystem should be uncalibrated", leftArm.isCalibrated());
-        assertEquals("Subsystem position should match motor position", 10, leftArm.getPosition(), 0.001);
+        assertTrue("Subsystem should be calibrated", leftArm.isCalibrated());
+        assertEquals("Subsystem position should match motor position", 1.0767, leftArm.getPosition(), 0.001);
 
         command.initialize();
         command.execute();
