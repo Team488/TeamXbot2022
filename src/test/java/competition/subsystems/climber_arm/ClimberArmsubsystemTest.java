@@ -51,7 +51,7 @@ public class ClimberArmsubsystemTest extends BaseClimberArmTest {
         assertEquals("Arm should start not moving", 0, leftArm.armMotor.get(), 0.0001);
         leftArm.setPower(1);
         assertEquals("Arm should be extending", 1, leftArm.armMotor.get(), 0.0001);
-        leftArm.armMotor.setPosition(20);
+        leftArm.armMotor.setPosition(300);
         leftArm.setPower(1);
         assertEquals("Arm should start not moving", 0, leftArm.armMotor.get(), 0.0001);
         leftArm.setPower(-1);
@@ -63,7 +63,7 @@ public class ClimberArmsubsystemTest extends BaseClimberArmTest {
         assertEquals("Arm should start not moving", 0, leftArm.armMotor.get(), 0.0001);
         leftArm.setPower(-1);
         assertEquals("Arm should be retracting", -1, leftArm.armMotor.get(), 0.0001);
-        leftArm.armMotor.setPosition(-25);
+        leftArm.armMotor.setPosition(-250);
         leftArm.setPower(-1);
         assertEquals("Arm should start not moving", 0, leftArm.armMotor.get(), 0.0001);
         leftArm.setPower(1);
@@ -76,12 +76,12 @@ public class ClimberArmsubsystemTest extends BaseClimberArmTest {
         assertTrue("Arm should start calibrated", leftArm.isCalibrated());
         leftArm.armMotor.setPosition(10);
         assertTrue("Arm should still be calibrated after motor position changes", leftArm.isCalibrated());
-        assertEquals("Arm position should be the motor position", 10, leftArm.getPosition(), 0.001);
+        assertEquals("Arm position should be the motor position", 1.0767, leftArm.getPosition(), 0.001);
         leftArm.setCurrentPositionToZero();
         assertTrue("Arm should be calibrated after zeroing", leftArm.isCalibrated());
         assertEquals("Arm position should be zero again", 0, leftArm.getPosition(), 0.001);
         leftArm.armMotor.setPosition(10);
         assertTrue("Arm should still be calibrated after motor position changes", leftArm.isCalibrated());
-        assertEquals("Arm position should be the motor position", 10, leftArm.getPosition(), 0.001);
+        assertEquals("Arm position should be the motor position", 1.0767, leftArm.getPosition(), 0.001);
     }
 }
