@@ -10,6 +10,7 @@ import competition.auto_programs.GoCollectComebackCommand;
 import competition.auto_programs.ShootCollectShootCommand;
 import competition.auto_programs.ShootThenEscapeCommand;
 import competition.commandgroups.FireCommand;
+import competition.commandgroups.RecklessFireCommand;
 import competition.injection.arm.LeftArm;
 import competition.injection.arm.RightArm;
 import competition.subsystems.climber_arm.ClimberArmSubsystem;
@@ -168,7 +169,8 @@ public class OperatorCommandMap {
             ShooterWheelSubsystem shooter,
             StopShooterWheelCommand stopCommand,
             FireCommand fireCloseCommand,
-            FireCommand fireFarCommand) {
+            FireCommand fireFarCommand,
+            RecklessFireCommand recklessFireCommand) {
         fireCloseCommand.setTargetRPM(TargetRPM.NearShot);
         fireFarCommand.setTargetRPM(TargetRPM.DistanceShot);
 
@@ -179,7 +181,8 @@ public class OperatorCommandMap {
         SmartDashboard.putData("Trim Up", increaseTrim);
         SmartDashboard.putData("Trim down", decreaseTrim);
         stopCommand.includeOnSmartDashboard();
-
+        
+        oi.operatorGamepad.getifAvailable(XboxButton.RightStick).whenHeld(recklessFireCommand);
         oi.operatorGamepad.getifAvailable(XboxButton.Y).whenHeld(fireFarCommand);
         oi.operatorGamepad.getifAvailable(XboxButton.B).whenHeld(fireCloseCommand);
     }
