@@ -24,7 +24,7 @@ public class CollectorSubsystem extends BaseSubsystem{
         this.contract = eContract;
         if (eContract.isIntakeReady()) {
             collectorMotor = factory.createCANTalon(eContract.getLeftCollectorMotor());
-            collectorMotor.configOpenloopRamp(0.5, 100);
+            collectorMotor.configOpenloopRamp(0.1, 100);
         } else {
             collectorMotor = null;
         }

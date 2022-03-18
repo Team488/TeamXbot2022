@@ -28,8 +28,9 @@ public class ConveyWhileShooterAtSpeedCommand extends BaseCommand {
     public void execute() {
         if(shooter.isMaintainerAtGoal()) {
             conveyor.setForward();
+        } else {
+            conveyor.stop();
         }
-        
     }
     
 }

@@ -1143,7 +1143,7 @@
             "content": {
               "_type": "Boolean Box",
               "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/UpperLimitSwitchState",
-              "_title": "SmartDashboard/ClimberArmSubsystem/LeftArm/UpperLimitSwitchState",
+              "_title": "LeftUpper",
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
@@ -1156,7 +1156,7 @@
             "content": {
               "_type": "Boolean Box",
               "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/LeftArm/LowerLimitSwitchState",
-              "_title": "SmartDashboard/ClimberArmSubsystem/LeftArm/LowerLimitSwitchState",
+              "_title": "Left Lower",
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
@@ -1169,7 +1169,7 @@
             "content": {
               "_type": "Boolean Box",
               "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/UpperLimitSwitchState",
-              "_title": "SmartDashboard/ClimberArmSubsystem/RightArm/UpperLimitSwitchState",
+              "_title": "Right Upper",
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
@@ -1182,7 +1182,7 @@
             "content": {
               "_type": "Boolean Box",
               "_source0": "network_table:///SmartDashboard/ClimberArmSubsystem/RightArm/LowerLimitSwitchState",
-              "_title": "SmartDashboard/ClimberArmSubsystem/RightArm/LowerLimitSwitchState",
+              "_title": "Right Lower",
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
@@ -1387,6 +1387,17 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/ConveyerSubsystem/Reverse Power",
               "_title": "SmartDashboard/ConveyerSubsystem/Reverse Power"
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PrepareToFireCommand/Conveyor Reverse Time",
+              "_title": "/SmartDashboard/PrepareToFireCommand/Conveyor Reverse Time"
             }
           }
         }
