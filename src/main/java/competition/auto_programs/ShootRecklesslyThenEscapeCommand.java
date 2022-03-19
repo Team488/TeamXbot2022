@@ -3,11 +3,8 @@ package competition.auto_programs;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import competition.commandgroups.FullCollectCommand;
 import competition.commandgroups.RecklessFireCommand;
 import competition.commandgroups.ShutdownShootingCommandThatEnds;
-import competition.subsystems.collector.commands.StopCollectorCommand;
-import competition.subsystems.collector_deployment.commands.RetractCollectorCommand;
 import competition.subsystems.drive.commands.SwerveToPointCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
@@ -21,10 +18,7 @@ public class ShootRecklesslyThenEscapeCommand extends SequentialCommandGroup {
     public ShootRecklesslyThenEscapeCommand (
         Provider<RecklessFireCommand> fireProvider,
         Provider<SwerveToPointCommand> swerveProvider,
-        Provider<ShutdownShootingCommandThatEnds> stopShooterProvider,
-        FullCollectCommand collectCommand,
-        StopCollectorCommand stopCollector,
-        RetractCollectorCommand retractCollector
+        Provider<ShutdownShootingCommandThatEnds> stopShooterProvider
     ) {
         // Score the first ball
         var firstShot = fireProvider.get();
