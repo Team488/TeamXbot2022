@@ -9,22 +9,16 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import xbot.common.command.BaseSubsystem;
 import xbot.common.logging.RobotAssertionManager;
 import xbot.common.properties.PropertyFactory;
-import xbot.common.properties.StringProperty;
 
 public class VisionSubsystem extends BaseSubsystem {
 
-    final StringProperty dataFromOffboardVision;
     final RobotAssertionManager assertionManager;
     NetworkTable visionTable;
 
     @Inject
     public VisionSubsystem(PropertyFactory pf, RobotAssertionManager assertionManager) {
         this.assertionManager = assertionManager;
-        pf.setPrefix(this);
-        dataFromOffboardVision = pf.createEphemeralProperty("DataFromOffboardVision", "");
-        this.register();
-
-        NetworkTableInstance.getDefault().getTable("Vision");
+        visionTable = NetworkTableInstance.getDefault().getTable("Vision");
     }
 
     public double getBearingtoCargo() {
