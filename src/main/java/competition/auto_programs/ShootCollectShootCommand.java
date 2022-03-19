@@ -60,9 +60,9 @@ public class ShootCollectShootCommand extends SequentialCommandGroup {
         // Move towards the target cargo while collecting
         SwerveToPointCommand goToBall = swerveProvider.get();
         goToBall.setRobotRelativeMotion();
-        goToBall.setMaxPower(0.5);
+        goToBall.setMaxPower(0.75);
         goToBall.setTargetPosition(new XYPair(0, 94), 90);
-        DelayViaSupplierCommand collectTimeout = new DelayViaSupplierCommand(() -> 3.0);
+        DelayViaSupplierCommand collectTimeout = new DelayViaSupplierCommand(() -> 2.5);
         addCommands(new ParallelDeadlineGroup(collectTimeout, goToBall, collectCommand));
 
         // Retract the collector to a safe position
@@ -72,11 +72,11 @@ public class ShootCollectShootCommand extends SequentialCommandGroup {
         SwerveToPointCommand getToShootingPosition = swerveProvider.get();
         getToShootingPosition.setRobotRelativeMotion();
         getToShootingPosition.setTargetPosition(new XYPair(0, -118), -90);
-        getToShootingPosition.setMaxPower(0.5);
+        getToShootingPosition.setMaxPower(0.75);
 
         var getToShootingPositionWithTimeout = new ParallelRaceGroup(
             getToShootingPosition,
-            new DelayViaSupplierCommand(() -> 4.0)
+            new DelayViaSupplierCommand(() -> 3.0)
         );
         addCommands(getToShootingPositionWithTimeout);
 
