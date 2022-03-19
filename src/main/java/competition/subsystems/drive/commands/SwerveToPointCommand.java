@@ -28,6 +28,8 @@ public class SwerveToPointCommand extends BaseCommand {
 
     private boolean robotRelativeMotion = false;
 
+    double maxPower = 1.0;
+
     @Inject
     public SwerveToPointCommand(DriveSubsystem drive, PoseSubsystem pose, PropertyFactory pf, CommonLibFactory clf) {
         this.drive = drive;
@@ -89,6 +91,10 @@ public class SwerveToPointCommand extends BaseCommand {
         robotRelativeMotion = false;
     }
 
+    public void setMaxPower(double maxPower) {
+        this.maxPower = maxPower;
+    }
+
     @Override
     public void execute() {
         // Get the difference between where we are, and where we want to be.
@@ -106,6 +112,10 @@ public class SwerveToPointCommand extends BaseCommand {
         directionToTarget.set(goalVector.getAngle());
 
         double headingPower = headingModule.calculateHeadingPower(targetHeading);
+
+        if (intent.getMagnitude() > maxPower && maxPower > 0 && intent.getMagnitude() > 0) {
+            intent = intent.scale(maxPower / intent.getMagnitude());
+        }
 
         drive.fieldOrientedDrive(intent, headingPower, pose.getCurrentHeading().getDegrees(), false);
     }
