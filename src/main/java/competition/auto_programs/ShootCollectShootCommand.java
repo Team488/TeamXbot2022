@@ -62,7 +62,7 @@ public class ShootCollectShootCommand extends SequentialCommandGroup {
         goToBall.setRobotRelativeMotion();
         goToBall.setMaxPower(0.5);
         goToBall.setTargetPosition(new XYPair(0, 94), 90);
-        DelayViaSupplierCommand collectTimeout = new DelayViaSupplierCommand(() -> 3.0);
+        DelayViaSupplierCommand collectTimeout = new DelayViaSupplierCommand(() -> 2.5);
         addCommands(new ParallelDeadlineGroup(collectTimeout, goToBall, collectCommand));
 
         // Retract the collector to a safe position
@@ -76,7 +76,7 @@ public class ShootCollectShootCommand extends SequentialCommandGroup {
 
         var getToShootingPositionWithTimeout = new ParallelRaceGroup(
             getToShootingPosition,
-            new DelayViaSupplierCommand(() -> 4.0)
+            new DelayViaSupplierCommand(() -> 3.0)
         );
         addCommands(getToShootingPositionWithTimeout);
 
