@@ -61,8 +61,8 @@ public class SCSFromOneRobotAwayCommand extends SequentialCommandGroup {
         SwerveToPointCommand goToBall = swerveProvider.get();
         goToBall.setRobotRelativeMotion();
         goToBall.setTargetPosition(new XYPair(0, -58), 90);
-        goToBall.setMaxPower(0.5);
-        DelayViaSupplierCommand collectTimeout = new DelayViaSupplierCommand(() -> 3.0);
+        goToBall.setMaxPower(0.75);
+        DelayViaSupplierCommand collectTimeout = new DelayViaSupplierCommand(() -> 2.5);
         addCommands(new ParallelDeadlineGroup(collectTimeout, goToBall, collectCommand));
 
         // Retract the collector to a safe position
@@ -71,12 +71,12 @@ public class SCSFromOneRobotAwayCommand extends SequentialCommandGroup {
         // Point towards the hub again and get close enough to shoot
         SwerveToPointCommand getToShootingPosition = swerveProvider.get();
         getToShootingPosition.setRobotRelativeMotion();
-        getToShootingPosition.setMaxPower(0.5);
+        getToShootingPosition.setMaxPower(0.75);
         getToShootingPosition.setTargetPosition(new XYPair(0, -82), -90);
         
         var getToShootingPositionWithTimeout = new ParallelRaceGroup(
             getToShootingPosition,
-            new DelayViaSupplierCommand(() -> 4.0)
+            new DelayViaSupplierCommand(() -> 3.0)
         );
         addCommands(getToShootingPositionWithTimeout);
 
