@@ -1,5 +1,6 @@
 package competition.auto_programs;
 
+import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import org.apache.log4j.Logger;
@@ -16,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import xbot.common.math.XYPair;
 
 public class CollectThenScoreTwiceCommand extends SequentialCommandGroup {
 
@@ -25,6 +25,7 @@ public class CollectThenScoreTwiceCommand extends SequentialCommandGroup {
 
     private static Logger log = Logger.getLogger(CollectThenScoreTwiceCommand.class);
 
+    @Inject
     public CollectThenScoreTwiceCommand(PoseSubsystem pose, Provider<FireCommand> fireProvider,
             Provider<SwerveToPointCommand> swerveProvider,
             Provider<ShutdownShootingCommandThatEnds> stopShooterProvider,
