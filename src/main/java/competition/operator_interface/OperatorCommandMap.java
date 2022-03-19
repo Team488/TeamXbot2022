@@ -44,6 +44,7 @@ import competition.subsystems.latch.commands.LatchReleaseCommand;
 import competition.subsystems.pose.PoseSubsystem;
 import competition.subsystems.pose.PoseSubsystem.KeyPosition;
 import competition.subsystems.pose.SetPoseCommand;
+import competition.subsystems.pose.SetRobotAngleViaJoysticksCommand;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
 import competition.subsystems.shooterwheel.commands.StopShooterWheelCommand;
@@ -84,13 +85,16 @@ public class OperatorCommandMap {
     @Inject
     public void setupMyCommands(
             SetRobotHeadingCommand resetHeading,
-            PoseSubsystem pose) {
+            PoseSubsystem pose,
+            SetRobotAngleViaJoysticksCommand setAngleViaJoysticks) {
         resetHeading.setHeadingToApply(90);
 
         NamedInstantCommand resetPosition = new NamedInstantCommand("Reset Position",
                 () -> pose.setCurrentPosition(0, 0));
         ParallelCommandGroup resetPose = new ParallelCommandGroup(resetPosition, resetHeading);
         operatorInterface.driverGamepad.getifAvailable(XboxButton.A).whenPressed(resetPose);
+        operatorInterface.driverGamepad.getifAvailable(XboxButton.RightStick).whenHeld(setAngleViaJoysticks);
+        operatorInterface.driverGamepad.getifAvailable(XboxButton.Y).whenHeld(setAngleViaJoysticks);
     }
 
     @Inject
@@ -222,7 +226,6 @@ public class OperatorCommandMap {
 
         oi.driverGamepad.getifAvailable(XboxButton.LeftBumper).whileHeld(activatePrecisionDrive);
         oi.driverGamepad.getifAvailable(XboxButton.RightBumper).whileHeld(activatePrecisionRotation);
-        oi.driverGamepad.getifAvailable(XboxButton.Y).whileHeld(activateRotateToCargo);
     }
 
     @Inject
@@ -304,9 +307,10 @@ public class OperatorCommandMap {
 
         operatorInterface.autoGamepad.getPovIfAvailable(0).whenPressed(setDoNothing);
         operatorInterface.autoGamepad.getPovIfAvailable(90).whenPressed(setDriveFiveFeet);
-        operatorInterface.autoGamepad.getPovIfAvailable(180).whenPressed(shootThenEscape);
+        operatorInterface.autoGamepad.getPovIfAvailable(180).whenPressed(setShootThenEscape);
         operatorInterface.autoGamepad.getPovIfAvailable(270).whenPressed(setShootRecklesslyThenEscape);
         operatorInterface.autoGamepad.getifAvailable(XboxButton.LeftStick).whenPressed(setCollectThenScoreTwice);
+        operatorInterface.autoGamepad.getifAvailable(XboxButton.RightStick).whenPressed(setShootCollectShoot);
 
         SetPoseCommand setPoseForLeftStart = setPoseCommandProvider.get();
         setPoseForLeftStart.setPose(pose.getStartingPose(KeyPosition.LeftFacingOut));

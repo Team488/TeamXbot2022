@@ -60,7 +60,7 @@ public class ShootCollectShootCommand extends SequentialCommandGroup {
         // Move towards the target cargo while collecting
         SwerveToPointCommand goToBall = swerveProvider.get();
         goToBall.setRobotRelativeMotion();
-        goToBall.setTargetPosition(new XYPair(0, -48), 90);
+        goToBall.setTargetPosition(new XYPair(0, -58), 90);
         DelayViaSupplierCommand collectTimeout = new DelayViaSupplierCommand(() -> 3.0);
         addCommands(new ParallelDeadlineGroup(collectTimeout, goToBall, collectCommand));
 
@@ -70,7 +70,7 @@ public class ShootCollectShootCommand extends SequentialCommandGroup {
         // Point towards the hub again and get close enough to shoot
         SwerveToPointCommand getToShootingPosition = swerveProvider.get();
         getToShootingPosition.setRobotRelativeMotion();
-        getToShootingPosition.setTargetPosition(new XYPair(0, -72), -90);
+        getToShootingPosition.setTargetPosition(new XYPair(0, -82), -90);
         addCommands(getToShootingPosition);
 
         // Fire the second shot
