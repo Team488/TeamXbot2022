@@ -113,7 +113,7 @@ public class SwerveToPointCommand extends BaseCommand {
 
         double headingPower = headingModule.calculateHeadingPower(targetHeading);
 
-        if (intent.getMagnitude() > maxPower && maxPower > 0) {
+        if (intent.getMagnitude() > maxPower && maxPower > 0 && intent.getMagnitude() > 0) {
             intent = intent.scale(maxPower / intent.getMagnitude());
         }
 
