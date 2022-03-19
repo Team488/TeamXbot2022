@@ -31,7 +31,12 @@ public class ShooterWheelMaintainerCommand extends BaseMaintainerCommand {
     @Override
     protected void calibratedMachineControlAction() {
         double speed = wheel.getTargetRPM();
-        wheel.setPidSetpoint(speed);
+
+        if (wheel.isInFullPowerMode()) {
+            wheel.setPower(1);
+        } else {
+            wheel.setPidSetpoint(speed);
+        }
     }
 
     @Override
@@ -50,4 +55,14 @@ public class ShooterWheelMaintainerCommand extends BaseMaintainerCommand {
     public void end(boolean interrupted) {
         wheel.resetWheel();
     }
+
+    @Override
+    protected boolean isMaintainerAtGoal() {
+        if (wheel.isInFullPowerMode()) {
+            return wheel.getCurrentRPM() > 4800;
+        } else {
+            return super.isMaintainerAtGoal();
+        }
+    }
+
 }
