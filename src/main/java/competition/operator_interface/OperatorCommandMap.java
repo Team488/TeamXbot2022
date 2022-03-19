@@ -155,7 +155,6 @@ public class OperatorCommandMap {
 
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.A).whenPressed(dualArmBalancer);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.X).whenPressed(dualArmWithJoysticksUnsafe);
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.Back).whenPressed(calibrateBothArms);
 
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(pivotIn);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(pivotOut);
