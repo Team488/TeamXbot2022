@@ -201,4 +201,10 @@ public class PoseSubsystem extends BasePoseSubsystem {
         return drive.getRightTotalDistance();
     }
 
+    public double getDistanceToKeyPosition(KeyPosition position) {
+        return getCurrentFieldPose().getPoint().clone().add(
+            getStartingPose(KeyPosition.RightFacingOut).getPoint().clone().scale(-1))
+        .getMagnitude();
+    }
+
 }
