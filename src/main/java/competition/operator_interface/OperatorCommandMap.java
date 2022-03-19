@@ -4,10 +4,12 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
+import competition.auto_programs.CollectThenScoreTwiceCommand;
 import competition.auto_programs.DoNothingCommand;
 import competition.auto_programs.DriveForwardOutOfTarmac;
 import competition.auto_programs.GoCollectComebackCommand;
 import competition.auto_programs.ShootCollectShootCommand;
+import competition.auto_programs.ShootRecklesslyThenEscapeCommand;
 import competition.auto_programs.ShootThenEscapeCommand;
 import competition.commandgroups.FireCommand;
 import competition.commandgroups.RecklessFireCommand;
@@ -51,6 +53,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import scala.collection.parallel.package.CollectionsHaveToParArray;
 import xbot.common.command.DelayViaSupplierCommand;
 import xbot.common.command.NamedInstantCommand;
 import xbot.common.command.SmartDashboardCommandPutter;
@@ -267,6 +270,8 @@ public class OperatorCommandMap {
             GoCollectComebackCommand goCollectComeback,
             ShootCollectShootCommand shootCollectShoot,
             ShootThenEscapeCommand shootThenEscape,
+            CollectThenScoreTwiceCommand collectThenScoreTwice,
+            ShootRecklesslyThenEscapeCommand shootRecklesslyThenEscape,
             Provider<SetAutonomousCommand> setAutoCommandProvider,
             Provider<SetRobotHeadingCommand> setHeadingCommandProvider,
             Provider<SetPoseCommand> setPoseCommandProvider) {
@@ -280,16 +285,24 @@ public class OperatorCommandMap {
         setShootCollectShoot.setAutoCommand(shootCollectShoot);
         SetAutonomousCommand setShootThenEscape = setAutoCommandProvider.get();
         setShootThenEscape.setAutoCommand(shootThenEscape);
+        SetAutonomousCommand setCollectThenScoreTwice = setAutoCommandProvider.get();
+        setCollectThenScoreTwice.setAutoCommand(collectThenScoreTwice);
+        SetAutonomousCommand setShootRecklesslyThenEscape = setAutoCommandProvider.get();
+        setShootRecklesslyThenEscape.setAutoCommand(shootRecklesslyThenEscape);
 
         setDoNothing.includeOnSmartDashboard("AutoPrograms/DoNothing");
         setDriveFiveFeet.includeOnSmartDashboard("AutoPrograms/DriveFiveFeet");
         setGoCollectComeback.includeOnSmartDashboard("AutoPrograms/GoCollectComeback");
         setShootCollectShoot.includeOnSmartDashboard("AutoPrograms/ShootCollectShoot");
         setShootThenEscape.includeOnSmartDashboard("AutoPrograms/ShootThenEscape");
+        setCollectThenScoreTwice.includeOnSmartDashboard("AutoPrograms/CollectThenScoreTwice");
+        setShootRecklesslyThenEscape.includeOnSmartDashboard("AutoPrograms/ShootRecklesslyThenEscape");
 
         operatorInterface.autoGamepad.getPovIfAvailable(0).whenPressed(setDoNothing);
         operatorInterface.autoGamepad.getPovIfAvailable(90).whenPressed(setDriveFiveFeet);
         operatorInterface.autoGamepad.getPovIfAvailable(180).whenPressed(shootThenEscape);
+        operatorInterface.autoGamepad.getPovIfAvailable(270).whenPressed(setShootRecklesslyThenEscape);
+        operatorInterface.autoGamepad.getifAvailable(XboxButton.LeftStick).whenPressed(setCollectThenScoreTwice);
 
         SetPoseCommand setPoseForLeftStart = setPoseCommandProvider.get();
         setPoseForLeftStart.setPose(pose.getStartingPose(KeyPosition.LeftFacingOut));
