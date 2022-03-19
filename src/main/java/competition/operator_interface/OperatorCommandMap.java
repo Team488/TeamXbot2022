@@ -12,8 +12,8 @@ import competition.auto_programs.SCSFromOneRobotAwayCommand;
 import competition.auto_programs.ShootCollectShootCommand;
 import competition.auto_programs.ShootRecklesslyThenEscapeCommand;
 import competition.auto_programs.ShootThenEscapeCommand;
-import competition.commandgroups.FireCommand;
-import competition.commandgroups.RecklessFireCommand;
+import competition.commandgroups.DriverFireCommand;
+import competition.commandgroups.DriverRecklessFireCommand;
 import competition.injection.arm.LeftArm;
 import competition.injection.arm.RightArm;
 import competition.subsystems.climber_arm.ClimberArmSubsystem;
@@ -178,9 +178,9 @@ public class OperatorCommandMap {
     public void setShooterCommand(OperatorInterface oi,
             ShooterWheelSubsystem shooter,
             StopShooterWheelCommand stopCommand,
-            FireCommand fireCloseCommand,
-            FireCommand fireFarCommand,
-            RecklessFireCommand recklessFireCommand) {
+            DriverFireCommand fireCloseCommand,
+            DriverFireCommand fireFarCommand,
+            DriverRecklessFireCommand recklessFireCommand) {
         fireCloseCommand.setTargetRPM(TargetRPM.NearShot);
         fireFarCommand.setTargetRPM(TargetRPM.DistanceShot);
 
@@ -253,7 +253,8 @@ public class OperatorCommandMap {
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightTrigger).whenHeld(groupIntake);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftTrigger).whenHeld(groupEject);
 
-        operatorInterface.operatorGamepad.getPovIfAvailable(0).whenPressed(retractCollector);
+        
+
         operatorInterface.operatorGamepad.getPovIfAvailable(90).whenPressed(retractCollector);
         operatorInterface.operatorGamepad.getPovIfAvailable(180).whenPressed(retractCollector);
         operatorInterface.operatorGamepad.getPovIfAvailable(270).whenPressed(retractCollector);
