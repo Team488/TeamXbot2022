@@ -5,7 +5,7 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
 import competition.auto_programs.DoNothingCommand;
-import competition.auto_programs.DriveFiveFeetCommand;
+import competition.auto_programs.DriveForwardOutOfTarmac;
 import competition.auto_programs.GoCollectComebackCommand;
 import competition.auto_programs.ShootCollectShootCommand;
 import competition.auto_programs.ShootThenEscapeCommand;
@@ -40,7 +40,7 @@ import competition.subsystems.drive.commands.TurnLeft90DegreesCommand;
 import competition.subsystems.latch.commands.LatchArmCommand;
 import competition.subsystems.latch.commands.LatchReleaseCommand;
 import competition.subsystems.pose.PoseSubsystem;
-import competition.subsystems.pose.PoseSubsystem.StartingPosition;
+import competition.subsystems.pose.PoseSubsystem.KeyPosition;
 import competition.subsystems.pose.SetPoseCommand;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
@@ -263,7 +263,7 @@ public class OperatorCommandMap {
     public void setupAutonomousCommands(
             PoseSubsystem pose,
             DoNothingCommand doNothing,
-            DriveFiveFeetCommand driveFiveFeet,
+            DriveForwardOutOfTarmac driveFiveFeet,
             GoCollectComebackCommand goCollectComeback,
             ShootCollectShootCommand shootCollectShoot,
             ShootThenEscapeCommand shootThenEscape,
@@ -289,19 +289,18 @@ public class OperatorCommandMap {
 
         operatorInterface.autoGamepad.getPovIfAvailable(0).whenPressed(setDoNothing);
         operatorInterface.autoGamepad.getPovIfAvailable(90).whenPressed(setDriveFiveFeet);
-        operatorInterface.autoGamepad.getPovIfAvailable(180).whenPressed(setShootCollectShoot);
-        operatorInterface.autoGamepad.getPovIfAvailable(270).whenPressed(setShootThenEscape);
+        operatorInterface.autoGamepad.getPovIfAvailable(180).whenPressed(shootThenEscape);
 
         SetPoseCommand setPoseForLeftStart = setPoseCommandProvider.get();
-        setPoseForLeftStart.setPose(pose.getStartingPose(StartingPosition.Left));
+        setPoseForLeftStart.setPose(pose.getStartingPose(KeyPosition.LeftFacingOut));
         SetPoseCommand setPoseForMiddleStart = setPoseCommandProvider.get();
-        setPoseForMiddleStart.setPose(pose.getStartingPose(StartingPosition.Middle));
+        setPoseForMiddleStart.setPose(pose.getStartingPose(KeyPosition.MiddleFacingOut));
         SetPoseCommand setPoseForRightStart = setPoseCommandProvider.get();
-        setPoseForRightStart.setPose(pose.getStartingPose(StartingPosition.Right));
+        setPoseForRightStart.setPose(pose.getStartingPose(KeyPosition.RightFacingOut));
         SetPoseCommand setPoseForLeftHub = setPoseCommandProvider.get();
-        setPoseForLeftHub.setPose(pose.getStartingPose(StartingPosition.LeftHub));
+        setPoseForLeftHub.setPose(pose.getStartingPose(KeyPosition.LeftHubFacingHub));
         SetPoseCommand setPoseForRightHub = setPoseCommandProvider.get();
-        setPoseForRightHub.setPose(pose.getStartingPose(StartingPosition.RightHub));
+        setPoseForRightHub.setPose(pose.getStartingPose(KeyPosition.RightHubFacingHub));
         SetPoseCommand setPoseforNeutral = setPoseCommandProvider.get();
         setPoseforNeutral.setPose(new FieldPose(0, 0, 90));
 

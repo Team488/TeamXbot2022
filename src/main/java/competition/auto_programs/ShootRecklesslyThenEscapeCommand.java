@@ -3,24 +3,23 @@ package competition.auto_programs;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import competition.commandgroups.FireCommand;
 import competition.commandgroups.FullCollectCommand;
+import competition.commandgroups.RecklessFireCommand;
 import competition.commandgroups.ShutdownShootingCommandThatEnds;
 import competition.subsystems.collector.commands.StopCollectorCommand;
 import competition.subsystems.collector_deployment.commands.RetractCollectorCommand;
 import competition.subsystems.drive.commands.SwerveToPointCommand;
-import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import xbot.common.command.DelayViaSupplierCommand;
 import xbot.common.math.XYPair;
 
-public class ShootThenEscapeCommand extends SequentialCommandGroup {
+public class ShootRecklesslyThenEscapeCommand extends SequentialCommandGroup {
     
     @Inject
-    public ShootThenEscapeCommand (
-        Provider<FireCommand> fireProvider,
+    public ShootRecklesslyThenEscapeCommand (
+        Provider<RecklessFireCommand> fireProvider,
         Provider<SwerveToPointCommand> swerveProvider,
         Provider<ShutdownShootingCommandThatEnds> stopShooterProvider,
         FullCollectCommand collectCommand,
@@ -28,8 +27,7 @@ public class ShootThenEscapeCommand extends SequentialCommandGroup {
         RetractCollectorCommand retractCollector
     ) {
         // Score the first ball
-        FireCommand firstShot = fireProvider.get();
-        firstShot.setTargetRPM(TargetRPM.NearShot);
+        var firstShot = fireProvider.get();
         DelayViaSupplierCommand firstShotTimeout = new DelayViaSupplierCommand(() -> 5.0);
         ParallelRaceGroup firstShotWithTimeout = new ParallelRaceGroup(firstShot, firstShotTimeout);
         addCommands(firstShotWithTimeout);
