@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import competition.operator_interface.OperatorInterface;
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.pose.PoseSubsystem;
+import competition.subsystems.vision.VisionSubsystem;
 import xbot.common.command.BaseCommand;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.logic.HumanVsMachineDecider;
@@ -24,9 +25,10 @@ import xbot.common.subsystems.drive.control_logic.HeadingModule;
  */
 public class SwerveDriveWithJoysticksCommand extends BaseCommand {
 
-    DriveSubsystem drive;
-    PoseSubsystem pose;
-    OperatorInterface oi;
+    final DriveSubsystem drive;
+    final PoseSubsystem pose;
+    final OperatorInterface oi;
+    final VisionSubsystem vision;
     final DoubleProperty input_exponent;
     final DoubleProperty drivePowerFactor;
     final DoubleProperty turnPowerFactor;
@@ -39,10 +41,11 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
 
     @Inject
     public SwerveDriveWithJoysticksCommand(DriveSubsystem drive, PoseSubsystem pose, OperatorInterface oi,
-            PropertyFactory pf, CommonLibFactory clf) {
+            PropertyFactory pf, CommonLibFactory clf, VisionSubsystem vision) {
         this.drive = drive;
         this.oi = oi;
         this.pose = pose;
+        this.vision = vision;
         pf.setPrefix(this);
         this.input_exponent = pf.createPersistentProperty("Input Exponent", 2);
         this.drivePowerFactor = pf.createPersistentProperty("Power Factor", 1);
@@ -163,7 +166,11 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
                 if (pose.getHeadingResetRecently()) {
                     drive.setDesiredHeading(pose.getCurrentHeading().getDegrees());
                 } else {
-                    drive.setDesiredHeading(desiredHeading);
+                    if (drive.isRotateToCargoActive()) {
+                        drive.setDesiredHeading(pose.getCurrentHeading().getDegrees() + vision.getBearingtoCargo());
+                    } else {
+                        drive.setDesiredHeading(desiredHeading);
+                    }
                 }
                 suggestedRotatePower = headingModule.calculateHeadingPower(desiredHeading);
                 decider.reset();

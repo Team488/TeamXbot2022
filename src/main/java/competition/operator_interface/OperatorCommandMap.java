@@ -215,9 +215,14 @@ public class OperatorCommandMap {
         StartEndCommand activatePrecisionRotation = new StartEndCommand(
                 () -> drive.setPrecisionRotationActive(true),
                 () -> drive.setPrecisionRotationActive(false));
+                
+        StartEndCommand activateRotateToCargo = new StartEndCommand(
+                () -> drive.setRotateToCargoActive(true),
+                () -> drive.setRotateToCargoActive(false));
 
         oi.driverGamepad.getifAvailable(XboxButton.LeftBumper).whileHeld(activatePrecisionDrive);
         oi.driverGamepad.getifAvailable(XboxButton.RightBumper).whileHeld(activatePrecisionRotation);
+        oi.driverGamepad.getifAvailable(XboxButton.Y).whileHeld(activateRotateToCargo);
     }
 
     @Inject
