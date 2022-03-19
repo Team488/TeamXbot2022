@@ -1,20 +1,13 @@
 package competition.subsystems.vision;
 
-import java.sql.Driver;
-
 import com.google.inject.Inject;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import xbot.common.command.BaseSubsystem;
-import xbot.common.logging.LoggingLatch;
 import xbot.common.logging.RobotAssertionManager;
-import xbot.common.logic.Latch.EdgeType;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.properties.StringProperty;
 
@@ -22,11 +15,6 @@ public class VisionSubsystem extends BaseSubsystem {
 
     final StringProperty dataFromOffboardVision;
     final RobotAssertionManager assertionManager;
-
-    private boolean isGettingData;
-    private Alliance cargoAlliance;
-    private double cargoBearing;
-
     NetworkTable visionTable;
 
     @Inject
