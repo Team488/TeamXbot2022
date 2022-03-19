@@ -28,11 +28,15 @@ public class SetRobotAngleViaJoysticksCommand extends BaseCommand {
             // If the joystick is sufficiently deflected, get the angle from the joystick.
             double driverAngle = oi.driverGamepad.getRightVector().getAngle();
             // Michael wants the joystick to point towards the battery, so add 180 degrees
-            driverAngle += 180;
 
             // Set that angle to the pose subsystem.
             pose.setCurrentHeading(driverAngle);
         }
 
+    }
+
+    @Override
+    public boolean runsWhenDisabled() {
+        return true;
     }
 }

@@ -8,6 +8,7 @@ import competition.auto_programs.CollectThenScoreTwiceCommand;
 import competition.auto_programs.DoNothingCommand;
 import competition.auto_programs.DriveForwardOutOfTarmac;
 import competition.auto_programs.GoCollectComebackCommand;
+import competition.auto_programs.SCSFromOneRobotAwayCommand;
 import competition.auto_programs.ShootCollectShootCommand;
 import competition.auto_programs.ShootRecklesslyThenEscapeCommand;
 import competition.auto_programs.ShootThenEscapeCommand;
@@ -95,6 +96,11 @@ public class OperatorCommandMap {
         operatorInterface.driverGamepad.getifAvailable(XboxButton.A).whenPressed(resetPose);
         operatorInterface.driverGamepad.getifAvailable(XboxButton.RightStick).whenHeld(setAngleViaJoysticks);
         operatorInterface.driverGamepad.getifAvailable(XboxButton.Y).whenHeld(setAngleViaJoysticks);
+
+        operatorInterface.driverGamepad.getPovIfAvailable(0).whenHeld(setAngleViaJoysticks);
+        operatorInterface.driverGamepad.getPovIfAvailable(90).whenHeld(setAngleViaJoysticks);
+        operatorInterface.driverGamepad.getPovIfAvailable(180).whenHeld(setAngleViaJoysticks);
+        operatorInterface.driverGamepad.getPovIfAvailable(270).whenHeld(setAngleViaJoysticks);
     }
 
     @Inject
@@ -279,6 +285,7 @@ public class OperatorCommandMap {
             ShootThenEscapeCommand shootThenEscape,
             CollectThenScoreTwiceCommand collectThenScoreTwice,
             ShootRecklesslyThenEscapeCommand shootRecklesslyThenEscape,
+            SCSFromOneRobotAwayCommand scsFromOneRobotAwayCommand,
             Provider<SetAutonomousCommand> setAutoCommandProvider,
             Provider<SetRobotHeadingCommand> setHeadingCommandProvider,
             Provider<SetPoseCommand> setPoseCommandProvider) {
@@ -296,6 +303,8 @@ public class OperatorCommandMap {
         setCollectThenScoreTwice.setAutoCommand(collectThenScoreTwice);
         SetAutonomousCommand setShootRecklesslyThenEscape = setAutoCommandProvider.get();
         setShootRecklesslyThenEscape.setAutoCommand(shootRecklesslyThenEscape);
+        SetAutonomousCommand setScsFromOneRobotAwayCommand = setAutoCommandProvider.get();
+        setScsFromOneRobotAwayCommand.setAutoCommand(scsFromOneRobotAwayCommand);
 
         setDoNothing.includeOnSmartDashboard("AutoPrograms/DoNothing");
         setDriveFiveFeet.includeOnSmartDashboard("AutoPrograms/DriveFiveFeet");
@@ -311,6 +320,7 @@ public class OperatorCommandMap {
         operatorInterface.autoGamepad.getPovIfAvailable(270).whenPressed(setShootRecklesslyThenEscape);
         operatorInterface.autoGamepad.getifAvailable(XboxButton.LeftStick).whenPressed(setCollectThenScoreTwice);
         operatorInterface.autoGamepad.getifAvailable(XboxButton.RightStick).whenPressed(setShootCollectShoot);
+        operatorInterface.autoGamepad.getifAvailable(XboxButton.Back).whenPressed(setScsFromOneRobotAwayCommand);
 
         SetPoseCommand setPoseForLeftStart = setPoseCommandProvider.get();
         setPoseForLeftStart.setPose(pose.getStartingPose(KeyPosition.LeftFacingOut));
