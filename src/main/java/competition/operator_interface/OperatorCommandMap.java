@@ -238,6 +238,7 @@ public class OperatorCommandMap {
     public void setupCollectionCommands(IntakeCommand intake, EjectCommand eject, ConveyorSubsystem conveyer,
             CollectorStage2Subsystem stageTwo, Provider<DeployCollectorCommand> deployCollector,
             RetractCollectorCommand retractCollector,
+            RetractCollectorCommand retractCollectorTwo,
             ShooterWheelSubsystem wheel) {
 
         var setHotDogIntake = new RunCommand(() -> wheel.setTargetRPM(TargetRPM.HotDogRoller), wheel.getSetpointLock());
@@ -253,11 +254,20 @@ public class OperatorCommandMap {
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightTrigger).whenHeld(groupIntake);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftTrigger).whenHeld(groupEject);
 
+        var hotDog = new RunCommand(() -> wheel.setTargetRPM(TargetRPM.HotDogRoller), wheel.getSetpointLock());
+        
+        var retractAndConvey = new ParallelCommandGroup(
+                retractCollectorTwo,
+                hotDog,
+                conveyer.getForwardCommand()
+        );
+
         
 
-        operatorInterface.operatorGamepad.getPovIfAvailable(90).whenPressed(retractCollector);
-        operatorInterface.operatorGamepad.getPovIfAvailable(180).whenPressed(retractCollector);
-        operatorInterface.operatorGamepad.getPovIfAvailable(270).whenPressed(retractCollector);
+        operatorInterface.operatorGamepad.getPovIfAvailable(90).whenHeld(retractAndConvey);
+        operatorInterface.operatorGamepad.getPovIfAvailable(180).whenHeld(retractAndConvey);
+        operatorInterface.operatorGamepad.getPovIfAvailable(270).whenHeld(retractAndConvey);
+
         operatorInterface.driverGamepad.getifAvailable(XboxButton.B).whenPressed(retractCollector);
 
     }
