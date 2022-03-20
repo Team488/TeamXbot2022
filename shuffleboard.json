@@ -1706,7 +1706,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Left Heading",
-              "_title": "SmartDashboard/PoseSubsystem/Starting Left Heading"
+              "_title": "Left Heading"
             }
           },
           "8,1": {
@@ -1717,7 +1717,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Left Position X Value",
-              "_title": "SmartDashboard/PoseSubsystem/Starting Left Position X Value"
+              "_title": "Left X"
             }
           },
           "9,1": {
@@ -1728,7 +1728,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Left Position Y Value",
-              "_title": "SmartDashboard/PoseSubsystem/Starting Left Position Y Value"
+              "_title": "Left Y"
             }
           },
           "7,2": {
@@ -1739,7 +1739,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Mid Heading",
-              "_title": "SmartDashboard/PoseSubsystem/Starting Mid Heading"
+              "_title": "Mid Heading"
             }
           },
           "8,2": {
@@ -1750,7 +1750,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Mid Position X Value",
-              "_title": "SmartDashboard/PoseSubsystem/Starting Mid Position X Value"
+              "_title": "Mid X"
             }
           },
           "9,2": {
@@ -1761,7 +1761,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Mid Position Y Value",
-              "_title": "SmartDashboard/PoseSubsystem/Starting Mid Position Y Value"
+              "_title": "Mid Y"
             }
           },
           "7,3": {
@@ -1772,7 +1772,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Right Heading",
-              "_title": "SmartDashboard/PoseSubsystem/Starting Right Heading"
+              "_title": "Right Heading"
             }
           },
           "8,3": {
@@ -1783,7 +1783,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Right Position X Value",
-              "_title": "SmartDashboard/PoseSubsystem/Starting Right Position X Value"
+              "_title": "Right X"
             }
           },
           "9,3": {
@@ -1794,7 +1794,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting Right Position Y Value",
-              "_title": "SmartDashboard/PoseSubsystem/Starting Right Position Y Value"
+              "_title": "Right Y"
             }
           },
           "3,2": {
@@ -1805,7 +1805,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting LeftHub Heading",
-              "_title": "SmartDashboard/PoseSubsystem/Starting LeftHub Heading"
+              "_title": "LeftHub Heading"
             }
           },
           "4,2": {
@@ -1816,7 +1816,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting LeftHub X Value",
-              "_title": "SmartDashboard/PoseSubsystem/Starting LeftHub X Value"
+              "_title": "LeftHub X"
             }
           },
           "5,2": {
@@ -1827,7 +1827,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting LeftHub Y Value",
-              "_title": "SmartDashboard/PoseSubsystem/Starting LeftHub Y Value"
+              "_title": "LeftHub Y"
             }
           },
           "3,3": {
@@ -1838,7 +1838,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting RightHub Heading",
-              "_title": "SmartDashboard/PoseSubsystem/Starting RightHub Heading"
+              "_title": "RightHub Heading"
             }
           },
           "4,3": {
@@ -1849,7 +1849,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting RightHub X Value",
-              "_title": "SmartDashboard/PoseSubsystem/Starting RightHub X Value"
+              "_title": "RightHub X"
             }
           },
           "5,3": {
@@ -1860,7 +1860,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/PoseSubsystem/Starting RightHub Y Value",
-              "_title": "SmartDashboard/PoseSubsystem/Starting RightHub Y Value"
+              "_title": "RightHub Y"
             }
           }
         }

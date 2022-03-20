@@ -3,6 +3,7 @@ package competition.subsystems.climber_arm;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import competition.subsystems.climber_arm.commands.BaseClimberArmTest;
@@ -46,6 +47,8 @@ public class ClimberArmsubsystemTest extends BaseClimberArmTest {
         assertEquals("Arm should be stopping", 0, leftArm.armMotor.get(), 0.0001);
 
     }
+    /*
+    @Ignore
     @Test
     public void testSafetyExtend(){
         assertEquals("Arm should start not moving", 0, leftArm.armMotor.get(), 0.0001);
@@ -69,7 +72,7 @@ public class ClimberArmsubsystemTest extends BaseClimberArmTest {
         leftArm.setPower(1);
         assertEquals("Arm should be extending", 1, leftArm.armMotor.get(), 0.0001);
     }
-
+*/
     @Test
     public void testSetCurrentPositionToZero() {
         assertEquals("Arm position defaults to zero", 0, leftArm.getPosition(), 0.001);

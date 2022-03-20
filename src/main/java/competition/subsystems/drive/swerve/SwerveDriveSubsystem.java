@@ -56,7 +56,7 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
             this.motorController = factory.createCANSparkMax(electricalContract.getDriveNeo(swerveInstance), this.getPrefix(), "DriveNeo");
             setMotorControllerPositionPidParameters();
             setupStatusFrames();
-            this.motorController.setSmartCurrentLimit(50);
+            this.motorController.setSmartCurrentLimit(45);
         }
 
         this.register();
