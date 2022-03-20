@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 
 import competition.operator_interface.OperatorInterface;
 import xbot.common.command.BaseCommand;
+import xbot.common.math.XYPair;
 
 public class SetRobotAngleViaJoysticksCommand extends BaseCommand {
 
@@ -26,7 +27,10 @@ public class SetRobotAngleViaJoysticksCommand extends BaseCommand {
 
         if (oi.driverGamepad.getRightVector().getMagnitude() > 0.75) {
             // If the joystick is sufficiently deflected, get the angle from the joystick.
-            double driverAngle = oi.driverGamepad.getRightVector().getAngle();
+            
+            XYPair trueXYPair = new XYPair(-oi.driverGamepad.getRightStickX(), oi.driverGamepad.getRightStickY());
+            
+            double driverAngle = trueXYPair.getAngle();
             // Michael wants the joystick to point towards the battery, so add 180 degrees
 
             // Set that angle to the pose subsystem.
