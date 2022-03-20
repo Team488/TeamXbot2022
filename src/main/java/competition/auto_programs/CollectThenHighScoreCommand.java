@@ -50,7 +50,7 @@ public class CollectThenHighScoreCommand extends SequentialCommandGroup {
         var moveToShootingPosition = swerveToPointProvider.get();
         moveToShootingPosition.setRobotRelativeMotion();
         moveToShootingPosition.setMaxPower(0.6);
-        moveToShootingPosition.setTargetPosition(new XYPair(0, -44.5), -90);
+        moveToShootingPosition.setTargetPosition(new XYPair(0, -39.5), -90);
 
 
         var moveToShootWithTimeout = new ParallelRaceGroup(
