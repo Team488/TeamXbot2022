@@ -10,12 +10,19 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import xbot.common.command.DelayViaSupplierCommand;
 
-public class ShutdownShootingCommand extends SequentialCommandGroup {
+/**
+ * Immediately stops the conveyor, then stops the wheel after a 
+ * short delay. Will end after that.
+ * Requires:
+ * - Conveyor.
+ * - ShooterWheel.SetpointLock.
+ */
+public class ShutdownShootingCommandThatEnds extends SequentialCommandGroup {
 
-    private static Logger log = Logger.getLogger(ShutdownShootingCommand.class);
+    private static Logger log = Logger.getLogger(ShutdownShootingCommandThatEnds.class);
 
     @Inject
-    public ShutdownShootingCommand(ConveyorSubsystem conveyor, ShooterWheelSubsystem wheel) {
+    public ShutdownShootingCommandThatEnds(ConveyorSubsystem conveyor, ShooterWheelSubsystem wheel) {
         DelayViaSupplierCommand waitCommand = new DelayViaSupplierCommand(() -> 1.0);
 
         // Stop the conveyor immediately, while the shooter wheel is still running.

@@ -19,7 +19,15 @@ import xbot.common.command.SimpleWaitForMaintainerCommand;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 
-public class PrepareToFireCommand extends SequentialCommandGroup {
+/**
+ * Prepares the robot to launch cargo. Clears the barrel,
+ * spins up the wheel to a target RPM, and waits for either the
+ * wheel to reach the target speed or a few seconds, whichever comes first.
+ * Requires:
+ * - ShooterWheel.SetpointLock
+ * - Conveyor.
+ */
+public class PrepareToFireCommandThatEnds extends SequentialCommandGroup {
 
     private final DoubleProperty conveyorReverseTimeProp;
     private final DoubleProperty waitTimeProp;
@@ -27,10 +35,10 @@ public class PrepareToFireCommand extends SequentialCommandGroup {
     private Supplier<Double> externalWaitSupplier;
     private Supplier<TargetRPM> externalTargetSupplier;
 
-    private static Logger log = Logger.getLogger(PrepareToFireCommand.class);
+    private static Logger log = Logger.getLogger(PrepareToFireCommandThatEnds.class);
 
     @Inject
-    PrepareToFireCommand(ShooterWheelSubsystem wheel,
+    PrepareToFireCommandThatEnds(ShooterWheelSubsystem wheel,
             ConveyorSubsystem conveyor, PropertyFactory pf) {
         pf.setPrefix(this.getName());
         conveyorReverseTimeProp = pf.createPersistentProperty("Conveyor Reverse Time", 0.2);

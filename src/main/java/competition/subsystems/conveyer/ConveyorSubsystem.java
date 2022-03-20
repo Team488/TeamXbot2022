@@ -24,7 +24,7 @@ public class ConveyorSubsystem extends SimpleMotorSubsystem {
         if(isReady) {
             motor = clf.createCANTalon(eContract.getConveyerMotor());
             motor.setNeutralMode(NeutralMode.Brake);
-            motor.configOpenloopRamp(0.5, 100);
+            motor.configOpenloopRamp(0.1, 100);
         } else {
             motor = null;
         }
