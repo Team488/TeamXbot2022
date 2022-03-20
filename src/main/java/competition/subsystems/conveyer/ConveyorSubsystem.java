@@ -15,6 +15,7 @@ import xbot.common.subsystems.simplemotor.SimpleMotorSubsystem;
 public class ConveyorSubsystem extends SimpleMotorSubsystem {
     public final XCANTalon motor;
     public final boolean isReady;
+    public boolean hasRetracted = false;
 
     @Inject
     public ConveyorSubsystem(PropertyFactory pf, CommonLibFactory clf, ElectricalContract eContract) {
@@ -32,6 +33,11 @@ public class ConveyorSubsystem extends SimpleMotorSubsystem {
     @Override
     public void setPower(double power) {
         if(isReady) {
+            // if the conveyor goes forward, mark not retracted so we know there
+            // might be a ball in contact with the shooter wheel now
+            if(power > 0) {
+                hasRetracted = false;
+            }
             motor.set(ControlMode.PercentOutput, power);
         }
     }
