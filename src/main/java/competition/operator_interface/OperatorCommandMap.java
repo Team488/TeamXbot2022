@@ -10,12 +10,14 @@ import competition.auto_programs.DriveForwardOutOfTarmac;
 import competition.auto_programs.GoCollectComebackCommand;
 import competition.auto_programs.SCSFromOneRobotAwayCommand;
 import competition.auto_programs.ShootCollectShootCommand;
+import competition.auto_programs.ShootFarThenEscapeCommand;
 import competition.auto_programs.ShootRecklesslyThenEscapeCommand;
 import competition.auto_programs.ShootThenEscapeCommand;
 import competition.commandgroups.DriverFireCommand;
 import competition.commandgroups.DriverRecklessFireCommand;
 import competition.injection.arm.LeftArm;
 import competition.injection.arm.RightArm;
+import competition.subsystems.arduino.ArduinoCommunicationSubsystem;
 import competition.subsystems.climber_arm.ClimberArmSubsystem;
 import competition.subsystems.climber_arm.commands.ClimberArmMaintainerCommand;
 import competition.subsystems.climber_arm.commands.DualArmBalancerCommand;
@@ -50,6 +52,7 @@ import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
 import competition.subsystems.shooterwheel.commands.StopShooterWheelCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
@@ -296,6 +299,7 @@ public class OperatorCommandMap {
             CollectThenScoreTwiceCommand collectThenScoreTwice,
             ShootRecklesslyThenEscapeCommand shootRecklesslyThenEscape,
             SCSFromOneRobotAwayCommand scsFromOneRobotAwayCommand,
+            ShootFarThenEscapeCommand shootFarThenEscape,
             Provider<SetAutonomousCommand> setAutoCommandProvider,
             Provider<SetRobotHeadingCommand> setHeadingCommandProvider,
             Provider<SetPoseCommand> setPoseCommandProvider) {
@@ -315,6 +319,8 @@ public class OperatorCommandMap {
         setShootRecklesslyThenEscape.setAutoCommand(shootRecklesslyThenEscape);
         SetAutonomousCommand setScsFromOneRobotAwayCommand = setAutoCommandProvider.get();
         setScsFromOneRobotAwayCommand.setAutoCommand(scsFromOneRobotAwayCommand);
+        SetAutonomousCommand setShootFarThenEscapeCommand = setAutoCommandProvider.get();
+        setShootFarThenEscapeCommand.setAutoCommand(shootFarThenEscape);
 
         setDoNothing.includeOnSmartDashboard("AutoPrograms/DoNothing");
         setDriveFiveFeet.includeOnSmartDashboard("AutoPrograms/DriveFiveFeet");
@@ -331,6 +337,7 @@ public class OperatorCommandMap {
         operatorInterface.autoGamepad.getifAvailable(XboxButton.LeftStick).whenPressed(setCollectThenScoreTwice);
         operatorInterface.autoGamepad.getifAvailable(XboxButton.RightStick).whenPressed(setShootCollectShoot);
         operatorInterface.autoGamepad.getifAvailable(XboxButton.Back).whenPressed(setScsFromOneRobotAwayCommand);
+        operatorInterface.autoGamepad.getifAvailable(XboxButton.Start).whenPressed(setShootFarThenEscapeCommand);
 
         SetPoseCommand setPoseForLeftStart = setPoseCommandProvider.get();
         setPoseForLeftStart.setPose(pose.getStartingPose(KeyPosition.LeftFacingOut));
@@ -358,4 +365,5 @@ public class OperatorCommandMap {
         SmartDashboard.putData("Start/LeftHub", setPoseForLeftHub);
         SmartDashboard.putData("Start/RightHub", setPoseForRightHub);
     }
+
 }
