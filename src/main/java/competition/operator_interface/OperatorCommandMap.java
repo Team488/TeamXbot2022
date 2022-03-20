@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
+import competition.auto_programs.CollectThenHighScoreCommand;
 import competition.auto_programs.CollectThenScoreTwiceCommand;
 import competition.auto_programs.DoNothingCommand;
 import competition.auto_programs.DriveForwardOutOfTarmac;
@@ -300,6 +301,7 @@ public class OperatorCommandMap {
             ShootRecklesslyThenEscapeCommand shootRecklesslyThenEscape,
             SCSFromOneRobotAwayCommand scsFromOneRobotAwayCommand,
             ShootFarThenEscapeCommand shootFarThenEscape,
+            CollectThenHighScoreCommand highScore,
             Provider<SetAutonomousCommand> setAutoCommandProvider,
             Provider<SetRobotHeadingCommand> setHeadingCommandProvider,
             Provider<SetPoseCommand> setPoseCommandProvider) {
@@ -321,6 +323,8 @@ public class OperatorCommandMap {
         setScsFromOneRobotAwayCommand.setAutoCommand(scsFromOneRobotAwayCommand);
         SetAutonomousCommand setShootFarThenEscapeCommand = setAutoCommandProvider.get();
         setShootFarThenEscapeCommand.setAutoCommand(shootFarThenEscape);
+        SetAutonomousCommand setHighScore = setAutoCommandProvider.get();
+        setHighScore.setAutoCommand(highScore);
 
         setDoNothing.includeOnSmartDashboard("AutoPrograms/DoNothing");
         setDriveFiveFeet.includeOnSmartDashboard("AutoPrograms/DriveFiveFeet");
@@ -333,7 +337,7 @@ public class OperatorCommandMap {
         operatorInterface.autoGamepad.getPovIfAvailable(0).whenPressed(setDoNothing);
         operatorInterface.autoGamepad.getPovIfAvailable(90).whenPressed(setDriveFiveFeet);
         operatorInterface.autoGamepad.getPovIfAvailable(180).whenPressed(setShootThenEscape);
-        operatorInterface.autoGamepad.getPovIfAvailable(270).whenPressed(setShootRecklesslyThenEscape);
+        operatorInterface.autoGamepad.getPovIfAvailable(270).whenPressed(setHighScore);
         operatorInterface.autoGamepad.getifAvailable(XboxButton.LeftStick).whenPressed(setCollectThenScoreTwice);
         operatorInterface.autoGamepad.getifAvailable(XboxButton.RightStick).whenPressed(setShootCollectShoot);
         operatorInterface.autoGamepad.getifAvailable(XboxButton.Back).whenPressed(setScsFromOneRobotAwayCommand);

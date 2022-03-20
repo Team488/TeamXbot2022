@@ -3,6 +3,7 @@ package competition.subsystems.autocommands;
 import org.junit.Test;
 
 import competition.BaseCompetitionTest;
+import competition.auto_programs.CollectThenHighScoreCommand;
 import competition.auto_programs.CollectThenScoreTwiceCommand;
 import competition.auto_programs.DoNothingCommand;
 import competition.auto_programs.DriveForwardOutOfTarmac;
@@ -29,6 +30,7 @@ public class TestCreateAuto extends BaseCompetitionTest {
         shakedown(injector.getInstance(ShootCollectShootCommand.class));
         shakedown(injector.getInstance(ShootRecklesslyThenEscapeCommand.class));
         shakedown(injector.getInstance(ShootThenEscapeCommand.class));
+        shakedown(injector.getInstance(CollectThenHighScoreCommand.class));
     }
 
     @Test
