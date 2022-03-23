@@ -147,8 +147,6 @@ public class OperatorCommandMap {
         setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.EngageNextBar)
                 .includeOnSmartDashboard();
 
-        dualArmBalancer.setSafe(true);
-
         pf.setPrefix("OperatorCommandMap/");
         DoubleProperty latchOpenTime = pf.createPersistentProperty("Latch Open Time", 2);
 
@@ -157,8 +155,33 @@ public class OperatorCommandMap {
         ParallelRaceGroup latchReleaseAndSmallWait = new ParallelRaceGroup(latchRelease,
                 new DelayViaSupplierCommand(() -> latchOpenTime.get()));
 
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.A).whenPressed(dualArmBalancer);
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.X).whenPressed(dualArmWithJoysticksUnsafe);
+        var setArmsSafe = new InstantCommand(() -> {
+                leftArm.setIgnoreLimits(false);
+                rightArm.setIgnoreLimits(false);
+        });
+
+        var setArmsLocked = new InstantCommand(() -> {
+                leftArm.setArmsUnlocked(false);
+                rightArm.setArmsUnlocked(false);
+        });
+
+        var safeLockedDualArmBalancer = new ParallelCommandGroup(dualArmBalancer, setArmsSafe, setArmsLocked);
+
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.A).whenPressed(safeLockedDualArmBalancer);
+
+        var setArmsUnsafe = new InstantCommand(() -> {
+                leftArm.setIgnoreLimits(true);
+                rightArm.setIgnoreLimits(true);
+        });
+        
+        var unlockArms = new InstantCommand(() -> {
+                leftArm.setArmsUnlocked(true);
+                rightArm.setArmsUnlocked(true);
+        });
+
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.X).whenPressed(setArmsUnsafe);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightJoystickYAxis).whenPressed(unlockArms);
+
 
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(pivotIn);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(pivotOut);

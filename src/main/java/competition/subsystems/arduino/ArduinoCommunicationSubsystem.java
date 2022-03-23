@@ -97,7 +97,7 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
         boolean isRedAlliance = DriverStation.getAlliance() == Alliance.Red;
 
         // Red alliance is 1, Blue alliance is 0.
-        allianceDio.set(isRedAlliance);
+        allianceDio.set(!isRedAlliance);
 
         ArduinoStateMessage currentState = ArduinoStateMessage.RobotNotBooted;
 
@@ -119,7 +119,7 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
         // parses the binary data.
         int stateValue = currentState.getValue();
         for (int i = 3; i >=0; i--) {
-            dioOutputs[3 - i].set((stateValue & (1 << i)) != 0);
+            dioOutputs[3 - i].set(!((stateValue & (1 << i)) != 0));
         }
 
         // Sweep through PWM values for now.
