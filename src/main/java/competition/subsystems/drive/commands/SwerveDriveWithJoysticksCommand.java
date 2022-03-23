@@ -5,18 +5,18 @@ import com.google.inject.Inject;
 import competition.operator_interface.OperatorInterface;
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.pose.PoseSubsystem;
+import competition.subsystems.vision.VisionSubsystem;
 import xbot.common.command.BaseCommand;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.logic.HumanVsMachineDecider;
-import xbot.common.logic.Latch;
 import xbot.common.logic.HumanVsMachineDecider.HumanVsMachineMode;
+import xbot.common.logic.Latch;
 import xbot.common.logic.Latch.EdgeType;
 import xbot.common.math.MathUtils;
 import xbot.common.math.XYPair;
 import xbot.common.properties.BooleanProperty;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
-import xbot.common.subsystems.drive.control_logic.HeadingAssistModule;
 import xbot.common.subsystems.drive.control_logic.HeadingModule;
 
 /**
@@ -25,9 +25,10 @@ import xbot.common.subsystems.drive.control_logic.HeadingModule;
  */
 public class SwerveDriveWithJoysticksCommand extends BaseCommand {
 
-    DriveSubsystem drive;
-    PoseSubsystem pose;
-    OperatorInterface oi;
+    final DriveSubsystem drive;
+    final PoseSubsystem pose;
+    final OperatorInterface oi;
+    final VisionSubsystem vision;
     final DoubleProperty input_exponent;
     final DoubleProperty drivePowerFactor;
     final DoubleProperty turnPowerFactor;
@@ -35,14 +36,16 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
     final HeadingModule headingModule;
     final Latch absoluteOrientationLatch;
     final DoubleProperty minimumMagnitudeForAbsoluteHeading;
+    final DoubleProperty triggerOnlyPowerScaling;
     final HumanVsMachineDecider decider;
 
     @Inject
     public SwerveDriveWithJoysticksCommand(DriveSubsystem drive, PoseSubsystem pose, OperatorInterface oi,
-            PropertyFactory pf, CommonLibFactory clf) {
+            PropertyFactory pf, CommonLibFactory clf, VisionSubsystem vision) {
         this.drive = drive;
         this.oi = oi;
         this.pose = pose;
+        this.vision = vision;
         pf.setPrefix(this);
         this.input_exponent = pf.createPersistentProperty("Input Exponent", 2);
         this.drivePowerFactor = pf.createPersistentProperty("Power Factor", 1);
@@ -51,6 +54,7 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
         this.minimumMagnitudeForAbsoluteHeading = pf.createPersistentProperty("Min Magnitude For Absolute Heading", 0.75);
         this.decider = clf.createHumanVsMachineDecider(this.getPrefix());
         this.headingModule = clf.createHeadingModule(drive.getRotateToHeadingPid());
+        this.triggerOnlyPowerScaling = pf.createPersistentProperty("TriggerOnlyPowerScaling", 0.5);
 
         // Set up a latch to trigger whenever we change the rotational mode. In either case,
         // there's some PIDs that will need to be reset, or goals that need updating.
@@ -136,6 +140,10 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
             humanRotatePowerFromStick + humanRotatePowerFromLeftTrigger - humanRotatePowerFromRightTrigger);
 
         double humanRotatePowerFromTriggers = humanRotatePowerFromLeftTrigger - humanRotatePowerFromRightTrigger;
+        
+        // Michael wants the triggers to be more precise pretty much all the time, so adding a trigger-only
+        // power reduction
+        humanRotatePowerFromTriggers *= triggerOnlyPowerScaling.get();
                 
         if (absoluteOrientationMode.get()) {
             // If we are using absolute orientation, we first need get the desired heading from the right joystick.
@@ -154,19 +162,32 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
             if (headingVector.getMagnitude() > minimumMagnitudeForAbsoluteHeading.get()) {
                 // If the magnitude is greater than the minimum magnitude, we can use the joystick to set the heading.
                 desiredHeading = headingVector.getAngle();
-                drive.setDesiredHeading(desiredHeading);
+                
+                if (pose.getHeadingResetRecently()) {
+                    drive.setDesiredHeading(pose.getCurrentHeading().getDegrees());
+                } else {
+                    if (drive.isRotateToCargoActive()) {
+                        drive.setDesiredHeading(pose.getCurrentHeading().getDegrees() + vision.getBearingtoCargo());
+                    } else {
+                        drive.setDesiredHeading(desiredHeading);
+                    }
+                }
                 suggestedRotatePower = headingModule.calculateHeadingPower(desiredHeading);
                 decider.reset();
             } else {
                 // If the joystick isn't deflected enough, we use the last known heading or human input.
                 HumanVsMachineMode recommendedMode = decider.getRecommendedMode(humanRotatePowerFromTriggers);
 
+                if (pose.getHeadingResetRecently()) {
+                    drive.setDesiredHeading(pose.getCurrentHeading().getDegrees());
+                }
+                
                 switch (recommendedMode) {
                     case Coast:
                         suggestedRotatePower = 0;
                         break;
                     case HumanControl:
-                        suggestedRotatePower = humanRotatePowerFromTriggers;
+                        suggestedRotatePower = scaleHumanRotationInput(humanRotatePowerFromTriggers);
                         break;
                     case InitializeMachineControl:
                         drive.setDesiredHeading(pose.getCurrentHeading().getDegrees());
@@ -183,7 +204,7 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
             }
         } else {
             // If we are in the typical "rotate using joystick to turn" mode, use the Heading Assist module to get the suggested power.
-            suggestedRotatePower = humanRotatePower;
+            suggestedRotatePower = scaleHumanRotationInput(humanRotatePower);
         }
 
         // --------------------------------------------------
@@ -196,8 +217,8 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
         }
 
         // Scale the power down if we are in one or more precision modes
+        // Rotation is scaled when deciding on human vs machine inputs
         translationIntent.scale(drive.isPrecisionTranslationActive() ? 0.5 : 1);
-        suggestedRotatePower = drive.isPrecisionRotationActive() ? suggestedRotatePower * 0.25 : suggestedRotatePower;
 
         // Scale the power down if requested (typically used when novices are controlling the robot)
         translationIntent = translationIntent.scale(drivePowerFactor.get());
@@ -209,6 +230,10 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
             centerOfRotation = new XYPair(0, 36);
         }
 
-        drive.fieldOrientedDrive(translationIntent, suggestedRotatePower, pose.getCurrentHeading().getDegrees(), new XYPair());
+        drive.fieldOrientedDrive(translationIntent, suggestedRotatePower, pose.getCurrentHeading().getDegrees(), centerOfRotation);
+    }
+
+    private double scaleHumanRotationInput(double humanInputPower) {
+        return humanInputPower * (drive.isPrecisionRotationActive() ? 0.25 : 1.0);
     }
 }

@@ -98,7 +98,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         // Probably not a huge priority, Since as soon as we move once the robot remembers the last commanded direction.
         lastCommandedDirection = new XYPair(0, 90);
 
-        positionalPidManager = factory.createPIDManager(this.getPrefix() + "PositionPID", 1.0/90, 0, 0);
+        positionalPidManager = factory.createPIDManager(this.getPrefix() + "PositionPID", 0.011111, 0, 0, 0.6, -0.6);
         headingPidManager = factory.createPIDManager(this.getPrefix() + "HeadingPID", 1.0/36, 0, 0);
     }
 
@@ -167,6 +167,16 @@ public class DriveSubsystem extends BaseDriveSubsystem {
 
     public void setPrecisionRotationActive(boolean isActive) {
         precisionRotationActive = isActive;
+    }
+
+    private boolean rotateToCargoActive = false;
+
+    public boolean isRotateToCargoActive() {
+        return rotateToCargoActive;
+    }
+
+    public void setRotateToCargoActive(boolean isActive) {
+        rotateToCargoActive = isActive;
     }
 
     /**

@@ -123,7 +123,10 @@ public class SubsystemDefaultCommandMap {
         shooter.setDefaultCommand(shooterMaintainer);
 
         shooter.getSetpointLock().setDefaultCommand(
-            new RunCommand(() -> {shooter.setTargetRPM(0.0);}, shooter.getSetpointLock())
+            new RunCommand(() -> {
+                shooter.setTargetRPM(0.0);
+                shooter.setFullPowerMode(false);
+            }, shooter.getSetpointLock())
         );
     }
 

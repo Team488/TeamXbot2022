@@ -4,17 +4,17 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
+import competition.auto_programs.CollectThenScoreTwiceCommand;
 import competition.auto_programs.DoNothingCommand;
-import competition.auto_programs.DriveFiveFeetCommand;
+import competition.auto_programs.DriveForwardOutOfTarmac;
 import competition.auto_programs.GoCollectComebackCommand;
 import competition.auto_programs.ShootCollectShootCommand;
+import competition.auto_programs.ShootRecklesslyThenEscapeCommand;
+import competition.auto_programs.ShootThenEscapeCommand;
 import competition.commandgroups.FireCommand;
+import competition.commandgroups.RecklessFireCommand;
 import competition.injection.arm.LeftArm;
 import competition.injection.arm.RightArm;
-import competition.injection.swerve.FrontLeftDrive;
-import competition.injection.swerve.FrontRightDrive;
-import competition.injection.swerve.RearLeftDrive;
-import competition.injection.swerve.RearRightDrive;
 import competition.subsystems.climber_arm.ClimberArmSubsystem;
 import competition.subsystems.climber_arm.commands.ClimberArmMaintainerCommand;
 import competition.subsystems.climber_arm.commands.DualArmBalancerCommand;
@@ -33,22 +33,17 @@ import competition.subsystems.collector_deployment.commands.DeployCollectorComma
 import competition.subsystems.collector_deployment.commands.RetractCollectorCommand;
 import competition.subsystems.collector_stage_2.CollectorStage2Subsystem;
 import competition.subsystems.conveyer.ConveyorSubsystem;
-import competition.subsystems.deploy_hood.commands.HoodDeployCommand;
-import competition.subsystems.deploy_hood.commands.HoodRetractCommand;
 import competition.subsystems.drive.DriveSubsystem;
-import competition.subsystems.drive.commands.CalibrateSteeringCommand;
 import competition.subsystems.drive.commands.DebuggingSwerveWithJoysticksCommand;
 import competition.subsystems.drive.commands.GoToNextActiveSwerveModuleCommand;
 import competition.subsystems.drive.commands.SetSwerveMotorControllerPidParametersCommand;
-import competition.subsystems.drive.commands.SwerveDriveMaintainerCommand;
-import competition.subsystems.drive.commands.SwerveDriveWithJoysticksCommand;
-import competition.subsystems.drive.commands.SwerveSteeringMaintainerCommand;
 import competition.subsystems.drive.commands.SwerveToPointCommand;
 import competition.subsystems.drive.commands.TurnLeft90DegreesCommand;
 import competition.subsystems.latch.commands.LatchArmCommand;
 import competition.subsystems.latch.commands.LatchReleaseCommand;
 import competition.subsystems.pose.PoseSubsystem;
-import competition.subsystems.pose.PoseSubsystem.StartingPosition;
+import competition.subsystems.pose.PoseSubsystem.KeyPosition;
+import competition.subsystems.pose.SetPoseCommand;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
 import competition.subsystems.shooterwheel.commands.StopShooterWheelCommand;
@@ -60,11 +55,11 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import xbot.common.command.DelayViaSupplierCommand;
 import xbot.common.command.NamedInstantCommand;
-import xbot.common.command.NamedRunCommand;
 import xbot.common.command.SmartDashboardCommandPutter;
 import xbot.common.controls.sensors.ChordButton;
 import xbot.common.controls.sensors.XXboxController.XboxButton;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.math.FieldPose;
 import xbot.common.math.XYPair;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
@@ -95,16 +90,13 @@ public class OperatorCommandMap {
         NamedInstantCommand resetPosition = new NamedInstantCommand("Reset Position",
                 () -> pose.setCurrentPosition(0, 0));
         ParallelCommandGroup resetPose = new ParallelCommandGroup(resetPosition, resetHeading);
-        operatorInterface.driverGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(resetPose);
+        operatorInterface.driverGamepad.getifAvailable(XboxButton.A).whenPressed(resetPose);
     }
 
     @Inject
     public void setupDriveCommands(
             DebuggingSwerveWithJoysticksCommand swerveDebugging,
             GoToNextActiveSwerveModuleCommand goToNextActiveSwerveModule) {
-        //operatorInterface.driverGamepad.getifAvailable(XboxButton.B).whenPressed(swerveDebugging);
-        //operatorInterface.driverGamepad.getifAvailable(XboxButton.X).whenPressed(goToNextActiveSwerveModule);
-
     }
 
     @Inject
@@ -141,10 +133,6 @@ public class OperatorCommandMap {
         setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.EngageNextBar)
                 .includeOnSmartDashboard();
 
-        // ParallelCommandGroup stopBothArms = new ParallelCommandGroup(stopLeftArm,
-        // stopRightArm);
-        ParallelCommandGroup maintainArms = new ParallelCommandGroup(leftArmMaintainer, rightArmMaintainer);
-
         dualArmBalancer.setSafe(true);
 
         pf.setPrefix("OperatorCommandMap/");
@@ -161,13 +149,9 @@ public class OperatorCommandMap {
 
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(pivotIn);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(pivotOut);
-
-        ChordButton driverNuclearLaunch = clf.createChordButton(
-                operatorInterface.driverGamepad.getifAvailable(XboxButton.Start),
-                operatorInterface.driverGamepad.getifAvailable(XboxButton.Back));
-
+        
         ChordButton totalNuclearLaunch = clf.createChordButton(
-                driverNuclearLaunch,
+                operatorInterface.driverGamepad.getifAvailable(XboxButton.Start),
                 operatorInterface.operatorGamepad.getifAvailable(XboxButton.Start));
 
         totalNuclearLaunch.whenPressed(latchReleaseAndSmallWait);
@@ -176,65 +160,31 @@ public class OperatorCommandMap {
     }
 
     @Inject
-    public void setupGeneralSwerveCommands(
-            @FrontLeftDrive SwerveSteeringMaintainerCommand maintainSteeringFrontLeft,
-            @FrontLeftDrive SwerveDriveMaintainerCommand maintainDriveFrontLeft,
-            @FrontRightDrive SwerveSteeringMaintainerCommand maintainSteeringFrontRight,
-            @FrontRightDrive SwerveDriveMaintainerCommand maintainDriveFrontRight,
-            @RearLeftDrive SwerveSteeringMaintainerCommand maintainSteeringRearLeft,
-            @RearLeftDrive SwerveDriveMaintainerCommand maintainDriveRearLeft,
-            @RearRightDrive SwerveSteeringMaintainerCommand maintainSteeringRearRight,
-            @RearRightDrive SwerveDriveMaintainerCommand maintainDriveRearRight,
-            SwerveDriveWithJoysticksCommand swerveDriveWithJoysticks,
-            CalibrateSteeringCommand calibrateSteering,
-            SetSwerveMotorControllerPidParametersCommand setSteeringPidValues) {
-        ParallelCommandGroup swerveCommands = new ParallelCommandGroup(
-                maintainSteeringFrontLeft,
-                maintainDriveFrontLeft,
-                maintainSteeringFrontRight,
-                maintainDriveFrontRight,
-                maintainSteeringRearLeft,
-                maintainDriveRearLeft,
-                maintainSteeringRearRight,
-                maintainDriveRearRight,
-                swerveDriveWithJoysticks);
-
-        //operatorInterface.driverGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(calibrateSteering);
-        //operatorInterface.driverGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(swerveCommands);
-        //operatorInterface.driverGamepad.getifAvailable(XboxButton.Back).whenPressed(setSteeringPidValues);
-
+    public void setupGeneralSwerveCommands(SetSwerveMotorControllerPidParametersCommand setSteeringPidValues) {
         setSteeringPidValues.includeOnSmartDashboard("Commit steering pid values");
     }
 
     @Inject
-    public void setShooterCommand ( OperatorInterface oi,
-        ShooterWheelSubsystem shooter,
-        StopShooterWheelCommand stopCommand,
-        FireCommand fireCloseCommand,
-        FireCommand fireFarCommand
-    ){
+    public void setShooterCommand(OperatorInterface oi,
+            ShooterWheelSubsystem shooter,
+            StopShooterWheelCommand stopCommand,
+            FireCommand fireCloseCommand,
+            FireCommand fireFarCommand,
+            RecklessFireCommand recklessFireCommand) {
         fireCloseCommand.setTargetRPM(TargetRPM.NearShot);
         fireFarCommand.setTargetRPM(TargetRPM.DistanceShot);
 
-        InstantCommand increaseTrim = new NamedInstantCommand("ShooterIncreaseTrim100RPMInstantCommand", () -> shooter.changeTrimRPM(100));
-        InstantCommand decreaseTrim = new NamedInstantCommand("ShooterDecreaseTrim100RPMInstantCommand", () -> shooter.changeTrimRPM(-100));
+        InstantCommand increaseTrim = new NamedInstantCommand("ShooterIncreaseTrim100RPMInstantCommand",
+                () -> shooter.changeTrimRPM(100));
+        InstantCommand decreaseTrim = new NamedInstantCommand("ShooterDecreaseTrim100RPMInstantCommand",
+                () -> shooter.changeTrimRPM(-100));
         SmartDashboard.putData("Trim Up", increaseTrim);
         SmartDashboard.putData("Trim down", decreaseTrim);
         stopCommand.includeOnSmartDashboard();
-
-        InstantCommand setSafe = new NamedInstantCommand("ShooterSafeSpeed", () -> shooter.setTargetRPM(TargetRPM.Safe));
-        InstantCommand setNearShot = new NamedInstantCommand("ShooterNearShotSpeed", () -> shooter.setTargetRPM(TargetRPM.NearShot));
-        InstantCommand setDistanceShot = new NamedInstantCommand("ShooterDistanceShotSpeed", () -> shooter.setTargetRPM(TargetRPM.DistanceShot));
-        NamedRunCommand setSafePowerPercent = new NamedRunCommand("ShooterSafePowerPercent", () -> shooter.setSafePower(), shooter);
-
-        //oi.shooterGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(decreaseTrim);
-        //oi.shooterGamepad.getifAvailable(XboxButton.RightTrigger).whenPressed(increaseTrim);
-
+        
+        oi.operatorGamepad.getifAvailable(XboxButton.RightStick).whenHeld(recklessFireCommand);
         oi.operatorGamepad.getifAvailable(XboxButton.Y).whenHeld(fireFarCommand);
         oi.operatorGamepad.getifAvailable(XboxButton.B).whenHeld(fireCloseCommand);
-
-        //oi.shooterGamepad.getifAvailable(XboxButton.A).whenPressed(setNearShot).whenReleased(setSafe);
-        //oi.shooterGamepad.getifAvailable(XboxButton.X).whenPressed(setDistanceShot).whenReleased(setSafe);
     }
 
     @Inject
@@ -256,65 +206,61 @@ public class OperatorCommandMap {
                 () -> {
                     return angleTarget.get();
                 });
-        //oi.driverGamepad.getifAvailable(XboxButton.Start).whenPressed(turnleft90);
-        //oi.driverGamepad.getifAvailable(XboxButton.Y).whenPressed(swerveToPoint);
 
         // Precision Commands
         StartEndCommand activatePrecisionDrive = new StartEndCommand(
-            () -> drive.setPrecisionTranslationActive(true),
-            () -> drive.setPrecisionTranslationActive(false));
+                () -> drive.setPrecisionTranslationActive(true),
+                () -> drive.setPrecisionTranslationActive(false));
 
         StartEndCommand activatePrecisionRotation = new StartEndCommand(
-            () -> drive.setPrecisionRotationActive(true),
-            () -> drive.setPrecisionRotationActive(false));
+                () -> drive.setPrecisionRotationActive(true),
+                () -> drive.setPrecisionRotationActive(false));
+                
+        StartEndCommand activateRotateToCargo = new StartEndCommand(
+                () -> drive.setRotateToCargoActive(true),
+                () -> drive.setRotateToCargoActive(false));
 
-        StartEndCommand activateCollectorOrientedTurning = new StartEndCommand(
-            () -> drive.setCollectorOrientedTurningActive(true),
-            () -> drive.setCollectorOrientedTurningActive(false));
-
-        oi.driverGamepad.getifAvailable(XboxButton.X).whileHeld(activatePrecisionDrive);
-        oi.driverGamepad.getifAvailable(XboxButton.Y).whileHeld(activatePrecisionRotation);
-        oi.driverGamepad.getifAvailable(XboxButton.RightBumper).whileHeld(activateCollectorOrientedTurning);
+        oi.driverGamepad.getifAvailable(XboxButton.LeftBumper).whileHeld(activatePrecisionDrive);
+        oi.driverGamepad.getifAvailable(XboxButton.RightBumper).whileHeld(activatePrecisionRotation);
+        oi.driverGamepad.getifAvailable(XboxButton.Y).whileHeld(activateRotateToCargo);
     }
 
     @Inject
     public void setupCollectionCommands(IntakeCommand intake, EjectCommand eject, ConveyorSubsystem conveyer,
-            CollectorStage2Subsystem stageTwo, Provider<DeployCollectorCommand> deployCollector, RetractCollectorCommand retractCollector,
+            CollectorStage2Subsystem stageTwo, Provider<DeployCollectorCommand> deployCollector,
+            RetractCollectorCommand retractCollector,
             ShooterWheelSubsystem wheel) {
 
         var setHotDogIntake = new RunCommand(() -> wheel.setTargetRPM(TargetRPM.HotDogRoller), wheel.getSetpointLock());
         var setHotDogEject = new RunCommand(() -> wheel.setTargetRPM(TargetRPM.HotDogRoller), wheel.getSetpointLock());
 
         ParallelCommandGroup groupIntake = new ParallelCommandGroup(
-            setHotDogIntake, intake, stageTwo.getForwardCommand(), deployCollector.get(), conveyer.getForwardCommand());
+                setHotDogIntake, intake, stageTwo.getForwardCommand(), deployCollector.get(),
+                conveyer.getForwardCommand());
         ParallelCommandGroup groupEject = new ParallelCommandGroup(
-            setHotDogEject, eject, stageTwo.getReverseCommand(), conveyer.getReverseCommand(), deployCollector.get());
+                setHotDogEject, eject, stageTwo.getReverseCommand(), conveyer.getReverseCommand(),
+                deployCollector.get());
 
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightTrigger).whenHeld(groupIntake);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftTrigger).whenHeld(groupEject);
-        
+
         operatorInterface.operatorGamepad.getPovIfAvailable(0).whenPressed(retractCollector);
         operatorInterface.operatorGamepad.getPovIfAvailable(90).whenPressed(retractCollector);
         operatorInterface.operatorGamepad.getPovIfAvailable(180).whenPressed(retractCollector);
         operatorInterface.operatorGamepad.getPovIfAvailable(270).whenPressed(retractCollector);
-
+        operatorInterface.driverGamepad.getifAvailable(XboxButton.B).whenPressed(retractCollector);
 
     }
-
-    @Inject
-    public void setupLaunchingCommands(HoodDeployCommand deployHood, HoodRetractCommand retractHood) {
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftStick).whenPressed(deployHood);
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightStick).whenPressed(retractHood);
-    }
-
-
+    
     @Inject
     public void setupDebuggingCommands(SmartDashboardTableWrapper dashboard,
-    SmartDashboardCommandPutter commandPutter) {
-        NamedInstantCommand setFastMode = 
-        new NamedInstantCommand("SetFastMode", () -> {dashboard.setFastMode(true);});
-        NamedInstantCommand setSlowMode =
-        new NamedInstantCommand("SetSlowMode", () -> {dashboard.setFastMode(false);});
+            SmartDashboardCommandPutter commandPutter) {
+        NamedInstantCommand setFastMode = new NamedInstantCommand("SetFastMode", () -> {
+            dashboard.setFastMode(true);
+        });
+        NamedInstantCommand setSlowMode = new NamedInstantCommand("SetSlowMode", () -> {
+            dashboard.setFastMode(false);
+        });
 
         SmartDashboard.putData(setFastMode);
         SmartDashboard.putData(setSlowMode);
@@ -322,14 +268,17 @@ public class OperatorCommandMap {
 
     @Inject
     public void setupAutonomousCommands(
-        PoseSubsystem pose,
-        DoNothingCommand doNothing,
-        DriveFiveFeetCommand driveFiveFeet,
-        GoCollectComebackCommand goCollectComeback,
-        ShootCollectShootCommand shootCollectShoot,
-        Provider<SetAutonomousCommand> setAutoCommandProvider,
-        Provider<SetRobotHeadingCommand> setHeadingCommandProvider)
-    {
+            PoseSubsystem pose,
+            DoNothingCommand doNothing,
+            DriveForwardOutOfTarmac driveFiveFeet,
+            GoCollectComebackCommand goCollectComeback,
+            ShootCollectShootCommand shootCollectShoot,
+            ShootThenEscapeCommand shootThenEscape,
+            CollectThenScoreTwiceCommand collectThenScoreTwice,
+            ShootRecklesslyThenEscapeCommand shootRecklesslyThenEscape,
+            Provider<SetAutonomousCommand> setAutoCommandProvider,
+            Provider<SetRobotHeadingCommand> setHeadingCommandProvider,
+            Provider<SetPoseCommand> setPoseCommandProvider) {
         SetAutonomousCommand setDoNothing = setAutoCommandProvider.get();
         setDoNothing.setAutoCommand(doNothing);
         SetAutonomousCommand setDriveFiveFeet = setAutoCommandProvider.get();
@@ -338,28 +287,51 @@ public class OperatorCommandMap {
         setGoCollectComeback.setAutoCommand(goCollectComeback);
         SetAutonomousCommand setShootCollectShoot = setAutoCommandProvider.get();
         setShootCollectShoot.setAutoCommand(shootCollectShoot);
-
+        SetAutonomousCommand setShootThenEscape = setAutoCommandProvider.get();
+        setShootThenEscape.setAutoCommand(shootThenEscape);
+        SetAutonomousCommand setCollectThenScoreTwice = setAutoCommandProvider.get();
+        setCollectThenScoreTwice.setAutoCommand(collectThenScoreTwice);
+        SetAutonomousCommand setShootRecklesslyThenEscape = setAutoCommandProvider.get();
+        setShootRecklesslyThenEscape.setAutoCommand(shootRecklesslyThenEscape);
 
         setDoNothing.includeOnSmartDashboard("AutoPrograms/DoNothing");
         setDriveFiveFeet.includeOnSmartDashboard("AutoPrograms/DriveFiveFeet");
         setGoCollectComeback.includeOnSmartDashboard("AutoPrograms/GoCollectComeback");
         setShootCollectShoot.includeOnSmartDashboard("AutoPrograms/ShootCollectShoot");
+        setShootThenEscape.includeOnSmartDashboard("AutoPrograms/ShootThenEscape");
+        setCollectThenScoreTwice.includeOnSmartDashboard("AutoPrograms/CollectThenScoreTwice");
+        setShootRecklesslyThenEscape.includeOnSmartDashboard("AutoPrograms/ShootRecklesslyThenEscape");
 
-        SetRobotHeadingCommand setHeadingForLeftStart = setHeadingCommandProvider.get();
-        setHeadingForLeftStart.setHeadingToApply(pose.getStartingHeading(StartingPosition.Left).getDegrees());
-        SetRobotHeadingCommand setHeadingForMidStart = setHeadingCommandProvider.get();
-        setHeadingForMidStart.setHeadingToApply(pose.getStartingHeading(StartingPosition.Middle).getDegrees());
-        SetRobotHeadingCommand setHeadingForRightStart = setHeadingCommandProvider.get();
-        setHeadingForRightStart.setHeadingToApply(pose.getStartingHeading(StartingPosition.Right).getDegrees());
-        SetRobotHeadingCommand setHeadingForLeftHubStart = setHeadingCommandProvider.get();
-        setHeadingForRightStart.setHeadingToApply(pose.getStartingHeading(StartingPosition.LeftHub).getDegrees());
-        SetRobotHeadingCommand setHeadingForRightHubStart = setHeadingCommandProvider.get();
-        setHeadingForRightStart.setHeadingToApply(pose.getStartingHeading(StartingPosition.RightHub).getDegrees());
+        operatorInterface.autoGamepad.getPovIfAvailable(0).whenPressed(setDoNothing);
+        operatorInterface.autoGamepad.getPovIfAvailable(90).whenPressed(setDriveFiveFeet);
+        operatorInterface.autoGamepad.getPovIfAvailable(180).whenPressed(shootThenEscape);
+        operatorInterface.autoGamepad.getPovIfAvailable(270).whenPressed(setShootRecklesslyThenEscape);
+        operatorInterface.autoGamepad.getifAvailable(XboxButton.LeftStick).whenPressed(setCollectThenScoreTwice);
 
-        setHeadingForLeftStart.includeOnSmartDashboard("Start/Left");
-        setHeadingForMidStart.includeOnSmartDashboard("Start/Middle");
-        setHeadingForRightStart.includeOnSmartDashboard("Start/Right");
-        setHeadingForLeftHubStart.includeOnSmartDashboard("Start/LeftHub");
-        setHeadingForRightHubStart.includeOnSmartDashboard("Start/RightHub");
+        SetPoseCommand setPoseForLeftStart = setPoseCommandProvider.get();
+        setPoseForLeftStart.setPose(pose.getStartingPose(KeyPosition.LeftFacingOut));
+        SetPoseCommand setPoseForMiddleStart = setPoseCommandProvider.get();
+        setPoseForMiddleStart.setPose(pose.getStartingPose(KeyPosition.MiddleFacingOut));
+        SetPoseCommand setPoseForRightStart = setPoseCommandProvider.get();
+        setPoseForRightStart.setPose(pose.getStartingPose(KeyPosition.RightFacingOut));
+        SetPoseCommand setPoseForLeftHub = setPoseCommandProvider.get();
+        setPoseForLeftHub.setPose(pose.getStartingPose(KeyPosition.LeftHubFacingHub));
+        SetPoseCommand setPoseForRightHub = setPoseCommandProvider.get();
+        setPoseForRightHub.setPose(pose.getStartingPose(KeyPosition.RightHubFacingHub));
+        SetPoseCommand setPoseforNeutral = setPoseCommandProvider.get();
+        setPoseforNeutral.setPose(new FieldPose(0, 0, 90));
+
+        operatorInterface.autoGamepad.getifAvailable(XboxButton.X).whenPressed(setPoseForLeftStart);
+        operatorInterface.autoGamepad.getifAvailable(XboxButton.Y).whenPressed(setPoseForMiddleStart);
+        operatorInterface.autoGamepad.getifAvailable(XboxButton.B).whenPressed(setPoseForRightStart);
+        operatorInterface.autoGamepad.getifAvailable(XboxButton.A).whenPressed(setPoseforNeutral);
+        operatorInterface.autoGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(setPoseForLeftHub);
+        operatorInterface.autoGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(setPoseForRightHub);
+
+        SmartDashboard.putData("Start/Left", setPoseForLeftStart);
+        SmartDashboard.putData("Start/Middle", setPoseForMiddleStart);
+        SmartDashboard.putData("Start/Right", setPoseForRightStart);
+        SmartDashboard.putData("Start/LeftHub", setPoseForLeftHub);
+        SmartDashboard.putData("Start/RightHub", setPoseForRightHub);
     }
 }

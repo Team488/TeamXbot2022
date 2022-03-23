@@ -8,6 +8,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.math.FieldPose;
+import xbot.common.math.WrappedRotation2d;
 import xbot.common.math.XYPair;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
@@ -41,12 +43,14 @@ public class PoseSubsystem extends BasePoseSubsystem {
     final DoubleProperty rightHubStartPosY;
     final DoubleProperty rightHubHeading;
 
-    public enum StartingPosition {
-        Left,
-        Middle,
-        Right,
-        LeftHub,
-        RightHub
+    public enum KeyPosition {
+        LeftFacingOut,
+        MiddleFacingOut,
+        RightFacingOut,
+        LeftHubFacingHub,
+        RightHubFacingHub,
+        CollectSecondCargo,
+        CollectHumanStationCargo
     }
 
     @Inject
@@ -57,27 +61,27 @@ public class PoseSubsystem extends BasePoseSubsystem {
         ) {
         super(clf, pf);
         this.drive = drive;
-        this.levelThresholdDegrees = pf.createPersistentProperty("Levelling Threshold", 1);
+        this.levelThresholdDegrees = pf.createPersistentProperty("Levelling Threshold", 3);
 
-        this.leftStartPosX = pf.createPersistentProperty("Starting Left Position X Value", 261);
-        this.leftStartPosY = pf.createPersistentProperty("Starting Left Position Y Value", 200);
-        this.leftHeading = pf.createPersistentProperty("Starting Left Heading", 239);
+        this.leftStartPosX = pf.createPersistentProperty("Starting Left Position X Value", 118);
+        this.leftStartPosY = pf.createPersistentProperty("Starting Left Position Y Value", 242);
+        this.leftHeading = pf.createPersistentProperty("Starting Left Heading", 226);
 
-        this.midStartPosX = pf.createPersistentProperty("Starting Mid Position X Value", 287);
-        this.midStartPosY = pf.createPersistentProperty("Starting Mid Position Y Value", 110);
-        this.midHeading = pf.createPersistentProperty("Starting Mid Heading", -65);
+        this.midStartPosX = pf.createPersistentProperty("Starting Mid Position X Value", 220);
+        this.midStartPosY = pf.createPersistentProperty("Starting Mid Position Y Value", 261);
+        this.midHeading = pf.createPersistentProperty("Starting Mid Heading", -67);
 
-        this.rightStartPosX = pf.createPersistentProperty("Starting Right Position X Value", 327);
-        this.rightStartPosY = pf.createPersistentProperty("Starting Right Position Y Value", 72);
-        this.rightHeading = pf.createPersistentProperty("Starting Right Heading", -8);
+        this.rightStartPosX = pf.createPersistentProperty("Starting Right Position X Value", 252);
+        this.rightStartPosY = pf.createPersistentProperty("Starting Right Position Y Value", 300);
+        this.rightHeading = pf.createPersistentProperty("Starting Right Heading", 2);
 
-        this.leftHubStartPosX = pf.createPersistentProperty("Starting Right Position X Value", 191.0);
-        this.leftHubStartPosY = pf.createPersistentProperty("Starting Right Position Y Value", 280.2);
-        this.leftHubHeading = pf.createPersistentProperty("Starting Right Heading", 248);
+        this.leftHubStartPosX = pf.createPersistentProperty("Starting LeftHub X Value", 142);
+        this.leftHubStartPosY = pf.createPersistentProperty("Starting LeftHub Y Value", 273);
+        this.leftHubHeading = pf.createPersistentProperty("Starting LeftHub Heading", 68);
         
-        this.rightHubStartPosX = pf.createPersistentProperty("Starting Right Position X Value", 110.5);
-        this.rightHubStartPosY = pf.createPersistentProperty("Starting Right Position Y Value", 317.5);
-        this.rightHubHeading = pf.createPersistentProperty("Starting Right Heading", -20.9);
+        this.rightHubStartPosX = pf.createPersistentProperty("Starting RightHub X Value", 212);
+        this.rightHubStartPosY = pf.createPersistentProperty("Starting RightHub Y Value", 304);
+        this.rightHubHeading = pf.createPersistentProperty("Starting RightHub Heading", 159);
 
     /* Remember: WPILib uses a different coordinate convention than our legacy code. Theirs:
           //   0,+y. 90 degrees
@@ -127,17 +131,17 @@ public class PoseSubsystem extends BasePoseSubsystem {
             totalDistanceY.set(-updatedPosition.getX() * PoseSubsystem.INCHES_IN_A_METER);
     }
 
-    public XYPair getStartingPosition(StartingPosition position) {
+    public XYPair getKeyPosition(KeyPosition position) {
         switch (position) {
-            case Left:
+            case LeftFacingOut:
                 return new XYPair(leftStartPosX.get(), leftStartPosY.get());
-            case Middle:
+            case MiddleFacingOut:
                 return new XYPair(midStartPosX.get(), midStartPosY.get());
-            case Right:
+            case RightFacingOut:
                 return new XYPair(rightStartPosX.get(), rightStartPosY.get());
-            case LeftHub:
+            case LeftHubFacingHub:
                 return new XYPair(leftHubStartPosX.get(), leftHubStartPosY.get());
-            case RightHub:
+            case RightHubFacingHub:
                 return new XYPair(rightHubStartPosX.get(), rightHubStartPosY.get());
             default:
                 log.warn("Invalid starting position, returning zero position.");
@@ -145,17 +149,17 @@ public class PoseSubsystem extends BasePoseSubsystem {
         }
     }
 
-    public Rotation2d getStartingHeading(StartingPosition position) {
+    public Rotation2d getKeyHeading(KeyPosition position) {
         switch (position) {
-            case Left:
+            case LeftFacingOut:
                 return Rotation2d.fromDegrees(leftHeading.get());
-            case Middle:
+            case MiddleFacingOut:
                 return Rotation2d.fromDegrees(midHeading.get());
-            case Right:
+            case RightFacingOut:
                 return Rotation2d.fromDegrees(rightHeading.get());
-            case LeftHub:
+            case LeftHubFacingHub:
                 return Rotation2d.fromDegrees(leftHubHeading.get());
-            case RightHub:
+            case RightHubFacingHub:
                 return Rotation2d.fromDegrees(rightHubHeading.get());
             default:
                 log.warn("Invalid starting position, returning 90 degrees.");
@@ -163,8 +167,11 @@ public class PoseSubsystem extends BasePoseSubsystem {
         }
     }
 
-    @Override
-    public void setCurrentPosition(double newXPosition, double newYPosition) {
+    public FieldPose getStartingPose(KeyPosition position) {
+        return new FieldPose(getKeyPosition(position), getKeyHeading(position));
+    }
+
+    public void setCurrentPosition(double newXPosition, double newYPosition, WrappedRotation2d heading) {
         super.setCurrentPosition(newXPosition, newYPosition);
         swerveOdometry.resetPosition(
             new Pose2d(
@@ -175,6 +182,16 @@ public class PoseSubsystem extends BasePoseSubsystem {
     }
 
     @Override
+    public void setCurrentPosition(double newXPosition, double newYPosition) {
+        setCurrentPosition(newXPosition, newYPosition, this.getCurrentHeading());
+    }
+
+    public void setCurrentPose(FieldPose newPose) {
+        setCurrentPosition(newPose.getPoint().x, newPose.getPoint().y, newPose.getHeading());
+        this.setCurrentHeading(newPose.getHeading().getDegrees());
+    }
+
+    @Override
     protected double getLeftDriveDistance() {
         return drive.getLeftTotalDistance();
     }
@@ -182,6 +199,12 @@ public class PoseSubsystem extends BasePoseSubsystem {
     @Override
     protected double getRightDriveDistance() {
         return drive.getRightTotalDistance();
+    }
+
+    public double getDistanceToKeyPosition(KeyPosition position) {
+        return getCurrentFieldPose().getPoint().clone().add(
+            getStartingPose(KeyPosition.RightFacingOut).getPoint().clone().scale(-1))
+        .getMagnitude();
     }
 
 }

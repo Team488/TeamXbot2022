@@ -1,8 +1,11 @@
 package competition.subsystems.drive.swerve.commands;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 
 import competition.subsystems.drive.commands.SwerveToPointCommand;
+import xbot.common.math.WrappedRotation2d;
 import xbot.common.math.XYPair;
 
 public class SwerveToPointCommandTest extends BaseFullSwerveTest {
@@ -97,6 +100,30 @@ public class SwerveToPointCommandTest extends BaseFullSwerveTest {
         pose.setCurrentPosition(-30,-40);
 
         command.execute();
+    }
+
+    @Test
+    public void multipleInitTest() {
+        pose.setCurrentPosition(0, 0);
+        pose.setCurrentHeading(-90);
+        setAllSteeringModuleAngles(90);
+
+        command.setRobotRelativeMotion();
+        command.setTargetPosition(new XYPair(0, -60), -90);
+
+        command.initialize();
+        command.execute();
+
+        assertEquals(0, command.getActiveTargetPosition().x, 0.01);
+        assertEquals(60, command.getActiveTargetPosition().y, 0.01);
+        assertEquals(90, WrappedRotation2d.fromDegrees(command.getActiveHeading()).getDegrees(), 0.01);
+
+        command.initialize();
+        command.execute();
+
+        assertEquals(0, command.getActiveTargetPosition().x, 0.01);
+        assertEquals(60, command.getActiveTargetPosition().y, 0.01);
+        assertEquals(90, WrappedRotation2d.fromDegrees(command.getActiveHeading()).getDegrees(), 0.01);
     }
 
 }

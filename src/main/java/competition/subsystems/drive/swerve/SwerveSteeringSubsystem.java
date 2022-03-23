@@ -3,10 +3,10 @@ package competition.subsystems.drive.swerve;
 import com.ctre.phoenix.sensors.CANCoderStatusFrame;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.revrobotics.REVLibError;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.FaultID;
 import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
+import com.revrobotics.REVLibError;
 
 import org.apache.log4j.Logger;
 
@@ -24,7 +24,6 @@ import xbot.common.math.WrappedRotation2d;
 import xbot.common.properties.BooleanProperty;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
-import xbot.common.properties.StringProperty;
 import xbot.common.resiliency.DeviceHealth;
 
 @Singleton
@@ -39,9 +38,6 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     private final DoubleProperty powerScale;
     private final DoubleProperty targetRotation;
     private final DoubleProperty currentModuleHeading;
-    private final DoubleProperty absoluteEncoderPosition;
-    private final DoubleProperty motorEncoderPosition;
-    private final StringProperty canCoderStatus;
     private final DoubleProperty degreesPerMotorRotation;
     private final BooleanProperty useMotorControllerPid;
     private final DoubleProperty maxMotorEncoderDrift;
@@ -64,19 +60,16 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
 
         // Create properties shared among all instances
         pf.setPrefix(super.getPrefix());
-        this.pid = pidf.createPIDManager(super.getPrefix() + "PID", 0.1, 0.0, 0.0, -1.0, 1.0);
+        this.pid = pidf.createPIDManager(super.getPrefix() + "PID", 0.2, 0.0, 0.005, -1.0, 1.0);
         this.powerScale = pf.createPersistentProperty("PowerScaleFactor", 5);
         this.degreesPerMotorRotation = pf.createPersistentProperty("DegreesPerMotorRotation", 28.1502912);
-        this.useMotorControllerPid = pf.createPersistentProperty("UseMotorControllerPID", false);
+        this.useMotorControllerPid = pf.createPersistentProperty("UseMotorControllerPID", true);
         this.maxMotorEncoderDrift = pf.createPersistentProperty("MaxEncoderDriftDegrees", 1.0);
 
         // Create properties that are unique to each instance
         pf.setPrefix(this);
         this.targetRotation = pf.createEphemeralProperty("TargetRotation", 0.0);
         this.currentModuleHeading = pf.createEphemeralProperty("CurrentModuleHeading", 0.0);
-        this.motorEncoderPosition = pf.createEphemeralProperty("MotorEncoderPosition", 0.0);
-        this.absoluteEncoderPosition = pf.createEphemeralProperty("AbsoluteEncoderPosition", 0.0);
-        this.canCoderStatus = pf.createEphemeralProperty("CANCoderStatus", "unknown");
 
         if (electricalContract.isDriveReady()) {
             this.motorController = factory.createCANSparkMax(electricalContract.getSteeringNeo(swerveInstance), this.getPrefix(), "SteeringNeo");
