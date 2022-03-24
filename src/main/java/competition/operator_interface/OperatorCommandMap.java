@@ -169,9 +169,9 @@ public class OperatorCommandMap {
                 rightArm.setCurrentPositionToZero();
         });
 
-        var safeLockedDualArmBalancer = new ParallelCommandGroup(dualArmBalancer, setArmsSafe, setArmsLocked);
+        var safeLockedArms = new ParallelCommandGroup(setArmsSafe, setArmsLocked);
 
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.A).whenPressed(safeLockedDualArmBalancer);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.A).whenPressed(safeLockedArms);
 
         var setArmsUnsafe = new InstantCommand(() -> {
                 leftArm.setIgnoreLimits(true);

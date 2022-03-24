@@ -2,10 +2,8 @@ package competition.subsystems.climber_arm.commands;
 
 import com.google.inject.Inject;
 
-import competition.injection.arm.LeftArm;
-import competition.injection.arm.RightArm;
 import competition.operator_interface.OperatorInterface;
-import competition.subsystems.climber_arm.ClimberArmSubsystem;
+import competition.subsystems.climber_arm.ClimberSubsystem;
 import competition.subsystems.climber_pivot.ClimberPivotSubsystem;
 import competition.subsystems.latch.LatchSubsystem;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
@@ -23,9 +21,9 @@ public class DualArmBalancerCommand extends BaseDoubleClimberArmCommand {
     final Latch calibrationLatch;
 
     @Inject
-    public DualArmBalancerCommand(@LeftArm ClimberArmSubsystem leftArm, @RightArm ClimberArmSubsystem rightArm,
+    public DualArmBalancerCommand(ClimberSubsystem climber,
             ClimberPivotSubsystem pivot, LatchSubsystem latch, OperatorInterface oi, CommonLibFactory clf) {
-        super(leftArm, rightArm);
+        super(climber);
         this.oi = oi;
         this.pivot = pivot;
         this.latch = latch;
