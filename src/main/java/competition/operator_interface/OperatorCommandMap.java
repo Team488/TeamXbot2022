@@ -163,6 +163,10 @@ public class OperatorCommandMap {
         var setArmsLocked = new InstantCommand(() -> {
                 leftArm.setArmsUnlocked(false);
                 rightArm.setArmsUnlocked(false);
+                // also need to calibrate at the current position to keep
+                // arms in sync.
+                leftArm.setCurrentPositionToZero();
+                rightArm.setCurrentPositionToZero();
         });
 
         var safeLockedDualArmBalancer = new ParallelCommandGroup(dualArmBalancer, setArmsSafe, setArmsLocked);
