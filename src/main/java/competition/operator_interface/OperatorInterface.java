@@ -3,6 +3,7 @@ package competition.operator_interface;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import xbot.common.controls.sensors.XXboxController;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.logging.RobotAssertionManager;
@@ -24,6 +25,8 @@ public class OperatorInterface {
 
     @Inject
     public OperatorInterface(CommonLibFactory factory, RobotAssertionManager assertionManager, PropertyFactory pf) {
+        DriverStation.silenceJoystickConnectionWarning(true);
+
         driverGamepad = factory.createXboxController(0);
         operatorGamepad = factory.createXboxController(1);
         autoGamepad = factory.createXboxController(2);
