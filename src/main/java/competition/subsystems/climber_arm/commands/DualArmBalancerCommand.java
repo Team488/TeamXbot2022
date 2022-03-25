@@ -76,7 +76,7 @@ public class DualArmBalancerCommand extends BaseDoubleClimberArmCommand {
             leftArm.setPower(climbPower);
             
             double rightPower = MathUtils.deadband(
-                oi.operatorGamepad.getLeftStickY(),
+                oi.operatorGamepad.getRightStickY(),
                 oi.getOperatorGamepadTypicalDeadband());
 
             rightArm.setPower(rightPower);
