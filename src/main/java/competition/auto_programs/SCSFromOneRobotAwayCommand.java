@@ -8,8 +8,10 @@ import competition.commandgroups.FullCollectCommand;
 import competition.commandgroups.ShutdownShootingCommandThatEnds;
 import competition.subsystems.collector.commands.StopCollectorCommand;
 import competition.subsystems.collector_deployment.commands.RetractCollectorCommand;
+import competition.subsystems.conveyer.ConveyorSubsystem;
 import competition.subsystems.drive.commands.SwerveToPointCommand;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
@@ -35,8 +37,12 @@ public class SCSFromOneRobotAwayCommand extends SequentialCommandGroup {
         Provider<ShutdownShootingCommandThatEnds> stopShooterProvider,
         FullCollectCommand collectCommand,
         StopCollectorCommand stopCollector,
-        RetractCollectorCommand retractCollector
+        RetractCollectorCommand retractCollector,
+        ConveyorSubsystem conveyor
     ) {
+        var markConveyorRetracted = new InstantCommand(() -> conveyor.setHasRetracted(true));
+        addCommands(markConveyorRetracted);
+        
         // Score the first ball
         FireCommand firstShot = fireProvider.get();
         firstShot.setTargetRPM(TargetRPM.DistanceShot);

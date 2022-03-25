@@ -24,5 +24,11 @@ public class ClimberSubsystem extends BaseSubsystem {
         this.rightArm = rightArm;
     }
 
+    public ClimberArmSubsystem getLeftArm() {
+        return leftArm;
+    }
 
+    public ClimberArmSubsystem getRightArm() {
+        return rightArm;
+    }
 }

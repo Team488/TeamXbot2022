@@ -15,7 +15,7 @@ import xbot.common.subsystems.simplemotor.SimpleMotorSubsystem;
 public class ConveyorSubsystem extends SimpleMotorSubsystem {
     public final XCANTalon motor;
     public final boolean isReady;
-    public boolean hasRetracted = false;
+    private boolean hasRetracted = true;
 
     @Inject
     public ConveyorSubsystem(PropertyFactory pf, CommonLibFactory clf, ElectricalContract eContract) {
@@ -40,6 +40,14 @@ public class ConveyorSubsystem extends SimpleMotorSubsystem {
             }
             motor.set(ControlMode.PercentOutput, power);
         }
+    }
+
+    public boolean getHasRetracted() {
+        return hasRetracted;
+    }
+
+    public void setHasRetracted(boolean hasRetracted) {
+        this.hasRetracted = hasRetracted;
     }
     
 }

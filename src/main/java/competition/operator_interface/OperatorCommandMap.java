@@ -18,7 +18,6 @@ import competition.commandgroups.DriverFireCommand;
 import competition.commandgroups.DriverRecklessFireCommand;
 import competition.injection.arm.LeftArm;
 import competition.injection.arm.RightArm;
-import competition.subsystems.arduino.ArduinoCommunicationSubsystem;
 import competition.subsystems.climber_arm.ClimberArmSubsystem;
 import competition.subsystems.climber_arm.commands.ClimberArmMaintainerCommand;
 import competition.subsystems.climber_arm.commands.DualArmBalancerCommand;
@@ -53,7 +52,6 @@ import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
 import competition.subsystems.shooterwheel.commands.StopShooterWheelCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
@@ -147,8 +145,6 @@ public class OperatorCommandMap {
         setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.EngageNextBar)
                 .includeOnSmartDashboard();
 
-        dualArmBalancer.setSafe(true);
-
         pf.setPrefix("OperatorCommandMap/");
         DoubleProperty latchOpenTime = pf.createPersistentProperty("Latch Open Time", 2);
 
@@ -157,8 +153,37 @@ public class OperatorCommandMap {
         ParallelRaceGroup latchReleaseAndSmallWait = new ParallelRaceGroup(latchRelease,
                 new DelayViaSupplierCommand(() -> latchOpenTime.get()));
 
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.A).whenPressed(dualArmBalancer);
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.X).whenPressed(dualArmWithJoysticksUnsafe);
+        var setArmsSafe = new InstantCommand(() -> {
+                leftArm.setIgnoreLimits(false);
+                rightArm.setIgnoreLimits(false);
+        });
+
+        var setArmsLocked = new InstantCommand(() -> {
+                leftArm.setArmsUnlocked(false);
+                rightArm.setArmsUnlocked(false);
+                // also need to calibrate at the current position to keep
+                // arms in sync.
+                leftArm.setCurrentPositionToZero();
+                rightArm.setCurrentPositionToZero();
+        });
+
+        var safeLockedArms = new ParallelCommandGroup(setArmsSafe, setArmsLocked);
+
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.A).whenPressed(safeLockedArms);
+
+        var setArmsUnsafe = new InstantCommand(() -> {
+                leftArm.setIgnoreLimits(true);
+                rightArm.setIgnoreLimits(true);
+        });
+        
+        var unlockArms = new InstantCommand(() -> {
+                leftArm.setArmsUnlocked(true);
+                rightArm.setArmsUnlocked(true);
+        });
+
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.X).whenPressed(setArmsUnsafe);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightJoystickYAxis).whenPressed(unlockArms);
+
 
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(pivotIn);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(pivotOut);
@@ -228,10 +253,6 @@ public class OperatorCommandMap {
         StartEndCommand activatePrecisionRotation = new StartEndCommand(
                 () -> drive.setPrecisionRotationActive(true),
                 () -> drive.setPrecisionRotationActive(false));
-                
-        StartEndCommand activateRotateToCargo = new StartEndCommand(
-                () -> drive.setRotateToCargoActive(true),
-                () -> drive.setRotateToCargoActive(false));
 
         oi.driverGamepad.getifAvailable(XboxButton.LeftBumper).whileHeld(activatePrecisionDrive);
         oi.driverGamepad.getifAvailable(XboxButton.RightBumper).whileHeld(activatePrecisionRotation);

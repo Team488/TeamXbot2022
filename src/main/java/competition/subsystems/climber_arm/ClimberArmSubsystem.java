@@ -14,10 +14,7 @@ import xbot.common.command.BaseSetpointSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
 import xbot.common.controls.sensors.XDigitalInput;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
-import xbot.common.logic.Latch;
-import xbot.common.logic.Latch.EdgeType;
 import xbot.common.logic.StallDetector;
-import xbot.common.logic.StallDetector.StallState;
 import xbot.common.math.MathUtils;
 import xbot.common.properties.BooleanProperty;
 import xbot.common.properties.DoubleProperty;
@@ -35,7 +32,6 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     private final DoubleProperty armPositionTarget;
     private final DoubleProperty armInchesPerRotation;
     private final DoubleProperty armPowerFactor;
-    private final Latch safetyLatch;
     final String label;
     final ElectricalContract contract;
 
@@ -57,6 +53,9 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
 
     public final BooleanProperty upperLimitSwitchState;
     public final BooleanProperty lowerLimitSwitchState;
+
+    private boolean armsUnlocked;
+    private boolean ignoreLimits;
 
     ArmInstance armInstance;
 
@@ -118,21 +117,27 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         upperLimitSwitchState = pf.createEphemeralProperty("UpperLimitSwitchState", false);
         lowerLimitSwitchState = pf.createEphemeralProperty("LowerLimitSwitchState", false);
 
-
-        safetyLatch = new Latch(true, EdgeType.Both, edge -> {
-            if(edge == EdgeType.RisingEdge) {
-                // re-enable internal safety features
-                setSoftLimitsEnabled(true);
-            }
-            else if(edge == EdgeType.FallingEdge) {
-                // disable internal safety features
-                setSoftLimitsEnabled(false);
-            }
-        });
+        setSoftLimitsEnabled(false);
 
         setupStatusFrames();
 
         this.register();
+    }
+
+    public void setArmsUnlocked(boolean armsUnlocked) {
+        this.armsUnlocked = armsUnlocked;
+    }
+
+    public boolean getArmsUnlocked() {
+        return armsUnlocked;
+    }
+
+    public void setIgnoreLimits(boolean ignoreLimits) {
+        this.ignoreLimits = ignoreLimits;
+    }
+
+    public boolean getIgnoreLimits() {
+        return ignoreLimits;
     }
     
     /**
@@ -190,7 +195,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
                 //armMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)(safeArmRetractedNumber.get() / armInchesPerRotation.get()));
             }
 
-            armMotor.enableSoftLimit(SoftLimitDirection.kForward, enabled);
+            armMotor.enableSoftLimit(SoftLimitDirection.kForward, false);
             // Always allow to pull in for climbing
             armMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
         }
@@ -198,34 +203,16 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
 
     private void setMotorPower(double power, boolean isSafe) {
 
-        safetyLatch.setValue(isSafe);
-
         power *= MathUtils.constrainDoubleToRobotScale(armPowerFactor.get());
 
-        if (isAtUpperLimitSwitch()) {
-            power = MathUtils.constrainDouble(power, -1, 0);
-        }
-
-        if (isAtLowerLimitSwitch()) {
-            power = MathUtils.constrainDouble(power, 0 , 1);
-        }
-
-        // Prevent ourself from stalling!
-        if (power < 0) {
-            // If we are in stall cooldown, no point doing anything.
-            if (armStallDetector.wasStalledRecently()) {
-                power = 0;
+        if (!ignoreLimits) {
+            if (isAtUpperLimitSwitch()) {
+                power = MathUtils.constrainDouble(power, -1, 0);
             }
 
-            // Feed the stall detector and check behavior
-            StallState stallState = armStallDetector.getIsStalled(armMotor.getOutputCurrent(), power, directVelocity);
-            armStallState.set(stallState.toString());
-            if (stallState == StallState.STALLED || stallState == StallState.WAS_STALLED_RECENTLY) {
-                power = 0;
+            if (isAtLowerLimitSwitch()) {
+                power = MathUtils.constrainDouble(power, 0 , 1);
             }
-        } else {
-            // No need to stall protect while extending
-            armStallState.set("GoingUp"); 
         }
         
         if (contract.isClimberReady()) {

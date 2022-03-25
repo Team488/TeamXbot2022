@@ -2,10 +2,8 @@ package competition.subsystems.climber_arm.commands;
 
 import com.google.inject.Inject;
 
-import competition.injection.arm.LeftArm;
-import competition.injection.arm.RightArm;
 import competition.operator_interface.OperatorInterface;
-import competition.subsystems.climber_arm.ClimberArmSubsystem;
+import competition.subsystems.climber_arm.ClimberSubsystem;
 import xbot.common.math.MathUtils;
 
 public class DualArmControllerCommandWithJoysticks extends BaseDoubleClimberArmCommand {
@@ -15,8 +13,8 @@ public class DualArmControllerCommandWithJoysticks extends BaseDoubleClimberArmC
     boolean isSafe;
 
     @Inject
-    public DualArmControllerCommandWithJoysticks(@LeftArm ClimberArmSubsystem leftArm, @RightArm ClimberArmSubsystem rightArm, OperatorInterface oi) {
-        super(leftArm, rightArm);
+    public DualArmControllerCommandWithJoysticks(ClimberSubsystem climber, OperatorInterface oi) {
+        super(climber);
         this.oi = oi;
     }
 

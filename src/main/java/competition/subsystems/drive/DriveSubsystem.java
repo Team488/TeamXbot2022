@@ -240,7 +240,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         // always trying to prioritize motion.
 
         // Also, one more special check - if there was no commanded motion, set the maximum speed to 0.
-        double topSpeedMetersPerSecond = isNotMoving ? 0 : maxTargetSpeed.get();
+        double topSpeedMetersPerSecond = isNotMoving ? 0 : maxTargetSpeed.get() / BasePoseSubsystem.INCHES_IN_A_METER;
         SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, topSpeedMetersPerSecond);
 
         this.getFrontLeftSwerveModuleSubsystem().setTargetState(moduleStates[0]);

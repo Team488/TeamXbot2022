@@ -2,9 +2,8 @@ package competition.subsystems.climber_arm.commands;
 
 import com.google.inject.Inject;
 
-import competition.injection.arm.LeftArm;
-import competition.injection.arm.RightArm;
 import competition.subsystems.climber_arm.ClimberArmSubsystem;
+import competition.subsystems.climber_arm.ClimberSubsystem;
 import xbot.common.command.BaseCommand;
 
 public abstract class BaseDoubleClimberArmCommand extends BaseCommand {
@@ -13,10 +12,10 @@ public abstract class BaseDoubleClimberArmCommand extends BaseCommand {
     protected final ClimberArmSubsystem rightArm;
 
     @Inject
-    public BaseDoubleClimberArmCommand(@LeftArm ClimberArmSubsystem leftArm, @RightArm ClimberArmSubsystem rightArm){
-        this.leftArm = leftArm;
-        this.rightArm = rightArm;
-        this.addRequirements(leftArm, rightArm);
+    public BaseDoubleClimberArmCommand(ClimberSubsystem climber){
+        this.leftArm = climber.getLeftArm();
+        this.rightArm = climber.getRightArm();
+        this.addRequirements(climber, leftArm, rightArm);
     }
     
 }

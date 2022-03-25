@@ -3,7 +3,6 @@ package competition.commandgroups;
 import com.google.inject.Inject;
 
 import competition.subsystems.conveyer.commands.ConveyWhileAtSpeedAndDriverSignalCommand;
-import competition.subsystems.conveyer.commands.ConveyWhileShooterAtSpeedCommand;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
