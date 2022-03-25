@@ -18,7 +18,6 @@ import competition.commandgroups.DriverFireCommand;
 import competition.commandgroups.DriverRecklessFireCommand;
 import competition.injection.arm.LeftArm;
 import competition.injection.arm.RightArm;
-import competition.subsystems.arduino.ArduinoCommunicationSubsystem;
 import competition.subsystems.climber_arm.ClimberArmSubsystem;
 import competition.subsystems.climber_arm.commands.ClimberArmMaintainerCommand;
 import competition.subsystems.climber_arm.commands.DualArmBalancerCommand;
@@ -53,7 +52,6 @@ import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
 import competition.subsystems.shooterwheel.commands.StopShooterWheelCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
@@ -255,10 +253,6 @@ public class OperatorCommandMap {
         StartEndCommand activatePrecisionRotation = new StartEndCommand(
                 () -> drive.setPrecisionRotationActive(true),
                 () -> drive.setPrecisionRotationActive(false));
-                
-        StartEndCommand activateRotateToCargo = new StartEndCommand(
-                () -> drive.setRotateToCargoActive(true),
-                () -> drive.setRotateToCargoActive(false));
 
         oi.driverGamepad.getifAvailable(XboxButton.LeftBumper).whileHeld(activatePrecisionDrive);
         oi.driverGamepad.getifAvailable(XboxButton.RightBumper).whileHeld(activatePrecisionRotation);

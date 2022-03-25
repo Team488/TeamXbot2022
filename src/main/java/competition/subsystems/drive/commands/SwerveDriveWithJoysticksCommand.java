@@ -37,6 +37,7 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
     final Latch absoluteOrientationLatch;
     final DoubleProperty minimumMagnitudeForAbsoluteHeading;
     final DoubleProperty triggerOnlyPowerScaling;
+    final DoubleProperty triggerOnlyExponent;
     final HumanVsMachineDecider decider;
 
     @Inject
@@ -55,6 +56,7 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
         this.decider = clf.createHumanVsMachineDecider(this.getPrefix());
         this.headingModule = clf.createHeadingModule(drive.getRotateToHeadingPid());
         this.triggerOnlyPowerScaling = pf.createPersistentProperty("TriggerOnlyPowerScaling", 0.5);
+        this.triggerOnlyExponent = pf.createPersistentProperty("TriggerOnlyExponent", 1.5);
 
         // Set up a latch to trigger whenever we change the rotational mode. In either case,
         // there's some PIDs that will need to be reset, or goals that need updating.
@@ -128,13 +130,13 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
 
         double humanRotatePowerFromLeftTrigger = MathUtils.deadband(
                 oi.driverGamepad.getLeftTrigger(),
-                0.05,
-                (a) -> MathUtils.exponentAndRetainSign(a, (int) input_exponent.get()));
+                0.005,
+                (a) -> MathUtils.exponentAndRetainSign(a, (int) triggerOnlyExponent.get()));
 
         double humanRotatePowerFromRightTrigger = MathUtils.deadband(
                 oi.driverGamepad.getRightTrigger(),
-                0.05,
-                (a) -> MathUtils.exponentAndRetainSign(a, (int) input_exponent.get()));
+                0.005,
+                (a) -> MathUtils.exponentAndRetainSign(a, (int) triggerOnlyExponent.get()));
 
         double humanRotatePower = MathUtils.constrainDoubleToRobotScale(
             humanRotatePowerFromStick + humanRotatePowerFromLeftTrigger - humanRotatePowerFromRightTrigger);

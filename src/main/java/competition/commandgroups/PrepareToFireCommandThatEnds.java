@@ -51,13 +51,13 @@ public class PrepareToFireCommandThatEnds extends SequentialCommandGroup {
         var reverseConveyor = new ParallelRaceGroup(
             setHotDog,
             conveyor.getReverseCommand(),
-            new DelayViaSupplierCommand(() -> conveyor.hasRetracted ? 0 : conveyorReverseTimeProp.get())
+            new DelayViaSupplierCommand(() -> conveyor.getHasRetracted() ? 0 : conveyorReverseTimeProp.get())
         );
 
         var setTargetRPM = new NamedInstantCommand("ApplyShooterTargetRPM", () -> applyTargetRPM(), wheel.getSetpointLock());
         var waitForReadiness = new SimpleWaitForMaintainerCommand(wheel, getWaitTime());
         var stopConveyor = new InstantCommand(() -> conveyor.stop(), conveyor);
-        var markConveyorRetracted = new InstantCommand(() -> conveyor.hasRetracted = true);
+        var markConveyorRetracted = new InstantCommand(() -> conveyor.setHasRetracted(true));
 
         addCommands(reverseConveyor, stopConveyor, setTargetRPM, waitForReadiness, markConveyorRetracted);
     }

@@ -3,16 +3,12 @@ package competition.subsystems;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import competition.injection.arm.LeftArm;
-import competition.injection.arm.RightArm;
 import competition.injection.swerve.FrontLeftDrive;
 import competition.injection.swerve.FrontRightDrive;
 import competition.injection.swerve.RearLeftDrive;
 import competition.injection.swerve.RearRightDrive;
-import competition.subsystems.climber_arm.ClimberArmSubsystem;
 import competition.subsystems.climber_arm.ClimberSubsystem;
 import competition.subsystems.climber_arm.commands.DualArmBalancerCommand;
-import competition.subsystems.climber_arm.commands.MotorArmStopCommand;
 import competition.subsystems.collector.CollectorSubsystem;
 import competition.subsystems.collector.commands.StopCollectorCommand;
 import competition.subsystems.collector_deployment.CollectorDeploymentSubsystem;

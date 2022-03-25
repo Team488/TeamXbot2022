@@ -5,7 +5,9 @@ import com.google.inject.Provider;
 
 import competition.commandgroups.RecklessFireCommand;
 import competition.commandgroups.ShutdownShootingCommandThatEnds;
+import competition.subsystems.conveyer.ConveyorSubsystem;
 import competition.subsystems.drive.commands.SwerveToPointCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -18,8 +20,12 @@ public class ShootRecklesslyThenEscapeCommand extends SequentialCommandGroup {
     public ShootRecklesslyThenEscapeCommand (
         Provider<RecklessFireCommand> fireProvider,
         Provider<SwerveToPointCommand> swerveProvider,
-        Provider<ShutdownShootingCommandThatEnds> stopShooterProvider
+        Provider<ShutdownShootingCommandThatEnds> stopShooterProvider,
+        ConveyorSubsystem conveyor
     ) {
+        var markConveyorRetracted = new InstantCommand(() -> conveyor.setHasRetracted(true));
+        addCommands(markConveyorRetracted);
+
         // Score the first ball
         var firstShot = fireProvider.get();
         DelayViaSupplierCommand firstShotTimeout = new DelayViaSupplierCommand(() -> 5.0);
