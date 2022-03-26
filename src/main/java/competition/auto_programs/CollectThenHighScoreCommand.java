@@ -59,7 +59,7 @@ public class CollectThenHighScoreCommand extends SequentialCommandGroup {
         moveToShootingPosition.setRobotRelativeMotion();
         moveToShootingPosition.setMaxPower(0.6);
         //moveToShootingPosition.setTargetPosition(new XYPair(6, -39.5), -90);
-        moveToShootingPosition.setTargetPosition(new XYPair(0, 0), -90);
+        moveToShootingPosition.setTargetPosition(new XYPair(0, -6), -90);
 
         prepareforHigh.setTargetRPM(TargetRPM.DistanceShot);
 
