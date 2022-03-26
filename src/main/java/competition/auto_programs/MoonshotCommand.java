@@ -9,6 +9,7 @@ import competition.commandgroups.PrepareToFireCommandThatEnds;
 import competition.commandgroups.RetractAndConveyCommand;
 import competition.commandgroups.ShutdownCollectionCommandThatEnds;
 import competition.commandgroups.ShutdownShootingCommandThatEnds;
+import competition.subsystems.conveyer.ConveyorSubsystem;
 import competition.subsystems.conveyer.commands.ConveyWhileShooterAtSpeedCommand;
 import competition.subsystems.drive.commands.SwerveToPointCommand;
 import competition.subsystems.pose.PoseSubsystem;
@@ -19,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import scala.collection.Parallel;
 import xbot.common.math.FieldPose;
 import xbot.common.math.XYPair;
 
@@ -39,6 +39,7 @@ public class MoonshotCommand extends SequentialCommandGroup {
         Provider<PrepareToFireCommandThatEnds> prepareToFireProvider,
         Provider<ConveyWhileShooterAtSpeedCommand> conveyWhileAtSpeedProvider,
         PoseSubsystem pose,
+        ConveyorSubsystem conveyor,
         Provider<RetractAndConveyCommand> retractAndConveyProvider) {
 
         // This will only work from one position.
@@ -54,7 +55,10 @@ public class MoonshotCommand extends SequentialCommandGroup {
         orbitNearSecondCargo.setMaxPower(0.25);
         orbitNearSecondCargo.setTargetPosition(new XYPair(303.2, 337.1), -90);
 
-        this.addCommands(orbitNearSecondCargo);
+        this.addCommands(new ParallelRaceGroup(
+            orbitNearSecondCargo,
+            new WaitCommand(1.5)
+        ));
 
         // --------------------------
         // Drop the collector, move forward
@@ -75,6 +79,10 @@ public class MoonshotCommand extends SequentialCommandGroup {
         // --------------------------
         // Raise collector, keep conveying for a moment
         // --------------------------
+
+        this.addCommands(
+            new InstantCommand(() -> conveyor.stop())
+        );
 
         var retractAndConveySecondCargo = retractAndConveyProvider.get();
         var moveTowardsHub = swerveProvider.get();
@@ -149,7 +157,10 @@ public class MoonshotCommand extends SequentialCommandGroup {
         moveToPreCollectionPosition.setMaxPower(0.75);
         moveToPreCollectionPosition.setTargetPosition(new XYPair(254.3, 74.3), -45);
 
-        this.addCommands(moveToPreCollectionPosition);
+        this.addCommands(new ParallelRaceGroup(
+            moveToPreCollectionPosition,
+            new WaitCommand(4)
+        ));
 
         // --------------------------
         // Collect third and fourth cargo
@@ -170,6 +181,10 @@ public class MoonshotCommand extends SequentialCommandGroup {
         // --------------------------
         // Move back to landmark while retracting and conveying
         // --------------------------
+
+        this.addCommands(
+            new InstantCommand(() -> conveyor.stop())
+        );
 
         var moveBackToLandmark = swerveProvider.get();
         moveBackToLandmark.setMaxPower(0.75);
