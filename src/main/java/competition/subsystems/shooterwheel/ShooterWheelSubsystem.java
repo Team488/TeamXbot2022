@@ -54,7 +54,7 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
 
         safeRpm = pf.createPersistentProperty("SafeRpm", 500);
         nearShotRpm = pf.createPersistentProperty("NearShotRpm", 1250);
-        distanceShotRpm = pf.createPersistentProperty("DistanceShotRpm", 2000);
+        distanceShotRpm = pf.createPersistentProperty("DistanceShotRpm", 3000);
         hotDogRpm = pf.createPersistentProperty("HotDogRpm", -200);
 
         safePower = pf.createPersistentProperty("SafePower", 0.1);
