@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import scala.collection.Parallel;
 import xbot.common.math.FieldPose;
 import xbot.common.math.XYPair;
 
@@ -69,7 +70,7 @@ public class MoonshotCommand extends SequentialCommandGroup {
             new WaitCommand(1)
         );
 
-        this.addCommands(collectSecondCargo);
+        this.addCommands(collectSecondCargoWithTimeout);
 
         // --------------------------
         // Raise collector, keep conveying for a moment
@@ -124,7 +125,7 @@ public class MoonshotCommand extends SequentialCommandGroup {
         // Line up for long run
         // --------------------------
 
-        SwerveToPointCommand moveToLandmark = new swerveProvider.get();
+        SwerveToPointCommand moveToLandmark = swerveProvider.get();
         var stopShooter = stopShooterProvider.get();
 
         moveToLandmark.setMaxPower(0.75);
@@ -156,5 +157,58 @@ public class MoonshotCommand extends SequentialCommandGroup {
 
         var collectThirdAndFourthCargo = collectCommandProvider.get();
         var moveToCollectThirdAndFourthCargo = swerveProvider.get();
+
+        moveToCollectThirdAndFourthCargo.setTargetPosition(new XYPair(264.2, 61.1), -45);
+        moveToCollectThirdAndFourthCargo.setMaxPower(0.25);
+
+        this.addCommands(new ParallelRaceGroup(
+            moveToCollectThirdAndFourthCargo,
+            collectThirdAndFourthCargo,
+            new WaitCommand(1)
+        ));
+
+        // --------------------------
+        // Move back to landmark while retracting and conveying
+        // --------------------------
+
+        var moveBackToLandmark = swerveProvider.get();
+        moveBackToLandmark.setMaxPower(0.75);
+        moveBackToLandmark.setTargetPosition(new XYPair(301, 300), 180);
+        var prepareCargoThreeAndFour = retractAndConveyProvider.get();
+
+
+        this.addCommands(new ParallelRaceGroup(
+            moveBackToLandmark,
+            prepareCargoThreeAndFour,
+            new WaitCommand(3)
+        ));
+
+        // --------------------------
+        // Move to hub and prepare to fire
+        // --------------------------
+
+        var moveToHub = swerveProvider.get();
+        moveToHub.setMaxPower(0.75);
+        moveToHub.setTargetPosition(new XYPair(212.1, 305.3), 160);
+        var prepareToShootThreeAndFour = prepareToFireProvider.get();
+        prepareToShootThreeAndFour.setTargetRPM(TargetRPM.NearShot);
+
+        this.addCommands(new ParallelRaceGroup(
+            new ParallelCommandGroup(
+                moveToHub,
+                prepareToShootThreeAndFour),
+            new WaitCommand(1)
+        ));
+
+        // --------------------------
+        // Score the last two cargo
+        // --------------------------
+
+        var scoreTwoMoreCargo = conveyWhileAtSpeedProvider.get();
+
+        this.addCommands(new ParallelRaceGroup(
+            scoreTwoMoreCargo,
+            new WaitCommand(4)
+        ));
     }
 }

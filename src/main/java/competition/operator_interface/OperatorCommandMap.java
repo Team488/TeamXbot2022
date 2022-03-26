@@ -9,6 +9,7 @@ import competition.auto_programs.CollectThenScoreTwiceCommand;
 import competition.auto_programs.DoNothingCommand;
 import competition.auto_programs.DriveForwardOutOfTarmac;
 import competition.auto_programs.GoCollectComebackCommand;
+import competition.auto_programs.MoonshotCommand;
 import competition.auto_programs.SCSFromOneRobotAwayCommand;
 import competition.auto_programs.ShootCollectShootCommand;
 import competition.auto_programs.ShootFarThenEscapeCommand;
@@ -323,6 +324,7 @@ public class OperatorCommandMap {
             SCSFromOneRobotAwayCommand scsFromOneRobotAwayCommand,
             ShootFarThenEscapeCommand shootFarThenEscape,
             CollectThenHighScoreCommand highScore,
+            MoonshotCommand moonshot,
             Provider<SetAutonomousCommand> setAutoCommandProvider,
             Provider<SetRobotHeadingCommand> setHeadingCommandProvider,
             Provider<SetPoseCommand> setPoseCommandProvider) {
@@ -346,6 +348,8 @@ public class OperatorCommandMap {
         setShootFarThenEscapeCommand.setAutoCommand(shootFarThenEscape);
         SetAutonomousCommand setHighScore = setAutoCommandProvider.get();
         setHighScore.setAutoCommand(highScore);
+        SetAutonomousCommand setMoonshot = setAutoCommandProvider.get();
+        setMoonshot.setAutoCommand(moonshot);
 
         setDoNothing.includeOnSmartDashboard("AutoPrograms/DoNothing");
         setDriveFiveFeet.includeOnSmartDashboard("AutoPrograms/DriveFiveFeet");
@@ -354,12 +358,16 @@ public class OperatorCommandMap {
         setShootThenEscape.includeOnSmartDashboard("AutoPrograms/ShootThenEscape");
         setCollectThenScoreTwice.includeOnSmartDashboard("AutoPrograms/CollectThenScoreTwice");
         setShootRecklesslyThenEscape.includeOnSmartDashboard("AutoPrograms/ShootRecklesslyThenEscape");
+        setScsFromOneRobotAwayCommand.includeOnSmartDashboard("AutoPrograms/SCSFromOneRobotAway");
+        setShootFarThenEscapeCommand.includeOnSmartDashboard("AutoPrograms/ShootFarThenEscape");
+        setHighScore.includeOnSmartDashboard("AutoPrograms/HighScore");
+        setMoonshot.includeOnSmartDashboard("AutoPrograms/Moonshot");
 
         operatorInterface.autoGamepad.getPovIfAvailable(0).whenPressed(setDoNothing);
         operatorInterface.autoGamepad.getPovIfAvailable(90).whenPressed(setDriveFiveFeet);
         operatorInterface.autoGamepad.getPovIfAvailable(180).whenPressed(setShootThenEscape);
         operatorInterface.autoGamepad.getPovIfAvailable(270).whenPressed(setHighScore);
-        operatorInterface.autoGamepad.getifAvailable(XboxButton.LeftStick).whenPressed(setCollectThenScoreTwice);
+        operatorInterface.autoGamepad.getifAvailable(XboxButton.LeftStick).whenPressed(moonshot);
         operatorInterface.autoGamepad.getifAvailable(XboxButton.RightStick).whenPressed(setShootCollectShoot);
         operatorInterface.autoGamepad.getifAvailable(XboxButton.Back).whenPressed(setScsFromOneRobotAwayCommand);
         operatorInterface.autoGamepad.getifAvailable(XboxButton.Start).whenPressed(setShootFarThenEscapeCommand);
