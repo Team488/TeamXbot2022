@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import xbot.common.math.FieldPose;
 import xbot.common.math.XYPair;
+import xbot.common.subsystems.autonomous.AutonomousCommandSelector;
 
 /**
  * The super-aspirational autonomous command that tries to score 4+ cargo in autonomous.
@@ -40,7 +41,8 @@ public class MoonshotCommand extends SequentialCommandGroup {
         Provider<ConveyWhileShooterAtSpeedCommand> conveyWhileAtSpeedProvider,
         PoseSubsystem pose,
         ConveyorSubsystem conveyor,
-        Provider<RetractAndConveyCommand> retractAndConveyProvider) {
+        Provider<RetractAndConveyCommand> retractAndConveyProvider,
+        AutonomousCommandSelector autoSubsystem) {
 
         // This will only work from one position.
         var setStartingPosition = new InstantCommand(() -> pose.setCurrentPose(new FieldPose(new XYPair(253.3, 301.5), new Rotation2d(0))));
@@ -49,6 +51,7 @@ public class MoonshotCommand extends SequentialCommandGroup {
         // --------------------------
         // Now, orbit the cargo and get ready to collect
         // --------------------------
+        setAutoState(autoSubsystem, "Orbit");
 
         var orbitNearSecondCargo = swerveProvider.get();
 
@@ -63,6 +66,7 @@ public class MoonshotCommand extends SequentialCommandGroup {
         // --------------------------
         // Drop the collector, move forward
         // --------------------------
+        setAutoState(autoSubsystem, "Collect second cargo");
 
         var moveToCollectSecondCargo = swerveProvider.get();
         moveToCollectSecondCargo.setTargetPosition(new XYPair(302.1, 297.1), -90);
@@ -79,6 +83,7 @@ public class MoonshotCommand extends SequentialCommandGroup {
         // --------------------------
         // Raise collector, keep conveying for a moment
         // --------------------------
+        setAutoState(autoSubsystem, "Raise Collector, Convey, To Hub");
 
         this.addCommands(
             new InstantCommand(() -> conveyor.stop())
@@ -100,6 +105,7 @@ public class MoonshotCommand extends SequentialCommandGroup {
         // --------------------------
         // Finish motion towards goal while preparing to fire
         // --------------------------
+        setAutoState(autoSubsystem, "Approach Hub and Prepare");
 
         var finishMovingTowardsHub = swerveProvider.get();
         finishMovingTowardsHub.setMaxPower(0.75);
@@ -121,6 +127,7 @@ public class MoonshotCommand extends SequentialCommandGroup {
         // --------------------------
         // Score two cargo
         // --------------------------
+        setAutoState(autoSubsystem, "Score two cargo");
 
         var scoreTwoCargo = conveyWhileAtSpeedProvider.get();
 
@@ -132,6 +139,7 @@ public class MoonshotCommand extends SequentialCommandGroup {
         // --------------------------
         // Line up for long run
         // --------------------------
+        setAutoState(autoSubsystem, "Line up for long run");
 
         SwerveToPointCommand moveToLandmark = swerveProvider.get();
         var stopShooter = stopShooterProvider.get();
@@ -152,6 +160,7 @@ public class MoonshotCommand extends SequentialCommandGroup {
         // --------------------------
         // Move to pre-collection position
         // --------------------------
+        setAutoState(autoSubsystem, "Move to collect 3 and 4");
 
         var moveToPreCollectionPosition = swerveProvider.get();
         moveToPreCollectionPosition.setMaxPower(0.75);
@@ -165,6 +174,7 @@ public class MoonshotCommand extends SequentialCommandGroup {
         // --------------------------
         // Collect third and fourth cargo
         // --------------------------
+        setAutoState(autoSubsystem, "Collect 3 and 4");
 
         var collectThirdAndFourthCargo = collectCommandProvider.get();
         var moveToCollectThirdAndFourthCargo = swerveProvider.get();
@@ -181,6 +191,7 @@ public class MoonshotCommand extends SequentialCommandGroup {
         // --------------------------
         // Move back to landmark while retracting and conveying
         // --------------------------
+        setAutoState(autoSubsystem, "Return to landmark");
 
         this.addCommands(
             new InstantCommand(() -> conveyor.stop())
@@ -201,6 +212,7 @@ public class MoonshotCommand extends SequentialCommandGroup {
         // --------------------------
         // Move to hub and prepare to fire
         // --------------------------
+        setAutoState(autoSubsystem, "Move to hub and prepare to fire");
 
         var moveToHub = swerveProvider.get();
         moveToHub.setMaxPower(0.75);
@@ -218,6 +230,7 @@ public class MoonshotCommand extends SequentialCommandGroup {
         // --------------------------
         // Score the last two cargo
         // --------------------------
+        setAutoState(autoSubsystem, "Score cargo 3 and 4");
 
         var scoreTwoMoreCargo = conveyWhileAtSpeedProvider.get();
 
@@ -225,5 +238,13 @@ public class MoonshotCommand extends SequentialCommandGroup {
             scoreTwoMoreCargo,
             new WaitCommand(4)
         ));
+    }
+
+    private void setAutoState(AutonomousCommandSelector autoSystem, String message) {
+        var updateAutoState = new InstantCommand(
+            () -> autoSystem.setAutonomousState(message)
+        );
+
+        this.addCommands(updateAutoState);
     }
 }
