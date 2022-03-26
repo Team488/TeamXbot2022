@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import competition.electrical_contract.ElectricalContract;
-import competition.subsystems.pose.PoseSubsystem;
+import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import xbot.common.command.BaseSubsystem;
@@ -31,7 +31,7 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
     private int loopCounter;
     private final int loopMod = 5;
 
-    private final PoseSubsystem pose;
+    private final ShooterWheelSubsystem shooter;
 
     private final StringProperty chosenState;
     private final BooleanProperty dio0Property;
@@ -45,7 +45,7 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
         RobotNotBooted(0),
         RobotDisabled(1),
         RobotEnabled(2),
-        RobotNotLevel(4);
+        ShooterAtSpeed(4);
 
         private int value;
 
@@ -59,8 +59,8 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
     }
     
     @Inject
-    public ArduinoCommunicationSubsystem(CommonLibFactory clf, ElectricalContract contract, PropertyFactory pf, PoseSubsystem pose) {
-        this.pose = pose;
+    public ArduinoCommunicationSubsystem(CommonLibFactory clf, ElectricalContract contract, PropertyFactory pf, ShooterWheelSubsystem shooter) {
+        this.shooter = shooter;
 
         dio0 = clf.createDigitalOutput(contract.getArduinoDio0().channel);
         dio1 = clf.createDigitalOutput(contract.getArduinoDio1().channel);
@@ -105,8 +105,8 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
         if (!dsEnabled) {
             currentState = ArduinoStateMessage.RobotDisabled;
         } else if (dsEnabled) {
-            if (!pose.isRobotLevel()) {
-                currentState = ArduinoStateMessage.RobotNotLevel;
+            if (shooter.isMaintainerAtGoal()) {
+                currentState = ArduinoStateMessage.ShooterAtSpeed;
             } else {
                 currentState = ArduinoStateMessage.RobotEnabled;
             }
