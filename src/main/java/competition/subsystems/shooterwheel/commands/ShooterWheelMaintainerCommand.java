@@ -65,4 +65,20 @@ public class ShooterWheelMaintainerCommand extends BaseMaintainerCommand {
         }
     }
 
+    @Override
+    protected boolean getErrorWithinTolerance() {
+
+        double tolerance = 200;
+        if (wheel.getTargetValue() < 3000) {
+            tolerance = wheel.getShortRangeErrorTolerance();
+        } else {
+            tolerance = wheel.getLongRangeErrorTolerance();
+        }
+
+        if (Math.abs(wheel.getCurrentValue() - wheel.getTargetValue()) < tolerance) {
+            return true;
+        }
+        return false;
+    }
+
 }

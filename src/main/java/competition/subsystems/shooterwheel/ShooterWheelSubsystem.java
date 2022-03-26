@@ -28,6 +28,9 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
 
     private final DoubleProperty safePower;
 
+    private final DoubleProperty shortRangeErrorTolerance;
+    private final DoubleProperty longRangeErrorTolerance;
+
     public XCANSparkMax leader;
     private XCANSparkMax follower;
     ElectricalContract contract;
@@ -55,6 +58,9 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
         hotDogRpm = pf.createPersistentProperty("HotDogRpm", -200);
 
         safePower = pf.createPersistentProperty("SafePower", 0.1);
+
+        shortRangeErrorTolerance = pf.createPersistentProperty("ShortRangeErrorTolerance", 200);
+        longRangeErrorTolerance = pf.createPersistentProperty("LongRangeErrorTolerance", 50);
 
         if (contract.isShooterReady()) {
             this.leader = factory.createCANSparkMax(contract.getShooterMotorLeader(), this.getPrefix(),
@@ -105,6 +111,14 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
                 this.follower.clearFaults();
             }
         }
+    }
+
+    public double getShortRangeErrorTolerance() {
+        return shortRangeErrorTolerance.get();
+    }
+
+    public double getLongRangeErrorTolerance() {
+        return longRangeErrorTolerance.get();
     }
 
     public void setTargetRPM(TargetRPM target) {
