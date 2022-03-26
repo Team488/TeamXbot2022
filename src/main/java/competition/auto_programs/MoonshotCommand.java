@@ -55,7 +55,7 @@ public class MoonshotCommand extends SequentialCommandGroup {
 
         var orbitNearSecondCargo = swerveProvider.get();
 
-        orbitNearSecondCargo.setMaxPower(0.25);
+        orbitNearSecondCargo.setMaxPower(0.15);
         orbitNearSecondCargo.setTargetPosition(new XYPair(303.2, 337.1), -90);
 
         this.addCommands(new ParallelRaceGroup(
@@ -69,6 +69,7 @@ public class MoonshotCommand extends SequentialCommandGroup {
         setAutoState(autoSubsystem, "Collect second cargo");
 
         var moveToCollectSecondCargo = swerveProvider.get();
+        moveToCollectSecondCargo.setMaxPower(0.15);
         moveToCollectSecondCargo.setTargetPosition(new XYPair(302.1, 297.1), -90);
 
         var collectSecondCargo = collectCommandProvider.get();
