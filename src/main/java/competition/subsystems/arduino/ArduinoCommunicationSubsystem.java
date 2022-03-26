@@ -24,7 +24,7 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
     XDigitalOutput dio2;
     XDigitalOutput dio3;
     XDigitalOutput allianceDio;
-    XPWM analogOutput;
+    //XPWM analogOutput;
 
     XDigitalOutput[] dioOutputs;
 
@@ -39,7 +39,7 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
     private final BooleanProperty dio2Property;
     private final BooleanProperty dio3Property;
     private final BooleanProperty allianceDioProperty;
-    private final DoubleProperty analogOutputProperty;
+    //private final DoubleProperty analogOutputProperty;
 
     public enum ArduinoStateMessage {
         RobotNotBooted(0),
@@ -67,7 +67,7 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
         dio2 = clf.createDigitalOutput(contract.getArduinoDio2().channel);
         dio3 = clf.createDigitalOutput(contract.getArduinoDio3().channel);
         allianceDio = clf.createDigitalOutput(contract.getArduinoAllianceDio().channel);
-        analogOutput = clf.createPWM(contract.getArduinoAnalogOutput().channel);
+        //analogOutput = clf.createPWM(contract.getArduinoAnalogOutput().channel);
 
         dioOutputs = new XDigitalOutput[] { dio3, dio2, dio1, dio0 };
         loopCounter = 0;
@@ -79,7 +79,7 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
         dio2Property = pf.createEphemeralProperty("DIO2", false);
         dio3Property = pf.createEphemeralProperty("DIO3", false);
         allianceDioProperty = pf.createEphemeralProperty("AllianceDIO", false);
-        analogOutputProperty = pf.createEphemeralProperty("AnalogOutput", 0.0);
+        //analogOutputProperty = pf.createEphemeralProperty("AnalogOutput", 0.0);
 
         this.register();
     }
@@ -123,7 +123,7 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
         }
 
         // Sweep through PWM values for now.
-        analogOutput.setRaw(counter % 255);
+        //analogOutput.setRaw(counter % 255);
         counter++;
 
         chosenState.set(currentState.toString());
@@ -132,6 +132,6 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
         dio2Property.set(dio2.get());
         dio3Property.set(dio3.get());
         allianceDioProperty.set(allianceDio.get());
-        analogOutputProperty.set(analogOutput.getRaw());
+        //analogOutputProperty.set(analogOutput.getRaw());
     }
 }
