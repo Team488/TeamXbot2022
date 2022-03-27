@@ -5,6 +5,7 @@ import com.google.inject.Provider;
 
 import competition.commandgroups.FullCollectCommand;
 import competition.commandgroups.PrepareToFireCommandThatEnds;
+import competition.commandgroups.RetractAndConveyCommand;
 import competition.commandgroups.ShutdownCollectionCommandThatEnds;
 import competition.commandgroups.ShutdownShootingCommandThatEnds;
 import competition.subsystems.conveyer.commands.ConveyWhileShooterAtSpeedCommand;
@@ -27,6 +28,8 @@ public class CollectThenHighScoreCommand extends SequentialCommandGroup {
         ShutdownShootingCommandThatEnds shutdownShooting,
         PrepareToFireCommandThatEnds prepareforHigh,
         ConveyWhileShooterAtSpeedCommand conveyWhenReady,
+        RetractAndConveyCommand retractAndConvey,
+        StopDriveCommand middleStop,
         StopDriveCommand stopDrive) {
 
         //53.5 inches away from the hub wall is the magic number
@@ -44,15 +47,17 @@ public class CollectThenHighScoreCommand extends SequentialCommandGroup {
         var collect = fullCollectProvider.get();
 
         var driveForwardAndCollect = new ParallelRaceGroup(
-            goForwardToGetCargo,
-            collect,
+            new ParallelCommandGroup(goForwardToGetCargo,collect),
             new WaitCommand(3)
         );
 
         this.addCommands(driveForwardAndCollect);
 
         // Stop collecting
-        this.addCommands(shutdownCollecting);
+        this.addCommands(
+            shutdownCollecting,
+            new ParallelRaceGroup(middleStop, new WaitCommand(0.1))
+        );
 
         // Turn around and get to position
         var moveToShootingPosition = swerveToPointProvider.get();
