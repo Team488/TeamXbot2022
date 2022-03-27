@@ -21,17 +21,26 @@ public abstract class BaseMotorPidSubsystem extends BaseSubsystem {
     private final DoubleProperty kOpenLoopRampRate;
 
     @Inject
-    public BaseMotorPidSubsystem(PropertyFactory pf) {
+    public BaseMotorPidSubsystem(
+        PropertyFactory pf, double defaultP, double defaultI, double defaultD,
+        double defaultFF, double defaultMinOutput, double defaultMaxOutput, 
+        double defaultClosedLoopRampRate, double defaultOpenLoopRampRate
+    ) {
         pf.setPrefix(this);
 
-        kP = pf.createPersistentProperty("kP", 0.1);
-        kI = pf.createPersistentProperty("kI", 0);
-        kD = pf.createPersistentProperty("kD", 0);
-        kFF = pf.createPersistentProperty("kFF", 0);
-        kMinOutput = pf.createPersistentProperty("kMinOutput", -1.0);
-        kMaxOutput = pf.createPersistentProperty("kMaxOutput", 1.0);
-        kClosedLoopRampRate = pf.createPersistentProperty("kClosedLoopRampRate", 0.05);
-        kOpenLoopRampRate = pf.createPersistentProperty("kOpenLoopRampRate", 0.05);
+        kP = pf.createPersistentProperty("kP", defaultP);
+        kI = pf.createPersistentProperty("kI", defaultI);
+        kD = pf.createPersistentProperty("kD", defaultD);
+        kFF = pf.createPersistentProperty("kFF", defaultFF);
+        kMinOutput = pf.createPersistentProperty("kMinOutput", defaultMinOutput);
+        kMaxOutput = pf.createPersistentProperty("kMaxOutput", defaultMaxOutput);
+        kClosedLoopRampRate = pf.createPersistentProperty("kClosedLoopRampRate", defaultClosedLoopRampRate);
+        kOpenLoopRampRate = pf.createPersistentProperty("kOpenLoopRampRate", defaultOpenLoopRampRate);
+    }
+
+    @Inject
+    public BaseMotorPidSubsystem(PropertyFactory pf) {
+        this(pf, 0.1, 0, 0, 0, -1.0, 1.0, 0.05, 0.05);
     }
 
     public void setAllProperties(double p, double i, double d, double ff,
