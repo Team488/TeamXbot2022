@@ -9,6 +9,7 @@ import competition.commandgroups.ShutdownShootingCommandThatEnds;
 import competition.subsystems.collector.commands.StopCollectorCommand;
 import competition.subsystems.collector_deployment.commands.RetractCollectorCommand;
 import competition.subsystems.conveyer.ConveyorSubsystem;
+import competition.subsystems.drive.commands.StopDriveCommand;
 import competition.subsystems.drive.commands.SwerveToPointCommand;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -38,7 +39,8 @@ public class ShootCollectShootCommand extends SequentialCommandGroup {
         FullCollectCommand collectCommand,
         StopCollectorCommand stopCollector,
         RetractCollectorCommand retractCollector,
-        ConveyorSubsystem conveyor
+        ConveyorSubsystem conveyor,
+        StopDriveCommand stopDrive
     ) {
         // Mark the conveyor as pre-retracted
         var markConveyorRetracted = new InstantCommand(() -> conveyor.setHasRetracted(true));
@@ -91,7 +93,8 @@ public class ShootCollectShootCommand extends SequentialCommandGroup {
         FireCommand secondShot = fireProvider.get();
         secondShot.setTargetRPM(TargetRPM.NearShot);
         DelayViaSupplierCommand secondShotTimeout = new DelayViaSupplierCommand(() -> 5.0);
-        ParallelRaceGroup secondShotWithTimeout = new ParallelRaceGroup(secondShot, secondShotTimeout);
+        ParallelRaceGroup secondShotWithTimeout = new ParallelRaceGroup(secondShot, secondShotTimeout, stopDrive);
+        
         addCommands(secondShotWithTimeout);
 
         // Stop the shooter and collector to conserve power

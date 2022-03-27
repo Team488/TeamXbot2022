@@ -9,6 +9,7 @@ import competition.commandgroups.ShutdownShootingCommandThatEnds;
 import competition.subsystems.collector.commands.StopCollectorCommand;
 import competition.subsystems.collector_deployment.commands.RetractCollectorCommand;
 import competition.subsystems.conveyer.ConveyorSubsystem;
+import competition.subsystems.drive.commands.StopDriveCommand;
 import competition.subsystems.drive.commands.SwerveToPointCommand;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -28,7 +29,8 @@ public class ShootThenEscapeCommand extends SequentialCommandGroup {
         FullCollectCommand collectCommand,
         StopCollectorCommand stopCollector,
         RetractCollectorCommand retractCollector,
-        ConveyorSubsystem conveyor
+        ConveyorSubsystem conveyor,
+        StopDriveCommand stopDrive
     ) {
         var markConveyorRetracted = new InstantCommand(() -> conveyor.setHasRetracted(true));
         addCommands(markConveyorRetracted);
@@ -47,5 +49,6 @@ public class ShootThenEscapeCommand extends SequentialCommandGroup {
         reverse.setMaxPower(0.5);
         reverse.setTargetPosition(new XYPair(0, -90), 90);
         addCommands(new ParallelCommandGroup(reverse, stopShooterProvider.get()));
+        addCommands(stopDrive);
     }
 }

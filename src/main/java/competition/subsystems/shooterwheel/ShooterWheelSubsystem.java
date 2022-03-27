@@ -28,6 +28,9 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
 
     private final DoubleProperty safePower;
 
+    private final DoubleProperty shortRangeErrorTolerance;
+    private final DoubleProperty longRangeErrorTolerance;
+
     public XCANSparkMax leader;
     private XCANSparkMax follower;
     ElectricalContract contract;
@@ -50,11 +53,14 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
         rpmTrimProp = pf.createEphemeralProperty("TrimRPM", 0);
 
         safeRpm = pf.createPersistentProperty("SafeRpm", 500);
-        nearShotRpm = pf.createPersistentProperty("NearShotRpm", 1250);
-        distanceShotRpm = pf.createPersistentProperty("DistanceShotRpm", 2000);
-        hotDogRpm = pf.createPersistentProperty("HotDogRpm", -200);
+        nearShotRpm = pf.createPersistentProperty("NearShotRpm", 1000);
+        distanceShotRpm = pf.createPersistentProperty("DistanceShotRpm", 3000);
+        hotDogRpm = pf.createPersistentProperty("HotDogRpm", -300);
 
         safePower = pf.createPersistentProperty("SafePower", 0.1);
+
+        shortRangeErrorTolerance = pf.createPersistentProperty("ShortRangeErrorTolerance", 200);
+        longRangeErrorTolerance = pf.createPersistentProperty("LongRangeErrorTolerance", 50);
 
         if (contract.isShooterReady()) {
             this.leader = factory.createCANSparkMax(contract.getShooterMotorLeader(), this.getPrefix(),
@@ -65,6 +71,13 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
 
             this.leader.enableVoltageCompensation(12);
             this.leader.follow(ExternalFollower.kFollowerDisabled, 0);
+
+            this.leader.setP(0);
+            this.leader.setI(0.000001);
+            this.leader.setD(0);
+            this.leader.setFF(0.000195);
+            this.leader.setIZone(200);
+
             leader.burnFlash();
             follower.burnFlash();
 
@@ -105,6 +118,14 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
                 this.follower.clearFaults();
             }
         }
+    }
+
+    public double getShortRangeErrorTolerance() {
+        return shortRangeErrorTolerance.get();
+    }
+
+    public double getLongRangeErrorTolerance() {
+        return longRangeErrorTolerance.get();
     }
 
     public void setTargetRPM(TargetRPM target) {
