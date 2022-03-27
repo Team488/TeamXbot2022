@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 import competition.electrical_contract.ElectricalContract;
 import xbot.common.command.BaseSetpointSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
+import xbot.common.controls.actuators.XCANSparkMaxPIDProperties;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
@@ -62,21 +63,24 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
         shortRangeErrorTolerance = pf.createPersistentProperty("ShortRangeErrorTolerance", 200);
         longRangeErrorTolerance = pf.createPersistentProperty("LongRangeErrorTolerance", 50);
 
+        XCANSparkMaxPIDProperties wheelDefaultProps = new XCANSparkMaxPIDProperties();
+        wheelDefaultProps.p = 0;
+        wheelDefaultProps.i = 0.000001;
+        wheelDefaultProps.d = 0;
+        wheelDefaultProps.feedForward = 0.000195;
+        wheelDefaultProps.iZone = 200;
+        wheelDefaultProps.maxOutput = 1;
+        wheelDefaultProps.minOutput = -1;
+
         if (contract.isShooterReady()) {
             this.leader = factory.createCANSparkMax(contract.getShooterMotorLeader(), this.getPrefix(),
-                    "ShooterMaster");
+                    "ShooterMaster", wheelDefaultProps);
             this.follower = factory.createCANSparkMax(contract.getShooterMotorFollower(), this.getPrefix(),
                     "ShooterFollower");
             follower.follow(leader, true);
 
             this.leader.enableVoltageCompensation(12);
-            this.leader.follow(ExternalFollower.kFollowerDisabled, 0);
-
-            this.leader.setP(0);
-            this.leader.setI(0.000001);
-            this.leader.setD(0);
-            this.leader.setFF(0.000195);
-            this.leader.setIZone(200);
+            this.leader.follow(ExternalFollower.kFollowerDisabled, 0);           
 
             leader.burnFlash();
             follower.burnFlash();
