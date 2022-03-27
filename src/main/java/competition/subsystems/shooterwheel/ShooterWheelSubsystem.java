@@ -2,6 +2,7 @@ package competition.subsystems.shooterwheel;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.revrobotics.REVLibError;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.ExternalFollower;
 import com.revrobotics.CANSparkMax.FaultID;
@@ -77,13 +78,19 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
                     "ShooterMaster", wheelDefaultProps);
             this.follower = factory.createCANSparkMax(contract.getShooterMotorFollower(), this.getPrefix(),
                     "ShooterFollower");
-            follower.follow(leader, true);
+            this.follower.follow(this.leader, true);
 
             this.leader.enableVoltageCompensation(12);
             this.leader.follow(ExternalFollower.kFollowerDisabled, 0);           
 
-            leader.burnFlash();
-            follower.burnFlash();
+            REVLibError leaderError = leader.burnFlash();
+            if (leaderError != REVLibError.kOk) {
+                log.error("Failed to burn flash for leader: " + leaderError.toString());
+            }
+            REVLibError followerError = follower.burnFlash();
+            if (followerError != REVLibError.kOk) {
+                log.error("Failed to burn flash for follower: " + leaderError.toString());
+            }
 
             setupStatusFrames();
         }
