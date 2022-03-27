@@ -69,7 +69,7 @@ public class ShooterWheelMaintainerCommand extends BaseMaintainerCommand {
     protected boolean getErrorWithinTolerance() {
 
         double tolerance = 200;
-        if (wheel.getTargetValue() < 3000) {
+        if (wheel.getTargetValue() < 2000) {
             tolerance = wheel.getShortRangeErrorTolerance();
         } else {
             tolerance = wheel.getLongRangeErrorTolerance();

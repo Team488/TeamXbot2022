@@ -53,9 +53,9 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
         rpmTrimProp = pf.createEphemeralProperty("TrimRPM", 0);
 
         safeRpm = pf.createPersistentProperty("SafeRpm", 500);
-        nearShotRpm = pf.createPersistentProperty("NearShotRpm", 1250);
+        nearShotRpm = pf.createPersistentProperty("NearShotRpm", 1000);
         distanceShotRpm = pf.createPersistentProperty("DistanceShotRpm", 3000);
-        hotDogRpm = pf.createPersistentProperty("HotDogRpm", -200);
+        hotDogRpm = pf.createPersistentProperty("HotDogRpm", -300);
 
         safePower = pf.createPersistentProperty("SafePower", 0.1);
 
@@ -71,6 +71,8 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
 
             this.leader.enableVoltageCompensation(12);
             this.leader.follow(ExternalFollower.kFollowerDisabled, 0);
+
+            this.leader.setP(0.000001);
             leader.burnFlash();
             follower.burnFlash();
 

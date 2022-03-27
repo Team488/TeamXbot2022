@@ -99,7 +99,12 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         lastCommandedDirection = new XYPair(0, 90);
 
         positionalPidManager = factory.createPIDManager(this.getPrefix() + "PositionPID", 0.011111, 0, 0, 0.6, -0.6);
-        headingPidManager = factory.createPIDManager(this.getPrefix() + "HeadingPID", 1.0/36, 0, 0);
+        headingPidManager = factory.createPIDManager(this.getPrefix() + "HeadingPID", 0.02, 0, 0);
+        
+        headingPidManager.setTimeThreshold(0.2);
+        headingPidManager.setErrorThreshold(2);
+        headingPidManager.getEnableErrorThreshold();
+        headingPidManager.getEnableTimeThreshold();
     }
 
     public SwerveDriveKinematics getSwerveDriveKinematics() {

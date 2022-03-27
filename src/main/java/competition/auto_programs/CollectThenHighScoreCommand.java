@@ -8,6 +8,7 @@ import competition.commandgroups.PrepareToFireCommandThatEnds;
 import competition.commandgroups.ShutdownCollectionCommandThatEnds;
 import competition.commandgroups.ShutdownShootingCommandThatEnds;
 import competition.subsystems.conveyer.commands.ConveyWhileShooterAtSpeedCommand;
+import competition.subsystems.drive.commands.StopDriveCommand;
 import competition.subsystems.drive.commands.SwerveToPointCommand;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -25,7 +26,8 @@ public class CollectThenHighScoreCommand extends SequentialCommandGroup {
         ShutdownCollectionCommandThatEnds shutdownCollecting,
         ShutdownShootingCommandThatEnds shutdownShooting,
         PrepareToFireCommandThatEnds prepareforHigh,
-        ConveyWhileShooterAtSpeedCommand conveyWhenReady) {
+        ConveyWhileShooterAtSpeedCommand conveyWhenReady,
+        StopDriveCommand stopDrive) {
 
         //53.5 inches away from the hub wall is the magic number
         // Our program ends 98.1 inches away
@@ -68,6 +70,9 @@ public class CollectThenHighScoreCommand extends SequentialCommandGroup {
 
         this.addCommands(moveToShootWithTimeout);
 
-        this.addCommands(conveyWhenReady);
+        this.addCommands(new ParallelCommandGroup(
+            conveyWhenReady,
+            stopDrive
+        ));
     }
 }
