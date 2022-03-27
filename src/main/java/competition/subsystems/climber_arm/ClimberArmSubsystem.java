@@ -93,8 +93,8 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         
         // Shared properties
         pf.setPrefix(super.getPrefix());
-        safeArmExtendedNumber = pf.createPersistentProperty("safelyExtendable", 24.5);
-        safeArmRetractedNumber = pf.createPersistentProperty("safelyRetractable", -5);
+        safeArmExtendedNumber = pf.createPersistentProperty("safelyExtendable", 0);
+        safeArmRetractedNumber = pf.createPersistentProperty("safelyRetractable", 0);
         // Assume this is shared - if not, we'll split it out.
         armInchesPerRotation = pf.createPersistentProperty("ArmInchesPerRotation", 0.10767);
         armPowerFactor = pf.createPersistentProperty("PowerFactor", 1);

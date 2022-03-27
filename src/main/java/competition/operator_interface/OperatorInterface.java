@@ -39,7 +39,7 @@ public class OperatorInterface {
 
         pf.setPrefix("OperatorInterface");
         driverDeadband = pf.createPersistentProperty("Driver Deadband", 0.12);
-        operatorDeadband = pf.createPersistentProperty("Operator Deadband", 0.20);
+        operatorDeadband = pf.createPersistentProperty("Operator Deadband", 0.15);
     }
 
     public double getDriverGamepadTypicalDeadband() {
