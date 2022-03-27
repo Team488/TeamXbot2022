@@ -12,7 +12,7 @@ public class SwerveSteeringMotorPidSubsystem extends BaseMotorPidSubsystem {
 
     @Inject
     public SwerveSteeringMotorPidSubsystem(PropertyFactory pf) {
-        super(pf);
+        super(pf, 0.5, 0.0, 0.0, 0.0, -1.0, 1.0, 0.02, 0.05);
     }
     
 }
