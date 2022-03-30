@@ -48,15 +48,15 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
         this.pose = pose;
         this.vision = vision;
         pf.setPrefix(this);
-        this.input_exponent = pf.createPersistentProperty("Input Exponent", 2);
+        this.input_exponent = pf.createPersistentProperty("Input Exponent", 1);
         this.drivePowerFactor = pf.createPersistentProperty("Power Factor", 1);
-        this.turnPowerFactor = pf.createPersistentProperty("Turn Power Factor", 0.5);
+        this.turnPowerFactor = pf.createPersistentProperty("Turn Power Factor", 0.75);
         this.absoluteOrientationMode = pf.createPersistentProperty("Absolute Orientation Mode", true);
         this.minimumMagnitudeForAbsoluteHeading = pf.createPersistentProperty("Min Magnitude For Absolute Heading", 0.75);
         this.decider = clf.createHumanVsMachineDecider(this.getPrefix());
         this.headingModule = clf.createHeadingModule(drive.getRotateToHeadingPid());
-        this.triggerOnlyPowerScaling = pf.createPersistentProperty("TriggerOnlyPowerScaling", 0.5);
-        this.triggerOnlyExponent = pf.createPersistentProperty("TriggerOnlyExponent", 1.5);
+        this.triggerOnlyPowerScaling = pf.createPersistentProperty("TriggerOnlyPowerScaling", 0.75);
+        this.triggerOnlyExponent = pf.createPersistentProperty("TriggerOnlyExponent", 2.0);
 
         // Set up a latch to trigger whenever we change the rotational mode. In either case,
         // there's some PIDs that will need to be reset, or goals that need updating.

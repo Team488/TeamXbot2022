@@ -63,7 +63,7 @@ public class SwerveSteeringSubsystemTest extends BaseCompetitionTest {
         contract.setCanCodersReady(false);
         position = subsystem.getBestEncoderPositionInDegrees();
 
-        assertEquals("The SparkMAX position value should be reflected", 42.141, position, 0.001);
+        assertEquals("The SparkMAX position value should be reflected", 42.141, position, 0.1);
     }
 
     @Test

@@ -21,7 +21,7 @@ public class SwerveSteeringMaintainerCommand extends BaseMaintainerCommand {
 
         this.subsystem = subsystemToMaintain;
         
-        this.enableAutoCalibrate = pf.createPersistentProperty("EnableAutomaticMotorControllerCalibration", false);
+        this.enableAutoCalibrate = pf.createPersistentProperty("EnableAutomaticMotorControllerCalibration", true);
     }
 
     @Override

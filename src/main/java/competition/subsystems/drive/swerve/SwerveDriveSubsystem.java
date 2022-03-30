@@ -43,7 +43,7 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
         pf.setPrefix(super.getPrefix());
         this.contract = electricalContract;
         this.pid = pidf.createPIDManager(super.getPrefix() + "PID", 1.0, 0.0, 0.0, -1.0, 1.0);
-        this.inchesPerMotorRotation = pf.createPersistentProperty("InchesPerMotorRotation", 2.022488);
+        this.inchesPerMotorRotation = pf.createPersistentProperty("InchesPerMotorRotation", 2.02249);
         
         // Create properties unique to this instance.
         pf.setPrefix(this);

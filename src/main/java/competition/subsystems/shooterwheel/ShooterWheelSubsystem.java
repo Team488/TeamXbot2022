@@ -83,6 +83,13 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
             this.leader.enableVoltageCompensation(12);
             this.leader.follow(ExternalFollower.kFollowerDisabled, 0);           
 
+            leader.setP(0);
+            leader.setI(0.000001);
+            leader.setD(0);
+            leader.setFF(0.000195);
+            leader.setIZone(200);
+            leader.setOutputRange(-1, 1);
+
             REVLibError leaderError = leader.burnFlash();
             if (leaderError != REVLibError.kOk) {
                 log.error("Failed to burn flash for leader: " + leaderError.toString());
@@ -229,7 +236,7 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
 
     public void periodic() {
         if (contract.isShooterReady()) {
-            leader.periodic();
+            //leader.periodic();
             //follower.periodic();
             currentRpmProp.set(getCurrentRPM());
             setupStatusFrames();
