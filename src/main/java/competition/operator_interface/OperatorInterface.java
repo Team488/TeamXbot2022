@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import xbot.common.controls.sensors.XXboxController;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.logging.RobotAssertionManager;

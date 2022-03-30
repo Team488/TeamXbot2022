@@ -3,14 +3,18 @@ package competition.subsystems.pose;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import competition.operator_interface.OperatorInterface;
 import competition.subsystems.drive.DriveSubsystem;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.wpilibj.DriverStation;
+import xbot.common.controls.sensors.XTimer;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.math.FieldPose;
 import xbot.common.math.WrappedRotation2d;
 import xbot.common.math.XYPair;
+import xbot.common.properties.BooleanProperty;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.subsystems.pose.BasePoseSubsystem;
@@ -22,6 +26,13 @@ public class PoseSubsystem extends BasePoseSubsystem {
     private final DoubleProperty levelThresholdDegrees;
     
     final SwerveDriveOdometry swerveOdometry;
+
+    final OperatorInterface oi;
+
+    final BooleanProperty hasSentEndOfMatchWarning;
+    final DoubleProperty endOfMatchWarningTime;
+    final DoubleProperty warningRumbleStrength;
+    final DoubleProperty warningRumbleDuration;
 
     final DoubleProperty leftStartPosX;
     final DoubleProperty leftStartPosY;
@@ -57,10 +68,13 @@ public class PoseSubsystem extends BasePoseSubsystem {
     public PoseSubsystem(
         CommonLibFactory clf, 
         PropertyFactory pf, 
-        DriveSubsystem drive
+        DriveSubsystem drive,
+        OperatorInterface oi
         ) {
         super(clf, pf);
         this.drive = drive;
+        this.oi = oi;
+
         this.levelThresholdDegrees = pf.createPersistentProperty("Levelling Threshold", 3);
 
         this.leftStartPosX = pf.createPersistentProperty("Starting Left Position X Value", 118);
@@ -82,6 +96,11 @@ public class PoseSubsystem extends BasePoseSubsystem {
         this.rightHubStartPosX = pf.createPersistentProperty("Starting RightHub X Value", 212);
         this.rightHubStartPosY = pf.createPersistentProperty("Starting RightHub Y Value", 304);
         this.rightHubHeading = pf.createPersistentProperty("Starting RightHub Heading", 159);
+
+        this.hasSentEndOfMatchWarning = pf.createEphemeralProperty("Warning Rumble/Has sent end of match warning", false);
+        this.endOfMatchWarningTime = pf.createPersistentProperty("Warning Rumble/End of match warning time", 45);
+        this.warningRumbleDuration = pf.createPersistentProperty("Warning Rumble/Rumble duration", 0.6);
+        this.warningRumbleStrength = pf.createPersistentProperty("Warning Rumble/Rumble strength", 0.7);
 
     /* Remember: WPILib uses a different coordinate convention than our legacy code. Theirs:
           //   0,+y. 90 degrees
@@ -207,4 +226,19 @@ public class PoseSubsystem extends BasePoseSubsystem {
         .getMagnitude();
     }
 
+    @Override
+    public void periodic() {
+        super.periodic();
+
+        // Reset end-of-match warning flag in auto mode (in case the robot hasn't been rebooted between runs)
+        if (DriverStation.isAutonomousEnabled() && this.hasSentEndOfMatchWarning.get() == true) {
+            this.hasSentEndOfMatchWarning.set(false);
+        }
+
+        this.oi.driverGamepad.getRumbleManager().periodic();
+        if (DriverStation.isTeleopEnabled() && XTimer.getMatchTime() < this.endOfMatchWarningTime.get() && this.hasSentEndOfMatchWarning.get() == false) {
+            this.hasSentEndOfMatchWarning.set(true);
+            this.oi.driverGamepad.getRumbleManager().rumbleGamepad(this.warningRumbleStrength.get(), this.warningRumbleDuration.get());
+        }
+    }
 }
