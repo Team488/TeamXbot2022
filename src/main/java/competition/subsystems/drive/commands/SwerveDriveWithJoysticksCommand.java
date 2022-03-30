@@ -34,6 +34,7 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
     final DoubleProperty turnPowerFactor;
     final BooleanProperty absoluteOrientationMode;
     final HeadingModule headingModule;
+    final HeadingModule chillHeadingModule;
     final Latch absoluteOrientationLatch;
     final DoubleProperty minimumMagnitudeForAbsoluteHeading;
     final DoubleProperty triggerOnlyPowerScaling;
@@ -55,6 +56,7 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
         this.minimumMagnitudeForAbsoluteHeading = pf.createPersistentProperty("Min Magnitude For Absolute Heading", 0.75);
         this.decider = clf.createHumanVsMachineDecider(this.getPrefix());
         this.headingModule = clf.createHeadingModule(drive.getRotateToHeadingPid());
+        this.chillHeadingModule = clf.createHeadingModule(drive.getRotateDecayPid());
         this.triggerOnlyPowerScaling = pf.createPersistentProperty("TriggerOnlyPowerScaling", 0.75);
         this.triggerOnlyExponent = pf.createPersistentProperty("TriggerOnlyExponent", 2.0);
 
@@ -92,6 +94,7 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
 
     private void resetBeforeStartingRelativeOrientation() {
         headingModule.reset();
+        chillHeadingModule.reset();
     }
 
     @Override
@@ -197,7 +200,7 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
                         break;
                     case MachineControl:
                         desiredHeading = drive.getDesiredHeading();
-                        suggestedRotatePower = headingModule.calculateHeadingPower(desiredHeading);
+                        suggestedRotatePower = chillHeadingModule.calculateHeadingPower(desiredHeading);
                         break;
                     default:
                         suggestedRotatePower = 0;

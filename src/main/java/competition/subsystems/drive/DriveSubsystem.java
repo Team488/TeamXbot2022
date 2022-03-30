@@ -47,6 +47,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
 
     private final PIDManager positionalPidManager;
     private final PIDManager headingPidManager;
+    private final PIDManager chillHeadingPidManager;
 
     private XYPair lastCommandedDirection;
     private double lastCommandedRotation;
@@ -99,7 +100,8 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         lastCommandedDirection = new XYPair(0, 90);
 
         positionalPidManager = factory.createPIDManager(this.getPrefix() + "PositionPID", 0.018, 0, 0.1, 0.6, -0.6);
-        headingPidManager = factory.createPIDManager(this.getPrefix() + "HeadingPID", 0.015, 0, 0.04, 0.75, -0.75);
+        headingPidManager = factory.createPIDManager(this.getPrefix() + "HeadingPID", 0.018, 0, 0.035, 0.75, -0.75);
+        chillHeadingPidManager = factory.createPIDManager(this.getPrefix() + "ChillHeadingPID", 0.05, 0, 0.01, 0, 0.75, -0.75);
         
         headingPidManager.setTimeThreshold(0.2);
         headingPidManager.setErrorThreshold(2);
@@ -132,7 +134,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
 
     @Override
     public PIDManager getRotateDecayPid() {
-        return null;
+        return chillHeadingPidManager;
     }
 
     public void fieldOrientedDrive(
