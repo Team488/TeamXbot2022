@@ -52,6 +52,7 @@ import competition.subsystems.pose.SetRobotAngleViaJoysticksCommand;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
 import competition.subsystems.shooterwheel.commands.StopShooterWheelCommand;
+import competition.subsystems.vision.VisionSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -60,6 +61,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import xbot.common.command.DelayViaSupplierCommand;
 import xbot.common.command.NamedInstantCommand;
+import xbot.common.command.NamedRunCommand;
 import xbot.common.command.SmartDashboardCommandPutter;
 import xbot.common.controls.sensors.ChordButton;
 import xbot.common.controls.sensors.XXboxController.XboxButton;
@@ -89,16 +91,23 @@ public class OperatorCommandMap {
     @Inject
     public void setupMyCommands(
             SetRobotHeadingCommand resetHeading,
+            DriveSubsystem drive,
             PoseSubsystem pose,
+            VisionSubsystem vision,
             SetRobotAngleViaJoysticksCommand setAngleViaJoysticks) {
         resetHeading.setHeadingToApply(90);
 
         NamedInstantCommand resetPosition = new NamedInstantCommand("Reset Position",
                 () -> pose.setCurrentPosition(0, 0));
         ParallelCommandGroup resetPose = new ParallelCommandGroup(resetPosition, resetHeading);
+
+        NamedInstantCommand rotateToHub = new NamedInstantCommand("Rotate to Hub", () -> drive.setRotateToHubActive(true));
+        NamedInstantCommand turnOffVisionRotation = new NamedInstantCommand("Back to normal drive mode", () -> drive.setRotateToHubActive(false));
+
         operatorInterface.driverGamepad.getifAvailable(XboxButton.A).whenPressed(resetPose);
         operatorInterface.driverGamepad.getifAvailable(XboxButton.RightStick).whenHeld(setAngleViaJoysticks);
         operatorInterface.driverGamepad.getifAvailable(XboxButton.Y).whenHeld(setAngleViaJoysticks);
+        operatorInterface.driverGamepad.getifAvailable(XboxButton.X).whenPressed(rotateToHub).whenReleased(turnOffVisionRotation);
 
         operatorInterface.driverGamepad.getPovIfAvailable(0).whenHeld(setAngleViaJoysticks);
         operatorInterface.driverGamepad.getPovIfAvailable(90).whenHeld(setAngleViaJoysticks);

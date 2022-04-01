@@ -179,14 +179,14 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         precisionRotationActive = isActive;
     }
 
-    private boolean rotateToCargoActive = false;
+    private boolean rotateToHubActive = false;
 
-    public boolean isRotateToCargoActive() {
-        return rotateToCargoActive;
+    public boolean isRotateToHubActive() {
+        return rotateToHubActive;
     }
 
-    public void setRotateToCargoActive(boolean isActive) {
-        rotateToCargoActive = isActive;
+    public void setRotateToHubActive(boolean isActive) {
+        rotateToHubActive = isActive;
     }
 
     /**
