@@ -68,9 +68,7 @@ public class VisionSubsystem extends BaseSubsystem {
     }
 
     private double getPitchToTarget() {
-        double yawToTarget = (visionTable.getEntry(TARGET_PITCH_PROPERTY).getDouble(0));
-
-        return yawToTarget;
+        return (visionTable.getEntry(TARGET_PITCH_PROPERTY).getDouble(0));
     }
 
     private double getInversionFactor() {
