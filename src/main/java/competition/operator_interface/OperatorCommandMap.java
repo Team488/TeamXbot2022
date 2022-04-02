@@ -17,6 +17,7 @@ import competition.auto_programs.ShootRecklesslyThenEscapeCommand;
 import competition.auto_programs.ShootThenEscapeCommand;
 import competition.commandgroups.DriverFireCommand;
 import competition.commandgroups.DriverRecklessFireCommand;
+import competition.commandgroups.HumanShootWithVision;
 import competition.injection.arm.LeftArm;
 import competition.injection.arm.RightArm;
 import competition.subsystems.climber_arm.ClimberArmSubsystem;
@@ -50,6 +51,7 @@ import competition.subsystems.pose.PoseSubsystem.KeyPosition;
 import competition.subsystems.pose.SetPoseCommand;
 import competition.subsystems.pose.SetRobotAngleViaJoysticksCommand;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
+import competition.subsystems.shooterwheel.ShooterWheelSubsystem.Target;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
 import competition.subsystems.shooterwheel.commands.StopShooterWheelCommand;
 import competition.subsystems.vision.VisionSubsystem;
@@ -107,7 +109,7 @@ public class OperatorCommandMap {
         operatorInterface.driverGamepad.getifAvailable(XboxButton.A).whenPressed(resetPose);
         operatorInterface.driverGamepad.getifAvailable(XboxButton.RightStick).whenHeld(setAngleViaJoysticks);
         operatorInterface.driverGamepad.getifAvailable(XboxButton.Y).whenHeld(setAngleViaJoysticks);
-        operatorInterface.driverGamepad.getifAvailable(XboxButton.X).whenPressed(rotateToHub).whenReleased(turnOffVisionRotation);
+        operatorInterface.driverGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(rotateToHub).whenReleased(turnOffVisionRotation);
 
         operatorInterface.driverGamepad.getPovIfAvailable(0).whenHeld(setAngleViaJoysticks);
         operatorInterface.driverGamepad.getPovIfAvailable(90).whenHeld(setAngleViaJoysticks);
@@ -179,7 +181,7 @@ public class OperatorCommandMap {
 
         var safeLockedArms = new ParallelCommandGroup(setArmsSafe, setArmsLocked);
 
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.A).whenPressed(safeLockedArms);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightStick).whenPressed(safeLockedArms);
 
         var setArmsUnsafe = new InstantCommand(() -> {
                 leftArm.setIgnoreLimits(true);
@@ -191,7 +193,7 @@ public class OperatorCommandMap {
                 rightArm.setArmsUnlocked(true);
         });
 
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.X).whenPressed(setArmsUnsafe);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftStick).whenPressed(setArmsUnsafe);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightJoystickYAxis).whenPressed(unlockArms);
 
 
@@ -216,11 +218,17 @@ public class OperatorCommandMap {
     public void setShooterCommand(OperatorInterface oi,
             ShooterWheelSubsystem shooter,
             StopShooterWheelCommand stopCommand,
-            DriverFireCommand fireCloseCommand,
-            DriverFireCommand fireFarCommand,
-            DriverRecklessFireCommand recklessFireCommand) {
-        fireCloseCommand.setTargetRPM(TargetRPM.NearShot);
-        fireFarCommand.setTargetRPM(TargetRPM.DistanceShot);
+            DriverRecklessFireCommand recklessFireCommand,
+            DriverFireCommand fireLowCommand,
+            DriverFireCommand fireHighCommand,
+            HumanShootWithVision fireLowVisionCommand,
+            HumanShootWithVision fireHighVisionCommand) {
+        fireLowCommand.setTargetRPM(TargetRPM.NearShot);
+        fireHighCommand.setTargetRPM(TargetRPM.DistanceShot);
+
+
+        fireLowVisionCommand.setTarget(Target.Low);
+        fireHighVisionCommand.setTarget(Target.High);
 
         InstantCommand increaseTrim = new NamedInstantCommand("ShooterIncreaseTrim100RPMInstantCommand",
                 () -> shooter.changeTrimRPM(100));
@@ -230,9 +238,11 @@ public class OperatorCommandMap {
         SmartDashboard.putData("Trim down", decreaseTrim);
         stopCommand.includeOnSmartDashboard();
         
-        oi.operatorGamepad.getifAvailable(XboxButton.RightStick).whenHeld(recklessFireCommand);
-        oi.operatorGamepad.getifAvailable(XboxButton.Y).whenHeld(fireFarCommand);
-        oi.operatorGamepad.getifAvailable(XboxButton.B).whenHeld(fireCloseCommand);
+
+        oi.operatorGamepad.getifAvailable(XboxButton.B).whenHeld(fireLowVisionCommand);
+        oi.operatorGamepad.getifAvailable(XboxButton.Y).whenHeld(fireHighVisionCommand);
+        oi.operatorGamepad.getifAvailable(XboxButton.A).whenHeld(fireLowCommand);
+        oi.operatorGamepad.getifAvailable(XboxButton.X).whenHeld(fireHighCommand);
     }
 
     @Inject
@@ -265,7 +275,7 @@ public class OperatorCommandMap {
                 () -> drive.setPrecisionRotationActive(false));
 
         oi.driverGamepad.getifAvailable(XboxButton.LeftBumper).whileHeld(activatePrecisionDrive);
-        oi.driverGamepad.getifAvailable(XboxButton.RightBumper).whileHeld(activatePrecisionRotation);
+        //oi.driverGamepad.getifAvailable(XboxButton.RightBumper).whileHeld(activatePrecisionRotation);
     }
 
     @Inject

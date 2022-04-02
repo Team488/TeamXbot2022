@@ -44,6 +44,11 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
         HotDogRoller
     }
 
+    public enum Target {
+        Low,
+        High
+    }
+
     @Inject
     public ShooterWheelSubsystem(CommonLibFactory factory, PropertyFactory pf, ElectricalContract contract) {
         log.info("Creating ShooterWheelSubsystem");
