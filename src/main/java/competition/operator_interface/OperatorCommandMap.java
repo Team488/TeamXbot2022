@@ -109,7 +109,7 @@ public class OperatorCommandMap {
         operatorInterface.driverGamepad.getifAvailable(XboxButton.A).whenPressed(resetPose);
         operatorInterface.driverGamepad.getifAvailable(XboxButton.RightStick).whenHeld(setAngleViaJoysticks);
         operatorInterface.driverGamepad.getifAvailable(XboxButton.Y).whenHeld(setAngleViaJoysticks);
-        operatorInterface.driverGamepad.getifAvailable(XboxButton.X).whenPressed(rotateToHub).whenReleased(turnOffVisionRotation);
+        operatorInterface.driverGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(rotateToHub).whenReleased(turnOffVisionRotation);
 
         operatorInterface.driverGamepad.getPovIfAvailable(0).whenHeld(setAngleViaJoysticks);
         operatorInterface.driverGamepad.getPovIfAvailable(90).whenHeld(setAngleViaJoysticks);
@@ -275,7 +275,7 @@ public class OperatorCommandMap {
                 () -> drive.setPrecisionRotationActive(false));
 
         oi.driverGamepad.getifAvailable(XboxButton.LeftBumper).whileHeld(activatePrecisionDrive);
-        oi.driverGamepad.getifAvailable(XboxButton.RightBumper).whileHeld(activatePrecisionRotation);
+        //oi.driverGamepad.getifAvailable(XboxButton.RightBumper).whileHeld(activatePrecisionRotation);
     }
 
     @Inject
