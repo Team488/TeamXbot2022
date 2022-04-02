@@ -239,6 +239,24 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
             centerOfRotation = new XYPair(0, 36);
         }
 
+        // Rumble based on camera state
+        if (drive.isRotateToHubActive()) {
+            if(vision.getFixAcquired()) {
+                // if we're not at our goal yet, rumble gamepad so driver knows we're not there yet
+                if(!headingModule.isOnTarget()) {
+                    oi.driverGamepad.getRumbleManager().rumbleGamepad(0.2, 0.05);
+                } else {
+                    oi.driverGamepad.getRumbleManager().stopGamepadRumble();
+                }
+            } else {
+                // if driver is trying to align with vision, but no target acquired, rumble aggressively
+                oi.driverGamepad.getRumbleManager().rumbleGamepad(0.8, 0.1);
+            }
+        } else {
+            oi.driverGamepad.getRumbleManager().stopGamepadRumble();
+        }
+        
+
         drive.fieldOrientedDrive(translationIntent, suggestedRotatePower, pose.getCurrentHeading().getDegrees(), centerOfRotation);
     }
 
