@@ -15,6 +15,7 @@ public class ShooterRPMWithVisionCommand extends BaseCommand {
     public ShooterRPMWithVisionCommand(ShooterWheelSubsystem shooter, VisionSubsystem vision) {
         this.vision = vision;
         this.shooter = shooter;
+        this.addRequirements(shooter.getSetpointLock());
     }
 
     @Override
