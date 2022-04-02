@@ -181,7 +181,7 @@ public class OperatorCommandMap {
 
         var safeLockedArms = new ParallelCommandGroup(setArmsSafe, setArmsLocked);
 
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.A).whenPressed(safeLockedArms);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightStick).whenPressed(safeLockedArms);
 
         var setArmsUnsafe = new InstantCommand(() -> {
                 leftArm.setIgnoreLimits(true);
@@ -193,7 +193,7 @@ public class OperatorCommandMap {
                 rightArm.setArmsUnlocked(true);
         });
 
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.X).whenPressed(setArmsUnsafe);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftStick).whenPressed(setArmsUnsafe);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightJoystickYAxis).whenPressed(unlockArms);
 
 
@@ -219,10 +219,16 @@ public class OperatorCommandMap {
             ShooterWheelSubsystem shooter,
             StopShooterWheelCommand stopCommand,
             DriverRecklessFireCommand recklessFireCommand,
-            HumanShootWithVision fireLowCommand,
-            HumanShootWithVision fireHighCommand) {
-        fireLowCommand.setTarget(Target.Low);
-        fireHighCommand.setTarget(Target.High);
+            DriverFireCommand fireLowCommand,
+            DriverFireCommand fireHighCommand,
+            HumanShootWithVision fireLowVisionCommand,
+            HumanShootWithVision fireHighVisionCommand) {
+        fireLowCommand.setTargetRPM(TargetRPM.NearShot);
+        fireHighCommand.setTargetRPM(TargetRPM.DistanceShot);
+
+
+        fireLowVisionCommand.setTarget(Target.Low);
+        fireHighVisionCommand.setTarget(Target.High);
 
         InstantCommand increaseTrim = new NamedInstantCommand("ShooterIncreaseTrim100RPMInstantCommand",
                 () -> shooter.changeTrimRPM(100));
@@ -232,9 +238,11 @@ public class OperatorCommandMap {
         SmartDashboard.putData("Trim down", decreaseTrim);
         stopCommand.includeOnSmartDashboard();
         
-        oi.operatorGamepad.getifAvailable(XboxButton.RightStick).whenHeld(recklessFireCommand);
-        oi.operatorGamepad.getifAvailable(XboxButton.Y).whenHeld(fireHighCommand);
-        oi.operatorGamepad.getifAvailable(XboxButton.B).whenHeld(fireLowCommand);
+
+        oi.operatorGamepad.getifAvailable(XboxButton.B).whenHeld(fireLowVisionCommand);
+        oi.operatorGamepad.getifAvailable(XboxButton.Y).whenHeld(fireHighVisionCommand);
+        oi.operatorGamepad.getifAvailable(XboxButton.A).whenHeld(fireLowCommand);
+        oi.operatorGamepad.getifAvailable(XboxButton.X).whenHeld(fireHighCommand);
     }
 
     @Inject
