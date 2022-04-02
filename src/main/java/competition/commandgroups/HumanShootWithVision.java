@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import competition.subsystems.conveyer.ConveyorSubsystem;
 import competition.subsystems.conveyer.commands.ConveyWhileAtSpeedAndDriverSignalCommand;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
+import competition.subsystems.shooterwheel.ShooterWheelSubsystem.Target;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
 import competition.subsystems.vision.commands.ShooterRPMWithVisionCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -30,14 +31,15 @@ import xbot.common.properties.PropertyFactory;
  * - ShooterWheel.SetpointLock
  * - Conveyor.
  */
-public class PrepareToFireByVisionCommand extends SequentialCommandGroup {
+public class HumanShootWithVision extends SequentialCommandGroup {
 
     private final DoubleProperty conveyorReverseTimeProp;
+    private Target target = Target.Low;
 
     private static Logger log = Logger.getLogger(PrepareToFireCommandThatEnds.class);
 
     @Inject
-    PrepareToFireByVisionCommand(ShooterWheelSubsystem wheel,
+    HumanShootWithVision(ShooterWheelSubsystem wheel,
             ConveyorSubsystem conveyor, PropertyFactory pf, ShooterRPMWithVisionCommand shooterRPMWithVisionCommand,
             ConveyWhileAtSpeedAndDriverSignalCommand conveyCommand) {
         pf.setPrefix(this.getName());
@@ -54,8 +56,9 @@ public class PrepareToFireByVisionCommand extends SequentialCommandGroup {
 
         var stopConveyor = new InstantCommand(() -> conveyor.stop(), conveyor);
         var markConveyorRetracted = new InstantCommand(() -> conveyor.setHasRetracted(true));
+        var setTargetOnCommand = new InstantCommand(() -> shooterRPMWithVisionCommand.setTarget(target));
 
-        addCommands(reverseConveyor, stopConveyor, markConveyorRetracted,
+        addCommands(setTargetOnCommand, reverseConveyor, stopConveyor, markConveyorRetracted,
                 new ParallelCommandGroup(shooterRPMWithVisionCommand, conveyCommand));
     }
 
@@ -63,5 +66,9 @@ public class PrepareToFireByVisionCommand extends SequentialCommandGroup {
     public void initialize() {
         log.info("Initializing");
         super.initialize();
+    }
+
+    public void setTarget(Target target) {
+        this.target = target;
     }
 }

@@ -17,7 +17,7 @@ import competition.auto_programs.ShootRecklesslyThenEscapeCommand;
 import competition.auto_programs.ShootThenEscapeCommand;
 import competition.commandgroups.DriverFireCommand;
 import competition.commandgroups.DriverRecklessFireCommand;
-import competition.commandgroups.PrepareToFireByVisionCommand;
+import competition.commandgroups.HumanShootWithVision;
 import competition.injection.arm.LeftArm;
 import competition.injection.arm.RightArm;
 import competition.subsystems.climber_arm.ClimberArmSubsystem;
@@ -51,6 +51,7 @@ import competition.subsystems.pose.PoseSubsystem.KeyPosition;
 import competition.subsystems.pose.SetPoseCommand;
 import competition.subsystems.pose.SetRobotAngleViaJoysticksCommand;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
+import competition.subsystems.shooterwheel.ShooterWheelSubsystem.Target;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
 import competition.subsystems.shooterwheel.commands.StopShooterWheelCommand;
 import competition.subsystems.vision.VisionSubsystem;
@@ -217,12 +218,11 @@ public class OperatorCommandMap {
     public void setShooterCommand(OperatorInterface oi,
             ShooterWheelSubsystem shooter,
             StopShooterWheelCommand stopCommand,
-            DriverFireCommand fireCloseCommand,
-            DriverFireCommand fireFarCommand,
             DriverRecklessFireCommand recklessFireCommand,
-            PrepareToFireByVisionCommand fireVisionCommand) {
-        fireCloseCommand.setTargetRPM(TargetRPM.NearShot);
-        fireFarCommand.setTargetRPM(TargetRPM.DistanceShot);
+            HumanShootWithVision fireLowCommand,
+            HumanShootWithVision fireHighCommand) {
+        fireLowCommand.setTarget(Target.Low);
+        fireHighCommand.setTarget(Target.High);
 
         InstantCommand increaseTrim = new NamedInstantCommand("ShooterIncreaseTrim100RPMInstantCommand",
                 () -> shooter.changeTrimRPM(100));
@@ -232,9 +232,9 @@ public class OperatorCommandMap {
         SmartDashboard.putData("Trim down", decreaseTrim);
         stopCommand.includeOnSmartDashboard();
         
-        oi.operatorGamepad.getifAvailable(XboxButton.RightStick).whenHeld(fireVisionCommand);
-        oi.operatorGamepad.getifAvailable(XboxButton.Y).whenHeld(fireFarCommand);
-        oi.operatorGamepad.getifAvailable(XboxButton.B).whenHeld(fireCloseCommand);
+        oi.operatorGamepad.getifAvailable(XboxButton.RightStick).whenHeld(recklessFireCommand);
+        oi.operatorGamepad.getifAvailable(XboxButton.Y).whenHeld(fireHighCommand);
+        oi.operatorGamepad.getifAvailable(XboxButton.B).whenHeld(fireLowCommand);
     }
 
     @Inject
