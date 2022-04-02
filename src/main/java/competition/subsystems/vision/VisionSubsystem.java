@@ -4,52 +4,64 @@ import com.google.inject.Inject;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import xbot.common.command.BaseSubsystem;
 import xbot.common.logging.RobotAssertionManager;
+import xbot.common.logic.TimeStableValidator;
+import xbot.common.properties.BooleanProperty;
+import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 
 public class VisionSubsystem extends BaseSubsystem {
 
+    public static final String VISION_TABLE = "photonvision";
+    public static final String FIX_ACQUIRED_PROPERTY = "gloworm/hasTarget";
+    public static final String TARGET_YAW_PROPERTY = "gloworm/targetYaw";
+
     final RobotAssertionManager assertionManager;
+    final BooleanProperty isInverted;
+    final DoubleProperty yawOffset;
+    final DoubleProperty waitForStableFixTime;
+    final TimeStableValidator fixIsStable;
     NetworkTable visionTable;
 
     @Inject
     public VisionSubsystem(PropertyFactory pf, RobotAssertionManager assertionManager) {
         this.assertionManager = assertionManager;
-        visionTable = NetworkTableInstance.getDefault().getTable("Vision");
+        visionTable = NetworkTableInstance.getDefault().getTable(VISION_TABLE);
+
+        pf.setPrefix(this);
+        isInverted = pf.createPersistentProperty("Yaw inverted", true);
+        yawOffset = pf.createPersistentProperty("Yaw offset", 0);
+
+        waitForStableFixTime = pf.createPersistentProperty("Fix stable time", 0.1);
+        fixIsStable = new TimeStableValidator(() -> waitForStableFixTime.get());
     }
 
-    public double getBearingtoCargo() {
-        Alliance currentAlliance = DriverStation.getAlliance();
-
-        if (getFixAcquired(currentAlliance)) {
-            return getYawToTarget(currentAlliance);
+    public double getBearingToHub() {
+        if (getFixAcquired()) {
+            return getYawToTarget();
         } else {
             return 0;
         }
     }
 
-    public boolean getFixAcquired(Alliance color) {
-        boolean fixAcquired = false;
-        if (color == Alliance.Red) {
-            fixAcquired = visionTable.getEntry("fixAcquiredRed").getBoolean(false);
-        } else if (color == Alliance.Blue) {
-            fixAcquired = visionTable.getEntry("fixAcquiredBlue").getBoolean(false);
-        }
+    public boolean getFixAcquired() {
+        boolean fixAcquired = visionTable.getEntry(FIX_ACQUIRED_PROPERTY).getBoolean(false);
+        boolean isStable = fixIsStable.checkStable(fixAcquired);
 
-        return fixAcquired;
+        return fixAcquired && isStable;
     }
 
-    private double getYawToTarget(Alliance color) {
-        double yawToTarget = 0;
-        if (color == Alliance.Red) {
-            yawToTarget = visionTable.getEntry("yawToTargetRed").getDouble(0);
-        } else if (color == Alliance.Blue) {
-            yawToTarget = visionTable.getEntry("yawToTargetBlue").getDouble(0);
-        }
+    private double getYawToTarget() {
+        double yawToTarget = (visionTable.getEntry(TARGET_YAW_PROPERTY).getDouble(0) + this.yawOffset.get()) * getInversionFactor();
 
         return yawToTarget;
+    }
+
+    private double getInversionFactor() {
+        if (this.isInverted.get()) {
+            return -1;
+        }
+        return 1;
     }
 }

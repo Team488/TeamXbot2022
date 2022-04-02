@@ -168,8 +168,8 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
                 if (pose.getHeadingResetRecently()) {
                     drive.setDesiredHeading(pose.getCurrentHeading().getDegrees());
                 } else {
-                    if (drive.isRotateToCargoActive()) {
-                        drive.setDesiredHeading(pose.getCurrentHeading().getDegrees() + vision.getBearingtoCargo());
+                    if (drive.isRotateToHubActive() && vision.getFixAcquired()) {
+                        drive.setDesiredHeading(pose.getCurrentHeading().getDegrees() + vision.getBearingToHub());
                     } else {
                         drive.setDesiredHeading(desiredHeading);
                     }
@@ -179,6 +179,13 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
             } else {
                 // If the joystick isn't deflected enough, we use the last known heading or human input.
                 HumanVsMachineMode recommendedMode = decider.getRecommendedMode(humanRotatePowerFromTriggers);
+
+                if (drive.isRotateToHubActive() && vision.getFixAcquired()) {
+                    drive.setDesiredHeading(pose.getCurrentHeading().getDegrees() + vision.getBearingToHub());
+
+                    // Force recommended mode to machine control to avoid coast between machine taking over after target acquired
+                    recommendedMode = HumanVsMachineMode.MachineControl;
+                }
 
                 if (pose.getHeadingResetRecently()) {
                     drive.setDesiredHeading(pose.getCurrentHeading().getDegrees());
