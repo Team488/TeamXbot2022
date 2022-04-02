@@ -168,8 +168,20 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
                 if (pose.getHeadingResetRecently()) {
                     drive.setDesiredHeading(pose.getCurrentHeading().getDegrees());
                 } else {
-                    if (drive.isRotateToHubActive() && vision.getFixAcquired()) {
-                        drive.setDesiredHeading(pose.getCurrentHeading().getDegrees() + vision.getBearingToHub());
+                    if (drive.isRotateToHubActive()){
+                        if(vision.getFixAcquired()) {
+                            drive.setDesiredHeading(pose.getCurrentHeading().getDegrees() + vision.getBearingToHub());
+
+                            // if we're not at our goal yet, rumble gamepad so driver knows we're not there yet
+                            if(!headingModule.isOnTarget()) {
+                                oi.driverGamepad.getRumbleManager().rumbleGamepad(0.2, 0.2);
+                            } else {
+                                oi.driverGamepad.getRumbleManager().stopGamepadRumble();
+                            }
+                        } else {
+                            // if driver is trying to align with vision, but no target acquired, rumble aggressively
+                            oi.driverGamepad.getRumbleManager().rumbleGamepad(0.85, 0.2);
+                        }
                     } else {
                         drive.setDesiredHeading(desiredHeading);
                     }
