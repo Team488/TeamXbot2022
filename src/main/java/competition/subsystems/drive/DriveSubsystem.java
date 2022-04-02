@@ -51,7 +51,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     private XYPair lastCommandedDirection;
     private double lastCommandedRotation;
 
-    private double desiredHeading;
+    private final DoubleProperty desiredHeading;
 
     public enum SwerveModuleLocation {
         FRONT_LEFT,
@@ -92,6 +92,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         this.translationXTargetMPS = pf.createEphemeralProperty("TranslationXMetersPerSecond", 0.0);
         this.translationYTargetMPS = pf.createEphemeralProperty("TranslationYMetersPerSecond", 0.0);
         this.rotationTargetRadians = pf.createEphemeralProperty("RotationTargetRadians", 0.0);
+        this.desiredHeading = pf.createEphemeralProperty("Desired heading", 0);
 
         // TODO: eventually, this should retrieved from auto or the pose subsystem as a field like 
         // "Desired initial wheel direction" so there's no thrash right at the start of a match.
@@ -99,7 +100,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         lastCommandedDirection = new XYPair(0, 90);
 
         positionalPidManager = factory.createPIDManager(this.getPrefix() + "PositionPID", 0.018, 0, 0.1, 0.6, -0.6);
-        headingPidManager = factory.createPIDManager(this.getPrefix() + "HeadingPID", 0.015, 0, 0.04, 0.75, -0.75);
+        headingPidManager = factory.createPIDManager(this.getPrefix() + "HeadingPID", 0.015, 0.0000001, 0.045, 0.75, -0.75);
         
         headingPidManager.setTimeThreshold(0.2);
         headingPidManager.setErrorThreshold(2);
@@ -358,11 +359,11 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     }
 
     public void setDesiredHeading(double heading) {
-        this.desiredHeading = heading;
+        this.desiredHeading.set(heading);
     }
 
     public double getDesiredHeading() {
-        return this.desiredHeading;
+        return this.desiredHeading.get();
     }
 
     /**
