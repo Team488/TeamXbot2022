@@ -16,6 +16,7 @@ public class VisionSubsystem extends BaseSubsystem {
     public static final String VISION_TABLE = "photonvision";
     public static final String FIX_ACQUIRED_PROPERTY = "gloworm/hasTarget";
     public static final String TARGET_YAW_PROPERTY = "gloworm/targetYaw";
+    public static final String TARGET_PITCH_PROPERTY = "gloworm/targetPitch";
 
     final RobotAssertionManager assertionManager;
     final BooleanProperty isInverted;
@@ -45,6 +46,14 @@ public class VisionSubsystem extends BaseSubsystem {
         }
     }
 
+    public double getPitchToHub() {
+        if (getFixAcquired()) {
+            return getPitchToTarget();
+        } else {
+            return 0;
+        }
+    }
+
     public boolean getFixAcquired() {
         boolean fixAcquired = visionTable.getEntry(FIX_ACQUIRED_PROPERTY).getBoolean(false);
         boolean isStable = fixIsStable.checkStable(fixAcquired);
@@ -54,6 +63,12 @@ public class VisionSubsystem extends BaseSubsystem {
 
     private double getYawToTarget() {
         double yawToTarget = (visionTable.getEntry(TARGET_YAW_PROPERTY).getDouble(0) + this.yawOffset.get()) * getInversionFactor();
+
+        return yawToTarget;
+    }
+
+    private double getPitchToTarget() {
+        double yawToTarget = (visionTable.getEntry(TARGET_PITCH_PROPERTY).getDouble(0));
 
         return yawToTarget;
     }
