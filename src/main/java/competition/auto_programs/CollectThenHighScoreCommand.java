@@ -9,6 +9,7 @@ import competition.commandgroups.RetractAndConveyCommand;
 import competition.commandgroups.ShutdownCollectionCommandThatEnds;
 import competition.commandgroups.ShutdownShootingCommandThatEnds;
 import competition.subsystems.conveyer.commands.ConveyWhileShooterAtSpeedCommand;
+import competition.subsystems.drive.commands.RotateToVisionTargetCommand;
 import competition.subsystems.drive.commands.StopDriveCommand;
 import competition.subsystems.drive.commands.SwerveToPointCommand;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
@@ -29,6 +30,7 @@ public class CollectThenHighScoreCommand extends SequentialCommandGroup {
         PrepareToFireCommandThatEnds prepareforHigh,
         ConveyWhileShooterAtSpeedCommand conveyWhenReady,
         RetractAndConveyCommand retractAndConvey,
+        RotateToVisionTargetCommand visionRotate,
         StopDriveCommand middleStop,
         StopDriveCommand stopDrive) {
 
@@ -62,7 +64,7 @@ public class CollectThenHighScoreCommand extends SequentialCommandGroup {
         // Turn around and get to position
         var moveToShootingPosition = swerveToPointProvider.get();
         moveToShootingPosition.setRobotRelativeMotion();
-        moveToShootingPosition.setMaxPower(0.6);
+        moveToShootingPosition.setMaxPower(0.5);
         //moveToShootingPosition.setTargetPosition(new XYPair(6, -39.5), -90);
         moveToShootingPosition.setTargetPosition(new XYPair(0, -12), -90);
 
@@ -74,6 +76,8 @@ public class CollectThenHighScoreCommand extends SequentialCommandGroup {
         );
 
         this.addCommands(moveToShootWithTimeout);
+
+        this.addCommands(visionRotate);
 
         this.addCommands(new ParallelCommandGroup(
             conveyWhenReady,

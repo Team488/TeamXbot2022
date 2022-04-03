@@ -41,6 +41,7 @@ import competition.subsystems.conveyer.ConveyorSubsystem;
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.drive.commands.DebuggingSwerveWithJoysticksCommand;
 import competition.subsystems.drive.commands.GoToNextActiveSwerveModuleCommand;
+import competition.subsystems.drive.commands.RotateToVisionTargetCommand;
 import competition.subsystems.drive.commands.SetSwerveMotorControllerPidParametersCommand;
 import competition.subsystems.drive.commands.SwerveToPointCommand;
 import competition.subsystems.drive.commands.TurnLeft90DegreesCommand;
@@ -350,7 +351,8 @@ public class OperatorCommandMap {
             MoonshotCommand moonshot,
             Provider<SetAutonomousCommand> setAutoCommandProvider,
             Provider<SetRobotHeadingCommand> setHeadingCommandProvider,
-            Provider<SetPoseCommand> setPoseCommandProvider) {
+            Provider<SetPoseCommand> setPoseCommandProvider,
+            RotateToVisionTargetCommand rotate) {
         SetAutonomousCommand setDoNothing = setAutoCommandProvider.get();
         setDoNothing.setAutoCommand(doNothing);
         SetAutonomousCommand setDriveFiveFeet = setAutoCommandProvider.get();
@@ -394,6 +396,8 @@ public class OperatorCommandMap {
         operatorInterface.autoGamepad.getifAvailable(XboxButton.RightStick).whenPressed(setShootCollectShoot);
         operatorInterface.autoGamepad.getifAvailable(XboxButton.Back).whenPressed(setScsFromOneRobotAwayCommand);
         operatorInterface.autoGamepad.getifAvailable(XboxButton.Start).whenPressed(setShootFarThenEscapeCommand);
+
+        SmartDashboard.putData(rotate.getName(), rotate);
 
         SetPoseCommand setPoseForLeftStart = setPoseCommandProvider.get();
         setPoseForLeftStart.setPose(pose.getStartingPose(KeyPosition.LeftFacingOut));
