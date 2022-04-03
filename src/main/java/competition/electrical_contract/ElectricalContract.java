@@ -68,4 +68,7 @@ public abstract class ElectricalContract {
     public abstract CANTalonInfo getConveyerMotor();
 
     public abstract boolean isConveyerReady();
+
+    public abstract DeviceInfo getConveyorBottomSensor();
+    public abstract DeviceInfo getConveyorTopSensor();
 }

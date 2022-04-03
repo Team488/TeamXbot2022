@@ -7,14 +7,22 @@ import com.google.inject.Singleton;
 
 import competition.electrical_contract.ElectricalContract;
 import xbot.common.controls.actuators.XCANTalon;
+import xbot.common.controls.sensors.XDigitalInput;
 import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.properties.BooleanProperty;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.subsystems.simplemotor.SimpleMotorSubsystem;
 
 @Singleton
 public class ConveyorSubsystem extends SimpleMotorSubsystem {
     public final XCANTalon motor;
+    public final XDigitalInput topSensor;
+    public final XDigitalInput bottomSensor;
     public final boolean isReady;
+
+    private final BooleanProperty topSensorProp;
+    private final BooleanProperty bottomSensorProp;
+
     private boolean hasRetracted = true;
 
     @Inject
@@ -28,6 +36,14 @@ public class ConveyorSubsystem extends SimpleMotorSubsystem {
         } else {
             motor = null;
         }
+
+        topSensor = clf.createDigitalInput(eContract.getConveyorTopSensor().channel);
+        topSensor.setInverted(eContract.getConveyorTopSensor().inverted);
+        bottomSensor = clf.createDigitalInput(eContract.getConveyorBottomSensor().channel);
+        bottomSensor.setInverted(eContract.getConveyorBottomSensor().inverted);
+
+        topSensorProp = pf.createEphemeralProperty("Top sensor value", true);
+        bottomSensorProp = pf.createEphemeralProperty("Bottom sensor value", true);
     }
 
     @Override
@@ -50,4 +66,11 @@ public class ConveyorSubsystem extends SimpleMotorSubsystem {
         this.hasRetracted = hasRetracted;
     }
     
+    @Override
+    public void periodic() {
+        super.periodic();
+
+        this.topSensorProp.set(this.topSensor.get());
+        this.bottomSensorProp.set(this.bottomSensor.get());
+    }
 }
