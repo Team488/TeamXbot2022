@@ -63,7 +63,6 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import xbot.common.command.DelayViaSupplierCommand;
 import xbot.common.command.NamedInstantCommand;
-import xbot.common.command.NamedRunCommand;
 import xbot.common.command.SmartDashboardCommandPutter;
 import xbot.common.controls.sensors.ChordButton;
 import xbot.common.controls.sensors.XXboxController.XboxButton;
@@ -103,13 +102,14 @@ public class OperatorCommandMap {
                 () -> pose.setCurrentPosition(0, 0));
         ParallelCommandGroup resetPose = new ParallelCommandGroup(resetPosition, resetHeading);
 
-        NamedInstantCommand rotateToHub = new NamedInstantCommand("Rotate to Hub", () -> drive.setRotateToHubActive(true));
-        NamedInstantCommand turnOffVisionRotation = new NamedInstantCommand("Back to normal drive mode", () -> drive.setRotateToHubActive(false));
+        StartEndCommand enableVisionRotation = new StartEndCommand(
+                () -> drive.setRotateToHubActive(true),
+                () -> drive.setRotateToHubActive(false));
 
         operatorInterface.driverGamepad.getifAvailable(XboxButton.A).whenPressed(resetPose);
         operatorInterface.driverGamepad.getifAvailable(XboxButton.RightStick).whenHeld(setAngleViaJoysticks);
         operatorInterface.driverGamepad.getifAvailable(XboxButton.Y).whenHeld(setAngleViaJoysticks);
-        operatorInterface.driverGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(rotateToHub).whenReleased(turnOffVisionRotation);
+        operatorInterface.driverGamepad.getifAvailable(XboxButton.RightBumper).whileHeld(enableVisionRotation);
 
         operatorInterface.driverGamepad.getPovIfAvailable(0).whenHeld(setAngleViaJoysticks);
         operatorInterface.driverGamepad.getPovIfAvailable(90).whenHeld(setAngleViaJoysticks);
