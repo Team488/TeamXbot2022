@@ -256,11 +256,17 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
             oi.driverGamepad.getRumbleManager().stopGamepadRumble();
         }
         
-
-        drive.fieldOrientedDrive(translationIntent, suggestedRotatePower, pose.getCurrentHeading().getDegrees(), centerOfRotation);
+        if (drive.isRobotOrientedDriveActive()) {
+            drive.move(translationIntent, suggestedRotatePower);
+        } else {
+            drive.fieldOrientedDrive(translationIntent, suggestedRotatePower, pose.getCurrentHeading().getDegrees(), centerOfRotation);
+        }
     }
 
     private double scaleHumanRotationInput(double humanInputPower) {
-        return humanInputPower * (drive.isPrecisionRotationActive() ? 0.25 : 1.0);
+        if (drive.isPrecisionRotationActive() || drive.isRobotOrientedDriveActive()) {
+            return humanInputPower * 0.25;
+        }
+        return humanInputPower;
     }
 }
