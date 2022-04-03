@@ -180,7 +180,18 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         precisionRotationActive = isActive;
     }
 
+    private boolean isRobotOrientedDrive = false;
+
+    public boolean isRobotOrientedDriveActive() {
+        return isRobotOrientedDrive;
+    }
+
+    public void setIsRobotOrientedDrive(boolean isActive) {
+        isRobotOrientedDrive = isActive;
+    }
+
     private boolean rotateToHubActive = false;
+
 
     public boolean isRotateToHubActive() {
         return rotateToHubActive;
@@ -250,9 +261,15 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         // For now, we're choosing to prioritize motion. We're somewhat new to swerve, so debugging any strange motion will be easier if we know the system is
         // always trying to prioritize motion.
 
-        // Also, one more special check - if there was no commanded motion, set the maximum speed to 0.
-        double topSpeedMetersPerSecond = isNotMoving ? 0 : maxTargetSpeed.get() / BasePoseSubsystem.INCHES_IN_A_METER;
-        SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, topSpeedMetersPerSecond);
+        // Also, one more special check - if there was no commanded motion, set the speed to 0.
+        if (isNotMoving) {
+            for (SwerveModuleState moduleState : moduleStates) {
+                moduleState.speedMetersPerSecond = 0;
+            }
+        } else {
+            double topSpeedMetersPerSecond = maxTargetSpeed.get() / BasePoseSubsystem.INCHES_IN_A_METER;
+            SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, topSpeedMetersPerSecond);
+        }
 
         this.getFrontLeftSwerveModuleSubsystem().setTargetState(moduleStates[0]);
         this.getFrontRightSwerveModuleSubsystem().setTargetState(moduleStates[1]);
