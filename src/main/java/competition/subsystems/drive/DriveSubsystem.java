@@ -23,6 +23,7 @@ import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.properties.StringProperty;
 import xbot.common.properties.XPropertyManager;
+import xbot.common.properties.Property.PropertyLevel;
 import xbot.common.subsystems.drive.BaseDriveSubsystem;
 import xbot.common.subsystems.pose.BasePoseSubsystem;
 
@@ -44,6 +45,9 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     private final DoubleProperty translationXTargetMPS;
     private final DoubleProperty translationYTargetMPS;
     private final DoubleProperty rotationTargetRadians;
+
+    private final DoubleProperty minTranslateSpeed;
+    private final DoubleProperty minRotationalSpeed;
 
     private final PIDManager positionalPidManager;
     private final PIDManager headingPidManager;
@@ -93,6 +97,10 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         this.translationYTargetMPS = pf.createEphemeralProperty("TranslationYMetersPerSecond", 0.0);
         this.rotationTargetRadians = pf.createEphemeralProperty("RotationTargetRadians", 0.0);
         this.desiredHeading = pf.createEphemeralProperty("Desired heading", 0);
+
+        // These can be tuned to reduce twitchy wheels
+        this.minTranslateSpeed = pf.createPersistentProperty("Minimum translate speed", 0.02, PropertyLevel.Debug);
+        this.minRotationalSpeed = pf.createPersistentProperty("Minimum rotational speed", 0.02, PropertyLevel.Debug);
 
         // TODO: eventually, this should retrieved from auto or the pose subsystem as a field like 
         // "Desired initial wheel direction" so there's no thrash right at the start of a match.
@@ -222,7 +230,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         // First, we need to check if we've been asked to move at all. If not, we should look at the last time we were given a commanded direction
         // and keep the wheels pointed that way. That prevents the wheels from returning to "0" degrees when the driver has gone back to 
         // neutral joystick position.
-        boolean isNotMoving = translate.getMagnitude() < 0.01 && Math.abs(rotate) < 0.01;
+        boolean isNotMoving = translate.getMagnitude() < this.minTranslateSpeed.get() && Math.abs(rotate) < this.minRotationalSpeed.get();
 
         if (isNotMoving)
         {
