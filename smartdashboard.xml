@@ -1,0 +1,76 @@
+<xml version="1.0">
+<dashboard>
+	<widget field="ConveyerSubsystem/Bottom sensor value" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="15" y="44"/>
+	</widget>
+	<widget field="ConveyerSubsystem/Top sensor value" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="15" y="22"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="13" y="187"/>
+	</static-widget>
+	<widget field="RobotSession" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="23" y="129"/>
+	</widget>
+	<widget field="Battery Voltage" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="23" y="152"/>
+	</widget>
+	<widget field="Auto Program State" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="19" y="105"/>
+	</widget>
+	<widget field="Current autonomous command name" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="23" y="79"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="270" y="13"/>
+		<width>677</width>
+		<height>403</height>
+		<property name="Camera Choice" value=""/>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="13" y="187"/>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="270" y="13"/>
+		<width>677</width>
+		<height>403</height>
+		<property name="Camera Choice" value=""/>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="13" y="187"/>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="270" y="13"/>
+		<width>677</width>
+		<height>403</height>
+		<property name="Camera Choice" value=""/>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="13" y="187"/>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="270" y="13"/>
+		<width>677</width>
+		<height>403</height>
+		<property name="Camera Choice" value=""/>
+	</static-widget>
+</dashboard>
+<live-window>
+</live-window>
+	<hidden field="ConeyerSubsystem/Top sensor value"/>
+	<hidden field="StopShooterWheelCommand"/>
+	<hidden field="Scheduler"/>
+	<hidden field="LatchReleaseCommand"/>
+	<hidden field="SetArmsToPositionCommand: EngageNextBar"/>
+	<hidden field="SetArmsToPositionCommand: FullyRetracted"/>
+	<hidden field="Commit steering pid values"/>
+	<hidden field="Trim Up"/>
+	<hidden field="SetArmsToPositionCommand: ClearCurrentBar"/>
+	<hidden field="SetFastMode"/>
+	<hidden field="Robot loop frequency report interval"/>
+	<hidden field="SetArmsToPositionCommand: FullyExtended"/>
+	<hidden field="LatchArmCommand"/>
+	<hidden field="SetSlowMode"/>
+	<hidden field="Trim down"/>
+	<hidden field="RotateToVisionTargetCommand"/>
+</xml>
