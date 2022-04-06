@@ -182,7 +182,7 @@ public class OperatorCommandMap {
 
         var safeLockedArms = new ParallelCommandGroup(setArmsSafe, setArmsLocked);
 
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightStick).whenPressed(safeLockedArms);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftStick).whenPressed(safeLockedArms);
 
         var setArmsUnsafe = new InstantCommand(() -> {
                 leftArm.setIgnoreLimits(true);
@@ -194,7 +194,7 @@ public class OperatorCommandMap {
                 rightArm.setArmsUnlocked(true);
         });
 
-        operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftStick).whenPressed(setArmsUnsafe);
+        operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightStick).whenPressed(setArmsUnsafe);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightJoystickYAxis).whenPressed(unlockArms);
 
 
