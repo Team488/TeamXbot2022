@@ -6,11 +6,13 @@ import competition.operator_interface.OperatorInterface;
 import competition.subsystems.conveyer.ConveyorSubsystem;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
 import xbot.common.command.BaseCommand;
+import xbot.common.controls.sensors.AdvancedXboxButton;
+import xbot.common.controls.sensors.XXboxController.XboxButton;
 
 public class ConveyWhileAtSpeedAndDriverSignalCommand extends BaseCommand {
     private final ShooterWheelSubsystem shooter;
     private final ConveyorSubsystem conveyor;
-    private final OperatorInterface oi;
+    private final AdvancedXboxButton fireButton;
 
     @Inject
     public ConveyWhileAtSpeedAndDriverSignalCommand(
@@ -19,7 +21,7 @@ public class ConveyWhileAtSpeedAndDriverSignalCommand extends BaseCommand {
             OperatorInterface oi) {
         this.shooter = shooter;
         this.conveyor = conveyor;
-        this.oi = oi;
+        fireButton = oi.operatorGamepad.getifAvailable(XboxButton.Back);
         this.addRequirements(conveyor);
     }
 
@@ -30,7 +32,7 @@ public class ConveyWhileAtSpeedAndDriverSignalCommand extends BaseCommand {
 
     @Override
     public void execute() {
-        if (shooter.isMaintainerAtGoal() && oi.operatorGamepad.getPOV() == 0) {
+        if (shooter.isMaintainerAtGoal() && fireButton.get()) {
             conveyor.setForward();
         } else {
             conveyor.stop();
