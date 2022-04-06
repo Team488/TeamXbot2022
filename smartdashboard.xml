@@ -1,0 +1,126 @@
+<xml version="1.0">
+<dashboard>
+	<widget field="ConveyerSubsystem/Bottom sensor value" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="15" y="44"/>
+	</widget>
+	<widget field="ConveyerSubsystem/Top sensor value" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="15" y="22"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="13" y="187"/>
+	</static-widget>
+	<widget field="RobotSession" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="23" y="129"/>
+	</widget>
+	<widget field="Battery Voltage" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="23" y="152"/>
+	</widget>
+	<widget field="Auto Program State" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="19" y="105"/>
+	</widget>
+	<widget field="Current autonomous command name" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="23" y="79"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="293" y="19"/>
+		<width>1165</width>
+		<height>640</height>
+		<property name="Camera Choice" value="Intel(R)_RealSense(TM)_Depth_Camera_435i_RGB-output"/>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="13" y="187"/>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="13" y="187"/>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="13" y="187"/>
+	</static-widget>
+	<widget field="SetFastMode" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="0" y="641"/>
+	</widget>
+	<widget field="SetArmsToPositionCommand: FullyExtended" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="-3" y="676"/>
+	</widget>
+	<widget field="Trim down" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="13" y="613"/>
+	</widget>
+	<widget field="Scheduler" type="Scheduler" class="edu.wpi.first.smartdashboard.gui.elements.Scheduler">
+		<location x="0" y="396"/>
+	</widget>
+	<widget field="SetArmsToPositionCommand: FullyRetracted" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="-4" y="628"/>
+	</widget>
+	<widget field="SetArmsToPositionCommand: ClearCurrentBar" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="-8" y="634"/>
+	</widget>
+	<widget field="SetArmsToPositionCommand: EngageNextBar" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="-10" y="630"/>
+	</widget>
+	<widget field="SetSlowMode" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="37" y="609"/>
+	</widget>
+	<widget field="LatchReleaseCommand" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="5" y="643"/>
+	</widget>
+	<widget field="Trim Up" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="66" y="615"/>
+	</widget>
+	<widget field="Spin up shooter" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="48" y="618"/>
+	</widget>
+	<widget field="LatchArmCommand" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="13" y="674"/>
+	</widget>
+	<widget field="RotateToVisionTargetCommand" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="13" y="634"/>
+	</widget>
+	<widget field="ConveyOneBallWhileShooterAtSpeedCommand" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="-7" y="581"/>
+	</widget>
+	<widget field="Commit steering pid values" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="26" y="619"/>
+	</widget>
+	<widget field="StopShooterWheelCommand" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="20" y="628"/>
+	</widget>
+	<widget field="Robot loop frequency report interval" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="25" y="634"/>
+	</widget>
+	<widget field="Auto Selector" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="34" y="604"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="13" y="187"/>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="368" y="54"/>
+		<width>677</width>
+		<height>403</height>
+		<property name="Camera Choice" value=""/>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="13" y="187"/>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="13" y="187"/>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="337" y="108"/>
+		<width>677</width>
+		<height>403</height>
+		<property name="Camera Choice" value=""/>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="13" y="187"/>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="417" y="222"/>
+		<width>677</width>
+		<height>403</height>
+		<property name="Camera Choice" value=""/>
+	</static-widget>
+</dashboard>
+<live-window>
+</live-window>
+</xml>
