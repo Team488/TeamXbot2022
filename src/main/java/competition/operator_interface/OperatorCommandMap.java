@@ -311,7 +311,9 @@ public class OperatorCommandMap {
                 conveyer.getForwardCommand()
         );
 
-        
+        var ejectConveyor = conveyer.getReverseCommand();
+
+        operatorInterface.operatorGamepad.getPovIfAvailable(0).whenHeld(ejectConveyor);
 
         operatorInterface.operatorGamepad.getPovIfAvailable(90).whenHeld(retractAndConvey);
         operatorInterface.operatorGamepad.getPovIfAvailable(180).whenHeld(retractAndConvey);
