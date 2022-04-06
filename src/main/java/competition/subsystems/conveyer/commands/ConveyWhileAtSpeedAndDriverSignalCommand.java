@@ -38,5 +38,4 @@ public class ConveyWhileAtSpeedAndDriverSignalCommand extends BaseCommand {
             conveyor.stop();
         }
     }
-
 }
