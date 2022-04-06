@@ -21,7 +21,7 @@ public class ConveyWhileAtSpeedAndDriverSignalCommand extends BaseCommand {
             OperatorInterface oi) {
         this.shooter = shooter;
         this.conveyor = conveyor;
-        fireButton = oi.operatorGamepad.getifAvailable(XboxButton.Back);
+        fireButton = oi.operatorGamepad.getXboxButton(XboxButton.Back);
         this.addRequirements(conveyor);
     }
 
