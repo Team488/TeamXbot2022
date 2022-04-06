@@ -56,12 +56,18 @@ public class ShooterRPMWithVisionCommand extends BaseCommand {
         } else {
             if(vision.getFixAcquired()) {
                 shooter.setTargetRPM(speedFromPitchHigh(vision.getPitchToHub()));
+            } else {
+                // if shooter wasn't moving at all, get it going to near shot speed
+                if(!(shooter.getTargetRPM() > 0)) {
+                    shooter.setTargetRPM(TargetRPM.DistanceShot);
+                }
+                // otherwise leave shooter at whatever the last speed it was at
             }
         }
 
         // rumble operator gamepad if it's a shot that can't be made
         if(!canMakeShot()) {
-            operatorGamepad.getRumbleManager().rumbleGamepad(0.6, 0.01);
+            operatorGamepad.getRumbleManager().rumbleGamepad(0.2, 0.01);
         } else {
             operatorGamepad.getRumbleManager().stopGamepadRumble();
         }
