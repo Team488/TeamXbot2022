@@ -70,10 +70,10 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
         longRangeErrorTolerance = pf.createPersistentProperty("LongRangeErrorTolerance", 50);
 
         XCANSparkMaxPIDProperties wheelDefaultProps = new XCANSparkMaxPIDProperties();
-        wheelDefaultProps.p = 0;
-        wheelDefaultProps.i = 0.000001;
+        wheelDefaultProps.p = 0.00008;
+        wheelDefaultProps.i = 0;
         wheelDefaultProps.d = 0;
-        wheelDefaultProps.feedForward = 0.000195;
+        wheelDefaultProps.feedForward = 0.000185;
         wheelDefaultProps.iZone = 200;
         wheelDefaultProps.maxOutput = 1;
         wheelDefaultProps.minOutput = -1;
@@ -88,10 +88,10 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
             this.leader.enableVoltageCompensation(12);
             this.leader.follow(ExternalFollower.kFollowerDisabled, 0);           
 
-            leader.setP(0);
-            leader.setI(0.000001);
+            leader.setP(0.00008);
+            leader.setI(0);
             leader.setD(0);
-            leader.setFF(0.000195);
+            leader.setFF(0.000185);
             leader.setIZone(200);
             leader.setOutputRange(-1, 1);
 
