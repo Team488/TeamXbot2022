@@ -15,7 +15,7 @@ public class ShooterWheelMaintainerCommand extends BaseMaintainerCommand {
 
     @Inject
     public ShooterWheelMaintainerCommand(OperatorInterface oi, ShooterWheelSubsystem wheel, PropertyFactory pf, CommonLibFactory clf){
-        super(wheel, pf, clf, 50, 0.25);
+        super(wheel, pf, clf, 50, 0.15);
         this.oi = oi;
         this.wheel = wheel;
         this.addRequirements(this.wheel);
