@@ -39,7 +39,8 @@ public class ShooterRPMWithVisionCommand extends BaseCommand {
 
     @Override
     public void initialize() {
-        
+        visionGoals.setIsTargeting(true);
+        visionGoals.setIsInRange(false);
     }
 
     @Override
@@ -59,7 +60,10 @@ public class ShooterRPMWithVisionCommand extends BaseCommand {
             }
         } else {
             if(fixAcquired) {
-                shooter.setTargetRPM(visionGoals.speedFromPitchHigh(pitch));
+                double targetRPM = visionGoals.speedFromPitchHigh(pitch);
+                double arbFF = visionGoals.feedForwardFromPitchHigh(pitch, shooter.leader.getFF());
+                shooter.setArbitraryFF(arbFF);
+                shooter.setTargetRPM(targetRPM);
             } else {
                 // if shooter wasn't moving at all, get it going to near shot speed
                 if(!(shooter.getTargetRPM() > 0)) {
@@ -72,14 +76,22 @@ public class ShooterRPMWithVisionCommand extends BaseCommand {
         // rumble operator gamepad if it's a shot that can't be made
         if(!visionGoals.inCalibratedRange(target, fixAcquired, pitch)) {
             operatorGamepad.getRumbleManager().rumbleGamepad(0.2, 0.01);
+            visionGoals.setIsTargeting(true);
+            visionGoals.setIsInRange(false);
         } else {
             operatorGamepad.getRumbleManager().stopGamepadRumble();
+            visionGoals.setIsTargeting(true);
+            visionGoals.setIsInRange(false);
         }
     }
 
     @Override
     public void end(boolean interrupted) {
         shooter.setTargetRPM(0);
+        shooter.setArbitraryFF(0);
         operatorGamepad.getRumbleManager().stopGamepadRumble();
+
+        visionGoals.setIsTargeting(false);
+        visionGoals.setIsInRange(false);
     }
 }

@@ -34,6 +34,11 @@ public class VisionShooterGoalsSubsystem extends BaseSubsystem {
     private final DoubleProperty warningHighMinPitch;
     private final DoubleProperty warningHighMaxPitch;
 
+    private final DoubleProperty highBelowMinFFSlope;
+
+    private boolean isTargeting;
+    private boolean isInRange;
+
     @Inject
     public VisionShooterGoalsSubsystem(PropertyFactory pf) {
         pf.setPrefix(this);
@@ -55,8 +60,29 @@ public class VisionShooterGoalsSubsystem extends BaseSubsystem {
 
         warningHighMinPitch = pf.createPersistentProperty("High/Warning min pitch", HIGH_MIN_PITCH);
         warningHighMaxPitch = pf.createPersistentProperty("High/Warning max pitch", HIGH_MAX_PITCH);
+
+        highBelowMinFFSlope = pf.createPersistentProperty("High/FF Slope below min pitch", 1);
+
+        isTargeting = false;
+        isInRange = false;
     }
-    
+
+    public void setIsTargeting(boolean isTargeting) {
+        this.isTargeting = isTargeting;
+    }
+
+    public void setIsInRange(boolean inRange) {
+        this.isInRange = inRange;
+    }
+
+    public boolean getIsTargeting() {
+        return this.isTargeting;
+    }
+
+    public boolean getIsInRange() {
+        return this.isInRange;
+    }
+
     public boolean inCalibratedRange(Target target, boolean fixAcquired, double pitch) {
         if(fixAcquired) {
             if(target == Target.Low) {
@@ -95,6 +121,15 @@ public class VisionShooterGoalsSubsystem extends BaseSubsystem {
         }
     }
 
+    public double feedForwardFromPitchHigh(double pitch, double defaultFF) {
+        double highMinPitch = this.highMinPitch.get();
+        if (pitch < highMinPitch) {
+            return defaultFF + (pitch - highMinPitch) * this.highBelowMinFFSlope.get();
+        } else {
+            return defaultFF;
+        }
+    }
+
     public void setLowGoalBelowMinPitchSlope(double slope) {
         this.lowBelowMinSlope.set(slope);
     }
@@ -125,5 +160,9 @@ public class VisionShooterGoalsSubsystem extends BaseSubsystem {
 
     public void setHighMaxPitch(double pitch) {
         this.highMaxPitch.set(pitch);
+    }
+
+    public void setHighFFBelowMinPitchSlope(double slope) {
+        this.highBelowMinFFSlope.set(slope);
     }
 }

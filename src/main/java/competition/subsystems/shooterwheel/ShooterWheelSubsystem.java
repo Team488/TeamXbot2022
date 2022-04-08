@@ -22,6 +22,7 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
     private final DoubleProperty targetRpmProp;
     private final DoubleProperty currentRpmProp;
     private final DoubleProperty rpmTrimProp;
+    private final DoubleProperty arbFFProp;
 
     private final DoubleProperty safeRpm;
     private final DoubleProperty nearShotRpm;
@@ -58,6 +59,7 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
         targetRpmProp = pf.createEphemeralProperty("TargetRPM", 0);
         currentRpmProp = pf.createEphemeralProperty("CurrentRPM", 0);
         rpmTrimProp = pf.createEphemeralProperty("TrimRPM", 0);
+        arbFFProp = pf.createEphemeralProperty("ArbFF", 0);
 
         safeRpm = pf.createPersistentProperty("SafeRpm", 500);
         nearShotRpm = pf.createPersistentProperty("NearShotRpm", 1000);
@@ -182,6 +184,18 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
         return targetRpmProp.get() + getTrimRPM();
     }
 
+    public double getArbitraryFF() {
+        return arbFFProp.get();
+    }
+    
+    public void setArbitraryFF(double ff) {
+        arbFFProp.set(ff);
+    }
+
+    public void resetAribtraryFF() {
+        arbFFProp.set(0);
+    }
+
     public void changeTrimRPM(double changeRate) {
         rpmTrimProp.set(getTrimRPM() + changeRate);
     }
@@ -207,7 +221,13 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
 
     public void setPidSetpoint(double speed) {
         if (contract.isShooterReady()) {
-            leader.setReference(speed, ControlType.kVelocity);
+            double arbFF = this.arbFFProp.get();
+
+            if (arbFF == 0) {
+                arbFF = leader.getFF();
+            }
+
+            leader.setReference(speed, ControlType.kVelocity, 0, arbFF);
         }
     }
 
