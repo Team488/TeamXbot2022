@@ -99,8 +99,8 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         this.desiredHeading = pf.createEphemeralProperty("Desired heading", 0);
 
         // These can be tuned to reduce twitchy wheels
-        this.minTranslateSpeed = pf.createPersistentProperty("Minimum translate speed", 0.02, PropertyLevel.Debug);
-        this.minRotationalSpeed = pf.createPersistentProperty("Minimum rotational speed", 0.02, PropertyLevel.Debug);
+        this.minTranslateSpeed = pf.createPersistentProperty("Minimum translate speed", 0.02);
+        this.minRotationalSpeed = pf.createPersistentProperty("Minimum rotational speed", 0.02);
 
         // TODO: eventually, this should retrieved from auto or the pose subsystem as a field like 
         // "Desired initial wheel direction" so there's no thrash right at the start of a match.
@@ -285,7 +285,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         this.getRearRightSwerveModuleSubsystem().setTargetState(moduleStates[3]);
 
         // If we were asked to move in a direction, remember that direction.
-        if (translate.getMagnitude() > 0.05 || Math.abs(rotate) > 0.05) {
+        if (translate.getMagnitude() > 0.02 || Math.abs(rotate) > 0.02) {
             lastCommandedDirection = translate;
             lastCommandedRotation = rotate;
         }        

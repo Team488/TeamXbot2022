@@ -242,8 +242,8 @@ public class OperatorCommandMap {
 
         oi.operatorGamepad.getifAvailable(XboxButton.B).whenHeld(fireLowVisionCommand);
         oi.operatorGamepad.getifAvailable(XboxButton.Y).whenHeld(fireHighVisionCommand);
-        oi.operatorGamepad.getifAvailable(XboxButton.A).whenHeld(fireLowCommand);
-        oi.operatorGamepad.getifAvailable(XboxButton.X).whenHeld(fireHighCommand);
+        oi.operatorGamepad.getifAvailable(XboxButton.X).whenHeld(fireLowCommand);
+        oi.operatorGamepad.getifAvailable(XboxButton.A).whenHeld(fireHighCommand);
     }
 
     @Inject
