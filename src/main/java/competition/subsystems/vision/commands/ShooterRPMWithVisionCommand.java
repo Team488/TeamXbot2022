@@ -6,6 +6,7 @@ import competition.operator_interface.OperatorInterface;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.Target;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
+import competition.subsystems.vision.VisionShooterGoalsSubsystem;
 import competition.subsystems.vision.VisionSubsystem;
 import xbot.common.command.BaseCommand;
 import xbot.common.controls.sensors.XXboxController;
@@ -13,20 +14,20 @@ import xbot.common.controls.sensors.XXboxController;
 public class ShooterRPMWithVisionCommand extends BaseCommand {
 
     private final VisionSubsystem vision;
+    private final VisionShooterGoalsSubsystem visionGoals;
     private final ShooterWheelSubsystem shooter;
     private Target target = Target.Low;
     private final XXboxController operatorGamepad;
-
-    // outside of these ranges the robot physically can't score successfully these shots.
-    // for example, too close to the hub high shots will just whack against the side.
-    private final double lowMinPitch = -1.4;
-    private final double lowMaxPitch = 22;
-    private final double highMinPitch = -1;
-    private final double highMaxPitch = 9;
     
     @Inject
-    public ShooterRPMWithVisionCommand(ShooterWheelSubsystem shooter, VisionSubsystem vision, OperatorInterface oi) {
+    public ShooterRPMWithVisionCommand(
+        ShooterWheelSubsystem shooter,
+        VisionSubsystem vision,
+        VisionShooterGoalsSubsystem visionGoals,
+        OperatorInterface oi
+    ) {
         this.vision = vision;
+        this.visionGoals = visionGoals;
         this.shooter = shooter;
         this.operatorGamepad = oi.operatorGamepad;
         this.addRequirements(shooter.getSetpointLock());
@@ -43,9 +44,12 @@ public class ShooterRPMWithVisionCommand extends BaseCommand {
 
     @Override
     public void execute() {
+        boolean fixAcquired = vision.getFixAcquired();
+        double pitch = vision.getPitchToHub();
+
         if(target == Target.Low) {
-            if(vision.getFixAcquired()) {
-                shooter.setTargetRPM(speedFromPitchLow(vision.getPitchToHub()));
+            if(fixAcquired) {
+                shooter.setTargetRPM(visionGoals.speedFromPitchLow(pitch));
             } else {
                 // if shooter wasn't moving at all, get it going to near shot speed
                 if(!(shooter.getTargetRPM() > 0)) {
@@ -54,8 +58,8 @@ public class ShooterRPMWithVisionCommand extends BaseCommand {
                 // otherwise leave shooter at whatever the last speed it was at
             }
         } else {
-            if(vision.getFixAcquired()) {
-                shooter.setTargetRPM(speedFromPitchHigh(vision.getPitchToHub()));
+            if(fixAcquired) {
+                shooter.setTargetRPM(visionGoals.speedFromPitchHigh(pitch));
             } else {
                 // if shooter wasn't moving at all, get it going to near shot speed
                 if(!(shooter.getTargetRPM() > 0)) {
@@ -66,32 +70,11 @@ public class ShooterRPMWithVisionCommand extends BaseCommand {
         }
 
         // rumble operator gamepad if it's a shot that can't be made
-        if(!canMakeShot()) {
+        if(!visionGoals.inCalibratedRange(target, fixAcquired, pitch)) {
             operatorGamepad.getRumbleManager().rumbleGamepad(0.2, 0.01);
         } else {
             operatorGamepad.getRumbleManager().stopGamepadRumble();
         }
-    }
-
-    public boolean canMakeShot() {
-        if(vision.getFixAcquired()) {
-            if(target == Target.Low) {
-                return vision.getPitchToHub() >= lowMinPitch && vision.getPitchToHub() <= lowMaxPitch;
-            } else {
-                return vision.getPitchToHub() >= highMinPitch && vision.getPitchToHub() <= highMaxPitch;
-            }
-        } else {
-            return false;
-        }
-        
-    }
-
-    public double speedFromPitchLow(double pitch) {
-        return pitch * -31.6 + 1961;
-    }
-
-    public double speedFromPitchHigh(double pitch) {
-        return pitch * -48.8 + 3224;
     }
 
     @Override
