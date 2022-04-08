@@ -164,7 +164,7 @@ public class CompetitionContract extends ElectricalContract {
 
     @Override
     public DeviceInfo getArduinoDio3() {
-        return new DeviceInfo(10); // something on the navX, just out of the way
+        return new DeviceInfo(11); // something on the navX, just out of the way
     }
 
     @Override
@@ -280,5 +280,9 @@ public class CompetitionContract extends ElectricalContract {
 
     public DeviceInfo getConveyorTopSensor() {
         return new DeviceInfo(5, true);
+    }
+
+    public DeviceInfo getCollectorSensor() {
+        return new DeviceInfo(10, true);
     }
 }

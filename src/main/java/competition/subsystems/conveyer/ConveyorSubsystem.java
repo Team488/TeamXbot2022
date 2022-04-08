@@ -18,10 +18,12 @@ public class ConveyorSubsystem extends SimpleMotorSubsystem {
     public final XCANTalon motor;
     public final XDigitalInput topSensor;
     public final XDigitalInput bottomSensor;
+    public final XDigitalInput collectorSensor;
     public final boolean isReady;
 
     private final BooleanProperty topSensorProp;
     private final BooleanProperty bottomSensorProp;
+    private final BooleanProperty collectorSensorProp;
 
     private boolean hasRetracted = true;
 
@@ -41,9 +43,12 @@ public class ConveyorSubsystem extends SimpleMotorSubsystem {
         topSensor.setInverted(eContract.getConveyorTopSensor().inverted);
         bottomSensor = clf.createDigitalInput(eContract.getConveyorBottomSensor().channel);
         bottomSensor.setInverted(eContract.getConveyorBottomSensor().inverted);
+        collectorSensor = clf.createDigitalInput(eContract.getCollectorSensor().channel);
+        collectorSensor.setInverted(eContract.getCollectorSensor().inverted);
 
-        topSensorProp = pf.createEphemeralProperty("Top sensor value", true);
-        bottomSensorProp = pf.createEphemeralProperty("Bottom sensor value", true);
+        topSensorProp = pf.createEphemeralProperty("Top sensor value", topSensor.get());
+        bottomSensorProp = pf.createEphemeralProperty("Bottom sensor value", bottomSensor.get());
+        collectorSensorProp = pf.createEphemeralProperty("Collector sensor value", collectorSensor.get());
     }
 
     @Override
@@ -72,5 +77,6 @@ public class ConveyorSubsystem extends SimpleMotorSubsystem {
 
         this.topSensorProp.set(this.topSensor.get());
         this.bottomSensorProp.set(this.bottomSensor.get());
+        this.collectorSensorProp.set(this.collectorSensor.get());
     }
 }
