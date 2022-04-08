@@ -9,8 +9,13 @@ import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;
 import competition.subsystems.vision.VisionSubsystem;
 import xbot.common.command.BaseCommand;
 import xbot.common.controls.sensors.XXboxController;
+import xbot.common.properties.DoubleProperty;
+import xbot.common.properties.PropertyFactory;
 
 public class ShooterRPMWithVisionCommand extends BaseCommand {
+
+    public static final double LOW_GOAL_SLOPE = -31.6;
+    public static final double HIGH_GOAL_SLOPE = -48.8;
 
     private final VisionSubsystem vision;
     private final ShooterWheelSubsystem shooter;
@@ -23,13 +28,31 @@ public class ShooterRPMWithVisionCommand extends BaseCommand {
     private final double lowMaxPitch = 22;
     private final double highMinPitch = -1;
     private final double highMaxPitch = 9;
+
+    private final DoubleProperty lowBelowMinSlope;
+    private final DoubleProperty lowAboveMaxSlope;
+    private final DoubleProperty highBelowMinSlope;
+    private final DoubleProperty highAboveMaxSlope;
     
     @Inject
-    public ShooterRPMWithVisionCommand(ShooterWheelSubsystem shooter, VisionSubsystem vision, OperatorInterface oi) {
+    public ShooterRPMWithVisionCommand(
+        ShooterWheelSubsystem shooter,
+        VisionSubsystem vision,
+        OperatorInterface oi,
+        PropertyFactory pf
+    ) {
         this.vision = vision;
         this.shooter = shooter;
         this.operatorGamepad = oi.operatorGamepad;
         this.addRequirements(shooter.getSetpointLock());
+
+        pf.setPrefix(this);
+
+        lowBelowMinSlope = pf.createPersistentProperty("Low/Slope below min pitch", -31.6);
+        lowAboveMaxSlope = pf.createPersistentProperty("Low/Slope above max pitch", -31.6);
+
+        highBelowMinSlope = pf.createPersistentProperty("High/Slope below min pitch", -48.8);
+        highAboveMaxSlope = pf.createPersistentProperty("High/Slope above max pitch", -48.8);
     }
 
     public void setTarget(Target target) {
@@ -87,11 +110,39 @@ public class ShooterRPMWithVisionCommand extends BaseCommand {
     }
 
     public double speedFromPitchLow(double pitch) {
-        return pitch * -31.6 + 1961;
+        if (pitch < lowMinPitch) {
+            return speedFromPitchLow(lowMinPitch) + (pitch - lowMinPitch) * this.lowBelowMinSlope.get();
+        } else if (pitch > lowMaxPitch) {
+            return speedFromPitchLow(lowMaxPitch) + (pitch - lowMaxPitch) * this.lowAboveMaxSlope.get();
+        } else {
+            return pitch * LOW_GOAL_SLOPE + 1961;
+        }
     }
 
     public double speedFromPitchHigh(double pitch) {
-        return pitch * -48.8 + 3224;
+        if (pitch < highMinPitch) {
+            return speedFromPitchHigh(highMinPitch) + (pitch - highMinPitch) * this.highBelowMinSlope.get();
+        } else if (pitch > highMaxPitch) {
+            return speedFromPitchHigh(highMaxPitch) + (pitch - highMaxPitch) * this.highAboveMaxSlope.get();
+        } else {
+            return pitch * HIGH_GOAL_SLOPE + 3224;
+        }
+    }
+
+    public void setLowGoalBelowMinPitchSlope(double slope) {
+        this.lowBelowMinSlope.set(slope);
+    }
+
+    public void setLowGoalAboveMaxPitchSlope(double slope) {
+        this.lowAboveMaxSlope.set(slope);
+    }
+
+    public void setHighGoalBelowMinPitchSlope(double slope) {
+        this.highBelowMinSlope.set(slope);
+    }
+
+    public void setHighGoalAboveMaxPitchSlope(double slope) {
+        this.highAboveMaxSlope.set(slope);
     }
 
     @Override
