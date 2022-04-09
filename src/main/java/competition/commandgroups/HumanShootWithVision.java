@@ -1,7 +1,5 @@
 package competition.commandgroups;
 
-import java.util.function.Supplier;
-
 import com.google.inject.Inject;
 
 import org.apache.log4j.Logger;
@@ -17,10 +15,6 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import xbot.common.command.DelayViaSupplierCommand;
-import xbot.common.command.NamedInstantCommand;
-import xbot.common.command.SimpleWaitForMaintainerCommand;
-import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 
 /**
@@ -33,32 +27,32 @@ import xbot.common.properties.PropertyFactory;
  */
 public class HumanShootWithVision extends SequentialCommandGroup {
 
-    private final DoubleProperty conveyorReverseTimeProp;
     private Target target = Target.Low;
 
     private static Logger log = Logger.getLogger(PrepareToFireCommandThatEnds.class);
 
     @Inject
-    HumanShootWithVision(ShooterWheelSubsystem wheel,
-            ConveyorSubsystem conveyor, PropertyFactory pf, ShooterRPMWithVisionCommand shooterRPMWithVisionCommand,
-            ConveyWhileAtSpeedAndDriverSignalCommand conveyCommand) {
+    HumanShootWithVision(
+        ShooterWheelSubsystem wheel,
+        ConveyorSubsystem conveyor,
+        PropertyFactory pf,
+        ReverseConveyorForShootingCommand reverseConveyor,
+        ShooterRPMWithVisionCommand shooterRPMWithVisionCommand,
+        ConveyWhileAtSpeedAndDriverSignalCommand conveyCommand
+    ) {
         pf.setPrefix(this.getName());
-        conveyorReverseTimeProp = pf.createPersistentProperty("Conveyor Reverse Time", 0.2);
 
         // We will need to reverse the conveyor for a litle bit before spinning up the
         // shooter to make sure
         // nothing is touching the wheel
         var setHotDog = new RunCommand(() -> wheel.setTargetRPM(TargetRPM.HotDogRoller), wheel.getSetpointLock());
-        var reverseConveyor = new ParallelRaceGroup(
+        var reverseConveyorAndHotDog = new ParallelRaceGroup(
                 setHotDog,
-                conveyor.getReverseCommand(),
-                new DelayViaSupplierCommand(() -> conveyor.getHasRetracted() ? 0 : conveyorReverseTimeProp.get()));
+                reverseConveyor);
 
-        var stopConveyor = new InstantCommand(() -> conveyor.stop(), conveyor);
-        var markConveyorRetracted = new InstantCommand(() -> conveyor.setHasRetracted(true));
         var setTargetOnCommand = new InstantCommand(() -> shooterRPMWithVisionCommand.setTarget(target));
 
-        addCommands(setTargetOnCommand, reverseConveyor, stopConveyor, markConveyorRetracted,
+        addCommands(setTargetOnCommand, reverseConveyorAndHotDog,
                 new ParallelCommandGroup(shooterRPMWithVisionCommand, conveyCommand));
     }
 

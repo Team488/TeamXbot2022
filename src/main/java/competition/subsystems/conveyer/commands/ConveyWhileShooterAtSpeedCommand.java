@@ -31,6 +31,7 @@ public class ConveyWhileShooterAtSpeedCommand extends BaseCommand {
             greenLightLatch = new Latch(true, EdgeType.RisingEdge, edge -> {
                 if(edge == EdgeType.RisingEdge) {
                     greenLightTime = XTimer.getFPGATimestamp();
+                    log.info("Shooter latched! Target: " + shooter.getTargetRPM() + ", Current: " + shooter.getCurrentRPM());
                 }
             });
 

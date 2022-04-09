@@ -68,6 +68,7 @@ public class ConveyorSubsystem extends SimpleMotorSubsystem {
     }
 
     public void setHasRetracted(boolean hasRetracted) {
+        log.info("Set has retracted: " + hasRetracted);
         this.hasRetracted = hasRetracted;
     }
     

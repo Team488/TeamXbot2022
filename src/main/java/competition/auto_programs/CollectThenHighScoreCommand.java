@@ -6,6 +6,7 @@ import com.google.inject.Provider;
 import competition.commandgroups.FullCollectCommand;
 import competition.commandgroups.PrepareToFireCommandThatEnds;
 import competition.commandgroups.RetractAndConveyCommand;
+import competition.commandgroups.ReverseConveyorForShootingCommand;
 import competition.commandgroups.ShutdownCollectionCommandThatEnds;
 import competition.commandgroups.ShutdownShootingCommandThatEnds;
 import competition.subsystems.conveyer.commands.ConveyWhileShooterAtSpeedCommand;
@@ -31,6 +32,7 @@ public class CollectThenHighScoreCommand extends SequentialCommandGroup {
         Provider<FullCollectCommand> fullCollectProvider,
         ShutdownCollectionCommandThatEnds shutdownCollecting,
         ShutdownShootingCommandThatEnds shutdownShooting,
+        ReverseConveyorForShootingCommand reverseConveyor,
         PrepareToFireCommandThatEnds prepareforHigh,
         ConveyWhileShooterAtSpeedCommand conveyWhenReady,
         RetractAndConveyCommand retractAndConvey,
@@ -75,9 +77,13 @@ public class CollectThenHighScoreCommand extends SequentialCommandGroup {
 
         prepareforHigh.setTargetRPM(TargetRPM.DistanceShot);
 
+        // Reverse the conveyor before moving to avoid voltage drop from drive-train
+        // impacting the distance the conveyor moves
+        addCommands(reverseConveyor);
+
         var moveToShootWithTimeout = new ParallelRaceGroup(
             new ParallelCommandGroup(prepareforHigh, moveToShootingPosition),
-            new WaitCommand(3)
+            new WaitCommand(5)
         );
 
         this.addCommands(moveToShootWithTimeout);
