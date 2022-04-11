@@ -124,4 +124,10 @@ public class SwerveToPointCommand extends BaseCommand {
     public boolean isFinished() {
         return drive.getPositionalPid().isOnTarget() && headingModule.isOnTarget();
     }
+
+    @Override
+    public void end(boolean interrupted) {
+        super.end(interrupted);
+        drive.stop();
+    }
 }
