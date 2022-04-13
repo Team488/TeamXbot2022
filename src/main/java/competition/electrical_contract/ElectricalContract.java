@@ -71,4 +71,5 @@ public abstract class ElectricalContract {
 
     public abstract DeviceInfo getConveyorBottomSensor();
     public abstract DeviceInfo getConveyorTopSensor();
+    public abstract DeviceInfo getCollectorSensor();
 }
