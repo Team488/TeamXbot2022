@@ -11,6 +11,7 @@ import competition.auto_programs.DriveForwardOutOfTarmac;
 import competition.auto_programs.GoCollectComebackCommand;
 import competition.auto_programs.MoonshotCommand;
 import competition.auto_programs.SCSFromOneRobotAwayCommand;
+import competition.auto_programs.ScoreHighAfterDelayCommand;
 import competition.auto_programs.ShootCollectShootCommand;
 import competition.auto_programs.ShootFarThenEscapeCommand;
 import competition.auto_programs.ShootRecklesslyThenEscapeCommand;
@@ -351,6 +352,7 @@ public class OperatorCommandMap {
             ShootFarThenEscapeCommand shootFarThenEscape,
             CollectThenHighScoreCommand highScore,
             MoonshotCommand moonshot,
+            ScoreHighAfterDelayCommand highAfterDelay,
             Provider<SetAutonomousCommand> setAutoCommandProvider,
             Provider<SetRobotHeadingCommand> setHeadingCommandProvider,
             Provider<SetPoseCommand> setPoseCommandProvider,
@@ -377,6 +379,8 @@ public class OperatorCommandMap {
         setHighScore.setAutoCommand(highScore);
         SetAutonomousCommand setMoonshot = setAutoCommandProvider.get();
         setMoonshot.setAutoCommand(moonshot);
+        SetAutonomousCommand setHighAfterDelay = setAutoCommandProvider.get();
+        setHighAfterDelay.setAutoCommand(highAfterDelay);
 
         setDoNothing.includeOnSmartDashboard("AutoPrograms/DoNothing");
         setDriveFiveFeet.includeOnSmartDashboard("AutoPrograms/DriveFiveFeet");
@@ -389,12 +393,13 @@ public class OperatorCommandMap {
         setShootFarThenEscapeCommand.includeOnSmartDashboard("AutoPrograms/ShootFarThenEscape");
         setHighScore.includeOnSmartDashboard("AutoPrograms/HighScore");
         setMoonshot.includeOnSmartDashboard("AutoPrograms/Moonshot");
+        setHighAfterDelay.includeOnSmartDashboard("AutoPrograms/HighAfterDelay");
 
         operatorInterface.autoGamepad.getPovIfAvailable(0).whenPressed(setDoNothing);
         operatorInterface.autoGamepad.getPovIfAvailable(90).whenPressed(setDriveFiveFeet);
         operatorInterface.autoGamepad.getPovIfAvailable(180).whenPressed(setShootThenEscape);
         operatorInterface.autoGamepad.getPovIfAvailable(270).whenPressed(setHighScore);
-        operatorInterface.autoGamepad.getifAvailable(XboxButton.LeftStick).whenPressed(moonshot);
+        operatorInterface.autoGamepad.getifAvailable(XboxButton.LeftStick).whenPressed(setHighAfterDelay);
         operatorInterface.autoGamepad.getifAvailable(XboxButton.RightStick).whenPressed(setShootCollectShoot);
         operatorInterface.autoGamepad.getifAvailable(XboxButton.Back).whenPressed(setScsFromOneRobotAwayCommand);
         operatorInterface.autoGamepad.getifAvailable(XboxButton.Start).whenPressed(setShootFarThenEscapeCommand);
