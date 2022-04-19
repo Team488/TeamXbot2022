@@ -5,7 +5,6 @@ import com.google.inject.Singleton;
 
 import competition.electrical_contract.ElectricalContract;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
-import competition.subsystems.vision.VisionShooterGoalsSubsystem;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import xbot.common.command.BaseSubsystem;
@@ -33,7 +32,6 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
     private final int loopMod = 5;
 
     private final ShooterWheelSubsystem shooter;
-    private final VisionShooterGoalsSubsystem visionGoals;
 
     private final StringProperty chosenState;
     private final BooleanProperty dio0Property;
@@ -47,7 +45,6 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
         RobotNotBooted(0),
         RobotDisabled(1),
         RobotEnabled(2),
-        OutOfRange(3),
         ShooterAtSpeed(4);
 
         private int value;
@@ -62,15 +59,8 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
     }
     
     @Inject
-    public ArduinoCommunicationSubsystem(
-        CommonLibFactory clf,
-        ElectricalContract contract,
-        PropertyFactory pf,
-        ShooterWheelSubsystem shooter,
-        VisionShooterGoalsSubsystem visionGoals
-    ) {
+    public ArduinoCommunicationSubsystem(CommonLibFactory clf, ElectricalContract contract, PropertyFactory pf, ShooterWheelSubsystem shooter) {
         this.shooter = shooter;
-        this.visionGoals = visionGoals;
 
         dio0 = clf.createDigitalOutput(contract.getArduinoDio0().channel);
         dio1 = clf.createDigitalOutput(contract.getArduinoDio1().channel);
@@ -116,11 +106,7 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
             currentState = ArduinoStateMessage.RobotDisabled;
         } else if (dsEnabled) {
             if (shooter.isMaintainerAtGoal()) {
-                if (visionGoals.getIsTargeting() && !visionGoals.getIsInRange()) {
-                    currentState = ArduinoStateMessage.OutOfRange;
-                } else {
-                    currentState = ArduinoStateMessage.ShooterAtSpeed;
-                }
+                currentState = ArduinoStateMessage.ShooterAtSpeed;
             } else {
                 currentState = ArduinoStateMessage.RobotEnabled;
             }
