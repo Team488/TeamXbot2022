@@ -5,18 +5,15 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import competition.BaseCompetitionTest;
-import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
 
 public class VisionShooterGoalsSubsystemTest extends BaseCompetitionTest {
 
     private VisionShooterGoalsSubsystem command;
-    private ShooterWheelSubsystem shooter;
 
     @Override
     public void setUp() {
         super.setUp();
         this.command = injector.getInstance(VisionShooterGoalsSubsystem.class);
-        this.shooter = injector.getInstance(ShooterWheelSubsystem.class);
         
         this.command.setLowGoalBelowMinPitchSlope(VisionShooterGoalsSubsystem.LOW_GOAL_SLOPE);
         this.command.setLowGoalAboveMaxPitchSlope(VisionShooterGoalsSubsystem.LOW_GOAL_SLOPE);
@@ -111,18 +108,5 @@ public class VisionShooterGoalsSubsystemTest extends BaseCompetitionTest {
 
         assertEquals(3124.0, this.command.speedFromPitchHigh(-2), 0.001);
         assertEquals(2853.6, this.command.speedFromPitchHigh(10), 0.001);
-    }
-    
-    @Test
-    public void testSpeedFromPitchWithCustomFF() {
-        this.command.setHighGoalBelowMinPitchSlope(50);
-        this.command.setHighMinPitch(0);
-        this.command.setHighFFBelowMinPitchSlope(1E-4);
-
-        double defaultFF = shooter.leader.getFF();
-
-        assertEquals(1.85E-4, this.command.feedForwardFromPitchHigh(1, defaultFF), 0.001);
-        assertEquals(1.85E-4, this.command.feedForwardFromPitchHigh(0, defaultFF), 0.001);
-        assertEquals(0.85E-4, this.command.feedForwardFromPitchHigh(-1, defaultFF), 0.001);
     }
 }

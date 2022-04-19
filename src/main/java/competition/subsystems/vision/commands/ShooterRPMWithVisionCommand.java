@@ -61,12 +61,13 @@ public class ShooterRPMWithVisionCommand extends BaseCommand {
         } else {
             if(fixAcquired) {
                 double targetRPM = visionGoals.speedFromPitchHigh(pitch);
-                double arbFF = visionGoals.feedForwardFromPitchHigh(pitch, shooter.leader.getFF());
+                double arbFF = shooter.feedForwardFromTargetRPM(targetRPM);
                 shooter.setArbitraryFF(arbFF);
                 shooter.setTargetRPM(targetRPM);
             } else {
                 // if shooter wasn't moving at all, get it going to near shot speed
                 if(!(shooter.getTargetRPM() > 0)) {
+                    shooter.resetAribtraryFF();
                     shooter.setTargetRPM(TargetRPM.DistanceShot);
                 }
                 // otherwise leave shooter at whatever the last speed it was at
@@ -88,7 +89,7 @@ public class ShooterRPMWithVisionCommand extends BaseCommand {
     @Override
     public void end(boolean interrupted) {
         shooter.setTargetRPM(0);
-        shooter.setArbitraryFF(0);
+        shooter.resetAribtraryFF();
         operatorGamepad.getRumbleManager().stopGamepadRumble();
 
         visionGoals.setIsTargeting(false);

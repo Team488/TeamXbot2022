@@ -121,15 +121,6 @@ public class VisionShooterGoalsSubsystem extends BaseSubsystem {
         }
     }
 
-    public double feedForwardFromPitchHigh(double pitch, double defaultFF) {
-        double highMinPitch = this.highMinPitch.get();
-        if (pitch < highMinPitch) {
-            return defaultFF + (pitch - highMinPitch) * this.highBelowMinFFSlope.get();
-        } else {
-            return defaultFF;
-        }
-    }
-
     public void setLowGoalBelowMinPitchSlope(double slope) {
         this.lowBelowMinSlope.set(slope);
     }

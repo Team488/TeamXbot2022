@@ -34,6 +34,12 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
     private final DoubleProperty shortRangeErrorTolerance;
     private final DoubleProperty longRangeErrorTolerance;
 
+    private final DoubleProperty feedForwardRpmThreshold1;
+    private final DoubleProperty feedForward1;
+
+    private final DoubleProperty feedForwardRpmThreshold2;
+    private final DoubleProperty feedForward2;
+
     public XCANSparkMax leader;
     private XCANSparkMax follower;
     ElectricalContract contract;
@@ -70,6 +76,12 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
 
         shortRangeErrorTolerance = pf.createPersistentProperty("ShortRangeErrorTolerance", 200);
         longRangeErrorTolerance = pf.createPersistentProperty("LongRangeErrorTolerance", 50);
+
+        feedForwardRpmThreshold1 = pf.createPersistentProperty("Feed Forward Threshold 1", 3300);
+        feedForward1 = pf.createPersistentProperty("Feed Forward Value 1", 0.000185);
+
+        feedForwardRpmThreshold2 = pf.createPersistentProperty("Feed Forward Threshold 2", 3500);
+        feedForward2 = pf.createPersistentProperty("Feed Forward Value 2", 0.000185);
 
         XCANSparkMaxPIDProperties wheelDefaultProps = new XCANSparkMaxPIDProperties();
         wheelDefaultProps.p = 0.00008;
@@ -182,6 +194,17 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
             return targetRpmProp.get();
         }
         return targetRpmProp.get() + getTrimRPM();
+    }
+
+    public double feedForwardFromTargetRPM(double targetRPM) {
+        double ff = leader.getFF();
+        if (targetRPM >= feedForwardRpmThreshold1.get()) {
+            ff = feedForward1.get();
+        }
+        if (targetRPM >= feedForwardRpmThreshold2.get()) {
+            ff = feedForward2.get();
+        }
+        return ff;
     }
 
     public double getArbitraryFF() {
