@@ -197,7 +197,7 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
     }
 
     public double feedForwardFromTargetRPM(double targetRPM) {
-        double ff = leader.getFF();
+        double ff = 0;
         if (targetRPM >= feedForwardRpmThreshold1.get()) {
             ff = feedForward1.get();
         }
@@ -247,10 +247,10 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
             double arbFF = this.arbFFProp.get();
 
             if (arbFF == 0) {
-                arbFF = leader.getFF();
+                leader.setReference(speed, ControlType.kVelocity);
+            } else {
+                leader.setReference(speed, ControlType.kVelocity, 0, arbFF);
             }
-
-            leader.setReference(speed, ControlType.kVelocity, 0, arbFF);
         }
     }
 

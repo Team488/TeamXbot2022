@@ -29,10 +29,10 @@ public class ShooterWheelSubsystemTest extends BaseCompetitionTest {
     public void testSpeedFromPitchWithCustomFF() {
         ShooterWheelSubsystem shooterWheel = this.injector.getInstance(ShooterWheelSubsystem.class);
 
-        assertEquals(1.85E-4, shooterWheel.feedForwardFromTargetRPM(0), 0.000001);
-        assertEquals(1.85E-4, shooterWheel.feedForwardFromTargetRPM(3000), 0.000001);
-        assertEquals(1.85E-4, shooterWheel.feedForwardFromTargetRPM(3100), 0.000001);
-        assertEquals(1.85E-4, shooterWheel.feedForwardFromTargetRPM(3200), 0.000001);
+        assertEquals(0, shooterWheel.feedForwardFromTargetRPM(0), 0.000001);
+        assertEquals(0, shooterWheel.feedForwardFromTargetRPM(3000), 0.000001);
+        assertEquals(0, shooterWheel.feedForwardFromTargetRPM(3100), 0.000001);
+        assertEquals(0, shooterWheel.feedForwardFromTargetRPM(3200), 0.000001);
         assertEquals(1.85E-4, shooterWheel.feedForwardFromTargetRPM(3300), 0.000001);
         assertEquals(1.85E-4, shooterWheel.feedForwardFromTargetRPM(3400), 0.000001);
         assertEquals(1.85E-4, shooterWheel.feedForwardFromTargetRPM(3500), 0.000001);
