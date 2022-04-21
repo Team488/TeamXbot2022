@@ -30,10 +30,10 @@ public class ScoreHighAfterDelayCommand extends SequentialCommandGroup {
         RotateToVisionTargetCommand visionRotate,
         ShooterRPMWithVisionCommand visionRPM
     ) {
-        pf.setPrefix(getName());
+        pf.setTopLevelPrefix();
 
         // Wait for a few seconds
-        var initialDelayProp = pf.createPersistentProperty("Initial delay", 5.0);
+        var initialDelayProp = pf.createPersistentProperty("Delayed auto initial delay", 5.0);
         var initialDelay = new DelayViaSupplierCommand(() -> initialDelayProp.get());
         addCommands(initialDelay);
 
