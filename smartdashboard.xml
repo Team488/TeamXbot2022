@@ -1,10 +1,14 @@
 <xml version="1.0">
 <dashboard>
-	<widget field="ConveyerSubsystem/Bottom sensor value" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
-		<location x="15" y="44"/>
+	<widget field="Collector sensor value" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="19" y="55"/>
 	</widget>
-	<widget field="ConveyerSubsystem/Top sensor value" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
-		<location x="15" y="22"/>
+	<widget field="Conveyor bottom sensor value" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="19" y="32"/>
+	</widget>
+	<widget field="Conveyor top sensor value" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="18" y="11"/>
+		<height>13</height>
 	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
 		<location x="13" y="187"/>

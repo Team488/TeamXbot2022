@@ -46,8 +46,10 @@ public class ConveyorSubsystem extends SimpleMotorSubsystem {
         collectorSensor = clf.createDigitalInput(eContract.getCollectorSensor().channel);
         collectorSensor.setInverted(eContract.getCollectorSensor().inverted);
 
-        topSensorProp = pf.createEphemeralProperty("Top sensor value", topSensor.get());
-        bottomSensorProp = pf.createEphemeralProperty("Bottom sensor value", bottomSensor.get());
+        // Make top-level so it shows up on SmartDashboard
+        pf.setTopLevelPrefix();
+        topSensorProp = pf.createEphemeralProperty("Conveyor top sensor value", topSensor.get());
+        bottomSensorProp = pf.createEphemeralProperty("Conveyor bottom sensor value", bottomSensor.get());
         collectorSensorProp = pf.createEphemeralProperty("Collector sensor value", collectorSensor.get());
     }
 
