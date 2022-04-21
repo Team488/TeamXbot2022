@@ -54,6 +54,8 @@ public class PoseSubsystem extends BasePoseSubsystem {
     final DoubleProperty rightHubStartPosY;
     final DoubleProperty rightHubHeading;
 
+    final DoubleProperty topLevelHeading;
+
     public enum KeyPosition {
         LeftFacingOut,
         MiddleFacingOut,
@@ -101,6 +103,9 @@ public class PoseSubsystem extends BasePoseSubsystem {
         this.endOfMatchWarningTime = pf.createPersistentProperty("Warning Rumble/End of match warning time", 45);
         this.warningRumbleDuration = pf.createPersistentProperty("Warning Rumble/Rumble duration", 0.6);
         this.warningRumbleStrength = pf.createPersistentProperty("Warning Rumble/Rumble strength", 0.7);
+
+        pf.setTopLevelPrefix();
+        this.topLevelHeading = pf.createEphemeralProperty("Robot heading", 90);
 
     /* Remember: WPILib uses a different coordinate convention than our legacy code. Theirs:
           //   0,+y. 90 degrees
@@ -229,6 +234,8 @@ public class PoseSubsystem extends BasePoseSubsystem {
     @Override
     public void periodic() {
         super.periodic();
+
+        this.topLevelHeading.set(getCurrentHeading().getDegrees());
 
         // Reset end-of-match warning flag in auto mode (in case the robot hasn't been rebooted between runs)
         if (DriverStation.isAutonomousEnabled() && this.hasSentEndOfMatchWarning.get() == true) {
