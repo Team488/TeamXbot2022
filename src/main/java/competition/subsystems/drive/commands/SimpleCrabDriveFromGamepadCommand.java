@@ -1,11 +1,8 @@
 package competition.subsystems.drive.commands;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
+import javax.inject.Named;
 
-import competition.injection.swerve.FrontLeftDrive;
-import competition.injection.swerve.FrontRightDrive;
-import competition.injection.swerve.RearLeftDrive;
-import competition.injection.swerve.RearRightDrive;
 import competition.operator_interface.OperatorInterface;
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.drive.swerve.SwerveDriveSubsystem;
@@ -27,14 +24,14 @@ public class SimpleCrabDriveFromGamepadCommand extends BaseCommand {
     public SimpleCrabDriveFromGamepadCommand(
         DriveSubsystem drive, 
         OperatorInterface oi,
-        @FrontLeftDrive SwerveSteeringSubsystem frontLeftSteering,
-        @FrontLeftDrive SwerveDriveSubsystem frontLeftDrive,
-        @FrontRightDrive SwerveSteeringSubsystem frontRightSteering,
-        @FrontRightDrive SwerveDriveSubsystem frontRightDrive,
-        @RearLeftDrive SwerveSteeringSubsystem rearLeftSteering,
-        @RearLeftDrive SwerveDriveSubsystem rearLeftDrive,
-        @RearRightDrive SwerveSteeringSubsystem rearRightSteering,
-        @RearRightDrive SwerveDriveSubsystem rearRightDrive) {
+        @Named("FrontLeftDrive") SwerveSteeringSubsystem frontLeftSteering,
+        @Named("FrontLeftDrive") SwerveDriveSubsystem frontLeftDrive,
+        @Named("FrontRightDrive") SwerveSteeringSubsystem frontRightSteering,
+        @Named("FrontRightDrive") SwerveDriveSubsystem frontRightDrive,
+        @Named("RearLeftDrive") SwerveSteeringSubsystem rearLeftSteering,
+        @Named("RearLeftDrive") SwerveDriveSubsystem rearLeftDrive,
+        @Named("RearRightDrive") SwerveSteeringSubsystem rearRightSteering,
+        @Named("RearRightDrive") SwerveDriveSubsystem rearRightDrive) {
         this.drive = drive;
         this.oi = oi;
         

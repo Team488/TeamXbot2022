@@ -1,7 +1,7 @@
 package competition.auto_programs;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import javax.inject.Inject;
+import javax.inject.Provider;
 
 import org.apache.log4j.Logger;
 

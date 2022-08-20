@@ -1,6 +1,6 @@
 package competition.subsystems.shooterwheel.commands;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import competition.operator_interface.OperatorInterface;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;

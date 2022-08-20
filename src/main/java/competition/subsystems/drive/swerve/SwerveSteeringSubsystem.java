@@ -1,8 +1,8 @@
 package competition.subsystems.drive.swerve;
 
+import javax.inject.Inject;
+
 import com.ctre.phoenix.sensors.CANCoderStatusFrame;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.FaultID;
 import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
@@ -12,21 +12,23 @@ import org.apache.log4j.Logger;
 
 import competition.electrical_contract.ElectricalContract;
 import competition.injection.swerve.SwerveInstance;
+import dagger.Reusable;
 import edu.wpi.first.math.MathUtil;
 import xbot.common.command.BaseSetpointSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
+import xbot.common.controls.actuators.XCANSparkMax.XCANSparkMaxFactory;
 import xbot.common.controls.sensors.XCANCoder;
-import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.controls.sensors.XCANCoder.XCANCoderFactory;
 import xbot.common.math.MathUtils;
-import xbot.common.math.PIDFactory;
 import xbot.common.math.PIDManager;
 import xbot.common.math.WrappedRotation2d;
+import xbot.common.math.PIDManager.PIDManagerFactory;
 import xbot.common.properties.BooleanProperty;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.resiliency.DeviceHealth;
 
-@Singleton
+@Reusable
 public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     private static Logger log = Logger.getLogger(SwerveSteeringSubsystem.class);
 
@@ -49,8 +51,8 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
     private boolean canCoderUnavailable = false;
 
     @Inject
-    public SwerveSteeringSubsystem(SwerveInstance swerveInstance, CommonLibFactory factory,
-            PropertyFactory pf, PIDFactory pidf, ElectricalContract electricalContract, 
+    public SwerveSteeringSubsystem(SwerveInstance swerveInstance, XCANSparkMaxFactory sparkMaxFactory, XCANCoderFactory canCoderFactory,
+            PropertyFactory pf, PIDManagerFactory pidf, ElectricalContract electricalContract, 
             SwerveSteeringMotorPidSubsystem pidConfigSubsystem) {
         this.label = swerveInstance.getLabel();
         log.info("Creating SwerveRotationSubsystem " + this.label);
@@ -60,7 +62,7 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
 
         // Create properties shared among all instances
         pf.setPrefix(super.getPrefix());
-        this.pid = pidf.createPIDManager(super.getPrefix() + "PID", 0.2, 0.0, 0.005, -1.0, 1.0);
+        this.pid = pidf.create(super.getPrefix() + "PID", 0.2, 0.0, 0.005, -1.0, 1.0);
         this.powerScale = pf.createPersistentProperty("PowerScaleFactor", 5);
         this.degreesPerMotorRotation = pf.createPersistentProperty("DegreesPerMotorRotation", 28.1503);
         this.useMotorControllerPid = pf.createPersistentProperty("UseMotorControllerPID", true);
@@ -72,11 +74,11 @@ public class SwerveSteeringSubsystem extends BaseSetpointSubsystem {
         this.currentModuleHeading = pf.createEphemeralProperty("CurrentModuleHeading", 0.0);
 
         if (electricalContract.isDriveReady()) {
-            this.motorController = factory.createCANSparkMax(electricalContract.getSteeringNeo(swerveInstance), this.getPrefix(), "SteeringNeo");
+            this.motorController = sparkMaxFactory.create(electricalContract.getSteeringNeo(swerveInstance), this.getPrefix(), "SteeringNeo");
             setMotorControllerPositionPidParameters();
         }
         if (electricalContract.areCanCodersReady()) {
-            this.encoder = factory.createCANCoder(electricalContract.getSteeringEncoder(swerveInstance), this.getPrefix());
+            this.encoder = canCoderFactory.create(electricalContract.getSteeringEncoder(swerveInstance), this.getPrefix());
             // Since the CANCoders start with absolute knowledge from the start, that means this system
             // is always calibrated.
             calibrated = true;

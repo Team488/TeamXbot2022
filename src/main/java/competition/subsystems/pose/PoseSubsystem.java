@@ -1,7 +1,7 @@
 package competition.subsystems.pose;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import competition.operator_interface.OperatorInterface;
 import competition.subsystems.drive.DriveSubsystem;
@@ -10,7 +10,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.DriverStation;
 import xbot.common.controls.sensors.XTimer;
-import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.controls.sensors.XGyro.XGyroFactory;
 import xbot.common.math.FieldPose;
 import xbot.common.math.WrappedRotation2d;
 import xbot.common.math.XYPair;
@@ -66,12 +66,12 @@ public class PoseSubsystem extends BasePoseSubsystem {
 
     @Inject
     public PoseSubsystem(
-        CommonLibFactory clf, 
+        XGyroFactory gyroFactory, 
         PropertyFactory pf, 
         DriveSubsystem drive,
         OperatorInterface oi
         ) {
-        super(clf, pf);
+        super(gyroFactory, pf);
         this.drive = drive;
         this.oi = oi;
 

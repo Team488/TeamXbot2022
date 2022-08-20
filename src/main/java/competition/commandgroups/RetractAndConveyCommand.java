@@ -1,6 +1,6 @@
 package competition.commandgroups;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import competition.subsystems.collector.CollectorSubsystem;
 import competition.subsystems.collector_deployment.commands.RetractCollectorCommand;

@@ -1,6 +1,6 @@
 package competition.subsystems.vision;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.Target;
 import xbot.common.command.BaseSubsystem;

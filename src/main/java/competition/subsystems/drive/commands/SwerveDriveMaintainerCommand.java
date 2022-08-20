@@ -1,11 +1,11 @@
 package competition.subsystems.drive.commands;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.drive.swerve.SwerveDriveSubsystem;
 import xbot.common.command.BaseMaintainerCommand;
-import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.logic.HumanVsMachineDecider.HumanVsMachineDeciderFactory;
 import xbot.common.properties.PropertyFactory;
 
 public class SwerveDriveMaintainerCommand extends BaseMaintainerCommand {
@@ -14,19 +14,20 @@ public class SwerveDriveMaintainerCommand extends BaseMaintainerCommand {
     private final DriveSubsystem drive;
 
     @Inject
-    public SwerveDriveMaintainerCommand(DriveSubsystem drive, SwerveDriveSubsystem subsystemToMaintain, PropertyFactory pf, CommonLibFactory clf) {
-        super(subsystemToMaintain, pf, clf, 0.001, 0.001);
+    public SwerveDriveMaintainerCommand(DriveSubsystem drive, SwerveDriveSubsystem subsystemToMaintain,
+            PropertyFactory pf, HumanVsMachineDeciderFactory hvmFactory) {
+        super(subsystemToMaintain, pf, hvmFactory, 0.001, 0.001);
         this.subsystem = subsystemToMaintain;
         this.drive = drive;
     }
 
     @Override
     protected void calibratedMachineControlAction() {
-        // The drive subsystem is setting velocity goals, but we're starting simple. Just set % power by dividing by the max allowable velocity.
+        // The drive subsystem is setting velocity goals, but we're starting simple.
+        // Just set % power by dividing by the max allowable velocity.
         if (drive.getMaxTargetSpeedInchesPerSecond() > 0) {
             this.subsystem.setPower(this.subsystem.getTargetValue() / drive.getMaxTargetSpeedInchesPerSecond());
-        }
-        else {
+        } else {
             this.subsystem.setPower(0);
         }
     }

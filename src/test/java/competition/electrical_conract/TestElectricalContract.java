@@ -1,6 +1,6 @@
 package competition.electrical_conract;
 
-import com.google.inject.Singleton;
+import javax.inject.Singleton;
 
 import competition.electrical_contract.CompetitionContract;
 

@@ -1,6 +1,6 @@
 package competition.commandgroups;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
 

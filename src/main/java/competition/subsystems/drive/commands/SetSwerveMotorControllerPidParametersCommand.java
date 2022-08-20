@@ -1,11 +1,11 @@
 package competition.subsystems.drive.commands;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
-import competition.injection.swerve.FrontLeftDrive;
-import competition.injection.swerve.FrontRightDrive;
-import competition.injection.swerve.RearLeftDrive;
-import competition.injection.swerve.RearRightDrive;
+import competition.injection.swerve.FrontLeftSwerveComponent;
+import competition.injection.swerve.FrontRightSwerveComponent;
+import competition.injection.swerve.RearLeftSwerveComponent;
+import competition.injection.swerve.RearRightSwerveComponent;
 import competition.subsystems.drive.swerve.SwerveDriveSubsystem;
 import competition.subsystems.drive.swerve.SwerveSteeringSubsystem;
 import xbot.common.command.BaseCommand;
@@ -23,23 +23,19 @@ public class SetSwerveMotorControllerPidParametersCommand extends BaseCommand {
 
     @Inject
     public SetSwerveMotorControllerPidParametersCommand(
-        @FrontLeftDrive SwerveDriveSubsystem frontLeftDrive,
-        @FrontRightDrive SwerveDriveSubsystem frontRightDrive,
-        @RearLeftDrive SwerveDriveSubsystem rearLeftDrive,
-        @RearRightDrive SwerveDriveSubsystem rearRightDrive,
-        @FrontLeftDrive SwerveSteeringSubsystem frontLeftSteering,
-        @FrontRightDrive SwerveSteeringSubsystem frontRightSteering,
-        @RearLeftDrive SwerveSteeringSubsystem rearLeftSteering,
-        @RearRightDrive SwerveSteeringSubsystem rearRightSteering)
+        FrontLeftSwerveComponent frontLeftSwerveComponent,
+        FrontRightSwerveComponent frontRightSwerveComponent,
+        RearLeftSwerveComponent rearLeftSwerveComponent,
+        RearRightSwerveComponent rearRightSwerveComponent)
     {
-        this.frontLeftDrive = frontLeftDrive;
-        this.frontRightDrive = frontRightDrive;
-        this.rearLeftDrive = rearLeftDrive;
-        this.rearRightDrive = rearRightDrive;
-        this.frontLeftSteering = frontLeftSteering;
-        this.frontRightSteering = frontRightSteering;
-        this.rearLeftSteering = rearLeftSteering;
-        this.rearRightSteering = rearRightSteering;
+        this.frontLeftDrive = frontLeftSwerveComponent.swerveDriveSubsystem();
+        this.frontRightDrive = frontLeftSwerveComponent.swerveDriveSubsystem();
+        this.rearLeftDrive = rearLeftSwerveComponent.swerveDriveSubsystem();
+        this.rearRightDrive = rearRightSwerveComponent.swerveDriveSubsystem();
+        this.frontLeftSteering = frontLeftSwerveComponent.swerveSteeringSubsystem();
+        this.frontRightSteering = frontRightSwerveComponent.swerveSteeringSubsystem();
+        this.rearLeftSteering = rearLeftSwerveComponent.swerveSteeringSubsystem();
+        this.rearRightSteering = rearRightSwerveComponent.swerveSteeringSubsystem();
     }
 
     @Override

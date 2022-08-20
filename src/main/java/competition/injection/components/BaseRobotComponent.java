@@ -1,0 +1,14 @@
+package competition.injection.components;
+
+import competition.operator_interface.OperatorCommandMap;
+import competition.subsystems.SubsystemDefaultCommandMap;
+import competition.subsystems.arduino.ArduinoCommunicationSubsystem;
+import xbot.common.injection.components.BaseComponent;
+
+public abstract class BaseRobotComponent extends BaseComponent {
+    public abstract SubsystemDefaultCommandMap subsystemDefaultCommandMap();
+
+    public abstract OperatorCommandMap operatorCommandMap();
+
+    public abstract ArduinoCommunicationSubsystem arduinoCommunicationSubsystem();
+}

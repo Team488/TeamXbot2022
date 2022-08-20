@@ -2,16 +2,16 @@ package competition.subsystems.drive.commands;
 
 import java.util.function.Supplier;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.pose.PoseSubsystem;
 import xbot.common.command.BaseCommand;
-import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.math.XYPair;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.subsystems.drive.control_logic.HeadingModule;
+import xbot.common.subsystems.drive.control_logic.HeadingModule.HeadingModuleFactory;
 
 public class SwerveToPointCommand extends BaseCommand {
 
@@ -31,10 +31,10 @@ public class SwerveToPointCommand extends BaseCommand {
     double maxPower = 1.0;
 
     @Inject
-    public SwerveToPointCommand(DriveSubsystem drive, PoseSubsystem pose, PropertyFactory pf, CommonLibFactory clf) {
+    public SwerveToPointCommand(DriveSubsystem drive, PoseSubsystem pose, PropertyFactory pf, HeadingModuleFactory headingModuleFactory) {
         this.drive = drive;
         this.pose = pose;
-        headingModule = clf.createHeadingModule(drive.getRotateToHeadingPid());
+        headingModule = headingModuleFactory.create(drive.getRotateToHeadingPid());
 
         pf.setPrefix(this);
         directionToTarget = pf.createEphemeralProperty("Direction to target", 0);

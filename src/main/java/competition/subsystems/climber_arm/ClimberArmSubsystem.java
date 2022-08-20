@@ -1,7 +1,7 @@
 package competition.subsystems.climber_arm;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import javax.inject.Inject;
+
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.FaultID;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -10,18 +10,21 @@ import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
 import competition.electrical_contract.ElectricalContract;
 import competition.injection.arm.ArmInstance;
+import dagger.Reusable;
 import xbot.common.command.BaseSetpointSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
+import xbot.common.controls.actuators.XCANSparkMax.XCANSparkMaxFactory;
 import xbot.common.controls.sensors.XDigitalInput;
-import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.controls.sensors.XDigitalInput.XDigitalInputFactory;
 import xbot.common.logic.StallDetector;
+import xbot.common.logic.StallDetector.StallDetectorFactory;
 import xbot.common.math.MathUtils;
 import xbot.common.properties.BooleanProperty;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.properties.StringProperty;
 
-@Singleton
+@Reusable
 public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     public XCANSparkMax armMotor;
     public double armMotorPosition;
@@ -64,6 +67,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         Velocity(1);
 
         private final int slot;
+
         private PidSlot(int slot) {
             this.slot = slot;
         }
@@ -72,25 +76,26 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
             return slot;
         }
     }
-    
 
     @Inject
-    public ClimberArmSubsystem(ArmInstance armInstance, CommonLibFactory factory, PropertyFactory pf, ElectricalContract eContract){
+    public ClimberArmSubsystem(ArmInstance armInstance, XCANSparkMaxFactory sparkMaxFactory,
+            XDigitalInputFactory digitalInputFactory, StallDetectorFactory stallDetectorFactory, PropertyFactory pf,
+            ElectricalContract eContract) {
         label = armInstance.getLabel();
         this.armInstance = armInstance;
         if (eContract.isClimberReady()) {
-            armMotor = factory.createCANSparkMax(eContract.getClimberNeo(armInstance) , this.getPrefix(), "ArmMotor");
+            armMotor = sparkMaxFactory.create(eContract.getClimberNeo(armInstance), this.getPrefix(), "ArmMotor");
             armMotor.enableVoltageCompensation(12);
             armMotor.setIdleMode(IdleMode.kBrake);
         }
 
         if (eContract.areClimberLimitSensorsReady(armInstance)) {
-            lowerLimitSwitch = factory.createDigitalInput(eContract.getClimberLowerLimitSensor(armInstance).channel);
-            upperLimitSwitch = factory.createDigitalInput(eContract.getClimberUpperLimitSensor(armInstance).channel);
+            lowerLimitSwitch = digitalInputFactory.create(eContract.getClimberLowerLimitSensor(armInstance).channel);
+            upperLimitSwitch = digitalInputFactory.create(eContract.getClimberUpperLimitSensor(armInstance).channel);
         }
 
         this.contract = eContract;
-        
+
         // Shared properties
         pf.setPrefix(super.getPrefix());
         safeArmExtendedNumber = pf.createPersistentProperty("safelyExtendable", 0);
@@ -105,7 +110,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         positionEngageNextBarProperty = pf.createPersistentProperty("EngageNextBarPositionInches", 22.5);
         positionAutomaticPivotIn = pf.createPersistentProperty("AutomaticPivotInInches", 24);
 
-        armStallDetector = factory.createStallDetector(super.getPrefix());
+        armStallDetector = stallDetectorFactory.create(super.getPrefix());
 
         // Unique properties
         pf.setPrefix(this);
@@ -139,7 +144,7 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     public boolean getIgnoreLimits() {
         return ignoreLimits;
     }
-    
+
     /**
      * Set up status frame intervals to reduce unnecessary CAN activity.
      */
@@ -149,14 +154,18 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
             if (this.armMotor.getStickyFault(FaultID.kHasReset)) {
                 log.info("Setting status frame periods.");
 
-                // See https://docs.revrobotics.com/sparkmax/operating-modes/control-interfaces#periodic-status-frames
-                // for description of the different status frames. kStatus2 is the only frame with data needed for software PID.
+                // See
+                // https://docs.revrobotics.com/sparkmax/operating-modes/control-interfaces#periodic-status-frames
+                // for description of the different status frames. kStatus2 is the only frame
+                // with data needed for software PID.
 
-                this.armMotor.getInternalSparkMax().setPeriodicFramePeriod(PeriodicFrame.kStatus0, 500 /* default 10 */);
+                this.armMotor.getInternalSparkMax().setPeriodicFramePeriod(PeriodicFrame.kStatus0,
+                        500 /* default 10 */);
                 this.armMotor.getInternalSparkMax().setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20 /* default 20 */);
                 this.armMotor.getInternalSparkMax().setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20 /* default 20 */);
-                this.armMotor.getInternalSparkMax().setPeriodicFramePeriod(PeriodicFrame.kStatus3, 500 /* default 50 */);
-                
+                this.armMotor.getInternalSparkMax().setPeriodicFramePeriod(PeriodicFrame.kStatus3,
+                        500 /* default 50 */);
+
                 this.armMotor.clearFaults();
             }
         }
@@ -191,8 +200,10 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         if (contract.isClimberReady()) {
 
             if (enabled) {
-                armMotor.setSoftLimit(SoftLimitDirection.kForward, (float)(safeArmExtendedNumber.get() / armInchesPerRotation.get()));
-                //armMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)(safeArmRetractedNumber.get() / armInchesPerRotation.get()));
+                armMotor.setSoftLimit(SoftLimitDirection.kForward,
+                        (float) (safeArmExtendedNumber.get() / armInchesPerRotation.get()));
+                // armMotor.setSoftLimit(SoftLimitDirection.kReverse,
+                // (float)(safeArmRetractedNumber.get() / armInchesPerRotation.get()));
             }
 
             armMotor.enableSoftLimit(SoftLimitDirection.kForward, false);
@@ -211,16 +222,16 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
             }
 
             if (isAtLowerLimitSwitch()) {
-                power = MathUtils.constrainDouble(power, 0 , 1);
+                power = MathUtils.constrainDouble(power, 0, 1);
             }
         }
-        
+
         if (contract.isClimberReady()) {
             armMotor.set(power);
         }
     }
 
-    public void stop(){
+    public void stop() {
         setMotorPower(0, true);
     }
 
@@ -255,18 +266,20 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         setMotorPower(power, isSafe);
     }
 
-    public void setPositionReference(double positionInInches) {        
+    public void setPositionReference(double positionInInches) {
         // Convert from inches to rotations (the native unit of the controller)
         if (contract.isClimberReady()) {
-            armMotor.setReference(positionInInches / armInchesPerRotation.get(), ControlType.kPosition, PidSlot.Position.getSlot());
+            armMotor.setReference(positionInInches / armInchesPerRotation.get(), ControlType.kPosition,
+                    PidSlot.Position.getSlot());
         }
-        
+
     }
 
     public void setVelocityReference(double velocityInInchesPerSecond) {
         // Convert from inches to rotations/sec (the native unit of the controller)
         if (contract.isClimberReady()) {
-            armMotor.setReference(velocityInInchesPerSecond / armInchesPerRotation.get(), ControlType.kVelocity, PidSlot.Velocity.getSlot());
+            armMotor.setReference(velocityInInchesPerSecond / armInchesPerRotation.get(), ControlType.kVelocity,
+                    PidSlot.Velocity.getSlot());
         }
     }
 
@@ -325,7 +338,8 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
         directVelocity = currentPosition - lastArmPosition;
         lastArmPosition = currentPosition;
 
-        armInstantVelocity.set(directVelocity);;
+        armInstantVelocity.set(directVelocity);
+        ;
 
         if (contract.areClimberLimitSensorsReady(armInstance)) {
             upperLimitSwitchState.set(upperLimitSwitch.get());

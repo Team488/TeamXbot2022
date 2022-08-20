@@ -1,7 +1,7 @@
 package competition;
 
 import com.google.inject.Guice;
-import com.google.inject.Injector;
+import javax.inject.Injector;
 
 import xbot.common.injection.BaseWPITest;
 

@@ -1,6 +1,6 @@
 package competition.subsystems.vision;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;

@@ -1,7 +1,5 @@
 package competition.subsystems;
 
-import com.google.inject.Inject;
-
 import xbot.common.command.BaseSubsystem;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
@@ -20,8 +18,7 @@ public abstract class BaseMotorPidSubsystem extends BaseSubsystem {
     private final DoubleProperty kClosedLoopRampRate;
     private final DoubleProperty kOpenLoopRampRate;
 
-    @Inject
-    public BaseMotorPidSubsystem(
+    protected BaseMotorPidSubsystem(
         PropertyFactory pf, double defaultP, double defaultI, double defaultD,
         double defaultFF, double defaultMinOutput, double defaultMaxOutput, 
         double defaultClosedLoopRampRate, double defaultOpenLoopRampRate
@@ -38,8 +35,7 @@ public abstract class BaseMotorPidSubsystem extends BaseSubsystem {
         kOpenLoopRampRate = pf.createPersistentProperty("kOpenLoopRampRate", defaultOpenLoopRampRate);
     }
 
-    @Inject
-    public BaseMotorPidSubsystem(PropertyFactory pf) {
+    protected BaseMotorPidSubsystem(PropertyFactory pf) {
         this(pf, 0.1, 0, 0, 0, -1.0, 1.0, 0.05, 0.05);
     }
 

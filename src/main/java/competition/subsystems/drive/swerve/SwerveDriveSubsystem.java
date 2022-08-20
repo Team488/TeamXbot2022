@@ -1,7 +1,7 @@
 package competition.subsystems.drive.swerve;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import javax.inject.Inject;
+
 import com.revrobotics.CANSparkMax.FaultID;
 import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
@@ -9,15 +9,16 @@ import org.apache.log4j.Logger;
 
 import competition.electrical_contract.ElectricalContract;
 import competition.injection.swerve.SwerveInstance;
+import dagger.Reusable;
 import xbot.common.command.BaseSetpointSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
-import xbot.common.injection.wpi_factories.CommonLibFactory;
-import xbot.common.math.PIDFactory;
+import xbot.common.controls.actuators.XCANSparkMax.XCANSparkMaxFactory;
 import xbot.common.math.PIDManager;
+import xbot.common.math.PIDManager.PIDManagerFactory;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 
-@Singleton
+@Reusable
 public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
     private static Logger log = Logger.getLogger(SwerveDriveSubsystem.class);
 
@@ -33,8 +34,8 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
     private XCANSparkMax motorController;
 
     @Inject
-    public SwerveDriveSubsystem(SwerveInstance swerveInstance, CommonLibFactory factory,
-            PropertyFactory pf, PIDFactory pidf, ElectricalContract electricalContract,
+    public SwerveDriveSubsystem(SwerveInstance swerveInstance, XCANSparkMaxFactory sparkMaxFactory,
+            PropertyFactory pf, PIDManagerFactory pidf, ElectricalContract electricalContract,
             SwerveDriveMotorPidSubsystem pidConfigSubsystem) {
         this.label = swerveInstance.getLabel();
         log.info("Creating SwerveDriveSubsystem " + this.label);
@@ -42,7 +43,7 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
         // Create properties shared among all instances
         pf.setPrefix(super.getPrefix());
         this.contract = electricalContract;
-        this.pid = pidf.createPIDManager(super.getPrefix() + "PID", 1.0, 0.0, 0.0, -1.0, 1.0);
+        this.pid = pidf.create(super.getPrefix() + "PID", 1.0, 0.0, 0.0, -1.0, 1.0);
         this.inchesPerMotorRotation = pf.createPersistentProperty("InchesPerMotorRotation", 2.02249);
         
         // Create properties unique to this instance.
@@ -53,7 +54,7 @@ public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
         this.pidConfigSubsystem = pidConfigSubsystem;
 
         if (electricalContract.isDriveReady()) {
-            this.motorController = factory.createCANSparkMax(electricalContract.getDriveNeo(swerveInstance), this.getPrefix(), "DriveNeo");
+            this.motorController = sparkMaxFactory.create(electricalContract.getDriveNeo(swerveInstance), this.getPrefix(), "DriveNeo");
             setMotorControllerPositionPidParameters();
             setupStatusFrames();
             this.motorController.setSmartCurrentLimit(45);

@@ -1,11 +1,11 @@
 package competition.subsystems.shooterwheel.commands;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import competition.operator_interface.OperatorInterface;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
 import xbot.common.command.BaseMaintainerCommand;
-import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.logic.HumanVsMachineDecider.HumanVsMachineDeciderFactory;
 import xbot.common.properties.PropertyFactory;
 
 public class ShooterWheelMaintainerCommand extends BaseMaintainerCommand {
@@ -14,8 +14,8 @@ public class ShooterWheelMaintainerCommand extends BaseMaintainerCommand {
     final OperatorInterface oi;
 
     @Inject
-    public ShooterWheelMaintainerCommand(OperatorInterface oi, ShooterWheelSubsystem wheel, PropertyFactory pf, CommonLibFactory clf){
-        super(wheel, pf, clf, 50, 0.15);
+    public ShooterWheelMaintainerCommand(OperatorInterface oi, ShooterWheelSubsystem wheel, PropertyFactory pf, HumanVsMachineDeciderFactory hvmFactory){
+        super(wheel, pf, hvmFactory, 50, 0.15);
         this.oi = oi;
         this.wheel = wheel;
         this.addRequirements(this.wheel);

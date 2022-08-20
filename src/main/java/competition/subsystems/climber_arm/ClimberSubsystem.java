@@ -1,10 +1,10 @@
 package competition.subsystems.climber_arm;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
-import competition.injection.arm.LeftArm;
-import competition.injection.arm.RightArm;
+import competition.injection.arm.LeftArmComponent;
+import competition.injection.arm.RightArmComponent;
 import xbot.common.command.BaseSubsystem;
 
 /**
@@ -19,9 +19,9 @@ public class ClimberSubsystem extends BaseSubsystem {
     final ClimberArmSubsystem rightArm;
 
     @Inject
-    public ClimberSubsystem(@LeftArm ClimberArmSubsystem leftArm, @RightArm ClimberArmSubsystem rightArm) {
-        this.leftArm = leftArm;
-        this.rightArm = rightArm;
+    public ClimberSubsystem(LeftArmComponent leftArm, RightArmComponent rightArm) {
+        this.leftArm = leftArm.subsystem();
+        this.rightArm = rightArm.subsystem();
     }
 
     public ClimberArmSubsystem getLeftArm() {

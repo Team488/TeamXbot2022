@@ -1,6 +1,6 @@
 package competition.subsystems.pose;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import xbot.common.command.BaseCommand;
 import xbot.common.math.FieldPose;
 

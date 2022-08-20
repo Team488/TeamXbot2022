@@ -1,6 +1,6 @@
 package competition.auto_programs;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import xbot.common.command.BaseCommand;
 
 public class DoNothingCommand extends BaseCommand {

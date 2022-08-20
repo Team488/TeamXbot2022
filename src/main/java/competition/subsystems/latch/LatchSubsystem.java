@@ -1,13 +1,14 @@
 package competition.subsystems.latch;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import competition.electrical_contract.ElectricalContract;
 import xbot.common.command.BaseSubsystem;
 import xbot.common.controls.actuators.XDoubleSolenoid;
 import xbot.common.controls.actuators.XDoubleSolenoid.DoubleSolenoidMode;
-import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.controls.actuators.XDoubleSolenoid.XDoubleSolenoidFactory;
+import xbot.common.controls.actuators.XSolenoid.XSolenoidFactory;
 
 @Singleton
 public class LatchSubsystem extends BaseSubsystem {
@@ -16,13 +17,13 @@ public class LatchSubsystem extends BaseSubsystem {
     final ElectricalContract contract;
 
     @Inject
-    public LatchSubsystem(CommonLibFactory factory, ElectricalContract contract) {
+    public LatchSubsystem(XDoubleSolenoidFactory doubleSolenoidFactory, XSolenoidFactory solenoidFactory, ElectricalContract contract) {
         this.contract = contract;
 
         if (contract.arePneumaticsReady()) {
-            latch = factory.createDoubleSolenoid(
-                factory.createSolenoid(contract.getLatchSolenoid().channel), 
-                factory.createSolenoid(contract.getLatchSolenoid2().channel)
+            latch = doubleSolenoidFactory.create(
+                solenoidFactory.create(contract.getLatchSolenoid().channel), 
+                solenoidFactory.create(contract.getLatchSolenoid2().channel)
             );
         }
     }

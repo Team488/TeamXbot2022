@@ -1,13 +1,14 @@
 package competition.subsystems.collector;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 import competition.electrical_contract.ElectricalContract;
 import xbot.common.command.BaseSubsystem;
 import xbot.common.controls.actuators.XCANTalon;
-import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.controls.actuators.XCANTalon.XCANTalonFactory;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 
@@ -20,10 +21,10 @@ public class CollectorSubsystem extends BaseSubsystem{
     final ElectricalContract contract;
 
     @Inject
-    public CollectorSubsystem(CommonLibFactory factory, PropertyFactory pf, ElectricalContract eContract){
+    public CollectorSubsystem(XCANTalonFactory talonFactory, PropertyFactory pf, ElectricalContract eContract){
         this.contract = eContract;
         if (eContract.isIntakeReady()) {
-            collectorMotor = factory.createCANTalon(eContract.getLeftCollectorMotor());
+            collectorMotor = talonFactory.create(eContract.getLeftCollectorMotor());
             collectorMotor.configOpenloopRamp(0.1, 100);
         } else {
             collectorMotor = null;

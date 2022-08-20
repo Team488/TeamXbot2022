@@ -1,7 +1,7 @@
 package competition.subsystems.arduino;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import competition.electrical_contract.ElectricalContract;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
@@ -10,7 +10,8 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import xbot.common.command.BaseSubsystem;
 import xbot.common.controls.actuators.XDigitalOutput;
 import xbot.common.controls.actuators.XPWM;
-import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.controls.actuators.XDigitalOutput.XDigitalOutputFactory;
+import xbot.common.controls.actuators.XPWM.XPWMFactory;
 import xbot.common.properties.BooleanProperty;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
@@ -18,7 +19,7 @@ import xbot.common.properties.StringProperty;
 
 @Singleton
 public class ArduinoCommunicationSubsystem extends BaseSubsystem {
-    
+
     XDigitalOutput dio0;
     XDigitalOutput dio1;
     XDigitalOutput dio2;
@@ -57,17 +58,18 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
             return value;
         }
     }
-    
+
     @Inject
-    public ArduinoCommunicationSubsystem(CommonLibFactory clf, ElectricalContract contract, PropertyFactory pf, ShooterWheelSubsystem shooter) {
+    public ArduinoCommunicationSubsystem(XDigitalOutputFactory digitalOutputFactory, XPWMFactory pwmFactory,
+            ElectricalContract contract, PropertyFactory pf, ShooterWheelSubsystem shooter) {
         this.shooter = shooter;
 
-        dio0 = clf.createDigitalOutput(contract.getArduinoDio0().channel);
-        dio1 = clf.createDigitalOutput(contract.getArduinoDio1().channel);
-        dio2 = clf.createDigitalOutput(contract.getArduinoDio2().channel);
-        dio3 = clf.createDigitalOutput(contract.getArduinoDio3().channel);
-        allianceDio = clf.createDigitalOutput(contract.getArduinoAllianceDio().channel);
-        analogOutput = clf.createPWM(contract.getArduinoAnalogOutput().channel);
+        dio0 = digitalOutputFactory.create(contract.getArduinoDio0().channel);
+        dio1 = digitalOutputFactory.create(contract.getArduinoDio1().channel);
+        dio2 = digitalOutputFactory.create(contract.getArduinoDio2().channel);
+        dio3 = digitalOutputFactory.create(contract.getArduinoDio3().channel);
+        allianceDio = digitalOutputFactory.create(contract.getArduinoAllianceDio().channel);
+        analogOutput = pwmFactory.create(contract.getArduinoAnalogOutput().channel);
 
         dioOutputs = new XDigitalOutput[] { dio3, dio2, dio1, dio0 };
         loopCounter = 0;
@@ -83,7 +85,7 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
 
         this.register();
     }
- 
+
     int counter = 0;
 
     @Override
@@ -118,7 +120,7 @@ public class ArduinoCommunicationSubsystem extends BaseSubsystem {
         // such that the element at index 3 is dio0 to match how the arduino currently
         // parses the binary data.
         int stateValue = currentState.getValue();
-        for (int i = 3; i >=0; i--) {
+        for (int i = 3; i >= 0; i--) {
             dioOutputs[3 - i].set(!((stateValue & (1 << i)) != 0));
         }
 

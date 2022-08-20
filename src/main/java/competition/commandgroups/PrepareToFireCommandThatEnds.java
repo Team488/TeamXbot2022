@@ -2,7 +2,7 @@ package competition.commandgroups;
 
 import java.util.function.Supplier;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
 

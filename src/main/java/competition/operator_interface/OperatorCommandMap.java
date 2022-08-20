@@ -1,8 +1,8 @@
 package competition.operator_interface;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.inject.Singleton;
 
 import competition.auto_programs.CollectThenHighScoreCommand;
 import competition.auto_programs.CollectThenScoreTwiceCommand;
@@ -18,16 +18,13 @@ import competition.auto_programs.ShootThenEscapeCommand;
 import competition.commandgroups.DriverFireCommand;
 import competition.commandgroups.DriverRecklessFireCommand;
 import competition.commandgroups.HumanShootWithVision;
-import competition.injection.arm.LeftArm;
-import competition.injection.arm.RightArm;
-import competition.subsystems.climber_arm.ClimberArmSubsystem;
-import competition.subsystems.climber_arm.commands.ClimberArmMaintainerCommand;
+import competition.injection.arm.LeftArmComponent;
+import competition.injection.arm.RightArmComponent;
 import competition.subsystems.climber_arm.commands.DualArmBalancerCommand;
 import competition.subsystems.climber_arm.commands.DualArmControllerCommandWithJoysticks;
 import competition.subsystems.climber_arm.commands.MotorArmExtendCommand;
 import competition.subsystems.climber_arm.commands.MotorArmRetractCommand;
 import competition.subsystems.climber_arm.commands.MotorArmSetZeroCommand;
-import competition.subsystems.climber_arm.commands.MotorArmStopCommand;
 import competition.subsystems.climber_arm.commands.SetArmsToPositionCommand;
 import competition.subsystems.climber_pivot.commands.PivotAccordingToArm;
 import competition.subsystems.climber_pivot.commands.PivotInCommand;
@@ -66,8 +63,8 @@ import xbot.common.command.DelayViaSupplierCommand;
 import xbot.common.command.NamedInstantCommand;
 import xbot.common.command.SmartDashboardCommandPutter;
 import xbot.common.controls.sensors.ChordButton;
+import xbot.common.controls.sensors.ChordButton.ChordButtonFactory;
 import xbot.common.controls.sensors.XXboxController.XboxButton;
-import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.math.FieldPose;
 import xbot.common.math.XYPair;
 import xbot.common.properties.DoubleProperty;
@@ -140,14 +137,10 @@ public class OperatorCommandMap {
             DualArmBalancerCommand dualArmBalancer,
             PivotAccordingToArm pivotAccordingToArm,
             ConveyorSubsystem conveyer,
-            @LeftArm ClimberArmMaintainerCommand leftArmMaintainer,
-            @RightArm ClimberArmMaintainerCommand rightArmMaintainer,
-            @LeftArm MotorArmStopCommand stopLeftArm,
-            @RightArm MotorArmStopCommand stopRightArm,
+            LeftArmComponent leftArmComponent,
+            RightArmComponent rightArmComponent,
             Provider<SetArmsToPositionCommand> setArmPositionCommandProvider,
-            @LeftArm ClimberArmSubsystem leftArm,
-            @RightArm ClimberArmSubsystem rightArm,
-            CommonLibFactory clf,
+            ChordButtonFactory chordFactory,
             PropertyFactory pf) {
         setArmPositionCommandProvider.get().setTargetPosition(SetArmsToPositionCommand.TargetPosition.FullyRetracted)
                 .includeOnSmartDashboard();
@@ -167,17 +160,17 @@ public class OperatorCommandMap {
                 new DelayViaSupplierCommand(() -> latchOpenTime.get()));
 
         var setArmsSafe = new InstantCommand(() -> {
-                leftArm.setIgnoreLimits(false);
-                rightArm.setIgnoreLimits(false);
+                leftArmComponent.subsystem().setIgnoreLimits(false);
+                rightArmComponent.subsystem().setIgnoreLimits(false);
         });
 
         var setArmsLocked = new InstantCommand(() -> {
-                leftArm.setArmsUnlocked(false);
-                rightArm.setArmsUnlocked(false);
+                leftArmComponent.subsystem().setArmsUnlocked(false);
+                rightArmComponent.subsystem().setArmsUnlocked(false);
                 // also need to calibrate at the current position to keep
                 // arms in sync.
-                leftArm.setCurrentPositionToZero();
-                rightArm.setCurrentPositionToZero();
+                leftArmComponent.subsystem().setCurrentPositionToZero();
+                rightArmComponent.subsystem().setCurrentPositionToZero();
         });
 
         var safeLockedArms = new ParallelCommandGroup(setArmsSafe, setArmsLocked);
@@ -185,13 +178,13 @@ public class OperatorCommandMap {
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftStick).whenPressed(safeLockedArms);
 
         var setArmsUnsafe = new InstantCommand(() -> {
-                leftArm.setIgnoreLimits(true);
-                rightArm.setIgnoreLimits(true);
+                leftArmComponent.subsystem().setIgnoreLimits(true);
+                rightArmComponent.subsystem().setIgnoreLimits(true);
         });
         
         var unlockArms = new InstantCommand(() -> {
-                leftArm.setArmsUnlocked(true);
-                rightArm.setArmsUnlocked(true);
+                leftArmComponent.subsystem().setArmsUnlocked(true);
+                rightArmComponent.subsystem().setArmsUnlocked(true);
         });
 
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightStick).whenPressed(setArmsUnsafe);
@@ -201,7 +194,7 @@ public class OperatorCommandMap {
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.RightBumper).whenPressed(pivotIn);
         operatorInterface.operatorGamepad.getifAvailable(XboxButton.LeftBumper).whenPressed(pivotOut);
         
-        ChordButton totalNuclearLaunch = clf.createChordButton(
+        ChordButton totalNuclearLaunch = chordFactory.create(
                 operatorInterface.driverGamepad.getifAvailable(XboxButton.Start),
                 operatorInterface.operatorGamepad.getifAvailable(XboxButton.Start));
 

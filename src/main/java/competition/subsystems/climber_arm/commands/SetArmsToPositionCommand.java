@@ -1,9 +1,9 @@
 package competition.subsystems.climber_arm.commands;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
-import competition.injection.arm.LeftArm;
-import competition.injection.arm.RightArm;
+import competition.injection.arm.LeftArmComponent;
+import competition.injection.arm.RightArmComponent;
 import competition.subsystems.climber_arm.ClimberArmSubsystem;
 
 import xbot.common.command.BaseSetpointCommand;
@@ -24,10 +24,10 @@ public class SetArmsToPositionCommand extends BaseSetpointCommand {
     }
 
     @Inject
-    public SetArmsToPositionCommand(@LeftArm ClimberArmSubsystem leftArm, @RightArm ClimberArmSubsystem rightArm, PropertyFactory pf) {
-        super(leftArm, rightArm);
-        this.leftArm = leftArm;
-        this.rightArm = rightArm;
+    public SetArmsToPositionCommand(LeftArmComponent leftArm, RightArmComponent rightArm, PropertyFactory pf) {
+        super(leftArm.subsystem(), rightArm.subsystem());
+        this.leftArm = leftArm.subsystem();
+        this.rightArm = rightArm.subsystem();
 
         pf.setPrefix(this.getName());
     }

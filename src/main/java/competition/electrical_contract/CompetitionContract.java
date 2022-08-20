@@ -1,5 +1,7 @@
 package competition.electrical_contract;
 
+import javax.inject.Inject;
+
 import competition.injection.arm.ArmInstance;
 import competition.injection.swerve.SwerveInstance;
 import competition.subsystems.pose.PoseSubsystem;
@@ -10,6 +12,9 @@ import xbot.common.math.XYPair;
 public class CompetitionContract extends ElectricalContract {
 
     protected final double simulationScalingValue = 256.0 * PoseSubsystem.INCHES_IN_A_METER;
+
+    @Inject
+    public CompetitionContract() {}
 
     @Override
     public boolean isDriveReady() {

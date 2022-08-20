@@ -1,12 +1,11 @@
 package competition.operator_interface;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import xbot.common.controls.sensors.XXboxController;
-import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.controls.sensors.XXboxController.XXboxControllerFactory;
 import xbot.common.logging.RobotAssertionManager;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
@@ -25,12 +24,12 @@ public class OperatorInterface {
     final DoubleProperty operatorDeadband;
 
     @Inject
-    public OperatorInterface(CommonLibFactory factory, RobotAssertionManager assertionManager, PropertyFactory pf) {
+    public OperatorInterface(XXboxControllerFactory controllerFactory, RobotAssertionManager assertionManager, PropertyFactory pf) {
         DriverStation.silenceJoystickConnectionWarning(true);
 
-        driverGamepad = factory.createXboxController(0);
-        operatorGamepad = factory.createXboxController(1);
-        autoGamepad = factory.createXboxController(2);
+        driverGamepad = controllerFactory.create(0);
+        operatorGamepad = controllerFactory.create(1);
+        autoGamepad = controllerFactory.create(2);
 
         driverGamepad.setLeftInversion(false, true);
         driverGamepad.setRightInversion(true, true);

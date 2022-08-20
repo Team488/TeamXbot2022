@@ -1,6 +1,6 @@
 package competition.subsystems.latch.commands;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import competition.subsystems.latch.LatchSubsystem;
 import xbot.common.command.BaseCommand;
