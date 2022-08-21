@@ -2,7 +2,8 @@ package competition.subsystems.climber_pivot.commands;
 
 import javax.inject.Inject;
 
-import competition.injection.arm.LeftArmComponent;
+import competition.injection.arm.ArmComponent;
+import competition.injection.arm.LeftArm;
 import competition.subsystems.climber_arm.ClimberArmSubsystem;
 import competition.subsystems.climber_pivot.ClimberPivotSubsystem;
 import xbot.common.command.BaseCommand;
@@ -15,7 +16,7 @@ public class PivotAccordingToArm extends BaseCommand {
     @Inject
     public PivotAccordingToArm(
         ClimberPivotSubsystem pivot, 
-        LeftArmComponent leftArm) {
+        @LeftArm ArmComponent leftArm) {
         this.pivot = pivot;
         this.leftArm = leftArm.subsystem();
 

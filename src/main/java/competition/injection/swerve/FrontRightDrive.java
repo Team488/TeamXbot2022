@@ -3,8 +3,8 @@ package competition.injection.swerve;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import javax.inject.Scope;
+import javax.inject.Qualifier;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Scope
+@Qualifier
 public @interface FrontRightDrive {}

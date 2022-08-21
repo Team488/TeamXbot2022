@@ -5,7 +5,10 @@ import competition.subsystems.drive.commands.SwerveSteeringMaintainerCommand;
 import competition.subsystems.drive.swerve.SwerveDriveSubsystem;
 import competition.subsystems.drive.swerve.SwerveModuleSubsystem;
 import competition.subsystems.drive.swerve.SwerveSteeringSubsystem;
+import dagger.BindsInstance;
+import dagger.Subcomponent;
 
+@Subcomponent(modules = SwerveModule.class)
 public abstract class SwerveComponent {
     public abstract SwerveInstance swerveInstance();
 
@@ -18,4 +21,12 @@ public abstract class SwerveComponent {
     public abstract SwerveSteeringSubsystem swerveSteeringSubsystem();
 
     public abstract SwerveSteeringMaintainerCommand swerveSteeringMaintainerCommand();
+
+    @Subcomponent.Builder
+    public interface Builder {
+        @BindsInstance
+        Builder swerveInstance(SwerveInstance instance);
+
+        SwerveComponent build();
+    }
 }

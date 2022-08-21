@@ -2,10 +2,11 @@ package competition.subsystems.drive.commands;
 
 import javax.inject.Inject;
 
-import competition.injection.swerve.FrontLeftSwerveComponent;
-import competition.injection.swerve.FrontRightSwerveComponent;
-import competition.injection.swerve.RearLeftSwerveComponent;
-import competition.injection.swerve.RearRightSwerveComponent;
+import competition.injection.swerve.FrontLeftDrive;
+import competition.injection.swerve.FrontRightDrive;
+import competition.injection.swerve.RearLeftDrive;
+import competition.injection.swerve.RearRightDrive;
+import competition.injection.swerve.SwerveComponent;
 import competition.operator_interface.OperatorInterface;
 import competition.subsystems.drive.DriveSubsystem;
 import xbot.common.command.BaseCommand;
@@ -27,10 +28,10 @@ public class DebuggingSwerveWithJoysticksCommand extends BaseCommand {
     public DebuggingSwerveWithJoysticksCommand(
             DriveSubsystem drive,
             OperatorInterface oi,
-            FrontLeftSwerveComponent frontLeftSwerve,
-            FrontRightSwerveComponent frontRightSwerve,
-            RearLeftSwerveComponent rearLeftSwerve,
-            RearRightSwerveComponent rearRightSwerve) {
+            @FrontLeftDrive SwerveComponent frontLeftSwerve,
+            @FrontRightDrive SwerveComponent frontRightSwerve,
+            @RearLeftDrive SwerveComponent rearLeftSwerve,
+            @RearRightDrive SwerveComponent rearRightSwerve) {
         this.drive = drive;
         this.oi = oi;
 

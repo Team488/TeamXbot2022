@@ -2,42 +2,49 @@ package competition.injection.modules;
 
 import javax.inject.Singleton;
 
-import competition.injection.arm.LeftArmComponent;
-import competition.injection.arm.RightArmComponent;
-import competition.injection.swerve.FrontLeftSwerveComponent;
-import competition.injection.swerve.FrontRightSwerveComponent;
-import competition.injection.swerve.RearLeftSwerveComponent;
-import competition.injection.swerve.RearRightSwerveComponent;
+import competition.injection.arm.ArmComponent;
+import competition.injection.arm.ArmInstance;
+import competition.injection.arm.LeftArm;
+import competition.injection.arm.RightArm;
+import competition.injection.swerve.FrontLeftDrive;
+import competition.injection.swerve.FrontRightDrive;
+import competition.injection.swerve.RearLeftDrive;
+import competition.injection.swerve.RearRightDrive;
+import competition.injection.swerve.SwerveComponent;
 import competition.injection.swerve.SwerveInstance;
 import dagger.Module;
 import dagger.Provides;
 
-@Module(subcomponents = { LeftArmComponent.class, RightArmComponent.class, FrontLeftSwerveComponent.class,
-        FrontRightSwerveComponent.class, RearLeftSwerveComponent.class, RearRightSwerveComponent.class })
+@Module(subcomponents = { ArmComponent.class, SwerveComponent.class })
 public class CommonModule {
 
     @Provides
     @Singleton
-    public LeftArmComponent leftArmComponent(LeftArmComponent.Builder builder) {
-        return builder.build();
-    }
-
-    @Provides
-    @Singleton
-    public RightArmComponent rightArmComponent(RightArmComponent.Builder builder) {
-        return builder.build();
-    }
-
-    @Provides
-    @Singleton
-    public FrontLeftSwerveComponent frontLeftSwerveComponent(FrontLeftSwerveComponent.Builder builder) {
+    public @LeftArm ArmComponent leftArmComponent(ArmComponent.Builder builder) {
         return builder
+                .armInstance(new ArmInstance("LeftArm"))
                 .build();
     }
 
     @Provides
     @Singleton
-    public FrontRightSwerveComponent frontRightSwerveComponent(FrontRightSwerveComponent.Builder builder) {
+    public @RightArm ArmComponent rightArmComponent(ArmComponent.Builder builder) {
+        return builder
+                .armInstance(new ArmInstance("RightArm"))
+                .build();
+    }
+
+    @Provides
+    @Singleton
+    public @FrontLeftDrive SwerveComponent frontLeftSwerveComponent(SwerveComponent.Builder builder) {
+        return builder
+                .swerveInstance(new SwerveInstance("FrontLeftDrive"))
+                .build();
+    }
+
+    @Provides
+    @Singleton
+    public @FrontRightDrive SwerveComponent frontRightSwerveComponent(SwerveComponent.Builder builder) {
         return builder
                 .swerveInstance(new SwerveInstance("FrontRightDrive"))
                 .build();
@@ -45,7 +52,7 @@ public class CommonModule {
 
     @Provides
     @Singleton
-    public RearLeftSwerveComponent rearLeftSwerveComponent(RearLeftSwerveComponent.Builder builder) {
+    public @RearLeftDrive SwerveComponent rearLeftSwerveComponent(SwerveComponent.Builder builder) {
         return builder
                 .swerveInstance(new SwerveInstance("RearLeftDrive"))
                 .build();
@@ -53,7 +60,7 @@ public class CommonModule {
 
     @Provides
     @Singleton
-    public RearRightSwerveComponent rearRightSwerveComponent(RearRightSwerveComponent.Builder builder) {
+    public @RearRightDrive SwerveComponent rearRightSwerveComponent(SwerveComponent.Builder builder) {
         return builder
                 .swerveInstance(new SwerveInstance("RearRightDrive"))
                 .build();

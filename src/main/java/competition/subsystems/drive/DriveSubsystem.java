@@ -6,10 +6,11 @@ import javax.inject.Singleton;
 import org.apache.log4j.Logger;
 
 import competition.electrical_contract.ElectricalContract;
-import competition.injection.swerve.FrontLeftSwerveComponent;
-import competition.injection.swerve.FrontRightSwerveComponent;
-import competition.injection.swerve.RearLeftSwerveComponent;
-import competition.injection.swerve.RearRightSwerveComponent;
+import competition.injection.swerve.FrontLeftDrive;
+import competition.injection.swerve.FrontRightDrive;
+import competition.injection.swerve.RearLeftDrive;
+import competition.injection.swerve.RearRightDrive;
+import competition.injection.swerve.SwerveComponent;
 import competition.subsystems.drive.swerve.SwerveModuleSubsystem;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -72,8 +73,8 @@ public class DriveSubsystem extends BaseDriveSubsystem {
 
     @Inject
     public DriveSubsystem(PIDManagerFactory pidFactory, XPropertyManager propManager, ElectricalContract contract, PropertyFactory pf,
-            FrontLeftSwerveComponent frontLeftSwerve, FrontRightSwerveComponent frontRightSwerve,
-            RearLeftSwerveComponent rearLeftSwerve, RearRightSwerveComponent rearRightSwerve) {
+            @FrontLeftDrive SwerveComponent frontLeftSwerve, @FrontRightDrive SwerveComponent frontRightSwerve,
+            @RearLeftDrive SwerveComponent rearLeftSwerve, @RearRightDrive SwerveComponent rearRightSwerve) {
         log.info("Creating DriveSubsystem");
         pf.setPrefix(this);
 

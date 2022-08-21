@@ -18,8 +18,9 @@ import competition.auto_programs.ShootThenEscapeCommand;
 import competition.commandgroups.DriverFireCommand;
 import competition.commandgroups.DriverRecklessFireCommand;
 import competition.commandgroups.HumanShootWithVision;
-import competition.injection.arm.LeftArmComponent;
-import competition.injection.arm.RightArmComponent;
+import competition.injection.arm.ArmComponent;
+import competition.injection.arm.LeftArm;
+import competition.injection.arm.RightArm;
 import competition.subsystems.climber_arm.commands.DualArmBalancerCommand;
 import competition.subsystems.climber_arm.commands.DualArmControllerCommandWithJoysticks;
 import competition.subsystems.climber_arm.commands.MotorArmExtendCommand;
@@ -137,8 +138,8 @@ public class OperatorCommandMap {
             DualArmBalancerCommand dualArmBalancer,
             PivotAccordingToArm pivotAccordingToArm,
             ConveyorSubsystem conveyer,
-            LeftArmComponent leftArmComponent,
-            RightArmComponent rightArmComponent,
+            @LeftArm ArmComponent leftArmComponent,
+            @RightArm ArmComponent rightArmComponent,
             Provider<SetArmsToPositionCommand> setArmPositionCommandProvider,
             ChordButtonFactory chordFactory,
             PropertyFactory pf) {
