@@ -10,7 +10,7 @@ import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
 import competition.electrical_contract.ElectricalContract;
 import competition.injection.arm.ArmInstance;
-import dagger.Reusable;
+import competition.injection.arm.ArmSingleton;
 import xbot.common.command.BaseSetpointSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
 import xbot.common.controls.actuators.XCANSparkMax.XCANSparkMaxFactory;
@@ -24,7 +24,7 @@ import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.properties.StringProperty;
 
-@Reusable
+@ArmSingleton
 public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     public XCANSparkMax armMotor;
     public double armMotorPosition;

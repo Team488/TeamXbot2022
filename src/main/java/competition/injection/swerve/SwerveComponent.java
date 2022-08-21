@@ -8,6 +8,7 @@ import competition.subsystems.drive.swerve.SwerveSteeringSubsystem;
 import dagger.BindsInstance;
 import dagger.Subcomponent;
 
+@SwerveSingleton
 @Subcomponent(modules = SwerveModule.class)
 public abstract class SwerveComponent {
     public abstract SwerveInstance swerveInstance();

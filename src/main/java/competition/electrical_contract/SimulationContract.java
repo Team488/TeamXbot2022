@@ -51,8 +51,8 @@ public class SimulationContract extends CompetitionContract {
         return false;
     }
     
-    public DeviceInfo getDriveNeo(String swerveInstance) {
-        switch (swerveInstance) {
+    public DeviceInfo getDriveNeo(SwerveInstance swerveInstance) {
+        switch (swerveInstance.getLabel()) {
             case "FrontLeftDrive":
                 return new DeviceInfo(1, false, simulationScalingValue);
 

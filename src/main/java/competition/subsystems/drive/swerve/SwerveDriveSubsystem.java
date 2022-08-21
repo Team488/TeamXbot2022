@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 
 import competition.electrical_contract.ElectricalContract;
 import competition.injection.swerve.SwerveInstance;
-import dagger.Reusable;
+import competition.injection.swerve.SwerveSingleton;
 import xbot.common.command.BaseSetpointSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
 import xbot.common.controls.actuators.XCANSparkMax.XCANSparkMaxFactory;
@@ -18,7 +18,7 @@ import xbot.common.math.PIDManager.PIDManagerFactory;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 
-@Reusable
+@SwerveSingleton
 public class SwerveDriveSubsystem extends BaseSetpointSubsystem {
     private static Logger log = Logger.getLogger(SwerveDriveSubsystem.class);
 

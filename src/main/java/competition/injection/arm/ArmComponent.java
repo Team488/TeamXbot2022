@@ -6,6 +6,7 @@ import competition.subsystems.climber_arm.commands.MotorArmStopCommand;
 import dagger.BindsInstance;
 import dagger.Subcomponent;
 
+@ArmSingleton
 @Subcomponent(modules = ArmModule.class)
 public abstract class ArmComponent {
     public abstract ArmInstance instance();
@@ -20,7 +21,7 @@ public abstract class ArmComponent {
     public interface Builder {
         @BindsInstance
         Builder armInstance(ArmInstance instance);
-        
+
         ArmComponent build();
     }
 }
