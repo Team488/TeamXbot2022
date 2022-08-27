@@ -11,8 +11,8 @@ import xbot.common.controls.actuators.XDoubleSolenoid.DoubleSolenoidMode;
 public class PivotInCommandTest extends BaseCompetitionTest{
     @Test
     public void testingPivotIn(){
-        ClimberPivotSubsystem climberPivotSubsystem = this.injector.getInstance(ClimberPivotSubsystem.class);
-        PivotInCommand pivotInCommand = this.injector.getInstance(PivotInCommand.class);
+        ClimberPivotSubsystem climberPivotSubsystem = getInjectorComponent().climberPivotSubsystem();
+        PivotInCommand pivotInCommand = getInjectorComponent().pivotInCommand();
 
         climberPivotSubsystem.pivot.setDoubleSolenoid(DoubleSolenoidMode.FORWARD);
         assertTrue("Pivoted out", climberPivotSubsystem.pivot.getIsForward());
@@ -24,8 +24,8 @@ public class PivotInCommandTest extends BaseCompetitionTest{
 
     @Test
     public void testingPivotInDouble(){
-        ClimberPivotSubsystem climberPivotSubsystem = this.injector.getInstance(ClimberPivotSubsystem.class);
-        PivotInCommand pivotInCommand = this.injector.getInstance(PivotInCommand.class);
+        ClimberPivotSubsystem climberPivotSubsystem = getInjectorComponent().climberPivotSubsystem();
+        PivotInCommand pivotInCommand = getInjectorComponent().pivotInCommand();
 
         climberPivotSubsystem.pivot.setDoubleSolenoid(DoubleSolenoidMode.REVERSE);
         assertTrue("Pivoted in", climberPivotSubsystem.pivot.getIsReverse());

@@ -1,14 +1,18 @@
 package competition;
 
-import com.google.inject.Guice;
-import javax.inject.Injector;
-
+import competition.injection.components.CompetitionTestComponent;
+import competition.injection.components.DaggerCompetitionTestComponent;
 import xbot.common.injection.BaseWPITest;
 
 public class BaseCompetitionTest extends BaseWPITest{
     
     @Override
-    protected Injector createInjector() {
-        return Guice.createInjector(new CompetitionTestModule());
+    protected CompetitionTestComponent createDaggerComponent() {
+        return DaggerCompetitionTestComponent.create();
+    }
+
+    @Override
+    protected CompetitionTestComponent getInjectorComponent() {
+        return (CompetitionTestComponent)super.getInjectorComponent();
     }
 }

@@ -10,8 +10,8 @@ import competition.subsystems.deploy_hood.HoodSubsystem;
 public class HoodRetractCommandTest extends BaseCompetitionTest{
     @Test
     public void testingHoodRetractCommand(){
-        HoodSubsystem hoodSubsystem = this.injector.getInstance(HoodSubsystem.class);
-        HoodRetractCommand hoodRetractCommand = this.injector.getInstance(HoodRetractCommand.class);
+        HoodSubsystem hoodSubsystem = getInjectorComponent().hoodSubsystem();
+        HoodRetractCommand hoodRetractCommand = getInjectorComponent().hoodRetractCommand();
 
         hoodSubsystem.deploy();
         assertTrue("Starts deployed", hoodSubsystem.hoodDeploy.getIsForward());
@@ -23,8 +23,8 @@ public class HoodRetractCommandTest extends BaseCompetitionTest{
 
     @Test
     public void testingDoubleHoodRetractCommand(){
-        HoodSubsystem hoodSubsystem = this.injector.getInstance(HoodSubsystem.class);
-        HoodRetractCommand hoodRetractCommand = this.injector.getInstance(HoodRetractCommand.class);
+        HoodSubsystem hoodSubsystem = getInjectorComponent().hoodSubsystem();
+        HoodRetractCommand hoodRetractCommand = getInjectorComponent().hoodRetractCommand();
 
         hoodSubsystem.retract();
         assertTrue("Starts deployed", hoodSubsystem.hoodDeploy.getIsReverse());

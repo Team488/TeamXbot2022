@@ -10,8 +10,8 @@ import competition.subsystems.collector_deployment.CollectorDeploymentSubsystem;
 public class RetractCommandTest extends BaseCompetitionTest{
     @Test  
     public void testingRetractCommand(){
-        CollectorDeploymentSubsystem collectorDeploymentSubsystem = this.injector.getInstance(CollectorDeploymentSubsystem.class);
-        RetractCollectorCommand retractCommand = this.injector.getInstance(RetractCollectorCommand.class);
+        CollectorDeploymentSubsystem collectorDeploymentSubsystem = getInjectorComponent().collectorDeploymentSubsystem();
+        RetractCollectorCommand retractCommand = getInjectorComponent().retractCollectorCommand();
 
         collectorDeploymentSubsystem.deploy.setForward();
         assertTrue("Collector Deploys", collectorDeploymentSubsystem.deploy.getIsForward());
@@ -22,8 +22,8 @@ public class RetractCommandTest extends BaseCompetitionTest{
     
     @Test  
     public void testingDoubleRetractCommand(){
-        CollectorDeploymentSubsystem collectorDeploymentSubsystem = this.injector.getInstance(CollectorDeploymentSubsystem.class);
-        RetractCollectorCommand retractCommand = this.injector.getInstance(RetractCollectorCommand.class);
+        CollectorDeploymentSubsystem collectorDeploymentSubsystem = getInjectorComponent().collectorDeploymentSubsystem();
+        RetractCollectorCommand retractCommand = getInjectorComponent().retractCollectorCommand();
 
         collectorDeploymentSubsystem.deploy.setReverse();
         assertTrue("Collector Retracts", collectorDeploymentSubsystem.deploy.getIsReverse());

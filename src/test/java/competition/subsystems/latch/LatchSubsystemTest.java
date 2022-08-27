@@ -10,7 +10,7 @@ public class LatchSubsystemTest extends BaseCompetitionTest {
 
     @Test
     public void testingArmLatch() {
-        LatchSubsystem latchSubsystem = this.injector.getInstance(LatchSubsystem.class);
+        LatchSubsystem latchSubsystem = getInjectorComponent().latchSubsystem();
 
         assertTrue("Latch starts off", latchSubsystem.latch.getIsOff());
         latchSubsystem.arm();
@@ -29,7 +29,7 @@ public class LatchSubsystemTest extends BaseCompetitionTest {
 
     @Test
     public void testingReleaseLatch() {
-        LatchSubsystem latchSubsystem = this.injector.getInstance(LatchSubsystem.class);
+        LatchSubsystem latchSubsystem = getInjectorComponent().latchSubsystem();
 
         latchSubsystem.latch.setForward();
         assertTrue("Latch starts armed", latchSubsystem.latch.getIsForward());
@@ -39,7 +39,7 @@ public class LatchSubsystemTest extends BaseCompetitionTest {
 
     @Test
     public void testingArmAndReleaseLatch() {
-        LatchSubsystem latchSubsystem = this.injector.getInstance(LatchSubsystem.class);
+        LatchSubsystem latchSubsystem = getInjectorComponent().latchSubsystem();
 
         latchSubsystem.arm();
         assertTrue("Latch is now armed", latchSubsystem.latch.getIsForward());
@@ -49,7 +49,7 @@ public class LatchSubsystemTest extends BaseCompetitionTest {
     
     @Test
     public void testingDoublesLatch() {
-        LatchSubsystem latchSubsystem = this.injector.getInstance(LatchSubsystem.class);
+        LatchSubsystem latchSubsystem = getInjectorComponent().latchSubsystem();
 
         latchSubsystem.arm();
         assertTrue("Latch is now armed", latchSubsystem.latch.getIsForward());

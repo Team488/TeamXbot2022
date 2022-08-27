@@ -10,8 +10,8 @@ import competition.subsystems.latch.commands.LatchReleaseCommand;
 public class LatchReleaseCommandTest extends BaseCompetitionTest{
     @Test
     public void testingReleaseLatch(){
-        LatchReleaseCommand latchReleaseCommand = this.injector.getInstance(LatchReleaseCommand.class);
-        LatchSubsystem latchSubsystem = this.injector.getInstance(LatchSubsystem.class);
+        LatchReleaseCommand latchReleaseCommand = getInjectorComponent().latchReleaseCommand();
+        LatchSubsystem latchSubsystem = getInjectorComponent().latchSubsystem();
 
         
         latchSubsystem.latch.setForward();
@@ -25,8 +25,8 @@ public class LatchReleaseCommandTest extends BaseCompetitionTest{
 
     @Test
     public void testingStartReleaseLatch(){
-        LatchReleaseCommand latchReleaseCommand = this.injector.getInstance(LatchReleaseCommand.class);
-        LatchSubsystem latchSubsystem = this.injector.getInstance(LatchSubsystem.class);
+        LatchReleaseCommand latchReleaseCommand = getInjectorComponent().latchReleaseCommand();
+        LatchSubsystem latchSubsystem = getInjectorComponent().latchSubsystem();
 
         latchSubsystem.latch.setReverse();
         assertTrue("Latch starts released", latchSubsystem.latch.getIsReverse());

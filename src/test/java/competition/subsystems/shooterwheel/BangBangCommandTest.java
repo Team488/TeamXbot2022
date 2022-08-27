@@ -15,8 +15,8 @@ public class BangBangCommandTest extends BaseCompetitionTest {
     @Override
     public void setUp() {
         super.setUp();
-        shooterWheelSubsystem = this.injector.getInstance(ShooterWheelSubsystem.class);
-        command = this.injector.getInstance(BangBangCommand.class);    
+        shooterWheelSubsystem = getInjectorComponent().shooterWheelSubsystem();
+        command = getInjectorComponent().bangBangCommand();
     }
     
     @Test

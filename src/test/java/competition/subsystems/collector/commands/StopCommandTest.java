@@ -13,8 +13,8 @@ public class StopCommandTest extends BaseCollectorTest {
 
     @Test
     public void testingStopWhileIntaking() {
-        StopCollectorCommand stopCommand = injector.getInstance(StopCollectorCommand.class);
-        CollectorSubsystem collectorSubsystem = injector.getInstance(CollectorSubsystem.class);
+        StopCollectorCommand stopCommand = getInjectorComponent().stopCollectorCommand();
+        CollectorSubsystem collectorSubsystem = getInjectorComponent().collectorSubsystem();
 
         collectorSubsystem.collectorMotor.set(ControlMode.PercentOutput, 1);
         checkCollectorPower(1);
@@ -25,9 +25,8 @@ public class StopCommandTest extends BaseCollectorTest {
 
     @Test
     public void stopWhenStopped() {
-        StopCollectorCommand stopCommand = injector.getInstance(StopCollectorCommand.class);
-        CollectorSubsystem collectorSubsystem = injector.getInstance(CollectorSubsystem.class);
-
+        StopCollectorCommand stopCommand = getInjectorComponent().stopCollectorCommand();
+        CollectorSubsystem collectorSubsystem = getInjectorComponent().collectorSubsystem();
         collectorSubsystem.collectorMotor.set(ControlMode.PercentOutput, 0);
         checkCollectorPower(0);
         stopCommand.initialize();
@@ -36,7 +35,7 @@ public class StopCommandTest extends BaseCollectorTest {
     }
 
     public void checkCollectorPower(double power) {
-        CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
+        CollectorSubsystem collectorSubsystem = getInjectorComponent().collectorSubsystem();
         MockCANTalon mockMotor = (MockCANTalon) collectorSubsystem.collectorMotor;
 
         assertEquals(power, mockMotor.getMotorOutputPercent(), 0.001);

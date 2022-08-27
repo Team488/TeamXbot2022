@@ -11,7 +11,7 @@ import xbot.common.controls.actuators.XDoubleSolenoid.DoubleSolenoidMode;
 public class ClimberPivotSubsystemTest extends BaseCompetitionTest {
     @Test
     public void testingPivotIn(){
-        ClimberPivotSubsystem climberPivotSubsystem = this.injector.getInstance(ClimberPivotSubsystem.class);
+        ClimberPivotSubsystem climberPivotSubsystem = getInjectorComponent().climberPivotSubsystem();
         
         climberPivotSubsystem.pivot.setDoubleSolenoid(DoubleSolenoidMode.FORWARD);
         assertTrue("Latch starts pivoted out", climberPivotSubsystem.pivot.getIsForward());
@@ -21,7 +21,7 @@ public class ClimberPivotSubsystemTest extends BaseCompetitionTest {
 
     @Test
     public void testingPivotOut(){
-        ClimberPivotSubsystem climberPivotSubsystem = this.injector.getInstance(ClimberPivotSubsystem.class);
+        ClimberPivotSubsystem climberPivotSubsystem = getInjectorComponent().climberPivotSubsystem();
 
         assertTrue("Latch is off", climberPivotSubsystem.pivot.getIsOff());
 
@@ -32,7 +32,7 @@ public class ClimberPivotSubsystemTest extends BaseCompetitionTest {
 
     @Test
     public void testingPivotInandOut(){
-        ClimberPivotSubsystem climberPivotSubsystem = this.injector.getInstance(ClimberPivotSubsystem.class);
+        ClimberPivotSubsystem climberPivotSubsystem = getInjectorComponent().climberPivotSubsystem();
         
         climberPivotSubsystem.pivot.setDoubleSolenoid(DoubleSolenoidMode.FORWARD);
         assertTrue("Latch starts pivoted out", climberPivotSubsystem.pivot.getIsForward());

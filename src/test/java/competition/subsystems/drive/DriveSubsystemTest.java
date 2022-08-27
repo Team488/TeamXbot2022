@@ -12,7 +12,7 @@ public class DriveSubsystemTest extends BaseCompetitionTest {
     
     @Test
     public void testSwerveModuleInjection(){
-        DriveSubsystem driveSubsystem = this.injector.getInstance(DriveSubsystem.class);
+        DriveSubsystem driveSubsystem = (DriveSubsystem)getInjectorComponent().driveSubsystem();
 
         assertNotSame(
             driveSubsystem.getFrontLeftSwerveModuleSubsystem(),
@@ -38,7 +38,7 @@ public class DriveSubsystemTest extends BaseCompetitionTest {
         assertEquals("SwerveDriveSubsystem/RearLeftDrive/", driveSubsystem.getRearLeftSwerveModuleSubsystem().getDriveSubsystem().getPrefix());
         assertEquals("SwerveDriveSubsystem/RearRightDrive/", driveSubsystem.getRearRightSwerveModuleSubsystem().getDriveSubsystem().getPrefix());
 
-        DriveSubsystem anotheDriveSubsystem = this.injector.getInstance(DriveSubsystem.class);
+        DriveSubsystem anotheDriveSubsystem = (DriveSubsystem)getInjectorComponent().driveSubsystem();
         assertSame(
             driveSubsystem,
             anotheDriveSubsystem);

@@ -2,12 +2,9 @@ package competition.subsystems.drive.swerve.commands;
 
 import static org.junit.Assert.assertTrue;
 
-import com.google.inject.Key;
-
 import org.junit.Test;
 
 import competition.BaseCompetitionTest;
-import competition.injection.swerve.FrontLeftDrive;
 import competition.subsystems.drive.commands.SwerveSteeringMaintainerCommand;
 import competition.subsystems.drive.swerve.SwerveSteeringSubsystem;
 
@@ -19,8 +16,8 @@ public class SwerveSteeringMaintainerCommandTest extends BaseCompetitionTest {
     @Override
     public void setUp() {
         super.setUp();
-        subsystem = injector.getInstance(Key.get(SwerveSteeringSubsystem.class, FrontLeftDrive.class));
-        command = injector.getInstance(Key.get(SwerveSteeringMaintainerCommand.class, FrontLeftDrive.class));
+        subsystem = getInjectorComponent().swerveComponents().frontLeft.swerveSteeringSubsystem();
+        command = getInjectorComponent().swerveComponents().frontLeft.swerveSteeringMaintainerCommand();
     }
 
     @Test
