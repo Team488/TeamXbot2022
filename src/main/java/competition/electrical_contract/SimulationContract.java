@@ -1,11 +1,16 @@
 package competition.electrical_contract;
 
+import javax.inject.Inject;
+
 import competition.injection.swerve.SwerveInstance;
 import xbot.common.injection.electrical_contract.CANTalonInfo;
 import xbot.common.injection.electrical_contract.DeviceInfo;
 import xbot.common.math.XYPair;
 
 public class SimulationContract extends CompetitionContract {
+
+    @Inject
+    public SimulationContract() {}
 
     @Override
     public boolean isDriveReady() {

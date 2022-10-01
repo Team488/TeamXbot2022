@@ -1,11 +1,11 @@
 package competition.subsystems.drive.swerve;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
 
 import competition.electrical_contract.ElectricalContract;
 import competition.injection.swerve.SwerveInstance;
+import competition.injection.swerve.SwerveSingleton;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -16,7 +16,7 @@ import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.subsystems.pose.BasePoseSubsystem;
 
-@Singleton
+@SwerveSingleton
 public class SwerveModuleSubsystem extends BaseSubsystem {
     private static Logger log = Logger.getLogger(SwerveModuleSubsystem.class);
     

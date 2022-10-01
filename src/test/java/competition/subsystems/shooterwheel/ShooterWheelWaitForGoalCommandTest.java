@@ -14,9 +14,9 @@ public class ShooterWheelWaitForGoalCommandTest extends BaseCompetitionTest {
     @Test
     @Ignore // need to write speed modification support for the Neos
     public void testAtGoal() {
-        ShooterWheelSubsystem shooter = this.injector.getInstance(ShooterWheelSubsystem.class);
+        ShooterWheelSubsystem shooter = getInjectorComponent().shooterWheelSubsystem();
 
-        ShooterWheelWaitForGoalCommand command = this.injector.getInstance(ShooterWheelWaitForGoalCommand.class);
+        ShooterWheelWaitForGoalCommand command = getInjectorComponent().shooterWheelWaitForGoalCommand();
 
         shooter.setTargetValue(9001);
 
@@ -34,9 +34,9 @@ public class ShooterWheelWaitForGoalCommandTest extends BaseCompetitionTest {
 
     @Test
     public void testTimeout() {
-        ShooterWheelSubsystem shooter = this.injector.getInstance(ShooterWheelSubsystem.class);
+        ShooterWheelSubsystem shooter = getInjectorComponent().shooterWheelSubsystem();
 
-        ShooterWheelWaitForGoalCommand command = this.injector.getInstance(ShooterWheelWaitForGoalCommand.class);
+        ShooterWheelWaitForGoalCommand command = getInjectorComponent().shooterWheelWaitForGoalCommand();
 
         shooter.setTargetRPM(9001);
 

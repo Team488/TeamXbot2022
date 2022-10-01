@@ -13,7 +13,7 @@ public class VisionShooterGoalsSubsystemTest extends BaseCompetitionTest {
     @Override
     public void setUp() {
         super.setUp();
-        this.command = injector.getInstance(VisionShooterGoalsSubsystem.class);
+        this.command = getInjectorComponent().visionShooterGoalsSubsystem();
         
         this.command.setLowGoalBelowMinPitchSlope(VisionShooterGoalsSubsystem.LOW_GOAL_SLOPE);
         this.command.setLowGoalAboveMaxPitchSlope(VisionShooterGoalsSubsystem.LOW_GOAL_SLOPE);

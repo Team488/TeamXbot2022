@@ -1,14 +1,14 @@
 package competition.subsystems.drive.commands;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import competition.operator_interface.OperatorInterface;
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.pose.PoseSubsystem;
 import competition.subsystems.vision.VisionSubsystem;
 import xbot.common.command.BaseCommand;
-import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.logic.HumanVsMachineDecider;
+import xbot.common.logic.HumanVsMachineDecider.HumanVsMachineDeciderFactory;
 import xbot.common.logic.HumanVsMachineDecider.HumanVsMachineMode;
 import xbot.common.logic.Latch;
 import xbot.common.logic.Latch.EdgeType;
@@ -18,6 +18,7 @@ import xbot.common.properties.BooleanProperty;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.subsystems.drive.control_logic.HeadingModule;
+import xbot.common.subsystems.drive.control_logic.HeadingModule.HeadingModuleFactory;
 
 /**
  * The main swerve drive command that links up the human input (from gamepad
@@ -42,7 +43,7 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
 
     @Inject
     public SwerveDriveWithJoysticksCommand(DriveSubsystem drive, PoseSubsystem pose, OperatorInterface oi,
-            PropertyFactory pf, CommonLibFactory clf, VisionSubsystem vision) {
+            PropertyFactory pf, HumanVsMachineDeciderFactory hvmFactory, HeadingModuleFactory headingModuleFactory, VisionSubsystem vision) {
         this.drive = drive;
         this.oi = oi;
         this.pose = pose;
@@ -53,8 +54,8 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
         this.turnPowerFactor = pf.createPersistentProperty("Turn Power Factor", 0.75);
         this.absoluteOrientationMode = pf.createPersistentProperty("Absolute Orientation Mode", true);
         this.minimumMagnitudeForAbsoluteHeading = pf.createPersistentProperty("Min Magnitude For Absolute Heading", 0.75);
-        this.decider = clf.createHumanVsMachineDecider(this.getPrefix());
-        this.headingModule = clf.createHeadingModule(drive.getRotateToHeadingPid());
+        this.decider = hvmFactory.create(this.getPrefix());
+        this.headingModule = headingModuleFactory.create(drive.getRotateToHeadingPid());
         this.triggerOnlyPowerScaling = pf.createPersistentProperty("TriggerOnlyPowerScaling", 0.75);
         this.triggerOnlyExponent = pf.createPersistentProperty("TriggerOnlyExponent", 2.0);
 

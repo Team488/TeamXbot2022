@@ -1,13 +1,15 @@
-package competition.electrical_conract;
+package competition.electrical_contract;
 
-import com.google.inject.Singleton;
-
-import competition.electrical_contract.CompetitionContract;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 @Singleton
 public class TestElectricalContract extends CompetitionContract {
 
     private boolean canCodersReady = true;
+
+    @Inject
+    public TestElectricalContract() {}
 
     @Override
     public boolean isDriveReady() {

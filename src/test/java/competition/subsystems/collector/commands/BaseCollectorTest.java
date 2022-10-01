@@ -15,6 +15,6 @@ public class BaseCollectorTest extends BaseCompetitionTest {
     public void setUp() {
         super.setUp();
 
-        collectorSubsystem = injector.getInstance(CollectorSubsystem.class);
+        collectorSubsystem = getInjectorComponent().collectorSubsystem();
     }
 }

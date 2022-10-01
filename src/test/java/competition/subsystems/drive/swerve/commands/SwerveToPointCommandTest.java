@@ -15,7 +15,7 @@ public class SwerveToPointCommandTest extends BaseFullSwerveTest {
     @Override
     public void setUp() {
         super.setUp();
-        command = injector.getInstance(SwerveToPointCommand.class);
+        command = getInjectorComponent().swerveToPointCommand();
         drive.getPositionalPid().setP(1);
         drive.getPositionalPid().setI(0);
         drive.getPositionalPid().setD(0);

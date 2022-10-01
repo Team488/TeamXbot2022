@@ -1,6 +1,6 @@
 package competition.subsystems.collector.commands;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import competition.subsystems.collector.CollectorSubsystem;
 import xbot.common.command.BaseCommand;

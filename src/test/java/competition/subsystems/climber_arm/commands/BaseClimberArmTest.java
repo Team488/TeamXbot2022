@@ -2,13 +2,9 @@ package competition.subsystems.climber_arm.commands;
 
 import static org.junit.Assert.assertEquals;
 
-import com.google.inject.Key;
-
 import org.junit.Ignore;
 
 import competition.BaseCompetitionTest;
-import competition.injection.arm.LeftArm;
-import competition.injection.arm.RightArm;
 import competition.operator_interface.OperatorInterface;
 import competition.subsystems.climber_arm.ClimberArmSubsystem;
 
@@ -23,10 +19,10 @@ public class BaseClimberArmTest extends BaseCompetitionTest {
     public void setUp() {
         super.setUp();
 
-        leftArm = injector.getInstance(Key.get(ClimberArmSubsystem.class, LeftArm.class));
-        rightArm = injector.getInstance(Key.get(ClimberArmSubsystem.class, RightArm.class));
+        leftArm = getInjectorComponent().armComponents().leftArm.subsystem();
+        rightArm = getInjectorComponent().armComponents().rightArm.subsystem();
 
-        oi = injector.getInstance(OperatorInterface.class);
+        oi = getInjectorComponent().operatorInterface();
     }
 
     

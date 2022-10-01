@@ -12,7 +12,7 @@ public class VisionSubsystemTest extends BaseCompetitionTest {
     
     @Test
     public void testWhenTableEmpty() {
-        VisionSubsystem subsystem = injector.getInstance(VisionSubsystem.class);
+        VisionSubsystem subsystem = getInjectorComponent().visionSubsystem();
         NetworkTable visionTable = NetworkTableInstance.getDefault().getTable(VisionSubsystem.VISION_TABLE);
         assertEquals("Table should be empty", 0, visionTable.getKeys().size());
 
@@ -22,7 +22,7 @@ public class VisionSubsystemTest extends BaseCompetitionTest {
 
     @Test
     public void testGetFixAcquiredIsTimeStable() {
-        VisionSubsystem subsystem = injector.getInstance(VisionSubsystem.class);
+        VisionSubsystem subsystem = getInjectorComponent().visionSubsystem();
         NetworkTable visionTable = NetworkTableInstance.getDefault().getTable(VisionSubsystem.VISION_TABLE);
         assertEquals("Table should be empty", 0, visionTable.getKeys().size());
 
@@ -39,7 +39,7 @@ public class VisionSubsystemTest extends BaseCompetitionTest {
 
     @Test
     public void testTargetYawZeroWhileNoFix() {
-        VisionSubsystem subsystem = injector.getInstance(VisionSubsystem.class);
+        VisionSubsystem subsystem = getInjectorComponent().visionSubsystem();
         NetworkTable visionTable = NetworkTableInstance.getDefault().getTable(VisionSubsystem.VISION_TABLE);
         assertEquals("Table should be empty", 0, visionTable.getKeys().size());
         visionTable.getEntry(VisionSubsystem.FIX_ACQUIRED_PROPERTY).setBoolean(false);

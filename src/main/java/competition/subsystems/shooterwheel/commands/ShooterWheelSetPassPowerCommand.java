@@ -1,6 +1,6 @@
 package competition.subsystems.shooterwheel.commands;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import competition.subsystems.pose.PoseSubsystem;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;

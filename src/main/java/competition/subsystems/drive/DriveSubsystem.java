@@ -1,7 +1,7 @@
 package competition.subsystems.drive;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import org.apache.log4j.Logger;
 
@@ -10,20 +10,20 @@ import competition.injection.swerve.FrontLeftDrive;
 import competition.injection.swerve.FrontRightDrive;
 import competition.injection.swerve.RearLeftDrive;
 import competition.injection.swerve.RearRightDrive;
+import competition.injection.swerve.SwerveComponent;
 import competition.subsystems.drive.swerve.SwerveModuleSubsystem;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.math.MathUtils;
 import xbot.common.math.PIDManager;
 import xbot.common.math.XYPair;
+import xbot.common.math.PIDManager.PIDManagerFactory;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.properties.StringProperty;
 import xbot.common.properties.XPropertyManager;
-import xbot.common.properties.Property.PropertyLevel;
 import xbot.common.subsystems.drive.BaseDriveSubsystem;
 import xbot.common.subsystems.pose.BasePoseSubsystem;
 
@@ -72,16 +72,16 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     private SwerveModuleLocation activeModule = SwerveModuleLocation.FRONT_LEFT;
 
     @Inject
-    public DriveSubsystem(CommonLibFactory factory, XPropertyManager propManager, ElectricalContract contract, PropertyFactory pf,
-            @FrontLeftDrive SwerveModuleSubsystem frontLeftSwerve, @FrontRightDrive SwerveModuleSubsystem frontRightSwerve,
-            @RearLeftDrive SwerveModuleSubsystem rearLeftSwerve, @RearRightDrive SwerveModuleSubsystem rearRightSwerve) {
+    public DriveSubsystem(PIDManagerFactory pidFactory, XPropertyManager propManager, ElectricalContract contract, PropertyFactory pf,
+            @FrontLeftDrive SwerveComponent frontLeftSwerve, @FrontRightDrive SwerveComponent frontRightSwerve,
+            @RearLeftDrive SwerveComponent rearLeftSwerve, @RearRightDrive SwerveComponent rearRightSwerve) {
         log.info("Creating DriveSubsystem");
         pf.setPrefix(this);
 
-        this.frontLeftSwerveModuleSubsystem = frontLeftSwerve;
-        this.frontRightSwerveModuleSubsystem = frontRightSwerve;
-        this.rearLeftSwerveModuleSubsystem = rearLeftSwerve;
-        this.rearRightSwerveModuleSubsystem = rearRightSwerve;
+        this.frontLeftSwerveModuleSubsystem = frontLeftSwerve.swerveModuleSubsystem();
+        this.frontRightSwerveModuleSubsystem = frontRightSwerve.swerveModuleSubsystem();
+        this.rearLeftSwerveModuleSubsystem = rearLeftSwerve.swerveModuleSubsystem();
+        this.rearRightSwerveModuleSubsystem = rearRightSwerve.swerveModuleSubsystem();
 
         this.swerveDriveKinematics = new SwerveDriveKinematics(
             this.frontLeftSwerveModuleSubsystem.getModuleTranslation(),
@@ -107,8 +107,8 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         // Probably not a huge priority, Since as soon as we move once the robot remembers the last commanded direction.
         lastCommandedDirection = new XYPair(0, 90);
 
-        positionalPidManager = factory.createPIDManager(this.getPrefix() + "PositionPID", 0.018, 0, 0.1, 0.6, -0.6);
-        headingPidManager = factory.createPIDManager(this.getPrefix() + "HeadingPID", 0.015, 0.0000001, 0.045, 0.75, -0.75);
+        positionalPidManager = pidFactory.create(this.getPrefix() + "PositionPID", 0.018, 0, 0.1, 0.6, -0.6);
+        headingPidManager = pidFactory.create(this.getPrefix() + "HeadingPID", 0.015, 0.0000001, 0.045, 0.75, -0.75);
         
         headingPidManager.setTimeThreshold(0.2);
         headingPidManager.setErrorThreshold(2);

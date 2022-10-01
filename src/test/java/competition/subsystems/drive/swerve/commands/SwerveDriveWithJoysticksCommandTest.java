@@ -13,7 +13,7 @@ public class SwerveDriveWithJoysticksCommandTest extends BaseFullSwerveTest {
     @Override
     public void setUp() {
         super.setUp();
-        command = injector.getInstance(SwerveDriveWithJoysticksCommand.class);
+        command = getInjectorComponent().swerveDriveWithJoysticksCommand();
     }
 
     @Test

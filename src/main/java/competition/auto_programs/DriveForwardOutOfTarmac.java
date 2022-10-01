@@ -1,6 +1,6 @@
 package competition.auto_programs;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import competition.subsystems.drive.commands.SwerveToPointCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;

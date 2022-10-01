@@ -10,7 +10,7 @@ public class ShooterWheelSubsystemTest extends BaseCompetitionTest {
     
     @Test
     public void testSpin() {
-        ShooterWheelSubsystem shooterWheel = this.injector.getInstance(ShooterWheelSubsystem.class);
+        ShooterWheelSubsystem shooterWheel = getInjectorComponent().shooterWheelSubsystem();
         shooterWheel.setPower(0.5);
       
         assertEquals(0.5, shooterWheel.leader.get(), 0.01);
@@ -18,7 +18,7 @@ public class ShooterWheelSubsystemTest extends BaseCompetitionTest {
 
     @Test
     public void testStop() {
-        ShooterWheelSubsystem shooterWheel = this.injector.getInstance(ShooterWheelSubsystem.class);
+        ShooterWheelSubsystem shooterWheel = getInjectorComponent().shooterWheelSubsystem();
         shooterWheel.changeTargetRPM(100);
         shooterWheel.stop();
 

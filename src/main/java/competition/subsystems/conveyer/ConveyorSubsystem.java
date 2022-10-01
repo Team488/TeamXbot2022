@@ -1,14 +1,16 @@
 package competition.subsystems.conveyer;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 import competition.electrical_contract.ElectricalContract;
 import xbot.common.controls.actuators.XCANTalon;
+import xbot.common.controls.actuators.XCANTalon.XCANTalonFactory;
 import xbot.common.controls.sensors.XDigitalInput;
-import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.controls.sensors.XDigitalInput.XDigitalInputFactory;
 import xbot.common.properties.BooleanProperty;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.subsystems.simplemotor.SimpleMotorSubsystem;
@@ -28,22 +30,22 @@ public class ConveyorSubsystem extends SimpleMotorSubsystem {
     private boolean hasRetracted = true;
 
     @Inject
-    public ConveyorSubsystem(PropertyFactory pf, CommonLibFactory clf, ElectricalContract eContract) {
+    public ConveyorSubsystem(PropertyFactory pf, XCANTalonFactory talonFactory, XDigitalInputFactory digitalInputFactory, ElectricalContract eContract) {
         super("ConveyerSubsystem", pf);
         this.isReady = eContract.isConveyerReady();
         if(isReady) {
-            motor = clf.createCANTalon(eContract.getConveyerMotor());
+            motor = talonFactory.create(eContract.getConveyerMotor());
             motor.setNeutralMode(NeutralMode.Brake);
             motor.configOpenloopRamp(0.1, 100);
         } else {
             motor = null;
         }
 
-        topSensor = clf.createDigitalInput(eContract.getConveyorTopSensor().channel);
+        topSensor = digitalInputFactory.create(eContract.getConveyorTopSensor().channel);
         topSensor.setInverted(eContract.getConveyorTopSensor().inverted);
-        bottomSensor = clf.createDigitalInput(eContract.getConveyorBottomSensor().channel);
+        bottomSensor = digitalInputFactory.create(eContract.getConveyorBottomSensor().channel);
         bottomSensor.setInverted(eContract.getConveyorBottomSensor().inverted);
-        collectorSensor = clf.createDigitalInput(eContract.getCollectorSensor().channel);
+        collectorSensor = digitalInputFactory.create(eContract.getCollectorSensor().channel);
         collectorSensor.setInverted(eContract.getCollectorSensor().inverted);
 
         // Make top-level so it shows up on SmartDashboard

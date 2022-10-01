@@ -1,6 +1,6 @@
 package competition.subsystems.conveyer.commands;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import competition.subsystems.conveyer.ConveyorSubsystem;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;

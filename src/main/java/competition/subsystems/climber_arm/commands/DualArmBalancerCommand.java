@@ -1,16 +1,16 @@
 package competition.subsystems.climber_arm.commands;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import competition.operator_interface.OperatorInterface;
 import competition.subsystems.climber_arm.ClimberSubsystem;
 import competition.subsystems.climber_pivot.ClimberPivotSubsystem;
 import competition.subsystems.latch.LatchSubsystem;
-import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.logic.Latch;
 import xbot.common.logic.Latch.EdgeType;
 import xbot.common.math.MathUtils;
 import xbot.common.math.PIDManager;
+import xbot.common.math.PIDManager.PIDManagerFactory;
 
 public class DualArmBalancerCommand extends BaseDoubleClimberArmCommand {
 
@@ -22,12 +22,12 @@ public class DualArmBalancerCommand extends BaseDoubleClimberArmCommand {
 
     @Inject
     public DualArmBalancerCommand(ClimberSubsystem climber,
-            ClimberPivotSubsystem pivot, LatchSubsystem latch, OperatorInterface oi, CommonLibFactory clf) {
+            ClimberPivotSubsystem pivot, LatchSubsystem latch, OperatorInterface oi, PIDManagerFactory pidf) {
         super(climber);
         this.oi = oi;
         this.pivot = pivot;
         this.latch = latch;
-        balancePid = clf.createPIDManager(this.getPrefix() + "BalancePID", 0.1, 0, 0);
+        balancePid = pidf.create(this.getPrefix() + "BalancePID", 0.1, 0, 0);
 
         calibrationLatch = new Latch(true, EdgeType.RisingEdge, edge -> {
             if(edge == EdgeType.RisingEdge) {

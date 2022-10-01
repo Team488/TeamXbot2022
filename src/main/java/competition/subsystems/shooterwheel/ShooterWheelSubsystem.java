@@ -1,7 +1,8 @@
 package competition.subsystems.shooterwheel;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import com.revrobotics.REVLibError;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.ExternalFollower;
@@ -12,7 +13,7 @@ import competition.electrical_contract.ElectricalContract;
 import xbot.common.command.BaseSetpointSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
 import xbot.common.controls.actuators.XCANSparkMaxPIDProperties;
-import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.controls.actuators.XCANSparkMax.XCANSparkMaxFactory;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 
@@ -50,7 +51,7 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
     }
 
     @Inject
-    public ShooterWheelSubsystem(CommonLibFactory factory, PropertyFactory pf, ElectricalContract contract) {
+    public ShooterWheelSubsystem(XCANSparkMaxFactory sparkMaxFactory, PropertyFactory pf, ElectricalContract contract) {
         log.info("Creating ShooterWheelSubsystem");
         pf.setPrefix(this);
         this.contract = contract;
@@ -79,9 +80,9 @@ public class ShooterWheelSubsystem extends BaseSetpointSubsystem {
         wheelDefaultProps.minOutput = -1;
 
         if (contract.isShooterReady()) {
-            this.leader = factory.createCANSparkMax(contract.getShooterMotorLeader(), this.getPrefix(),
+            this.leader = sparkMaxFactory.create(contract.getShooterMotorLeader(), this.getPrefix(),
                     "ShooterMaster", wheelDefaultProps);
-            this.follower = factory.createCANSparkMax(contract.getShooterMotorFollower(), this.getPrefix(),
+            this.follower = sparkMaxFactory.create(contract.getShooterMotorFollower(), this.getPrefix(),
                     "ShooterFollower");
             this.follower.follow(this.leader, true);
 

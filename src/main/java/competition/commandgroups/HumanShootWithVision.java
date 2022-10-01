@@ -1,8 +1,6 @@
 package competition.commandgroups;
 
-import java.util.function.Supplier;
-
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
 
@@ -18,8 +16,6 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import xbot.common.command.DelayViaSupplierCommand;
-import xbot.common.command.NamedInstantCommand;
-import xbot.common.command.SimpleWaitForMaintainerCommand;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 

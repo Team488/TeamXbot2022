@@ -12,8 +12,8 @@ public class PivotOutCommandTest extends BaseCompetitionTest{
 
     @Test
     public void testingPivotOut(){
-        ClimberPivotSubsystem climberPivotSubsystem = this.injector.getInstance(ClimberPivotSubsystem.class);
-        PivotOutCommand pivotOutCommand = this.injector.getInstance(PivotOutCommand.class);
+        ClimberPivotSubsystem climberPivotSubsystem = getInjectorComponent().climberPivotSubsystem();
+        PivotOutCommand pivotOutCommand = getInjectorComponent().pivotOutCommand();
 
         climberPivotSubsystem.pivot.setReverse();
         assertTrue("Pivoted in", climberPivotSubsystem.pivot.getIsReverse());
@@ -24,8 +24,8 @@ public class PivotOutCommandTest extends BaseCompetitionTest{
 
     @Test
     public void testingPivotOutDouble(){
-        ClimberPivotSubsystem climberPivotSubsystem = this.injector.getInstance(ClimberPivotSubsystem.class);
-        PivotOutCommand pivotOutCommand = this.injector.getInstance(PivotOutCommand.class);
+        ClimberPivotSubsystem climberPivotSubsystem = getInjectorComponent().climberPivotSubsystem();
+        PivotOutCommand pivotOutCommand = getInjectorComponent().pivotOutCommand();
 
         climberPivotSubsystem.pivot.setForward();
         assertTrue("Pivoted out", climberPivotSubsystem.pivot.getIsForward());

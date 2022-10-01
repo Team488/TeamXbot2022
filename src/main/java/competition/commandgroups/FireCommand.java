@@ -1,6 +1,6 @@
 package competition.commandgroups;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import competition.subsystems.conveyer.commands.ConveyWhileShooterAtSpeedCommand;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem.TargetRPM;

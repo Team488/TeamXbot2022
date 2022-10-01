@@ -39,9 +39,9 @@ public class ShooterWheelSetPassPowerCommandTest extends BaseCompetitionTest {
 
     @Test
     public void testCorrectTargetRpm() {
-        PoseSubsystem pose = this.injector.getInstance(PoseSubsystem.class);
-        ShooterWheelSubsystem shooter = this.injector.getInstance(ShooterWheelSubsystem.class);
-        ShooterWheelSetPassPowerCommand command = this.injector.getInstance(ShooterWheelSetPassPowerCommand.class);
+        PoseSubsystem pose = (PoseSubsystem)getInjectorComponent().poseSubsystem();
+        ShooterWheelSubsystem shooter = getInjectorComponent().shooterWheelSubsystem();
+        ShooterWheelSetPassPowerCommand command = getInjectorComponent().shooterWheelSetPassPowerCommand();
 
         pose.setCurrentPosition(0, this.currentFieldY);
 

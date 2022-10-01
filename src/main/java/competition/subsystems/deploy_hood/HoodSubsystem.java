@@ -1,23 +1,24 @@
 package competition.subsystems.deploy_hood;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import competition.electrical_contract.ElectricalContract;
 import xbot.common.command.BaseSubsystem;
 import xbot.common.controls.actuators.XDoubleSolenoid;
-import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.controls.actuators.XDoubleSolenoid.XDoubleSolenoidFactory;
+import xbot.common.controls.actuators.XSolenoid.XSolenoidFactory;
 
 @Singleton
 public class HoodSubsystem extends BaseSubsystem{
     public XDoubleSolenoid hoodDeploy;
 
     @Inject
-    public HoodSubsystem(CommonLibFactory factory, ElectricalContract eContract){
+    public HoodSubsystem(XDoubleSolenoidFactory doubleSolenoidFactory, XSolenoidFactory solenoidFactory, ElectricalContract eContract){
         if (eContract.arePneumaticsReady()) {
-            hoodDeploy = factory.createDoubleSolenoid(
-                factory.createSolenoid(eContract.getDeployHoodSoleniod1().channel),
-                factory.createSolenoid(eContract.getDeployHoodSoleniod2().channel)
+            hoodDeploy = doubleSolenoidFactory.create(
+                solenoidFactory.create(eContract.getDeployHoodSoleniod1().channel),
+                solenoidFactory.create(eContract.getDeployHoodSoleniod2().channel)
             );
         }
     }

@@ -1,11 +1,12 @@
 package competition.subsystems.drive.commands;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import competition.injection.swerve.FrontLeftDrive;
 import competition.injection.swerve.FrontRightDrive;
 import competition.injection.swerve.RearLeftDrive;
 import competition.injection.swerve.RearRightDrive;
+import competition.injection.swerve.SwerveComponent;
 import competition.subsystems.drive.swerve.SwerveSteeringSubsystem;
 import xbot.common.command.BaseCommand;
 
@@ -24,15 +25,15 @@ public class CalibrateSteeringCommand extends BaseCommand {
 
     @Inject
     public CalibrateSteeringCommand(
-        @FrontLeftDrive SwerveSteeringSubsystem frontLeftSteering,
-        @FrontRightDrive SwerveSteeringSubsystem frontRightSteering,
-        @RearLeftDrive SwerveSteeringSubsystem rearLeftSteering,
-        @RearRightDrive SwerveSteeringSubsystem rearRightSteering) {
+        @FrontLeftDrive SwerveComponent frontLeftSteering,
+        @FrontRightDrive SwerveComponent frontRightSteering,
+        @RearLeftDrive SwerveComponent rearLeftSteering,
+        @RearRightDrive SwerveComponent rearRightSteering) {
 
-        this.frontLeft = frontLeftSteering;
-        this.frontRight = frontRightSteering;
-        this.rearLeft = rearLeftSteering;
-        this.rearRight = rearRightSteering;
+        this.frontLeft = frontLeftSteering.swerveSteeringSubsystem();
+        this.frontRight = frontRightSteering.swerveSteeringSubsystem();
+        this.rearLeft = rearLeftSteering.swerveSteeringSubsystem();
+        this.rearRight = rearRightSteering.swerveSteeringSubsystem();
     }
 
     @Override

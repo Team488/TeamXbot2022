@@ -1,12 +1,13 @@
 package competition.subsystems;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import competition.injection.swerve.FrontLeftDrive;
 import competition.injection.swerve.FrontRightDrive;
 import competition.injection.swerve.RearLeftDrive;
 import competition.injection.swerve.RearRightDrive;
+import competition.injection.swerve.SwerveComponent;
 import competition.subsystems.climber_arm.ClimberSubsystem;
 import competition.subsystems.climber_arm.commands.DualArmBalancerCommand;
 import competition.subsystems.collector.CollectorSubsystem;
@@ -14,11 +15,7 @@ import competition.subsystems.collector.commands.StopCollectorCommand;
 import competition.subsystems.collector_deployment.CollectorDeploymentSubsystem;
 import competition.subsystems.collector_deployment.commands.RetractCollectorAfterDelayCommand;
 import competition.subsystems.drive.DriveSubsystem;
-import competition.subsystems.drive.commands.SwerveDriveMaintainerCommand;
 import competition.subsystems.drive.commands.SwerveDriveWithJoysticksCommand;
-import competition.subsystems.drive.commands.SwerveSteeringMaintainerCommand;
-import competition.subsystems.drive.swerve.SwerveDriveSubsystem;
-import competition.subsystems.drive.swerve.SwerveSteeringSubsystem;
 import competition.subsystems.latch.LatchSubsystem;
 import competition.subsystems.latch.commands.LatchArmCommand;
 import competition.subsystems.shooterwheel.ShooterWheelSubsystem;
@@ -28,6 +25,8 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 @Singleton
 public class SubsystemDefaultCommandMap {
     // For setting the default commands on subsystems
+    @Inject
+    public SubsystemDefaultCommandMap() {}
 
     @Inject
     public void setupDriveSubsystem(DriveSubsystem driveSubsystem, SwerveDriveWithJoysticksCommand command) {
@@ -35,59 +34,31 @@ public class SubsystemDefaultCommandMap {
     }
 
     @Inject
-    public void setupFrontLeftSwerveSteeringSubsystem(
-            @FrontLeftDrive SwerveSteeringSubsystem subsystem,
-            @FrontLeftDrive SwerveSteeringMaintainerCommand command) {
-        subsystem.setDefaultCommand(command);
+    public void setupFrontLeftSubsystems(
+            @FrontLeftDrive SwerveComponent swerveComponent) {
+        swerveComponent.swerveDriveSubsystem().setDefaultCommand(swerveComponent.swerveDriveMaintainerCommand());
+        swerveComponent.swerveSteeringSubsystem().setDefaultCommand(swerveComponent.swerveSteeringMaintainerCommand());
     }
 
     @Inject
-    public void setupFrontRightSwerveSteeringSubsystem(
-            @FrontRightDrive SwerveSteeringSubsystem subsystem,
-            @FrontRightDrive SwerveSteeringMaintainerCommand command) {
-        subsystem.setDefaultCommand(command);
-    }
-
-    @Inject
-    public void setupRearLeftSwerveSteeringSubsystem(
-            @RearLeftDrive SwerveSteeringSubsystem subsystem,
-            @RearLeftDrive SwerveSteeringMaintainerCommand command) {
-        subsystem.setDefaultCommand(command);
-    }
-
-    @Inject
-    public void setupRearRightSwerveSteeringSubsystem(
-            @RearRightDrive SwerveSteeringSubsystem subsystem,
-            @RearRightDrive SwerveSteeringMaintainerCommand command) {
-        subsystem.setDefaultCommand(command);
+    public void setupFrontRightSubsystems(
+            @FrontRightDrive SwerveComponent swerveComponent) {
+        swerveComponent.swerveDriveSubsystem().setDefaultCommand(swerveComponent.swerveDriveMaintainerCommand());
+        swerveComponent.swerveSteeringSubsystem().setDefaultCommand(swerveComponent.swerveSteeringMaintainerCommand());
     }
     
     @Inject
-    public void setupFrontLeftSwerveDriveSubsystem(
-            @FrontLeftDrive SwerveDriveSubsystem subsystem,
-            @FrontLeftDrive SwerveDriveMaintainerCommand command) {
-        subsystem.setDefaultCommand(command);
+    public void setupRearLeftSubsystems(
+            @RearLeftDrive SwerveComponent swerveComponent) {
+        swerveComponent.swerveDriveSubsystem().setDefaultCommand(swerveComponent.swerveDriveMaintainerCommand());
+        swerveComponent.swerveSteeringSubsystem().setDefaultCommand(swerveComponent.swerveSteeringMaintainerCommand());
     }
 
     @Inject
-    public void setupFrontRightSwerveDriveSubsystem(
-            @FrontRightDrive SwerveDriveSubsystem subsystem,
-            @FrontRightDrive SwerveDriveMaintainerCommand command) {
-        subsystem.setDefaultCommand(command);
-    }
-
-    @Inject
-    public void setupRearLeftSwerveDriveSubsystem(
-            @RearLeftDrive SwerveDriveSubsystem subsystem,
-            @RearLeftDrive SwerveDriveMaintainerCommand command) {
-        subsystem.setDefaultCommand(command);
-    }
-
-    @Inject
-    public void setupRearRightSwerveDriveSubsystem(
-            @RearRightDrive SwerveDriveSubsystem subsystem,
-            @RearRightDrive SwerveDriveMaintainerCommand command) {
-        subsystem.setDefaultCommand(command);
+    public void setupRearRightSubsystems(
+            @RearRightDrive SwerveComponent swerveComponent) {
+        swerveComponent.swerveDriveSubsystem().setDefaultCommand(swerveComponent.swerveDriveMaintainerCommand());
+        swerveComponent.swerveSteeringSubsystem().setDefaultCommand(swerveComponent.swerveSteeringMaintainerCommand());
     }
 
     @Inject

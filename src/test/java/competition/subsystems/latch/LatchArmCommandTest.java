@@ -11,9 +11,8 @@ import xbot.common.controls.actuators.XDoubleSolenoid.DoubleSolenoidMode;
 public class LatchArmCommandTest extends BaseCompetitionTest{
     @Test
     public void testingReleaseLatch(){
-        LatchArmCommand latchArmCommand = this.injector.getInstance(LatchArmCommand.class);
-        LatchSubsystem latchSubsystem = this.injector.getInstance(LatchSubsystem.class);
-
+        LatchArmCommand latchArmCommand = getInjectorComponent().latchArmCommand();
+        LatchSubsystem latchSubsystem = getInjectorComponent().latchSubsystem();
         
         latchSubsystem.latch.setDoubleSolenoid(DoubleSolenoidMode.REVERSE);
         assertTrue("Latch starts released", latchSubsystem.latch.getDoubleSolenoidMode() == DoubleSolenoidMode.REVERSE);
@@ -26,8 +25,8 @@ public class LatchArmCommandTest extends BaseCompetitionTest{
 
     @Test
     public void testingStartReleaseLatch(){
-        LatchArmCommand latchArmCommand = this.injector.getInstance(LatchArmCommand.class);
-        LatchSubsystem latchSubsystem = this.injector.getInstance(LatchSubsystem.class);
+        LatchArmCommand latchArmCommand = getInjectorComponent().latchArmCommand();
+        LatchSubsystem latchSubsystem = getInjectorComponent().latchSubsystem();
 
         latchSubsystem.latch.setForward();
         assertTrue("Latch starts released", latchSubsystem.latch.getIsForward());

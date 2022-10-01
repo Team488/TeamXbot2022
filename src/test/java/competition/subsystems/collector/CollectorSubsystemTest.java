@@ -12,7 +12,7 @@ import xbot.common.controls.actuators.mock_adapters.MockCANTalon;
 public class CollectorSubsystemTest extends BaseCompetitionTest{
     @Test
     public void testingBasicCollectorSubsystem (){
-        CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
+        CollectorSubsystem collectorSubsystem = getInjectorComponent().collectorSubsystem();
         MockCANTalon mockMotor = (MockCANTalon) collectorSubsystem.collectorMotor;
 
         collectorSubsystem.collectorMotor.set(ControlMode.PercentOutput, 1);
@@ -29,7 +29,7 @@ public class CollectorSubsystemTest extends BaseCompetitionTest{
 
     @Test
     public void testingEject (){
-        CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
+        CollectorSubsystem collectorSubsystem = getInjectorComponent().collectorSubsystem();
 
         collectorSubsystem.collectorMotor.set(ControlMode.PercentOutput, 1);
         checkCollectorPower(1);
@@ -43,7 +43,7 @@ public class CollectorSubsystemTest extends BaseCompetitionTest{
 
     @Test
     public void testingIntake (){
-        CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
+        CollectorSubsystem collectorSubsystem = getInjectorComponent().collectorSubsystem();
 
         collectorSubsystem.collectorMotor.set(ControlMode.PercentOutput, -1);
         checkCollectorPower(-1);
@@ -57,7 +57,7 @@ public class CollectorSubsystemTest extends BaseCompetitionTest{
 
     @Test
     public void testingCollectorStop (){
-        CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
+        CollectorSubsystem collectorSubsystem = getInjectorComponent().collectorSubsystem();
 
 
         collectorSubsystem.intake();
@@ -74,7 +74,7 @@ public class CollectorSubsystemTest extends BaseCompetitionTest{
     }
 
     public void checkCollectorPower(double power) {
-        CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
+        CollectorSubsystem collectorSubsystem = getInjectorComponent().collectorSubsystem();
         MockCANTalon mockMotor = (MockCANTalon) collectorSubsystem.collectorMotor;
 
         assertEquals(power, mockMotor.getMotorOutputPercent(), 0.001);

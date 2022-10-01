@@ -20,9 +20,9 @@ public class SetSteeringMotorControllerPidParametersCommandTest extends BaseComp
     @Override
     public void setUp() {
         super.setUp();
-        this.command = injector.getInstance(SetSwerveMotorControllerPidParametersCommand.class);
-        this.configSubsystem = injector.getInstance(SwerveSteeringMotorPidSubsystem.class);
-        this.driveSubsystem = injector.getInstance(DriveSubsystem.class);
+        this.command = getInjectorComponent().setSwerveMotorControllerPidParametersCommand();
+        this.configSubsystem = getInjectorComponent().swerveSteeringMotorPidSubsystem();
+        this.driveSubsystem = (DriveSubsystem)getInjectorComponent().driveSubsystem();
     }
 
     @Test

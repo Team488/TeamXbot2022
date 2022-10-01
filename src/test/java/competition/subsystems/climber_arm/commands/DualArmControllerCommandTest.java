@@ -14,7 +14,7 @@ public class DualArmControllerCommandTest extends BaseClimberArmTest {
     @Override
     public void setUp() {
         super.setUp();
-        command = injector.getInstance(DualArmControllerCommandWithJoysticks.class);
+        command = getInjectorComponent().dualArmControllerCommandWithJoysticks();
     }
 
     @Ignore

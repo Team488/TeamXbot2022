@@ -1,6 +1,6 @@
 package competition.subsystems.drive.commands;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
 
@@ -16,11 +16,11 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import xbot.common.command.DelayViaSupplierCommand;
-import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.math.XYPair;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.subsystems.drive.control_logic.HeadingModule;
+import xbot.common.subsystems.drive.control_logic.HeadingModule.HeadingModuleFactory;
 
 public class RotateToVisionTargetCommand extends SequentialCommandGroup {
 
@@ -34,14 +34,15 @@ public class RotateToVisionTargetCommand extends SequentialCommandGroup {
     private final DoubleProperty minWaitTime;
 
     @Inject
-    public RotateToVisionTargetCommand(PropertyFactory pf, CommonLibFactory clf, PoseSubsystem pose, DriveSubsystem drive, VisionSubsystem vision) {
+    public RotateToVisionTargetCommand(PropertyFactory pf, HeadingModuleFactory headingModuleFactory,
+            PoseSubsystem pose, DriveSubsystem drive, VisionSubsystem vision) {
         pf.setPrefix(this.getName());
-        
+
         this.pose = pose;
         this.drive = drive;
         this.vision = vision;
-        
-        this.headingModule = clf.createHeadingModule(drive.getRotateToHeadingPid());
+
+        this.headingModule = headingModuleFactory.create(drive.getRotateToHeadingPid());
 
         this.minWaitTime = pf.createPersistentProperty("Minimum wait time", 1.0);
 
@@ -51,16 +52,15 @@ public class RotateToVisionTargetCommand extends SequentialCommandGroup {
         addCommands(new ParallelRaceGroup(waitForLock, lockTimeout));
 
         ParallelRaceGroup setTargetsGroup = new ParallelRaceGroup(
-            new WaitCommand(3),
-            new RunCommand(() -> drive.move(new XYPair(0, 0), calculateDrivePower(this.vision.getBearingToHub())), drive),
-            new WaitUntilCommand(() -> headingModule.isOnTarget())
-        );
+                new WaitCommand(3),
+                new RunCommand(() -> drive.move(new XYPair(0, 0), calculateDrivePower(this.vision.getBearingToHub())),
+                        drive),
+                new WaitUntilCommand(() -> headingModule.isOnTarget()));
 
         ConditionalCommand conditionalSetTarget = new ConditionalCommand(
-            setTargetsGroup,
-            new InstantCommand(() -> log.warn("No fix on target")),
-            () -> this.vision.getFixAcquired()
-        );
+                setTargetsGroup,
+                new InstantCommand(() -> log.warn("No fix on target")),
+                () -> this.vision.getFixAcquired());
 
         addCommands(conditionalSetTarget);
 
@@ -68,6 +68,7 @@ public class RotateToVisionTargetCommand extends SequentialCommandGroup {
     }
 
     private double calculateDrivePower(double relativeTarget) {
-        return headingModule.calculateHeadingPower(pose.getCurrentHeading().plus(Rotation2d.fromDegrees(relativeTarget)));
+        return headingModule
+                .calculateHeadingPower(pose.getCurrentHeading().plus(Rotation2d.fromDegrees(relativeTarget)));
     }
 }

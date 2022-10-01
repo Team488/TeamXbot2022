@@ -1,6 +1,6 @@
 package competition.subsystems.deploy_hood.commands;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import competition.subsystems.deploy_hood.HoodSubsystem;
 import xbot.common.command.BaseCommand;

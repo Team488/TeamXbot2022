@@ -1,6 +1,6 @@
 package competition.subsystems.climber_pivot.commands;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import competition.subsystems.climber_pivot.ClimberPivotSubsystem;
 import xbot.common.command.BaseCommand;

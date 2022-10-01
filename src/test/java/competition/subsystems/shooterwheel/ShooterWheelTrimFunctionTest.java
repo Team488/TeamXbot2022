@@ -11,7 +11,7 @@ public class ShooterWheelTrimFunctionTest extends BaseCompetitionTest {
     @Test
     public void testTrimWithZeroRPM() {
         // Tests to see if Trim will not apply when currentRPM is less than 50.
-        ShooterWheelSubsystem shooterWheel = this.injector.getInstance(ShooterWheelSubsystem.class);
+        ShooterWheelSubsystem shooterWheel = getInjectorComponent().shooterWheelSubsystem();
         
         shooterWheel.setTargetRPM(25);
         shooterWheel.changeTrimRPM(100);
@@ -21,7 +21,7 @@ public class ShooterWheelTrimFunctionTest extends BaseCompetitionTest {
     @Test
     public void testTrimWith100RPM() {
         // Tests to see if 100RPM of Trim will apply when currentRPM is at 100.
-        ShooterWheelSubsystem shooterWheel = this.injector.getInstance(ShooterWheelSubsystem.class);
+        ShooterWheelSubsystem shooterWheel = getInjectorComponent().shooterWheelSubsystem();
         
         shooterWheel.setTargetRPM(100);
         shooterWheel.changeTrimRPM(100);
@@ -31,7 +31,7 @@ public class ShooterWheelTrimFunctionTest extends BaseCompetitionTest {
     @Test
     public void testResetTrim() {
         // Tests to see if resetTrim will work.
-        ShooterWheelSubsystem shooterWheel = this.injector.getInstance(ShooterWheelSubsystem.class);
+        ShooterWheelSubsystem shooterWheel = getInjectorComponent().shooterWheelSubsystem();
         
         shooterWheel.setTargetRPM(100);
         shooterWheel.changeTrimRPM(100);

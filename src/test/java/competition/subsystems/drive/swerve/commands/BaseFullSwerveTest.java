@@ -21,10 +21,9 @@ public abstract class BaseFullSwerveTest extends BaseCompetitionTest{
     @Override
     public void setUp() {
         super.setUp();
-        drive = injector.getInstance(DriveSubsystem.class);
-        oi = injector.getInstance(OperatorInterface.class);
-        pose = injector.getInstance(PoseSubsystem.class);
-
+        drive = (DriveSubsystem)getInjectorComponent().driveSubsystem();
+        oi = getInjectorComponent().operatorInterface();
+        pose = (PoseSubsystem)getInjectorComponent().poseSubsystem();
         
         pose.setCurrentHeading(90);
         setAllSteeringModuleAngles(90);

@@ -1,34 +1,41 @@
 package competition.subsystems.collector_deployment;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import competition.electrical_contract.ElectricalContract;
 import xbot.common.command.BaseSubsystem;
 import xbot.common.controls.actuators.XDoubleSolenoid;
 import xbot.common.controls.actuators.XDoubleSolenoid.DoubleSolenoidMode;
-import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.controls.actuators.XDoubleSolenoid.XDoubleSolenoidFactory;
+import xbot.common.controls.actuators.XSolenoid.XSolenoidFactory;
 
 @Singleton
 public class CollectorDeploymentSubsystem extends BaseSubsystem{
     public XDoubleSolenoid deploy;
+    private ElectricalContract contract;
 
     @Inject
-    public CollectorDeploymentSubsystem(CommonLibFactory factory, ElectricalContract eContract){
-        if (eContract.arePneumaticsReady()) {
-        deploy = factory.createDoubleSolenoid(
-            factory.createSolenoid(eContract.getCollectorDeviceSoleniod1().channel),
-            factory.createSolenoid(eContract.getCollectorDeviceSoleniod2().channel)
-        );
-    }
+    public CollectorDeploymentSubsystem(XDoubleSolenoidFactory doubleSolenoidFactory, XSolenoidFactory solenoidFactory, ElectricalContract eContract){
+        this.contract = eContract;
+        if (this.contract.arePneumaticsReady()) {
+            deploy = doubleSolenoidFactory.create(
+                solenoidFactory.create(eContract.getCollectorDeviceSoleniod1().channel),
+                solenoidFactory.create(eContract.getCollectorDeviceSoleniod2().channel)
+            );
+        }
     }
 
     public void deploy (){
-        deploy.setDoubleSolenoid(DoubleSolenoidMode.FORWARD);
+        if (this.contract.arePneumaticsReady()) {
+            deploy.setDoubleSolenoid(DoubleSolenoidMode.FORWARD);
+        }
     }
 
     public void retract (){
-        deploy.setDoubleSolenoid(DoubleSolenoidMode.REVERSE);
+        if (this.contract.arePneumaticsReady()) {
+            deploy.setDoubleSolenoid(DoubleSolenoidMode.REVERSE);
+        }
     }
     
 }

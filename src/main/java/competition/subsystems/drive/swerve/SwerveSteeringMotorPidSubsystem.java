@@ -1,6 +1,6 @@
 package competition.subsystems.drive.swerve;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import competition.subsystems.BaseMotorPidSubsystem;
 import xbot.common.properties.PropertyFactory;

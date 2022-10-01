@@ -12,7 +12,7 @@ public class MotorArmSetZeroCommandTest extends BaseClimberArmTest {
     @Override
     public void setUp() {
         super.setUp();
-        command = injector.getInstance(MotorArmSetZeroCommand.class);
+        command = getInjectorComponent().motorArmSetZeroCommand();
     }
 
     @Test

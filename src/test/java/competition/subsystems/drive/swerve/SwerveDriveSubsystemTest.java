@@ -11,7 +11,7 @@ public class SwerveDriveSubsystemTest extends BaseCompetitionTest {
     
     @Test
     public void testGetSetTargetValue() {
-        SwerveDriveSubsystem swerveDriveSubsystem = this.injector.getInstance(DriveSubsystem.class)
+        SwerveDriveSubsystem swerveDriveSubsystem = ((DriveSubsystem)getInjectorComponent().driveSubsystem())
             .getFrontLeftSwerveModuleSubsystem()
             .getDriveSubsystem();
             

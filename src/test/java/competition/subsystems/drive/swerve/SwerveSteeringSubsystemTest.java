@@ -10,8 +10,7 @@ import com.revrobotics.CANSparkMax.ControlType;
 import org.junit.Test;
 
 import competition.BaseCompetitionTest;
-import competition.electrical_conract.TestElectricalContract;
-import competition.electrical_contract.ElectricalContract;
+import competition.electrical_contract.TestElectricalContract;
 import competition.subsystems.drive.DriveSubsystem;
 import xbot.common.controls.actuators.mock_adapters.MockCANSparkMax;
 import xbot.common.controls.sensors.mock_adapters.MockCANCoder;
@@ -26,8 +25,8 @@ public class SwerveSteeringSubsystemTest extends BaseCompetitionTest {
     @Override
     public void setUp() {
         super.setUp();
-        this.contract = (TestElectricalContract)this.injector.getInstance(ElectricalContract.class);
-        this.subsystem = this.injector.getInstance(DriveSubsystem.class)
+        this.contract = (TestElectricalContract)getInjectorComponent().electricalContract();
+        this.subsystem = ((DriveSubsystem)getInjectorComponent().driveSubsystem())
             .getFrontLeftSwerveModuleSubsystem()
             .getSteeringSubsystem();
         this.motorController = (MockCANSparkMax)subsystem.getSparkMax();

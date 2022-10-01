@@ -10,7 +10,7 @@ public class CollectorDeploymentSubsystemTest extends BaseCompetitionTest{
     
     @Test
     public void testingDeploymentSubsystem (){
-        CollectorDeploymentSubsystem collectorDeploymentSubsystem = this.injector.getInstance(CollectorDeploymentSubsystem.class);
+        CollectorDeploymentSubsystem collectorDeploymentSubsystem = getInjectorComponent().collectorDeploymentSubsystem();
 
         collectorDeploymentSubsystem.deploy.setForward();;
         assertTrue("Collector Deploys", collectorDeploymentSubsystem.deploy.getIsForward());

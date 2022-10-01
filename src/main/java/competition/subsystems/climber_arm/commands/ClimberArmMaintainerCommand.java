@@ -1,17 +1,19 @@
 package competition.subsystems.climber_arm.commands;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import competition.injection.arm.ArmInstance;
 import competition.operator_interface.OperatorInterface;
 import competition.subsystems.climber_arm.ClimberArmSubsystem;
 import xbot.common.command.BaseMaintainerCommand;
-import xbot.common.injection.wpi_factories.CommonLibFactory;
 import xbot.common.logic.CalibrationDecider;
+import xbot.common.logic.CalibrationDecider.CalibrationDeciderFactory;
 import xbot.common.logic.CalibrationDecider.CalibrationMode;
+import xbot.common.logic.HumanVsMachineDecider.HumanVsMachineDeciderFactory;
 import xbot.common.logic.TimeStableValidator;
 import xbot.common.math.MathUtils;
 import xbot.common.math.PIDManager;
+import xbot.common.math.PIDManager.PIDManagerFactory;
 import xbot.common.properties.BooleanProperty;
 import xbot.common.properties.DoubleProperty;
 import xbot.common.properties.PropertyFactory;
@@ -33,8 +35,8 @@ public class ClimberArmMaintainerCommand extends BaseMaintainerCommand {
 
     @Inject
     public ClimberArmMaintainerCommand(ArmInstance armInstance, ClimberArmSubsystem arm, PropertyFactory pf,
-            CommonLibFactory clf, OperatorInterface oi) {
-        super(arm, pf, clf, 1, 0.001);
+            HumanVsMachineDeciderFactory hvmFactory, PIDManagerFactory pidf, CalibrationDeciderFactory calf, OperatorInterface oi) {
+        super(arm, pf, hvmFactory, 1, 0.001);
         this.arm = arm;
         this.oi = oi;
         this.armLabel = armInstance.getLabel();
@@ -46,13 +48,13 @@ public class ClimberArmMaintainerCommand extends BaseMaintainerCommand {
         waitForMotorStallCalibrationTime = pf.createPersistentProperty("Motor Stall Calibration Time", 0.25);
         calibrationValidator = new TimeStableValidator(() -> waitForMotorStallCalibrationTime.get());
         attemptAutomaticCalibration = pf.createPersistentProperty("Attempt Automatic Calibration", false);
-        positionPid = clf.createPIDManager(getName() + "/" + "PositionPID", 0.66, 0.1, 0);
+        positionPid = pidf.create(getName() + "/" + "PositionPID", 0.66, 0.1, 0);
 
         // Properties that are unique to each arm
         pf.setPrefix(getName() + "/" + armLabel);
         calibrationAttemptState = pf.createEphemeralProperty("CalibrationAttemptState", "Uninitialized");
 
-        calibrationDecider = clf.createCalibrationDecider(this.getPrefix() + armLabel);
+        calibrationDecider = calf.create(this.getPrefix() + armLabel);
     }
 
     @Override

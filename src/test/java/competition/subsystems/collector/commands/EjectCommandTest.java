@@ -13,8 +13,8 @@ import xbot.common.controls.actuators.mock_adapters.MockCANTalon;
 public class EjectCommandTest extends BaseCompetitionTest{
     @Test
     public void testingEjectCommand (){
-        CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
-        EjectCommand ejectCommand = this.injector.getInstance(EjectCommand.class);
+        CollectorSubsystem collectorSubsystem = getInjectorComponent().collectorSubsystem();
+        EjectCommand ejectCommand = getInjectorComponent().ejectCommand();
 
         collectorSubsystem.collectorMotor.set(ControlMode.PercentOutput, 1);
         checkCollectorPower(1);
@@ -25,7 +25,7 @@ public class EjectCommandTest extends BaseCompetitionTest{
 
     @Test
     public void testingDoubleEjectCommand (){
-        EjectCommand ejectCommand = this.injector.getInstance(EjectCommand.class);
+        EjectCommand ejectCommand = getInjectorComponent().ejectCommand();
 
         ejectCommand.initialize();
         ejectCommand.execute();
@@ -36,7 +36,7 @@ public class EjectCommandTest extends BaseCompetitionTest{
     }
 
     public void checkCollectorPower(double power) {
-        CollectorSubsystem collectorSubsystem = this.injector.getInstance(CollectorSubsystem.class);
+        CollectorSubsystem collectorSubsystem = getInjectorComponent().collectorSubsystem();
         MockCANTalon mockMotor = (MockCANTalon) collectorSubsystem.collectorMotor;
 
         assertEquals(power, mockMotor.getMotorOutputPercent(), 0.001);

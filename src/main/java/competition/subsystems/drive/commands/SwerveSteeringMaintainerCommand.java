@@ -1,10 +1,10 @@
 package competition.subsystems.drive.commands;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import competition.subsystems.drive.swerve.SwerveSteeringSubsystem;
 import xbot.common.command.BaseMaintainerCommand;
-import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.logic.HumanVsMachineDecider.HumanVsMachineDeciderFactory;
 import xbot.common.properties.BooleanProperty;
 import xbot.common.properties.PropertyFactory;
 
@@ -15,8 +15,8 @@ public class SwerveSteeringMaintainerCommand extends BaseMaintainerCommand {
     private final BooleanProperty enableAutoCalibrate;
 
     @Inject
-    public SwerveSteeringMaintainerCommand(SwerveSteeringSubsystem subsystemToMaintain, PropertyFactory pf, CommonLibFactory clf) {
-        super(subsystemToMaintain, pf, clf, 0.001, 0.001);
+    public SwerveSteeringMaintainerCommand(SwerveSteeringSubsystem subsystemToMaintain, PropertyFactory pf, HumanVsMachineDeciderFactory hvmFactory) {
+        super(subsystemToMaintain, pf, hvmFactory, 0.001, 0.001);
         pf.setPrefix(this);
 
         this.subsystem = subsystemToMaintain;
