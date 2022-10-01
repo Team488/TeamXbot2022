@@ -13,23 +13,29 @@ import xbot.common.controls.actuators.XSolenoid.XSolenoidFactory;
 @Singleton
 public class CollectorDeploymentSubsystem extends BaseSubsystem{
     public XDoubleSolenoid deploy;
+    private ElectricalContract contract;
 
     @Inject
     public CollectorDeploymentSubsystem(XDoubleSolenoidFactory doubleSolenoidFactory, XSolenoidFactory solenoidFactory, ElectricalContract eContract){
-        if (eContract.arePneumaticsReady()) {
-        deploy = doubleSolenoidFactory.create(
-            solenoidFactory.create(eContract.getCollectorDeviceSoleniod1().channel),
-            solenoidFactory.create(eContract.getCollectorDeviceSoleniod2().channel)
-        );
-    }
+        this.contract = eContract;
+        if (this.contract.arePneumaticsReady()) {
+            deploy = doubleSolenoidFactory.create(
+                solenoidFactory.create(eContract.getCollectorDeviceSoleniod1().channel),
+                solenoidFactory.create(eContract.getCollectorDeviceSoleniod2().channel)
+            );
+        }
     }
 
     public void deploy (){
-        deploy.setDoubleSolenoid(DoubleSolenoidMode.FORWARD);
+        if (this.contract.arePneumaticsReady()) {
+            deploy.setDoubleSolenoid(DoubleSolenoidMode.FORWARD);
+        }
     }
 
     public void retract (){
-        deploy.setDoubleSolenoid(DoubleSolenoidMode.REVERSE);
+        if (this.contract.arePneumaticsReady()) {
+            deploy.setDoubleSolenoid(DoubleSolenoidMode.REVERSE);
+        }
     }
     
 }

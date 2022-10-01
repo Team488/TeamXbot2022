@@ -331,15 +331,16 @@ public class ClimberArmSubsystem extends BaseSetpointSubsystem {
     @Override
     public void periodic() {
         this.armMotorPositionProp.set(getPosition());
-        armMotor.periodic();
-        setupStatusFrames();
+        if (contract.isClimberReady()) {
+            armMotor.periodic();
+            setupStatusFrames();
+        }
 
         double currentPosition = getPosition();
         directVelocity = currentPosition - lastArmPosition;
         lastArmPosition = currentPosition;
 
         armInstantVelocity.set(directVelocity);
-        ;
 
         if (contract.areClimberLimitSensorsReady(armInstance)) {
             upperLimitSwitchState.set(upperLimitSwitch.get());
