@@ -18,17 +18,12 @@ In order to unlatch the climber hooks, the **driver** must press **left / right 
 
 | Command | Button |
 | :-- | :-- |
-| Reset Pose | A |
-| Swerve debug mode | B |
-| Swerve debug mode next module | X |
-| Swerve to point | Y |
-| Calibrate steering | Left bumper |
-| Swerve drive mode | Right bumper |
-| Apply steering pid values | Back |
-| Turn left 90 degrees | Start |
-| Unlatch | Left + Right Trigger |
 | Move (translate) | Left joystick X+Y |
-| Move (rotate) | Right joystick X |
+| Move (absolute rotation) | Right joystick |
+| Move (relative rotation) | Left / Right Trigger |
+| Rotate to vision target | Right bumper |
+| Unlatch | Start (with operator) |
+| Retract collector | B |
 
 ## Operator Gamepad
 
@@ -36,34 +31,23 @@ In order to unlatch the climber hooks, the **driver** must press **left / right 
 
 | Command | Button |
 | :-- | :-- |
-| Stop both arms | A |
-| Maintain arms | B |
-| Unsafe arms mode | X |
-| Calibrate arms | Y |
-| Pivot in | Left bumper |
-| Pivot out | Right bumper |
-| Collector intake | Left trigger |
-| Collector eject | Right trigger |
-| Unlatch | Back |
-| Manually move left arm | Left joystick Y |
-| Manually move right arm | Right joystick Y |
-
-## Shooter Gamepad
-
-**Gamepad ID:** 2
-
-| Command | Button |
-| :-- | :-- |
-| Set near shot shooter speed | Hold A |
-| Set distance shot shooter speed | Hold X |
-| Set safe power-based control | Hold Y |
-| Stop shooter wheel | B |
-| Shooter speed trim up | Right Bumper |
-| Shooter speed trim down | Left Bumper |
+| Collector intake | Right trigger |
+| Collector eject | Left trigger |
+| Unlatch | Start (with driver) |
+| Conveyor eject | D-pad Up |
+| Conveyor forward | D-pad Left/Right/Down |
+| Shooter speed low (vision) | B (hold) |
+| Shooter speed high (vision) | Y (hold) |
+| Shooter speed low | X (hold) |
+| Shooter speed high | A (hold) |
+| Shoot | Back |
+| Pivot arm out | Left bumper |
+| Pivot arm in | Right bumper |
+| Set arms calibrated | Left stick (press) |
+| Disable arm limits | Right stick (press) |
+| Extend / retract arms | Left / right stick |
 
 ## SmartDashboard commands
 
-* Move arms to position
-* Apply steering pid values
 * Unlatch (without two person override, no timeout)
 * Latch
